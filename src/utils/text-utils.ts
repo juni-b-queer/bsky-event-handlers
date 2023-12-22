@@ -35,3 +35,13 @@ export function containsPunctuation(str: string) {
 export function containsSpaces(str: string) {
     return str.includes(" ");
 }
+
+export function trimCommandInput(input: string, command: string): string|boolean{
+    if(input.startsWith(`!${command}`)){
+        return input.replace(`!${command}`, "").trim().toLowerCase()
+    }else if(input.startsWith(`${command}!`)){
+        return input.replace(`${command}!`, "").trim().toLowerCase()
+    }else{
+        return false;
+    }
+}

@@ -35,3 +35,5 @@ export {ValidatorInput} from "./types/ValidatorInput";
  */
 export * from "./utils/text-utils"
 export * from "./utils/agent-post-utils"
+export * from "./utils/logging-utils"
+export * from "./utils/time-utils"

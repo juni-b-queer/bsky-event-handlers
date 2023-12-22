@@ -1,6 +1,8 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import {AtpSessionData, AtpSessionEvent, BskyAgent, RichText } from "@atproto/api";
 import {PostDetails} from "../types/PostDetails";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import {AgentDetails} from "../types/AgentDetails";
+import {debugLog} from "./logging-utils";
 
 /**
  * Replies to the skeet
@@ -42,4 +44,31 @@ export async function getPostDetails(agent: BskyAgent, op: RepoOp, repo: string)
 
 export function getPosterDID(postDetails: PostDetails){
     return (postDetails.uri.match(/did:[^\/]*/) || [])[0];
+}
+
+
+export function createAgent(agentDetails: AgentDetails): AgentDetails {
+    agentDetails.agent = new BskyAgent({
+        service: 'https://bsky.social/',
+        persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
+            agentDetails.did = sess?.did
+            agentDetails.sessionData = sess;
+        },
+    });
+    return agentDetails;
+}
+
+// @ts-ignore
+export async function authenticateAgent(agentDetails: AgentDetails): Promise<AgentDetails> {
+    if (agentDetails.agent) {
+        await agentDetails.agent.login({identifier: agentDetails.handle, password: agentDetails.password})
+        if (!agentDetails.sessionData) {
+            throw new Error('Could not retrieve bluesky session data for reply bot')
+        } else {
+            debugLog('AGENT', `${agentDetails.name} is authenticated!`)
+            // console.log()
+        }
+        await agentDetails.agent.resumeSession(agentDetails.sessionData)
+        return agentDetails;
+    }
 }
