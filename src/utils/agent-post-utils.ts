@@ -35,7 +35,7 @@ export async function replyToPost(agent: BskyAgent, currentPost: PostDetails, re
     });
 }
 
-export async function getPostDetails(agent: BskyAgent, op: RepoOp, repo: string) {
+export async function getPostDetails(agent: BskyAgent, op: RepoOp, repo: string): Promise<PostDetails> {
     let rkey = op.path.split('/')[1]
     return await agent.getPost({
         repo: repo, rkey: rkey

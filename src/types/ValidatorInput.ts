@@ -6,7 +6,3 @@ export type ValidatorInput = {
     repo: string,
     agent: BskyAgent
 }
-
-// module.exports = {
-//     ValidatorInput
-// };

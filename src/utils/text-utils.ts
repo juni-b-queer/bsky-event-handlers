@@ -21,7 +21,7 @@ export function removeNumbers(input: string) {
 }
 
 export function removeSpaces(input: string) {
-    return input.replace(" ", "");
+    return input.replaceAll(" ", "");
 }
 
 export function containsNumbers(str: string) {
