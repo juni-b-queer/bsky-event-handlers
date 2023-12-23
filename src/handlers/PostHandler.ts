@@ -22,6 +22,7 @@ export class PostHandler extends AbstractPayloadHandler {
 
     postedByUser(postDetails: PostDetails) {
         let postDid = getPosterDID(postDetails);
+
         return postDid === this.agentDid
     }
 

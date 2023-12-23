@@ -33,7 +33,6 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction{
         let lastPost = postDetails;
         for (const skeetText of this.inputArray) {
             lastPost = await this.replyWithNextPost(agent, lastPost, skeetText)
-            console.log(lastPost)
             await sleep(50)
         }
     }
