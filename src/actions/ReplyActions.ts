@@ -25,7 +25,7 @@ export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
 }
 
 export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction{
-    constructor(private inputArray: any) {
+    constructor(private inputArray: string[]) {
         super();
     }
 
