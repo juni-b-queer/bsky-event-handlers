@@ -27,10 +27,8 @@ export class ReplyingToBotValidator extends AbstractValidator {
         // @ts-ignore
         let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
         // @ts-ignore
-        console.log(postDetails.value);
-        return true;
-        // let posterDID = getDIDFromURI(postDetails.value.payload.reply.parent.uri);
-        // return validatorInput.agentDetails.did === posterDID;
+        let posterDID = getDIDFromURI(postDetails.value.reply.parent.uri);
+        return validatorInput.agentDetails.did === posterDID;
     }
 
 }
