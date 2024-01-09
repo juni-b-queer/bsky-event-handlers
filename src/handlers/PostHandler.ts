@@ -5,6 +5,7 @@ import {PostDetails} from "../types/PostDetails";
 import {getPostDetails, getPosterDID} from "../utils/agent-post-utils";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {ValidatorInput} from "../types/ValidatorInput";
+import {AgentDetails} from "../types/AgentDetails";
 
 // @ts-ignore
 export class PostHandler extends AbstractPayloadHandler {
@@ -23,7 +24,8 @@ export class PostHandler extends AbstractPayloadHandler {
     postedByUser(postDetails: PostDetails) {
         let postDid = getPosterDID(postDetails);
 
-        return postDid === this.agentDid
+        // @ts-ignore
+        return postDid === this.agentDetails.did
     }
 
     postedByFollower(postDetails: PostDetails) {
@@ -35,18 +37,21 @@ export class PostHandler extends AbstractPayloadHandler {
         return this.FOLLOWERS.includes(userPosterDID);
     }
 
-    async handle(op: RepoOp, repo: string): Promise<void> {
+    async handle(agentDetails: AgentDetails, op: RepoOp, repo: string): Promise<void> {
+        this.setAgentDetails(agentDetails);
         let validatorData: ValidatorInput = {
             op: op,
             repo: repo,
             // @ts-ignore
-            agent: this.agent
+            agentDetails: agentDetails
         }
         let shouldTrigger = await this.shouldTrigger(validatorData);
         if (shouldTrigger) {
             try {
+                // console.log(agentDetails)
+                // console.log(this.agentDetails)
                 // @ts-ignore
-                let postDetails = await getPostDetails(this.agent, op, repo);
+                let postDetails = await getPostDetails(agentDetails.agent, op, repo);
                 if (!this.postedByUser(postDetails)) {
                     if (this.requireFollowing) {
                         if (this.postedByFollower(postDetails)) {

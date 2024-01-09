@@ -1,10 +1,10 @@
 import {BskyAgent} from "@atproto/api";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {FunctionTriggerAction, PostDetails} from "../../src";
+import {AgentDetails, FunctionTriggerAction, PostDetails} from "../../src";
 import mocked = jest.mocked; // jest helper function for modifying imported modules
 
 describe('FunctionTriggerAction', () => {
-    const mockBskyAgent =  {} as BskyAgent;
+    const mockBskyAgentDetails =  {} as AgentDetails;
     const mockRepoOp: RepoOp = {
         action: 'update',
         path: 'testPath',
@@ -27,9 +27,9 @@ describe('FunctionTriggerAction', () => {
 
     describe('handle', () => {
         it('runs provided function with proper arguments', async () => {
-            await functionTriggerAction.handle(mockBskyAgent, mockRepoOp, mockPostDetails);
+            await functionTriggerAction.handle(mockBskyAgentDetails, mockRepoOp, mockPostDetails);
 
-            expect(mockActionFunction).toHaveBeenCalledWith(mockBskyAgent, mockRepoOp, mockPostDetails);
+            expect(mockActionFunction).toHaveBeenCalledWith(mockBskyAgentDetails, mockRepoOp, mockPostDetails);
         });
     });
 });

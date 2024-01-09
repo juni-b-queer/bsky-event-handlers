@@ -1,4 +1,4 @@
-import {InputEqualsValidator, ValidatorInput} from "../../../src";
+import {AgentDetails, InputEqualsValidator, ValidatorInput} from "../../../src";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {BskyAgent} from "@atproto/api";
 
@@ -21,7 +21,7 @@ describe('InputEqualsValidator', () => {
         const validatorInput: ValidatorInput = {
             op: op,
             repo: 'testRepo',
-            agent: {} as BskyAgent,
+            agentDetails: {} as AgentDetails,
         };
         
         expect(await validator.shouldTrigger(validatorInput)).toBe(true);
@@ -42,7 +42,7 @@ describe('InputEqualsValidator', () => {
         const validatorInput: ValidatorInput = {
             op: op,
             repo: 'testRepo',
-            agent: {} as BskyAgent,
+            agentDetails: {} as AgentDetails,
         };
         
         expect(await validator.shouldTrigger(validatorInput)).toBe(false);

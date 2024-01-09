@@ -2,18 +2,23 @@ import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscrib
 import {PostHandler} from "./PostHandler";
 import { BskyAgent } from "@atproto/api";
 import {AbstractPayloadHandler} from "./AbstractPayloadHandler";
+import {AgentDetails} from "../types/AgentDetails";
 
 export class HandlerController {
-    constructor(private agent: BskyAgent, private handlers: Array<AbstractPayloadHandler>) {
+    constructor(private agentDetails: AgentDetails, private handlers: Array<AbstractPayloadHandler>) {
         this.refreshFollowers()
     }
 
     refreshFollowers() {
-        if (this.agent.session?.did) {
-            this.agent.getFollowers({actor: this.agent.session.did}, {}).then((resp) => {
+        if(!this.agentDetails.agent){
+            return;
+        }
+        if (this.agentDetails.agent.session?.did) {
+            this.agentDetails.agent.getFollowers({actor: this.agentDetails.agent.session.did}, {}).then((resp) => {
                 let followers = resp.data.followers.map(profile => profile.did);
                 this.handlers.forEach((handler) => {
-                    handler.setAgent(this.agent)
+                    // @ts-ignore
+                    handler.setAgentDetails(this.agentDetails)
                     if (handler instanceof PostHandler) {
                         handler.setFollowers(followers);
                     }
@@ -24,7 +29,7 @@ export class HandlerController {
 
     handle(op: RepoOp, repo: string) {
         this.handlers.forEach((handler) => {
-            handler.handle(op, repo)
+            handler.handle(this.agentDetails, op, repo)
         })
     }
 }

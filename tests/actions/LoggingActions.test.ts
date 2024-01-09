@@ -1,17 +1,17 @@
-import {LogInputTextAction, LogPostDetailsAction, LogRepoOperationAction, PostDetails} from "../../src";
+import {AgentDetails, LogInputTextAction, LogPostDetailsAction, LogRepoOperationAction, PostDetails} from "../../src";
 import {BskyAgent} from "@atproto/api";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 
 describe("LogPostDetailsAction", () => {
     let action: LogPostDetailsAction;
-    let agent: BskyAgent;
+    let agentDetails: AgentDetails;
     let op: RepoOp;
     let postDetails: PostDetails;
     console.log = jest.fn();
 
     beforeEach(() => {
         action = new LogPostDetailsAction();
-        agent = {} as BskyAgent;
+        agentDetails = {} as AgentDetails;
         op = {
             action: 'create',
             path: 'test_path',
@@ -29,20 +29,20 @@ describe("LogPostDetailsAction", () => {
     });
 
     it("Calls console.log with correct arguments in handle method", async () => {
-        await action.handle(agent, op, postDetails);
+        await action.handle(agentDetails, op, postDetails);
         expect(console.log).toHaveBeenCalledWith(postDetails);
     });
 });
 
 describe('LogRepoOperationAction', () => {
     let action: LogRepoOperationAction;
-    let agent: BskyAgent;
+    let agentDetails: AgentDetails;
     let op: RepoOp;
     let postDetails: PostDetails;
     console.log = jest.fn();
 
     beforeEach(() => {
-        agent = {} as BskyAgent;
+        agentDetails = {} as AgentDetails;
         op = {
             action: 'create',
             path: 'test_path',
@@ -61,7 +61,7 @@ describe('LogRepoOperationAction', () => {
     });
 
     it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(agent, op, postDetails);
+        await action.handle(agentDetails, op, postDetails);
         expect(console.log).toHaveBeenCalledWith(op);
     });
 });
@@ -69,14 +69,14 @@ describe('LogRepoOperationAction', () => {
 describe('LogInputTextAction', () => {
     let input: string;
     let action: LogInputTextAction;
-    let agent: BskyAgent;
+    let agentDetails: AgentDetails;
     let op: RepoOp;
     let postDetails: PostDetails;
     console.log = jest.fn();
 
     beforeEach(() => {
         input = "hello";
-        agent = {} as BskyAgent;
+        agentDetails = {} as AgentDetails;
         op = {
             action: 'create',
             path: 'test_path',
@@ -99,7 +99,7 @@ describe('LogInputTextAction', () => {
     });
 
     it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(agent, op, postDetails);
+        await action.handle(agentDetails, op, postDetails);
         expect(console.log).toHaveBeenCalledWith(input);
     });
 });

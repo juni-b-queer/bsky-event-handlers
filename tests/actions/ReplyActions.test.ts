@@ -1,4 +1,5 @@
 import {
+    AgentDetails,
     PostDetails,
     ReplyRepetitivelyFromStringArray,
     ReplyWithGeneratedTextAction,
@@ -23,6 +24,10 @@ describe('ReplyWithInputAction tests', () => {
     // Test case for handle method in ReplyWithInputAction class
     it('should call the replyToPost function with correct parameters on handle', async () => {
         const agent = {} as BskyAgent;
+        let agentDetails: AgentDetails = {
+            agent: agent
+        } as AgentDetails;
+
         const op: RepoOp = {
             action: 'create',
             path: 'test path',
@@ -35,7 +40,7 @@ describe('ReplyWithInputAction tests', () => {
         };
 
         const action = new ReplyWithInputAction(replyText);
-        await action.handle(agent, op, postDetails);
+        await action.handle(agentDetails, op, postDetails);
 
         expect(replyToPostMock).toHaveBeenCalledWith(agent, postDetails, replyText);
     });
@@ -44,6 +49,9 @@ describe('ReplyWithInputAction tests', () => {
 describe('ReplyWithGeneratedTextAction', () => {
     it('should handle action and generate a reply', async () => {
         const agent = {} as BskyAgent;
+        let agentDetails: AgentDetails = {
+            agent: agent
+        } as AgentDetails;
         const op: RepoOp = {
             action: 'create',
             path: 'test path',
@@ -61,7 +69,7 @@ describe('ReplyWithGeneratedTextAction', () => {
         const replyGeneratorFunction = () => "test message"
         const action = new ReplyWithGeneratedTextAction(replyGeneratorFunction);
 
-        await action.handle(agent, op, postDetails);
+        await action.handle(agentDetails, op, postDetails);
 
         expect(replyToPostMock).toHaveBeenCalledWith(agent, postDetails, "test message");
     });
@@ -98,8 +106,11 @@ describe('ReplyRepetitivelyFromStringArray', () => {
             path: 'testPath',
             cid: 'testCid'
         };
+        let agentDetails: AgentDetails = {
+            agent: agent
+        } as AgentDetails;
 
-        await triggerAction.handle(agent, op, existingPost);
+        await triggerAction.handle(agentDetails, op, existingPost);
 
         expect(agent.post).toHaveBeenCalledTimes(3);
         expect(agent.post).toHaveBeenCalledWith({

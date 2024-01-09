@@ -46,6 +46,10 @@ export function getPosterDID(postDetails: PostDetails){
     return (postDetails.uri.match(/did:[^\/]*/) || [])[0];
 }
 
+export function getDIDFromURI(uri: string){
+    return (uri.match(/did:[^\/]*/) || [])[0];
+}
+
 
 export function createAgent(agentDetails: AgentDetails): AgentDetails {
     agentDetails.agent = new BskyAgent({

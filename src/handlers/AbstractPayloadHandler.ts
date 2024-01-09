@@ -4,17 +4,16 @@ import {ValidatorInput} from "../types/ValidatorInput";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {PostDetails} from "../types/PostDetails";
 import {AbstractTriggerAction} from "../actions/AbstractTriggerAction";
+import {AgentDetails} from "../types/AgentDetails";
 
 export abstract class AbstractPayloadHandler {
-    protected agentDid: string|undefined;
-    protected agent: BskyAgent | undefined;
+    protected agentDetails: AgentDetails | undefined;
 
     constructor(private triggerValidators: Array<AbstractValidator>, private triggerActions: Array<AbstractTriggerAction>) {
     }
 
-    setAgent(agent: BskyAgent) {
-        this.agent = agent;
-        this.agentDid = agent.session?.did
+    setAgentDetails(agentDetails: AgentDetails) {
+        this.agentDetails = agentDetails;
     }
 
     async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
@@ -22,7 +21,7 @@ export abstract class AbstractPayloadHandler {
         for (const validator of this.triggerValidators) {
             let response = await validator.shouldTrigger(validatorInput)
             if (!response) {
-                willTrigger = false
+                return false;
             }
         }
         return willTrigger;
@@ -30,11 +29,11 @@ export abstract class AbstractPayloadHandler {
 
     async runActions(op: RepoOp, postDetails: PostDetails) {
         for (const action of this.triggerActions) {
-            await action.handle(this.agent, op, postDetails)
+            await action.handle(this.agentDetails, op, postDetails)
         }
     }
 
     // @ts-ignore
-    abstract async handle(op: RepoOp, repo: string): Promise<void>;
+    abstract async handle(agentDetails: AgentDetails, op: RepoOp, repo: string): Promise<void>;
 
 }

@@ -1,4 +1,4 @@
-import {InputContainsValidator, ValidatorInput} from "../../../src";
+import {AgentDetails, InputContainsValidator, ValidatorInput} from "../../../src";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {BskyAgent} from "@atproto/api";
 
@@ -16,7 +16,7 @@ describe('InputContainsValidator', () => {
         const validatorInput: ValidatorInput = {
             op: op,
             repo: 'testRepo',
-            agent: {} as BskyAgent,
+            agentDetails: {} as AgentDetails,
         };
         
         expect(await validator.shouldTrigger(validatorInput)).toBe(true);
@@ -32,7 +32,7 @@ describe('InputContainsValidator', () => {
         const validatorInput: ValidatorInput = {
             op: op,
             repo: 'testRepo',
-            agent: {} as BskyAgent,
+            agentDetails: {} as AgentDetails,
         };
 
         expect(await validator.shouldTrigger(validatorInput)).toBe(true);
@@ -48,7 +48,7 @@ describe('InputContainsValidator', () => {
         const validatorInput: ValidatorInput = {
             op: op,
             repo: 'testRepo',
-            agent: {} as BskyAgent,
+            agentDetails: {} as AgentDetails,
         };
         
         expect(await validator.shouldTrigger(validatorInput)).toBe(false);

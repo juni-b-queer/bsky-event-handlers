@@ -1,6 +1,6 @@
 import {
     AbstractTriggerAction,
-    AbstractValidator,
+    AbstractValidator, AgentDetails,
     FunctionTriggerAction,
     getPosterDID,
     PostDetails,
@@ -11,6 +11,7 @@ import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeR
 
 
 // let mockGetPosterDID =
+
 
 jest.mock("../../src/utils/agent-post-utils", () => ({
     getPostDetails: jest.fn().mockImplementation((agent: BskyAgent, op: RepoOp, repo: string) => {
@@ -35,17 +36,47 @@ describe("PostHandler", () => {
     let mockActionFunction = jest.fn();
     let mockValidatorFunction = jest.fn();
     let agent: BskyAgent;
+    let testAgentDetails: AgentDetails;
+
     beforeEach(() => {
-        jest.clearAllMocks();
+        // jest.clearAllMocks();
         mockActionFunction = jest.fn();
        testTriggerActions = [new FunctionTriggerAction(mockActionFunction)];
         mockValidatorFunction = jest.fn().mockImplementation(() => true);
         testTriggerValidators = [new SimpleFunctionValidator(mockValidatorFunction)];
+        testAgentDetails = {
+            name: "test-bot",
+            did: undefined,
+            handle: "handle",
+            password: "password",
+            sessionData: undefined,
+            agent: undefined
+        }
     });
 
+    it("should handle exception correctly", async () => {
+        // console.log = jest.fn();
+        jest.mock('console', () => ({
+            log: jest.fn(),
+        }));
+        const consoleSpy = jest.spyOn(console, 'log');
+        testAgentDetails.agent = {
+            session: {
+                did: "blank"
+            }
+        } as BskyAgent;
+        let testFollowers: string[] = [];
+        let testPostHandler = new PostHandler(testTriggerValidators, [new FunctionTriggerAction((a: AgentDetails, b: RepoOp, c: PostDetails) => {console.log('hi'); throw new Error('Error')})], false);
+
+        testPostHandler.setAgentDetails(testAgentDetails);
+        testPostHandler.setFollowers(testFollowers);
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
+
+        expect(consoleSpy).toHaveBeenCalled();
+    });
 
     it("should handle post by follower correctly", async () => {
-        agent = {
+        testAgentDetails.agent = {
             session: {
                 did: "blank"
             }
@@ -53,15 +84,15 @@ describe("PostHandler", () => {
         let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions);
         let testFollowers = ["did:plc:wpp4lklhvmopw6zcy6qb42ru"];
 
-        testPostHandler.setAgent(agent);
+        testPostHandler.setAgentDetails(testAgentDetails);
         testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
 
         expect(mockActionFunction).toHaveBeenCalled();
     });
 
     it("should handle post by non-follower correctly if following is not required", async () => {
-        agent = {
+        testAgentDetails.agent = {
             session: {
                 did: "blank"
             }
@@ -69,15 +100,15 @@ describe("PostHandler", () => {
         let testFollowers: string[] = [];
         let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, false);
 
-        testPostHandler.setAgent(agent);
+        testPostHandler.setAgentDetails(testAgentDetails);
         testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
 
         expect(mockActionFunction).toHaveBeenCalled();
     });
 
     it("should handle post by non-follower correctly if following is required", async () => {
-        agent = {
+        testAgentDetails.agent = {
             session: {
                 did: "blank"
             }
@@ -85,16 +116,16 @@ describe("PostHandler", () => {
         let testFollowers: string[] = [];
         let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, true);
 
-        testPostHandler.setAgent(agent);
+        testPostHandler.setAgentDetails(testAgentDetails);
         testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
 
         expect(mockActionFunction).not.toHaveBeenCalled();
     });
 
 
     it("should handle post by self correctly by not running action", async () => {
-        agent = {
+        testAgentDetails.agent = {
             session: {
                 did: "did:plc:wpp4lklhvmopw6zcy6qb42ru"
             }
@@ -102,16 +133,16 @@ describe("PostHandler", () => {
         let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions);
         let testFollowers = ["did:plc:wpp4lklhvmopw6zcy6qb42ru"];
 
-        testPostHandler.setAgent(agent);
+        testPostHandler.setAgentDetails(testAgentDetails);
         testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
 
         expect(mockActionFunction).not.toHaveBeenCalled();
     });
 
     it("should handle post if no did found by not running action", async () => {
 
-        agent = {
+        testAgentDetails.agent = {
             session: {
                 did: "blank"
             }
@@ -119,31 +150,13 @@ describe("PostHandler", () => {
         let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, true);
         let testFollowers: string[] = [];
 
-        testPostHandler.setAgent(agent);
+        testPostHandler.setAgentDetails(testAgentDetails);
         testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
+        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
 
         expect(mockActionFunction).not.toHaveBeenCalled();
     });
 
-    it("should handle exception correctly", async () => {
-        // console.log = jest.fn();
-        const consoleSpy = jest.spyOn(console, 'log');
-        agent = {
-            session: {
-                did: "blank"
-            }
-        } as BskyAgent;
-        let testFollowers: string[] = [];
-        let testPostHandler = new PostHandler(testTriggerValidators, [new FunctionTriggerAction(jest.fn().mockImplementation(() => {
-            throw new Error('Error');
-        }))], false);
 
-        testPostHandler.setAgent(agent);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle({action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(consoleSpy).toHaveBeenCalled();
-    });
 
 });

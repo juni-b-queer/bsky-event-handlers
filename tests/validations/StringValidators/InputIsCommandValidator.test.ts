@@ -1,4 +1,4 @@
-import {InputIsCommandValidator, ValidatorInput} from "../../../src";
+import {AgentDetails, InputIsCommandValidator, ValidatorInput} from "../../../src";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {BskyAgent} from "@atproto/api";
 
@@ -12,7 +12,7 @@ describe('InputIsCommandValidator Class', () => {
             text : 'Test message',
         }
     } as RepoOp;
-    let bSkyAgent = {} as BskyAgent;
+    let bskyAgentDetails = {} as AgentDetails;
 
     beforeEach(() => {
         inputIsCommandValidator = new InputIsCommandValidator('key');
@@ -22,7 +22,7 @@ describe('InputIsCommandValidator Class', () => {
         validatorInput = {
             op: repoOp,
             repo: 'someRepo',
-            agent: bSkyAgent
+            agentDetails: bskyAgentDetails
         };
 
         // @ts-ignore
@@ -46,7 +46,7 @@ describe('InputIsCommandValidator Class', () => {
         validatorInput = {
             op: repoOp,
             repo: 'someRepo',
-            agent: bSkyAgent
+            agentDetails: bskyAgentDetails
         };
 
         // @ts-ignore

@@ -4,13 +4,15 @@ import {AbstractTriggerAction} from "./AbstractTriggerAction";
 import {PostDetails} from "../types/PostDetails";
 import {replyToPost} from "../utils/agent-post-utils";
 import {sleep} from "../utils/private-utils";
+import {AgentDetails} from "../types/AgentDetails";
 
 export class ReplyWithInputAction extends AbstractTriggerAction {
     constructor(private replyText: string) {
         super();
     }
-    async handle(agent: BskyAgent, op: RepoOp, postDetails: PostDetails): Promise<any> {
-        return await replyToPost(agent, postDetails, this.replyText);
+    async handle(agentDetails: AgentDetails, op: RepoOp, postDetails: PostDetails): Promise<any> {
+        // @ts-ignore
+        return await replyToPost(agentDetails.agent, postDetails, this.replyText);
     }
 }
 
@@ -18,9 +20,10 @@ export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
     constructor(private replyGeneratorFunction: () => any) {
         super();
     }
-    async handle(agent: BskyAgent, op: RepoOp, postDetails: PostDetails): Promise<any> {
+    async handle(agentDetails: AgentDetails, op: RepoOp, postDetails: PostDetails): Promise<any> {
         let responseText = this.replyGeneratorFunction()
-        return await replyToPost(agent, postDetails, responseText);
+        // @ts-ignore
+        return await replyToPost(agentDetails.agent, postDetails, responseText);
     }
 }
 
@@ -29,10 +32,11 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction{
         super();
     }
 
-    async handle(agent: BskyAgent, op: RepoOp, postDetails: PostDetails) {
+    async handle(agentDetails: AgentDetails, op: RepoOp, postDetails: PostDetails) {
         let lastPost = postDetails;
         for (const skeetText of this.inputArray) {
-            lastPost = await this.replyWithNextPost(agent, lastPost, skeetText)
+            // @ts-ignore
+            lastPost = await this.replyWithNextPost(agentDetails.agent, lastPost, skeetText)
             await sleep(50)
         }
     }
