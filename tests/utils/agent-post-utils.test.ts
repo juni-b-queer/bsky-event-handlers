@@ -82,7 +82,6 @@ describe('replyToPost Function', () => {
 });
 
 describe('function getPostDetails', () => {
-
     let agent: BskyAgent;
     let repoOp: RepoOp;
     let repo: string;
