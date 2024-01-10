@@ -1,8 +1,8 @@
-name: test
+name: Run Tests
 on: [push, pull_request]
 jobs:
   release:
-    name: Setup
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: checkout
