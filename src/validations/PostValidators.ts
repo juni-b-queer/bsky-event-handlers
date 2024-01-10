@@ -32,3 +32,17 @@ export class ReplyingToBotValidator extends AbstractValidator {
     }
 
 }
+
+export class IsReplyValidator extends AbstractValidator {
+
+    constructor() {
+        super()
+    }
+
+    async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
+        let payload = validatorInput.op.payload;
+        // @ts-ignore
+        return payload.reply !== null;
+    }
+
+}
