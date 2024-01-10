@@ -1,50 +1,47 @@
 import {
     AbstractTriggerAction,
-    AbstractValidator, AgentDetails,
+    AbstractValidator,
+    AgentDetails,
     FunctionTriggerAction,
     getPosterDID,
     PostDetails,
-    PostHandler, SimpleFunctionValidator
+    PostHandler,
+    SimpleFunctionValidator
 } from "../../src";
 import {BskyAgent} from "@atproto/api";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 
-
-// let mockGetPosterDID =
-
-
 jest.mock("../../src/utils/agent-post-utils", () => ({
-    getPostDetails: jest.fn().mockImplementation((agent: BskyAgent, op: RepoOp, repo: string) => {
-        return {
-            cid: "bafyreie5jatwgcuea74lxk7v5hxepvlmwbuihbb4qval23hhuohqae3424",
-            uri: "at://did:plc:wpp4lklhvmopw6zcy6qb42ru/app.bsky.feed.post/3kgf6hi5bco2n",
-            value: {"cid": "bafyreie5jatwgcuea74lxk7v5hxepvlmwbuihbb4qval23hhuohqae3424", "uri": "at://did:plc:wpp4lklhvmopw6zcy6qb42ru/app.bsky.feed.post/3kgf6hi5bco2n", "payload": {"text": "TestRemindMe! 2 hours", "$type": "app.bsky.feed.post", "langs": ["en"], "reply": {"root": {"cid": "bafyreicxky6wzygxjrlglugqlatt25rkz5h35qqbiarugfuw2lmsgegf5q", "uri": "at://did:plc:2bnsooklzchcu5ao7xdjosrs/app.bsky.feed.post/3kdmsue53gs2m"}, "parent": {"cid": "bafyreibxmqw44tlmkyy43sdyu3d764los3xonzgk4qngkcceja2pgtp6ka", "uri": "at://did:plc:2bnsooklzchcu5ao7xdjosrs/app.bsky.feed.post/3kgf47lws352a"}}, "createdAt": "2023-12-13T00:18:22.475Z"}}
-        };
-    }),
-    getPosterDID:  jest.fn()
-        .mockReturnValueOnce("did:plc:wpp4lklhvmopw6zcy6qb42ru")
-        .mockReturnValueOnce("did:plc:wpp4lklhvmopw6zcy6qb42ru")
-        .mockReturnValueOnce("did:plc:wpp4lklhvmopw6zcy6qb42ru")
-        .mockReturnValueOnce("did:plc:wpp4lklhvmopw6zcy6qb42ru")
-        .mockReturnValueOnce(false)
+    getPostDetails: jest.fn().mockImplementation(generatePostDetails),
+    getPosterDID: jest.fn()
+        .mockReturnValue("did:plc:wpp4lklhvmopw6zcy6qb42ru")
 }));
+
+const consoleSpy = jest.spyOn(console, 'log');// Spy on console log function
 
 describe("PostHandler", () => {
 
-    let testTriggerValidators: AbstractValidator[];
-    let testTriggerActions: AbstractTriggerAction[];
-    let mockActionFunction = jest.fn();
-    let mockValidatorFunction = jest.fn();
-    let agent: BskyAgent;
-    let testAgentDetails: AgentDetails;
+    let commonTestSetup = {
+        testTriggerValidators: [],
+        testTriggerActions: [],
+        testTriggerErrorActions: [],
+        mockActionFunction: jest.fn(),
+        mockActionErrorFunction: jest.fn().mockImplementation(() => { throw new Error('hello')}),
+        mockValidatorFunction: jest.fn(),
+        testAgentDetails: {}
+    };
 
     beforeEach(() => {
-        // jest.clearAllMocks();
-        mockActionFunction = jest.fn();
-       testTriggerActions = [new FunctionTriggerAction(mockActionFunction)];
-        mockValidatorFunction = jest.fn().mockImplementation(() => true);
-        testTriggerValidators = [new SimpleFunctionValidator(mockValidatorFunction)];
-        testAgentDetails = {
+        commonTestSetup.mockActionFunction = jest.fn();
+        // @ts-ignore
+        commonTestSetup.testTriggerActions = [new FunctionTriggerAction(commonTestSetup.mockActionFunction)];
+        commonTestSetup.mockValidatorFunction = jest.fn().mockImplementation(() => true);
+        commonTestSetup.mockActionErrorFunction = jest.fn().mockImplementation(() => { throw new Error('hello')});
+        // @ts-ignore
+        commonTestSetup.testTriggerErrorActions = [new FunctionTriggerAction(commonTestSetup.mockActionErrorFunction)];
+        // @ts-ignore
+        commonTestSetup.testTriggerValidators = [new SimpleFunctionValidator(commonTestSetup.mockValidatorFunction)];
+        commonTestSetup.testAgentDetails = {
             name: "test-bot",
             did: undefined,
             handle: "handle",
@@ -52,111 +49,111 @@ describe("PostHandler", () => {
             sessionData: undefined,
             agent: undefined
         }
+        consoleSpy.mockClear();
     });
 
     it("should handle exception correctly", async () => {
-        // console.log = jest.fn();
-        jest.mock('console', () => ({
-            log: jest.fn(),
-        }));
-        const consoleSpy = jest.spyOn(console, 'log');
-        testAgentDetails.agent = {
-            session: {
-                did: "blank"
-            }
-        } as BskyAgent;
-        let testFollowers: string[] = [];
-        let testPostHandler = new PostHandler(testTriggerValidators, [new FunctionTriggerAction((a: AgentDetails, b: RepoOp, c: PostDetails) => {console.log('hi'); throw new Error('Error')})], false);
-
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(consoleSpy).toHaveBeenCalled();
+        await handleExceptionCase(commonTestSetup);
     });
 
     it("should handle post by follower correctly", async () => {
-        testAgentDetails.agent = {
-            session: {
-                did: "blank"
-            }
-        } as BskyAgent;
-        let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions);
-        let testFollowers = ["did:plc:wpp4lklhvmopw6zcy6qb42ru"];
-
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(mockActionFunction).toHaveBeenCalled();
+        await handlePostByFollower(commonTestSetup);
     });
 
     it("should handle post by non-follower correctly if following is not required", async () => {
-        testAgentDetails.agent = {
-            session: {
-                did: "blank"
-            }
-        } as BskyAgent;
-        let testFollowers: string[] = [];
-        let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, false);
-
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(mockActionFunction).toHaveBeenCalled();
+        await handlePostByNonFollower(commonTestSetup, false);
     });
 
     it("should handle post by non-follower correctly if following is required", async () => {
-        testAgentDetails.agent = {
-            session: {
-                did: "blank"
-            }
-        } as BskyAgent;
-        let testFollowers: string[] = [];
-        let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, true);
-
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(mockActionFunction).not.toHaveBeenCalled();
+        await handlePostByNonFollower(commonTestSetup, true);
     });
-
 
     it("should handle post by self correctly by not running action", async () => {
-        testAgentDetails.agent = {
-            session: {
-                did: "did:plc:wpp4lklhvmopw6zcy6qb42ru"
-            }
-        } as BskyAgent;
-        let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions);
-        let testFollowers = ["did:plc:wpp4lklhvmopw6zcy6qb42ru"];
-
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
-
-        expect(mockActionFunction).not.toHaveBeenCalled();
+        await handlePostBySelfNotRunningAction(commonTestSetup);
     });
+});
 
-    it("should handle post if no did found by not running action", async () => {
+// Refactored mock function and test handlers
+function generatePostDetails(agent: BskyAgent, op: RepoOp, repo: string) {
+    return {
+        cid: "bafyreie5jatwgcuea74lxk7v5hxepvlmwbuihbb4qval23hhuohqae3424",
+        uri: "at://did:plc:wpp4lklhvmopw6zcy6qb42ru/app.bsky.feed.post/3kgf6hi5bco2n",
+        value: {
+            "cid": "bafyreie5jatwgcuea74lxk7v5hxepvlmwbuihbb4qval23hhuohqae3424",
+            "uri": "at://did:plc:wpp4lklhvmopw6zcy6qb42ru/app.bsky.feed.post/3kgf6hi5bco2n",
+            "payload": {
+                "text": "TestRemindMe! 2 hours",
+                "$type": "app.bsky.feed.post",
+                "langs": ["en"],
+                "reply": {
+                    "root": {
+                        "cid": "bafyreicxky6wzygxjrlglugqlatt25rkz5h35qqbiarugfuw2lmsgegf5q",
+                        "uri": "at://did:plc:2bnsooklzchcu5ao7xdjosrs/app.bsky.feed.post/3kdmsue53gs2m"
+                    },
+                    "parent": {
+                        "cid": "bafyreibxmqw44tlmkyy43sdyu3d764los3xonzgk4qngkcceja2pgtp6ka",
+                        "uri": "at://did:plc:2bnsooklzchcu5ao7xdjosrs/app.bsky.feed.post/3kgf47lws352a"
+                    }
+                },
+                "createdAt": "2023-12-13T00:18:22.475Z"
+            }
+        }
+    };
+}
 
-        testAgentDetails.agent = {
+async function handleTestSetup(testSetup: any, settingAgentDetails = true, followers = [], requireFollowing = false, throwException: boolean = false, postedBySelf: boolean = false) {
+    if (settingAgentDetails) {
+        testSetup.testAgentDetails.agent = {
             session: {
                 did: "blank"
             }
         } as BskyAgent;
-        let testPostHandler = new PostHandler(testTriggerValidators, testTriggerActions, true);
-        let testFollowers: string[] = [];
+    }
+    if(postedBySelf){
+        testSetup.testAgentDetails.did = "did:plc:wpp4lklhvmopw6zcy6qb42ru";
+    }
+    let testPostHandler: PostHandler
 
-        testPostHandler.setAgentDetails(testAgentDetails);
-        testPostHandler.setFollowers(testFollowers);
-        await testPostHandler.handle(testAgentDetails, {action: "create", path: "path", cid: "cid" }, "repo");
+    if(throwException){
+        testPostHandler = new PostHandler(testSetup.testTriggerValidators, testSetup.testTriggerErrorActions, requireFollowing);
 
-        expect(mockActionFunction).not.toHaveBeenCalled();
-    });
+    }else{
+        if(requireFollowing){
+            testPostHandler = new PostHandler(testSetup.testTriggerValidators, testSetup.testTriggerActions);
 
+        }else{
+            testPostHandler = new PostHandler(testSetup.testTriggerValidators, testSetup.testTriggerActions, requireFollowing);
+        }
+    }
 
+    testPostHandler.setAgentDetails(testSetup.testAgentDetails);
+    testPostHandler.setFollowers(followers);
+    return testPostHandler.handle(testSetup.testAgentDetails, {action: "create", path: "path", cid: "cid" }, "did:plc:wpp4lklhvmopw6zcy6qb42ru");
 
-});
+}
+
+async function handleExceptionCase(testSetup: any) {
+    await handleTestSetup(testSetup, true, [], false, true);
+    expect(consoleSpy).toHaveBeenCalled();
+}
+
+async function handlePostByFollower(testSetup: any) {
+    // @ts-ignore
+    await handleTestSetup(testSetup, true, ["did:plc:wpp4lklhvmopw6zcy6qb42ru"], true);
+    expect(testSetup.mockActionFunction).toHaveBeenCalled();
+}
+
+async function handlePostByNonFollower(testSetup: any, requireFollowing: boolean) {
+    await handleTestSetup(testSetup, true, [], requireFollowing);
+    if(requireFollowing){
+        expect(testSetup.mockActionFunction).not.toHaveBeenCalled()
+    }else{
+        expect(testSetup.mockActionFunction).toHaveBeenCalled();
+
+    }
+}
+
+async function handlePostBySelfNotRunningAction(testSetup: any) {
+    await handleTestSetup(testSetup, true, [], false, false, true);
+    expect(testSetup.mockActionFunction).not.toHaveBeenCalled();
+}

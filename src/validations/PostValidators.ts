@@ -9,10 +9,7 @@ export class PostedByUserValidator extends AbstractValidator {
     }
 
     async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
-        // @ts-ignore
-        let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
-        let posterDID = getPosterDID(postDetails);
-        return this.userDid === posterDID;
+        return this.userDid === validatorInput.repo;
     }
 
 }
@@ -25,12 +22,11 @@ export class ReplyingToBotValidator extends AbstractValidator {
 
     async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
         // @ts-ignore
-        let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
+        // let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
         // @ts-ignore
-        let posterDID = getDIDFromURI(postDetails.value.reply.parent.uri);
+        let posterDID = getDIDFromURI(validatorInput.op.payload.reply.parent.uri);
         return validatorInput.agentDetails.did === posterDID;
     }
-
 }
 
 export class IsReplyValidator extends AbstractValidator {
@@ -42,7 +38,9 @@ export class IsReplyValidator extends AbstractValidator {
     async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
         let payload = validatorInput.op.payload;
         // @ts-ignore
-        return payload.reply !== null;
+        console.log(payload.reply)
+        // @ts-ignore
+        return payload.reply !== undefined;
     }
 
 }
