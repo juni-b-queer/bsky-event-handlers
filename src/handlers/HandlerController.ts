@@ -5,8 +5,12 @@ import {AbstractPayloadHandler} from "./AbstractPayloadHandler";
 import {AgentDetails} from "../types/AgentDetails";
 
 export class HandlerController {
-    constructor(private agentDetails: AgentDetails, private handlers: Array<AbstractPayloadHandler>) {
+    constructor(private agentDetails: AgentDetails, private handlers: Array<AbstractPayloadHandler>, private replyOnly: boolean = false) {
         this.refreshFollowers()
+    }
+
+    public isReplyOnly(): boolean{
+        return this.replyOnly;
     }
 
     refreshFollowers() {
