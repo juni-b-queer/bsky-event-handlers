@@ -109,9 +109,9 @@ try {
  * The firehose subscription
  */
 const firehoseSubscription = new FirehoseSubscription([testHandlerController], 150);
-
-
 ```
+
+For full example code, see my [Test firehose bot](https://github.com/juni-b-queer/test-firehose-bot)
 
 # Overview
 
