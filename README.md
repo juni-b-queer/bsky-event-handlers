@@ -1,10 +1,8 @@
-Todo
-- Finish Readme
-- Add the use of the firehose into this package
-
 # Bluesky Event Handlers
-[npm Package](https://www.npmjs.com/package/bsky-event-handlers)
+An easy package to use for making bluesky bots with validators and handler actions
 
+
+[npm Package](https://www.npmjs.com/package/bsky-event-handlers)
 # Quickstart
 This guide is assuming you're using BunJS
 
