@@ -16,11 +16,17 @@ export * from "./validations/PostValidators"
 /**
  * Actions
  */
-export {AbstractTriggerAction} from "./actions/AbstractTriggerAction"
-export {FunctionTriggerAction} from "./actions/FunctionTriggerAction"
+export * from "./actions/AbstractTriggerAction"
+export * from "./actions/FunctionTriggerAction"
 export * from "./actions/ReplyActions"
 export * from "./actions/LoggingActions"
 
+
+/**
+ * Firehose
+ */
+
+export * from "./firehose/FirehoseSubscription"
 
 /**
  * Types
