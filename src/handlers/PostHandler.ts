@@ -28,13 +28,9 @@ export class PostHandler extends AbstractPayloadHandler {
         return postDid === this.agentDetails.did
     }
 
-    postedByFollower(postDetails: PostDetails) {
-        let userPosterDID = getPosterDID(postDetails)
-        if (!userPosterDID) {
-            return false;
-        }
+    postedByFollower(postDetails: PostDetails, repo: string) {
         // @ts-ignore
-        return this.FOLLOWERS.includes(userPosterDID);
+        return this.FOLLOWERS.includes(repo);
     }
 
     async handle(agentDetails: AgentDetails, op: RepoOp, repo: string): Promise<void> {
@@ -54,7 +50,7 @@ export class PostHandler extends AbstractPayloadHandler {
                 let postDetails = await getPostDetails(agentDetails.agent, op, repo);
                 if (!this.postedByUser(postDetails)) {
                     if (this.requireFollowing) {
-                        if (this.postedByFollower(postDetails)) {
+                        if (this.postedByFollower(postDetails, repo)) {
                             await this.runActions(op, postDetails)
                         }
                     } else {

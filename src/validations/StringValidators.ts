@@ -5,13 +5,19 @@ import {ValidatorInput} from "../types/ValidatorInput";
 
 
 export class InputIsCommandValidator extends AbstractValidator {
-    constructor(private triggerKey: string) {
+    constructor(private triggerKey: string, private strict: boolean = true) {
         super();
     }
 
     async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
-        let input = this.getTextFromPost(validatorInput.op)
-        return input.startsWith(`!${this.triggerKey}`) || input.startsWith(`${this.triggerKey}!`)
+        if(this.strict){
+            let input = this.getTextFromPost(validatorInput.op)
+            return input.startsWith(`!${this.triggerKey}`) || input.startsWith(`${this.triggerKey}!`)
+        }else{
+            let input = this.getTextFromPost(validatorInput.op).toLowerCase();
+            let lowerCaseTriggerKey = this.triggerKey.toLowerCase();
+            return input.startsWith(`!${lowerCaseTriggerKey}`) || input.startsWith(`${lowerCaseTriggerKey}!`)
+        }
     }
 
 }

@@ -37,6 +37,8 @@ export function containsSpaces(str: string) {
 }
 
 export function trimCommandInput(input: string, command: string): string|boolean{
+    input = input.toLowerCase()
+    command = command.toLowerCase()
     if(input.startsWith(`!${command}`)){
         return input.replace(`!${command}`, "").trim().toLowerCase()
     }else if(input.startsWith(`${command}!`)){
