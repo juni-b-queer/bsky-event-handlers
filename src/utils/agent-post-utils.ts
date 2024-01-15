@@ -73,6 +73,10 @@ export async function authenticateAgent(agentDetails: AgentDetails): Promise<Age
             // console.log()
         }
         await agentDetails.agent.resumeSession(agentDetails.sessionData)
+
+        if(!agentDetails.agent){
+            throw new Error(`Could not get agent from ${agentDetails.name}`)
+        }
         return agentDetails;
     }
 }

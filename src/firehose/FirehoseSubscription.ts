@@ -15,13 +15,18 @@ export class FirehoseSubscription {
      * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
      * @param {number} maxTimeBetweenMessages - The maximum time (in milliseconds) allowed between messages. Defaults to 150.
      */
-    constructor(private handlerControllers: Array<HandlerController>, private maxTimeBetweenMessages: number = 150, private wsURL: string = "wss://bsky.network"){
+    constructor(private handlerControllers: Array<HandlerController>, private maxTimeBetweenMessages: number = 150, private checkSubscriptionInterval: number = 100, private wsURL: string = "wss://bsky.network"){
         debugLog('FIREHOSE', `Initializing`)
         debugLog('FIREHOSE', `Time between messages: ${maxTimeBetweenMessages}`)
         debugLog('FIREHOSE', `Websocket URL: ${wsURL}`)
         this.firehoseClient = subscribeRepos(wsURL, {decodeRepoOps: true});
         this.createSubscription();
         debugLog('FIREHOSE', `Initialized`)
+
+        // @ts-ignore
+        setInterval(async () =>{
+            this.checkForRestart();
+        }, 60 * checkSubscriptionInterval)
     }
 
     /**
@@ -33,7 +38,7 @@ export class FirehoseSubscription {
         if(this.lastMessageTime !== undefined){
             let currentTime = Date.now();
             let diff = (currentTime - this.lastMessageTime);
-            debugLog('FIREHOSE', `Time since last received message: ${diff}`)
+            debugLog('FIREHOSE', `Checking for restart. Time since last received message: ${diff}`)
             return diff;
         }else{
             debugLog('FIREHOSE', `LastMessageTime is undefined`, true)
@@ -48,7 +53,6 @@ export class FirehoseSubscription {
      * @return {void}
      */
     public checkForRestart(){
-        debugLog('FIREHOSE', `Checking for restart`)
         if(this.timeSinceLastMessage() > this.maxTimeBetweenMessages){
             this.restartSubscription();
         }
