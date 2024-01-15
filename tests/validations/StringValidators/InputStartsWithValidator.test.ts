@@ -4,7 +4,7 @@ import {BskyAgent} from "@atproto/api";
 
 
 describe('InputStartsWithValidator', () => {
-    const validator = new InputStartsWithValidator('test', false);
+    const validator = new InputStartsWithValidator('test');
     const strictValidator = new InputStartsWithValidator('test', true);
 
     test('shouldTrigger returns true if input starts with trigger keyword', async () => {
