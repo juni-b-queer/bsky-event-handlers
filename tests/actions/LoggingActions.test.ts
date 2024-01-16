@@ -1,6 +1,15 @@
-import {AgentDetails, LogInputTextAction, LogPostDetailsAction, LogRepoOperationAction, PostDetails} from "../../src";
+import {
+    AgentDetails,
+    DebugLogAction,
+    LogInputTextAction,
+    LogPostDetailsAction,
+    LogRepoOperationAction,
+    PostDetails
+} from "../../src";
 import {BskyAgent} from "@atproto/api";
 import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import mocked = jest.mocked;
+import {advanceTo} from "jest-date-mock";
 
 describe("LogPostDetailsAction", () => {
     let action: LogPostDetailsAction;
@@ -101,5 +110,41 @@ describe('LogInputTextAction', () => {
     it('Should log output of RepoOp object when handle() is called', async () => {
         await action.handle(agentDetails, op, postDetails);
         expect(console.log).toHaveBeenCalledWith(input);
+    });
+});
+
+
+describe('LogInputTextAction', () => {
+    let action: DebugLogAction;
+    let agentDetails: AgentDetails = {} as AgentDetails;
+    let op: RepoOp = {} as RepoOp;
+    let postDetails: PostDetails = {} as PostDetails;
+    console.log = jest.fn();
+
+    beforeEach(() => {
+        advanceTo(new Date(Date.UTC(2023, 1, 1, 1, 0, 0)));
+        mocked(process.env, {shallow: true}).DEBUG_LOG_ACTIVE = 'true';
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('Should log output of RepoOp object when handle() is called', async () => {
+        let expected =  "1/31/2023, 07:00 PM | TEST | Hello";
+
+        action = new DebugLogAction("TEST", "Hello");
+
+        await action.handle(agentDetails, op, postDetails);
+        expect(console.log).toHaveBeenCalledWith(expected);
+    });
+
+    it('Should log output of RepoOp object when handle() is called', async () => {
+        let expected =  "1/31/2023, 07:00 PM | TEST | ERROR | Hello";
+
+        action = new DebugLogAction("TEST", "Hello", true);
+
+        await action.handle(agentDetails, op, postDetails);
+        expect(console.log).toHaveBeenCalledWith(expected);
     });
 });

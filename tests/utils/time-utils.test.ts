@@ -21,7 +21,7 @@ describe('getHumanReadableDateTimeStamp', () => {
 });
 describe('nowDateTime function', () => {
     beforeEach(() => {
-        advanceTo(new Date(Date.UTC(2023, 3, 2, 14 + 5, 30, 0)));
+        advanceTo(new Date(Date.UTC(2023, 3, 2, 19, 30, 0)));
     });
     afterEach(() => {
         clear();
