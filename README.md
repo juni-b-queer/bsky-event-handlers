@@ -15,11 +15,12 @@ An easy package to use for making bluesky bots with validators and handler actio
 # Quickstart
 This guide is assuming you're using BunJS
 
+Install the package
 `bun install --save bsky-event-handlers`
 
-In your `index.ts` you'll need a few things
+Then, in your `index.ts` you'll need a few things
 
-To create your bsky agent
+Create your bsky agent
 ```typescript
 let agentDetails: AgentDetails = {
     name: "test-bot",
@@ -30,7 +31,16 @@ let agentDetails: AgentDetails = {
     agent: undefined
 }
 // This function is required! It sets up your bluesky agent
-testAgentDetails = createAgent(testAgentDetails)
+agentDetails = createAgent(agentDetails)
+```
+
+Create a simple Handler
+```typescript
+let handler = new PostHandler(
+        [new InputStartsWithValidator("Hello!")],
+        [new ReplyWithInputAction("Hi!")],
+        true
+    );
 ```
 
 To set up your handler controllers
@@ -45,8 +55,8 @@ async function initialize() {
     agentDetails = await authenticateAgent(agentDetails)
 
     handlerController = new HandlerController(agentDetails, [
-        // Assuming you've created your handler in another file and imported it
-        TestHandler
+        // Handlers can also be created in other files and imported
+      handler
     ], true)
     debugLog("INIT", 'Initialized!')
 }
@@ -62,7 +72,7 @@ try {
 
 Then to start your firehose connection
 ```typescript
-const firehoseSubscription = new FirehoseSubscription([testHandlerController], 150);
+const firehoseSubscription = new FirehoseSubscription([handlerController], 150);
 ```
 
 
@@ -72,16 +82,18 @@ import {
     HandlerController,
     AgentDetails,
     PostDetails,
+    PostHandler,
     replyToPost,
     authenticateAgent,
     createAgent,
     debugLog,
-    FirehoseSubscription
+    FirehoseSubscription,
+    InputStartsWithValidator,
+    ReplyWithInputAction
 } from "bsky-event-handlers";
-import {TestHandler} from "./TestHandler.ts";
 
 // Agent details
-let testAgentDetails: AgentDetails = {
+let agentDetails: AgentDetails = {
     name: "test-bot",
     did: undefined,
     handle: <string>Bun.env.TEST_BSKY_HANDLE,
@@ -89,17 +101,24 @@ let testAgentDetails: AgentDetails = {
     sessionData: undefined,
     agent: undefined
 }
-testAgentDetails = createAgent(testAgentDetails)
+agentDetails = createAgent(agentDetails)
+
+let handler = new PostHandler(
+        [new InputStartsWithValidator("Hello!")],
+        [new ReplyWithInputAction("Hi!")],
+        true
+    );
+
 
 //Create Handler controller
-let testHandlerController: HandlerController;
+let handlerController: HandlerController;
 
 // Initialize the agent and handler
 async function initialize() {
-    testAgentDetails = await authenticateAgent(testAgentDetails)
+    agentDetails = await authenticateAgent(agentDetails)
 
-    testHandlerController = new HandlerController(testAgentDetails, [
-        TestHandler
+    handlerController = new HandlerController(agentDetails, [
+        handler
     ], true)
 
     debugLog("INIT", 'Initialized!')
@@ -117,7 +136,7 @@ try {
 /**
  * The firehose subscription
  */
-const firehoseSubscription = new FirehoseSubscription([testHandlerController], 150);
+const firehoseSubscription = new FirehoseSubscription([handlerController], 150);
 ```
 
 For full example code, see my [Test firehose bot](https://github.com/juni-b-queer/test-firehose-bot)
