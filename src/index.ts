@@ -17,7 +17,7 @@ export * from "./validations/PostValidators"
  * Actions
  */
 export * from "./actions/AbstractTriggerAction"
-export * from "./actions/FunctionTriggerAction"
+export * from "./actions/FunctionAction"
 export * from "./actions/ReplyActions"
 export * from "./actions/LoggingActions"
 

@@ -2,7 +2,7 @@ import {
     AbstractTriggerAction,
     AbstractValidator,
     AgentDetails,
-    FunctionTriggerAction,
+    FunctionAction,
     getPosterDID,
     PostDetails,
     PostHandler,
@@ -34,11 +34,11 @@ describe("PostHandler", () => {
     beforeEach(() => {
         commonTestSetup.mockActionFunction = jest.fn();
         // @ts-ignore
-        commonTestSetup.testTriggerActions = [new FunctionTriggerAction(commonTestSetup.mockActionFunction)];
+        commonTestSetup.testTriggerActions = [new FunctionAction(commonTestSetup.mockActionFunction)];
         commonTestSetup.mockValidatorFunction = jest.fn().mockImplementation(() => true);
         commonTestSetup.mockActionErrorFunction = jest.fn().mockImplementation(() => { throw new Error('hello')});
         // @ts-ignore
-        commonTestSetup.testTriggerErrorActions = [new FunctionTriggerAction(commonTestSetup.mockActionErrorFunction)];
+        commonTestSetup.testTriggerErrorActions = [new FunctionAction(commonTestSetup.mockActionErrorFunction)];
         // @ts-ignore
         commonTestSetup.testTriggerValidators = [new SimpleFunctionValidator(commonTestSetup.mockValidatorFunction)];
         commonTestSetup.testAgentDetails = {
