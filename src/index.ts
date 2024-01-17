@@ -6,6 +6,14 @@ export {PostHandler} from "./handlers/PostHandler"
 export {HandlerController} from "./handlers/HandlerController"
 
 /**
+ * Premade Handlers
+ */
+
+export {GoodBotHandler} from "./handlers/premade-handlers/GoodBotHandler"
+export {BadBotHandler} from "./handlers/premade-handlers/BadBotHandler"
+
+
+/**
  * Validators
  */
 export {AbstractValidator} from "./validations/AbstractValidator"
