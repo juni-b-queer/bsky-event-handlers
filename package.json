@@ -1,6 +1,6 @@
 {
   "name": "bsky-event-handlers",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Utilities to help handle bluesky events with validation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
