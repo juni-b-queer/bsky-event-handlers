@@ -17,11 +17,11 @@ export class ReplyWithInputAction extends AbstractTriggerAction {
 }
 
 export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
-    constructor(private replyGeneratorFunction: () => any) {
+    constructor(private replyGeneratorFunction: (agentDetails: AgentDetails, op: RepoOp, postDetails: PostDetails) => any) {
         super();
     }
     async handle(agentDetails: AgentDetails, op: RepoOp, postDetails: PostDetails): Promise<any> {
-        let responseText = this.replyGeneratorFunction()
+        let responseText = this.replyGeneratorFunction(agentDetails, op, postDetails)
         // @ts-ignore
         return await replyToPost(agentDetails.agent, postDetails, responseText);
     }
