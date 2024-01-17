@@ -1,7 +1,7 @@
-export function getHumanReadableDateTimeStamp(datetime: string) {
+export function getHumanReadableDateTimeStamp(datetime: string, timezone: string = "America/Chicago") {
     let dateObject = new Date(datetime)
     return dateObject.toLocaleString('en-US', {
-        timeZone: 'America/Chicago',
+        timeZone: timezone,
         hour12: true, // Use 24-hour time format
         year: 'numeric',
         month: 'long',
