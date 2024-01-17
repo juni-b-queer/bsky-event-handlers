@@ -12,6 +12,7 @@ export {AbstractValidator} from "./validations/AbstractValidator"
 export * from "./validations/BasicValidators"
 export * from "./validations/StringValidators"
 export * from "./validations/PostValidators"
+export * from "./validations/BotValidators"
 
 /**
  * Actions

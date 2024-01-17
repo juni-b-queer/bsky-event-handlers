@@ -47,3 +47,29 @@ export function trimCommandInput(input: string, command: string): string|boolean
         return false;
     }
 }
+
+export function isGoodBotResponse(input: string): boolean {
+    const positiveConnotationWords: string[] = ["great", "good", "fantastic", "excellent", "awesome", "positive", "amazing", "incredible", "super"];
+    const words = removePunctuation(input.toLowerCase()).split(" ");
+
+    if (words[1] === "bot") {
+        if (positiveConnotationWords.includes(words[0])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+export function isBadBotResponse(input: string): boolean {
+    const negativeConnotationWords: string[] = ["bad", "dumb", "stupid", "useless", "annoying", "shitty"];
+    const words = removePunctuation(input.toLowerCase()).split(" ");
+
+    if (words[1] === "bot") {
+        if (negativeConnotationWords.includes(words[0])) {
+            return true;
+        }
+    }
+
+    return false;
+}
