@@ -11,6 +11,7 @@ export {HandlerController} from "./handlers/HandlerController"
 
 export {GoodBotHandler} from "./handlers/premade-handlers/GoodBotHandler"
 export {BadBotHandler} from "./handlers/premade-handlers/BadBotHandler"
+export {OfflineHandler} from "./handlers/premade-handlers/OfflineHandler"
 
 
 /**
