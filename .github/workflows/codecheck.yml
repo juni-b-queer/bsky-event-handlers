@@ -84,7 +84,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
-    name: Run Tests
+    name: Linting
     runs-on: ubuntu-latest
     steps:
       - name: checkout
