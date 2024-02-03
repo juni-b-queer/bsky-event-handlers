@@ -1,7 +1,7 @@
 name: Run Tests
 on: [pull_request]
 jobs:
-  release:
+  test:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
