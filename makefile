@@ -24,3 +24,9 @@ test:
 
 coverage:
 	npm run coverage
+
+lint:
+	npm run lint
+
+format:
+	npm run format
