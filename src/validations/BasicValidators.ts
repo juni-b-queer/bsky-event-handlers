@@ -1,20 +1,22 @@
-import {AbstractValidator} from "./AbstractValidator";
-import {ValidatorInput} from "../types/ValidatorInput";
+import { AbstractValidator } from "./AbstractValidator";
+import { ValidatorInput } from "../types/ValidatorInput";
 
 /**
  * A validator in which you pass a single function that takes in the post
  * text, and returns a boolean
  */
 export class SimpleFunctionValidator extends AbstractValidator {
+  constructor(
+    private triggerValidator: (
+      arg0: ValidatorInput,
+    ) => boolean | PromiseLike<boolean>,
+  ) {
+    super();
+  }
 
-    constructor(private triggerValidator: (arg0: ValidatorInput) => boolean | PromiseLike<boolean>) {
-        super()
-    }
-
-    async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
-        return this.triggerValidator(validatorInput)
-    }
-
+  async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
+    return this.triggerValidator(validatorInput);
+  }
 }
 
 /**
@@ -22,18 +24,19 @@ export class SimpleFunctionValidator extends AbstractValidator {
  *  and if any of them should trigger, it will return true
  */
 export class OrValidator extends AbstractValidator {
-    constructor(private validators: Array<AbstractValidator>) {
-        super();
-    }
+  constructor(private validators: Array<AbstractValidator>) {
+    super();
+  }
 
-    async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
-        let willTrigger = false;
-        for (const validator of this.validators) {
-            let currentValidatorWillTrigger = await validator.shouldTrigger(validatorInput);
-            if (currentValidatorWillTrigger) {
-                willTrigger = true;
-            }
-        }
-        return willTrigger;
+  async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
+    let willTrigger = false;
+    for (const validator of this.validators) {
+      const currentValidatorWillTrigger =
+        await validator.shouldTrigger(validatorInput);
+      if (currentValidatorWillTrigger) {
+        willTrigger = true;
+      }
     }
+    return willTrigger;
+  }
 }
