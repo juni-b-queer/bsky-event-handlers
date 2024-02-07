@@ -25,12 +25,12 @@ export class FirehoseSubscription {
     private checkSubscriptionInterval: number = 100,
     private wsURL: string = "wss://bsky.network",
   ) {
-    debugLog("FIREHOSE", `Initializing`);
-    debugLog("FIREHOSE", `Time between messages: ${maxTimeBetweenMessages}`);
-    debugLog("FIREHOSE", `Websocket URL: ${wsURL}`);
+    debugLog("FIREHOSE", `Initializing`, 'warn');
+    debugLog("FIREHOSE", `Time between messages: ${maxTimeBetweenMessages}`, 'warn');
+    debugLog("FIREHOSE", `Websocket URL: ${wsURL}`, 'warn');
     this.firehoseClient = subscribeRepos(wsURL, { decodeRepoOps: true });
     this.createSubscription();
-    debugLog("FIREHOSE", `Initialized`);
+    debugLog("FIREHOSE", `Initialized`, 'warn');
 
     // @ts-ignore
     setInterval(async () => {
@@ -50,6 +50,7 @@ export class FirehoseSubscription {
       debugLog(
         "FIREHOSE",
         `Checking for restart. Time since last received message: ${diff}`,
+          'info'
       );
       return diff;
     } else {
@@ -121,10 +122,10 @@ export class FirehoseSubscription {
    * @return {void}
    */
   public restartSubscription() {
-    debugLog("FIREHOSE", `Restarting Subscription`);
+    debugLog("FIREHOSE", `Restarting Subscription`, 'warn');
     this.firehoseClient.removeAllListeners();
     this.firehoseClient = subscribeRepos(this.wsURL, { decodeRepoOps: true });
     this.createSubscription();
-    debugLog("FIREHOSE", `Restarted Subscription`);
+    debugLog("FIREHOSE", `Restarted Subscription`, 'warn');
   }
 }
