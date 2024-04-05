@@ -81,25 +81,13 @@ export class FirehoseSubscription {
    * calls the `handle` function of each HandlerController in `isNotReply` for all other messages.
    */
   public createSubscription() {
-    let isReply = [];
-    let isNotReply = [];
-    this.handlerControllers.forEach((controller: HandlerController) =>{
-      if (controller.isReplyOnly()) {
-        isReply.push(controller);
-      } else {
-        isNotReply.push(controller);
-      }
-    })
-
-      // const isReply = this.handlerControllers.filter(controller => controller.isReplyOnly());
-      // const isNotReply = this.handlerControllers.filter(controller => !controller.isReplyOnly());
     // filter this.handlerControllers into two arrays titled isReply and isNotReply
-    // const isReply = this.handlerControllers.filter((controller) =>
-    //   controller.isReplyOnly(),
-    // );
-    // const isNotReply = this.handlerControllers.filter(
-    //   (controller) => !controller.isReplyOnly(),
-    // );
+    const isReply = this.handlerControllers.filter((controller) =>
+      controller.isReplyOnly(),
+    );
+    const isNotReply = this.handlerControllers.filter(
+      (controller) => !controller.isReplyOnly(),
+    );
     this.lastMessageTime = Date.now();
     this.firehoseClient.on("message", (m: SubscribeReposMessage) => {
       if (ComAtprotoSyncSubscribeRepos.isCommit(m)) {
