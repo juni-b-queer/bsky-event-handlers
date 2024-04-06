@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: 'https://npm.pkg.github.com'
+          registry-url: "https://npm.pkg.github.com"
       - name: Cache node modules
         id: cache-nodemodules
         uses: actions/cache@v3
@@ -29,7 +29,7 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: npm ci
 
-#      - name: Install dependencies
-#        run: npm ci --ignore-scripts
+      #      - name: Install dependencies
+      #        run: npm ci --ignore-scripts
       - name: Test
         run: npm test

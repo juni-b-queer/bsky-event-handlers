@@ -44,7 +44,7 @@ export class DebugLogAction extends AbstractTriggerAction {
   constructor(
     private action: string,
     private message: string,
-    private level: string = 'info',
+    private level: string = "info",
   ) {
     super();
   }

@@ -1,6 +1,6 @@
 import { debugLog, nowDateTime } from "../../src";
 import mocked = jest.mocked;
-import {BskyAgent} from "@atproto/api";
+import { BskyAgent } from "@atproto/api";
 
 jest.mock("console", () => ({
   log: jest.fn(),
@@ -29,7 +29,7 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, 'info');
+    debugLog(action, message, "info");
 
     expect(consoleSpy).toHaveBeenCalledWith(
       `${nowDateTime()} | ${action} | INFO | ${message}`,
@@ -44,7 +44,7 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, 'info');
+    debugLog(action, message, "info");
 
     expect(consoleSpy).not.toHaveBeenCalled();
   });
@@ -57,10 +57,10 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, 'warn');
+    debugLog(action, message, "warn");
 
     expect(consoleSpy).toHaveBeenCalledWith(
-        `${nowDateTime()} | ${action} | WARN | ${message}`,
+      `${nowDateTime()} | ${action} | WARN | ${message}`,
     );
   });
 
@@ -72,10 +72,10 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, 'warn');
+    debugLog(action, message, "warn");
 
     expect(consoleSpy).toHaveBeenCalledWith(
-        `${nowDateTime()} | ${action} | WARN | ${message}`,
+      `${nowDateTime()} | ${action} | WARN | ${message}`,
     );
   });
 
@@ -86,7 +86,7 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, 'error');
+    debugLog(action, message, "error");
 
     expect(consoleSpy).toHaveBeenCalledWith(
       `${nowDateTime()} | ${action} | ERROR | ${message}`,

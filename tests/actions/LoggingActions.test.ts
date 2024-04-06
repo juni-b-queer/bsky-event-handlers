@@ -132,7 +132,7 @@ describe("LogInputTextAction", () => {
   it("Should log output of RepoOp object when handle() is called", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
 
-    action = new DebugLogAction("TEST", "Hello", 'info');
+    action = new DebugLogAction("TEST", "Hello", "info");
 
     await action.handle(agentDetails, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);
@@ -141,7 +141,7 @@ describe("LogInputTextAction", () => {
   it("Should log output of RepoOp object when handle() is called", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | ERROR | Hello";
 
-    action = new DebugLogAction("TEST", "Hello", 'error');
+    action = new DebugLogAction("TEST", "Hello", "error");
 
     await action.handle(agentDetails, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);
