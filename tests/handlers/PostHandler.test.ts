@@ -173,7 +173,7 @@ async function handlePostByFollower(testSetup: any) {
   await handleTestSetup(
     testSetup,
     true,
-      // @ts-ignore
+    // @ts-ignore
     ["did:plc:wpp4lklhvmopw6zcy6qb42ru"],
     true,
   );
