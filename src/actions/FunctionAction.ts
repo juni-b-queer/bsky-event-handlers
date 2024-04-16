@@ -7,6 +7,7 @@ import { AgentDetails } from "../types/AgentDetails";
 export class FunctionAction extends AbstractTriggerAction {
   constructor(
     private actionFunction: (
+        // TODO Change to use agent class
       arg0: AgentDetails,
       arg1: RepoOp,
       arg2: PostDetails,
@@ -15,10 +16,13 @@ export class FunctionAction extends AbstractTriggerAction {
     super();
   }
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
+    // TODO Change to use agent class
+
     await this.actionFunction(agentDetails, op, postDetails);
   }
 }

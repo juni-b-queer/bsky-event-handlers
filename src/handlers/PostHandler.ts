@@ -20,6 +20,7 @@ export class PostHandler extends AbstractPayloadHandler {
     return this;
   }
 
+  //TODO move this to agent
   setFollowers(followersInput: Array<string>) {
     this.FOLLOWERS = followersInput;
     return this;
@@ -32,16 +33,19 @@ export class PostHandler extends AbstractPayloadHandler {
     return postDid === this.agentDetails.did;
   }
 
+  //TODO move this to agent
   postedByFollower(postDetails: PostDetails, repo: string) {
     // @ts-ignore
     return this.FOLLOWERS.includes(repo);
   }
 
   async handle(
+      //TODO change agent to class
     agentDetails: AgentDetails,
     op: RepoOp,
     repo: string,
   ): Promise<void> {
+    //TODO change agent to class
     this.setAgentDetails(agentDetails);
     const validatorData: ValidatorInput = {
       op: op,
@@ -52,8 +56,8 @@ export class PostHandler extends AbstractPayloadHandler {
     const shouldTrigger = await this.shouldTrigger(validatorData);
     if (shouldTrigger) {
       try {
-        // console.log(agentDetails)
-        // console.log(this.agentDetails)
+        //TODO change to use agent class
+
         // @ts-ignore
         const postDetails = await getPostDetails(agentDetails.agent, op, repo);
         if (!this.postedByUser(postDetails)) {

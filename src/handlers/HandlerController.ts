@@ -6,6 +6,7 @@ import { AgentDetails } from "../types/AgentDetails";
 
 export class HandlerController {
   constructor(
+      //TODO change agent to class
     private agentDetails: AgentDetails,
     private handlers: Array<AbstractPayloadHandler>,
     private replyOnly: boolean = false,
@@ -18,6 +19,7 @@ export class HandlerController {
   }
 
   refreshFollowers() {
+    //TODO move this to agent class
     if (!this.agentDetails.agent) {
       return;
     }
@@ -39,6 +41,7 @@ export class HandlerController {
 
   handle(op: RepoOp, repo: string) {
     this.handlers.forEach((handler) => {
+      //TODO change agent to class
       handler.handle(this.agentDetails, op, repo);
     });
   }

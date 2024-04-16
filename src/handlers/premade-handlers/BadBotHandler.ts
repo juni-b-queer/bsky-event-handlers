@@ -19,6 +19,7 @@ export class BadBotHandler extends PostHandler {
   }
 
   async handle(
+      //TODO change to agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     repo: string,

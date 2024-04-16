@@ -15,6 +15,8 @@ export abstract class AbstractPayloadHandler {
   ) {}
 
   setAgentDetails(agentDetails: AgentDetails) {
+    //TODO change how agent is used with new agent class
+
     this.agentDetails = agentDetails;
   }
 
@@ -31,12 +33,14 @@ export abstract class AbstractPayloadHandler {
 
   async runActions(op: RepoOp, postDetails: PostDetails) {
     for (const action of this.triggerActions) {
+      //TODO change agent
       await action.handle(this.agentDetails, op, postDetails);
     }
   }
 
   // @ts-ignore
   abstract async handle(
+      //TODO change agent
     agentDetails: AgentDetails,
     op: RepoOp,
     repo: string,

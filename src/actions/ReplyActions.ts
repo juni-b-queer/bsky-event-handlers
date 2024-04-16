@@ -12,10 +12,12 @@ export class ReplyWithInputAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
+    // TODO Change to use agent class
     // @ts-ignore
     return await replyToPost(agentDetails.agent, postDetails, this.replyText);
   }
@@ -24,6 +26,7 @@ export class ReplyWithInputAction extends AbstractTriggerAction {
 export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
   constructor(
     private replyGeneratorFunction: (
+        // TODO Change to use agent class
       agentDetails: AgentDetails,
       op: RepoOp,
       postDetails: PostDetails,
@@ -33,15 +36,18 @@ export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
     const responseText: string = this.replyGeneratorFunction(
+        // TODO Change to use agent class
       agentDetails,
       op,
       postDetails,
     );
+    // TODO Change to use agent class
     // @ts-ignore
     return await replyToPost(agentDetails.agent, postDetails, responseText);
   }
@@ -53,6 +59,7 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
   }
 
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
@@ -71,6 +78,7 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
   }
 
   async replyWithNextPost(
+      // TODO Change to use agent class
     agent: BskyAgent,
     currentPost: PostDetails,
     replyTextInput: string,

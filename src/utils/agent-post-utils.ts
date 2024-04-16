@@ -12,6 +12,7 @@ import { debugLog } from "./logging-utils";
 /**
  * Replies to the skeet
  **/
+// TODO Move this to agent class
 export async function replyToPost(
   agent: BskyAgent,
   currentPost: PostDetails,
@@ -78,7 +79,7 @@ export function createAgent(agentDetails: AgentDetails): AgentDetails {
 // @ts-ignore
 export async function authenticateAgent(
   agentDetails: AgentDetails,
-): Promise<AgentDetails|undefined> {
+): Promise<AgentDetails | undefined> {
   if (agentDetails.agent) {
     await agentDetails.agent.login({
       identifier: agentDetails.handle,

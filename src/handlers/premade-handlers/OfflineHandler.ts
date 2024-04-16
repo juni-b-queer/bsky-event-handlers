@@ -15,6 +15,7 @@ export class OfflineHandler extends PostHandler {
       false,
     );
   }
+  //TODO change agent details
   handle(agentDetails: AgentDetails, op: RepoOp, repo: string): Promise<void> {
     return super.handle(agentDetails, op, repo);
   }

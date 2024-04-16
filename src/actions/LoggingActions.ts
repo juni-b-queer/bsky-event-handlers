@@ -7,6 +7,7 @@ import { debugLog } from "../utils/logging-utils";
 export class LogPostDetailsAction extends AbstractTriggerAction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
@@ -18,6 +19,7 @@ export class LogPostDetailsAction extends AbstractTriggerAction {
 export class LogRepoOperationAction extends AbstractTriggerAction {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
@@ -32,6 +34,7 @@ export class LogInputTextAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,
@@ -50,6 +53,7 @@ export class DebugLogAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails,
     op: RepoOp,
     postDetails: PostDetails,

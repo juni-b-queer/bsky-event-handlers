@@ -8,6 +8,7 @@ export abstract class AbstractTriggerAction {
 
   // @ts-ignore
   abstract async handle(
+      // TODO Change to use agent class
     agentDetails: AgentDetails | undefined,
     op: RepoOp,
     postDetails: PostDetails,
