@@ -2,9 +2,8 @@ import { BskyAgent, RichText } from "@atproto/api";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { AbstractTriggerAction } from "./AbstractTriggerAction";
 import { PostDetails } from "../types/PostDetails";
-import { replyToPost } from "../utils/agent-post-utils";
 import { sleep } from "../utils/private-utils";
-import { AgentDetails } from "../types/AgentDetails";
+import {HandlerAgent} from "../agent/HandlerAgent";
 
 export class ReplyWithInputAction extends AbstractTriggerAction {
   constructor(private replyText: string) {
@@ -12,22 +11,18 @@ export class ReplyWithInputAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
-      // TODO Change to use agent class
-    agentDetails: AgentDetails,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
-    // TODO Change to use agent class
-    // @ts-ignore
-    return await replyToPost(agentDetails.agent, postDetails, this.replyText);
+    return await handlerAgent.createSkeet(this.replyText, postDetails);
   }
 }
 
 export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
   constructor(
     private replyGeneratorFunction: (
-        // TODO Change to use agent class
-      agentDetails: AgentDetails,
+      handlerAgent: HandlerAgent,
       op: RepoOp,
       postDetails: PostDetails,
     ) => string,
@@ -36,20 +31,17 @@ export class ReplyWithGeneratedTextAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
-      // TODO Change to use agent class
-    agentDetails: AgentDetails,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
     const responseText: string = this.replyGeneratorFunction(
-        // TODO Change to use agent class
-      agentDetails,
+      handlerAgent,
       op,
       postDetails,
     );
-    // TODO Change to use agent class
-    // @ts-ignore
-    return await replyToPost(agentDetails.agent, postDetails, responseText);
+
+    return await handlerAgent.createSkeet(responseText, postDetails);
   }
 }
 
@@ -59,17 +51,14 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
   }
 
   async handle(
-      // TODO Change to use agent class
-    agentDetails: AgentDetails,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ) {
     let lastPost = postDetails;
     for (const skeetText of this.inputArray) {
-      // @ts-ignore
       lastPost = await this.replyWithNextPost(
-        // @ts-ignore
-        agentDetails.agent,
+        handlerAgent,
         lastPost,
         skeetText,
       );
@@ -78,8 +67,7 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
   }
 
   async replyWithNextPost(
-      // TODO Change to use agent class
-    agent: BskyAgent,
+    handlerAgent: HandlerAgent,
     currentPost: PostDetails,
     replyTextInput: string,
   ): Promise<PostDetails> {
@@ -98,13 +86,11 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
       },
     };
 
-    // @ts-ignore
-    if (currentPost.value.reply) {
-      // @ts-ignore
-      reply.root = currentPost.value.reply.root;
+    if(handlerAgent.hasPostReplyRoot(currentPost)){
+      reply.root = handlerAgent.getPostReplyRoot(currentPost);
     }
 
-    const newPost = await agent.post({
+    const newPost = await handlerAgent.post({
       reply: reply,
       text: replyText.text,
     });

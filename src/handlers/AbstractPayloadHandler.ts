@@ -1,29 +1,23 @@
-import { BskyAgent } from "@atproto/api";
 import { AbstractValidator } from "../validations/AbstractValidator";
 import { ValidatorInput } from "../types/ValidatorInput";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostDetails } from "../types/PostDetails";
 import { AbstractTriggerAction } from "../actions/AbstractTriggerAction";
-import { AgentDetails } from "../types/AgentDetails";
+import {HandlerAgent} from "../agent/HandlerAgent";
 
 export abstract class AbstractPayloadHandler {
-  protected agentDetails: AgentDetails | undefined;
+
 
   constructor(
     private triggerValidators: Array<AbstractValidator>,
     private triggerActions: Array<AbstractTriggerAction>,
+    public handlerAgent: HandlerAgent
   ) {}
-
-  setAgentDetails(agentDetails: AgentDetails) {
-    //TODO change how agent is used with new agent class
-
-    this.agentDetails = agentDetails;
-  }
 
   async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
     const willTrigger = true;
     for (const validator of this.triggerValidators) {
-      const response = await validator.shouldTrigger(validatorInput);
+      const response = await validator.shouldTrigger(validatorInput, this.handlerAgent);
       if (!response) {
         return false;
       }
@@ -33,15 +27,12 @@ export abstract class AbstractPayloadHandler {
 
   async runActions(op: RepoOp, postDetails: PostDetails) {
     for (const action of this.triggerActions) {
-      //TODO change agent
-      await action.handle(this.agentDetails, op, postDetails);
+      await action.handle(this.handlerAgent, op, postDetails);
     }
   }
 
-  // @ts-ignore
+  //@ts-ignore
   abstract async handle(
-      //TODO change agent
-    agentDetails: AgentDetails,
     op: RepoOp,
     repo: string,
   ): Promise<void>;

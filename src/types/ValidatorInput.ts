@@ -5,5 +5,4 @@ import { AgentDetails } from "./AgentDetails";
 export type ValidatorInput = {
   op: RepoOp;
   repo: string;
-  agentDetails: AgentDetails;
 };

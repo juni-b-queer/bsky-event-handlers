@@ -30,3 +30,6 @@ lint:
 
 format:
 	npm run format
+
+link:
+	bun link

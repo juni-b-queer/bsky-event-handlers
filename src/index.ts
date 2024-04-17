@@ -37,6 +37,11 @@ export * from "./actions/LoggingActions";
 export * from "./firehose/FirehoseSubscription";
 
 /**
+ * Agent
+ */
+
+export {HandlerAgent} from "./agent/HandlerAgent";
+/**
  * Types
  */
 export { PostDetails } from "./types/PostDetails";
@@ -47,6 +52,5 @@ export { ValidatorInput } from "./types/ValidatorInput";
  * utils
  */
 export * from "./utils/text-utils";
-export * from "./utils/agent-post-utils";
 export * from "./utils/logging-utils";
 export * from "./utils/time-utils";
