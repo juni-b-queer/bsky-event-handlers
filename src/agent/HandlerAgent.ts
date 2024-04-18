@@ -1,13 +1,8 @@
-import {
-  AppBskyFeedPost,
-  AtpSessionData,
-  AtpSessionEvent,
-  BskyAgent,
-  RichText,
-} from "@atproto/api";
-import { debugLog } from "../utils/logging-utils";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { PostDetails } from "../types/PostDetails";
+import {AppBskyFeedPost, AtpSessionData, AtpSessionEvent, BskyAgent, RichText,} from "@atproto/api";
+import {debugLog} from "../utils/logging-utils";
+import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import {PostDetails} from "../types/PostDetails";
+import {ProfileView} from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 
 export class HandlerAgent {
   private did: string | undefined;
@@ -30,7 +25,12 @@ export class HandlerAgent {
       this.setDid = agent.session?.did;
       this.setSession = agent.session;
     }
+
+    // this.persistSession = this.persistSession.bind(this);
+    // this.initializeBskyAgent = this.initializeBskyAgent.bind(this);
   }
+
+  //region INIT Agent
 
   /**
    *
@@ -38,13 +38,11 @@ export class HandlerAgent {
   initializeBskyAgent(): BskyAgent {
     return new BskyAgent({
       service: "https://bsky.social/",
-      persistSession: this.persistSession,
+      persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
+        this.setDid = sess?.did;
+        this.setSession = sess;
+      },
     });
-  }
-
-  persistSession(evt: AtpSessionEvent, sess?: AtpSessionData) {
-    this.setDid = sess?.did;
-    this.setSession = sess;
   }
 
   /**
@@ -76,65 +74,85 @@ export class HandlerAgent {
     }
   }
 
+  //endregion
+
   //region Follower Interactions
   /**
    *
    */
-  isFollowing() {
-    //TODO
+  async getFollows(userDID: string | undefined = undefined) {
+    if (userDID === undefined) {
+      userDID = this.getDid
+    }
+    let resp = await this.agent.getFollows({actor: userDID});
+    return resp.data.follows
   }
 
   /**
    *
    */
-  isFollowedBy() {
-    //TODO
+  async getFollowers(userDID: string | undefined = undefined){
+    if (userDID === undefined) {
+      userDID = this.getDid
+    }
+    let resp =  await this.agent.getFollowers({actor: userDID})
+    return resp.data.followers
   }
 
   /**
    *
    */
-  getFollowers() {
-    //TODO
+  async isFollowing(userDID: string): Promise<boolean> {
+    let following = this.extractDIDsFromProfiles(await this.getFollows())
+    return following.includes(userDID);
   }
 
   /**
    *
    */
-  getFollowing() {
-    //TODO
+  async isFollowedBy(userDID: string): Promise<boolean> {
+    let followers = this.extractDIDsFromProfiles(await this.getFollowers())
+    return followers.includes(userDID);
+  }
+
+
+  /**
+   *
+   */
+  async followUser(did: string): Promise<boolean> {
+    await this.agent.follow(did)
+    return true;
   }
 
   /**
    *
    */
-  followUser(did: string) {}
+  async unfollowUser(did: string): Promise<boolean> {
+    let resp = this.getRecordForDid(did, await this.getFollows() );
+    let followLink = resp?.viewer?.following
+    if(followLink){
+      await this.agent.deleteFollow(followLink);
+      return true;
+    }
+    return false
+  }
+
+  //endregion
+
+  //region Follow Helpers
+
 
   /**
    *
+   * @param follows
    */
-  unfollowUser(did: string) {}
+  extractDIDsFromProfiles(follows: ProfileView[]): string[]{
+    return follows.map(item => item.did);
+  }
 
-  // refreshFollowers() {
-  //   //TODO move this to agent class
-  //   if (!this.handlerAgent.getAgent()) {
-  //     return;
-  //   }
-  //   if (this.handlerAgent.getDid()) {
-  //     this.agentDetails.agent
-  //       .getFollowers({ actor: this.agentDetails.agent.session.did }, {})
-  //       .then((resp) => {
-  //         const followers = resp.data.followers.map((profile) => profile.did);
-  //         this.handlers.forEach((handler) => {
-  //           // @ts-ignore
-  //           handler.setAgentDetails(this.agentDetails);
-  //           if (handler instanceof PostHandler) {
-  //             handler.setFollowers(followers);
-  //           }
-  //         });
-  //       });
-  //   }
-  // }
+  getRecordForDid(targetDid: string, data: ProfileView[]): ProfileView | undefined {
+    return data.find(item => item.did === targetDid);
+  }
 
   //endregion
 
@@ -361,9 +379,9 @@ export class HandlerAgent {
    * Getter for did.
    * @return {string} The current value of did.
    */
-  public get getDid(): string | boolean {
+  public get getDid(): string {
     if (!this.did) {
-      return false;
+      return "";
     }
     return this.did;
   }

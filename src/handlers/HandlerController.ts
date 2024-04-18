@@ -3,13 +3,8 @@ import { AbstractPayloadHandler } from "./AbstractPayloadHandler";
 
 export class HandlerController {
   constructor(
-    private handlers: Array<AbstractPayloadHandler>,
-    private replyOnly: boolean = false,
+    private handlers: Array<AbstractPayloadHandler>
   ) {}
-
-  public isReplyOnly(): boolean {
-    return this.replyOnly;
-  }
 
   handle(op: RepoOp, repo: string) {
     this.handlers.forEach((handler) => {

@@ -18,6 +18,7 @@ export class FirehoseSubscription {
    * @param {Array<HandlerController>} handlerControllers - An array of handler controllers.
    * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
    * @param {number} maxTimeBetweenMessages - The maximum time (in milliseconds) allowed between messages. Defaults to 150.
+   * @param checkSubscriptionInterval
    */
   constructor(
     private handlerControllers: Array<HandlerController>,
@@ -39,7 +40,7 @@ export class FirehoseSubscription {
     // @ts-ignore
     setInterval(async () => {
       this.checkForRestart();
-    }, 60 * checkSubscriptionInterval);
+    }, 60 * this.checkSubscriptionInterval);
   }
 
   /**
@@ -85,13 +86,6 @@ export class FirehoseSubscription {
    * calls the `handle` function of each HandlerController in `isNotReply` for all other messages.
    */
   public createSubscription() {
-    // filter this.handlerControllers into two arrays titled isReply and isNotReply
-    const isReply = this.handlerControllers.filter((controller) =>
-      controller.isReplyOnly(),
-    );
-    const isNotReply = this.handlerControllers.filter(
-      (controller) => !controller.isReplyOnly(),
-    );
     this.lastMessageTime = Date.now();
     this.firehoseClient.on("message", (m: SubscribeReposMessage) => {
       if (ComAtprotoSyncSubscribeRepos.isCommit(m)) {
@@ -104,13 +98,7 @@ export class FirehoseSubscription {
             case "app.bsky.feed.post":
               if (AppBskyFeedPost.isRecord(payload)) {
                 const repo = m.repo;
-                if (payload.reply) {
-                  // for each HandlerController in isReply, call the controller handle function
-                  isReply.forEach((controller) => {
-                    controller.handle(op, repo);
-                  });
-                }
-                isNotReply.forEach((controller) => {
+                this.handlerControllers.forEach((controller) => {
                   controller.handle(op, repo);
                 });
               }
