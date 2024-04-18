@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: out test
-        run: echo ${{needs.prepare.output.branch}}
+        run: echo ${{needs.prepare.outputs.branch}}
       - name: Early exit
         if: endsWith(needs.prepare.outputs.branch, 'better-github-actions') == false
         run: |
