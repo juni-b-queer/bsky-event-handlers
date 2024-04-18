@@ -31,7 +31,7 @@ jobs:
           gh run watch ${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: ${{needs.prepare.outputs.branch}}
+          FOUND_BRANCH: ${{env.FOUND_BRANCH}}
 
 #      - name: Setup Node
 #        id: setup-node
