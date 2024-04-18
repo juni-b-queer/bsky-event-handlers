@@ -1,4 +1,4 @@
-name: Test Code
+name: Test and Lint code
 on: [pull_request]
 jobs:
   test:
