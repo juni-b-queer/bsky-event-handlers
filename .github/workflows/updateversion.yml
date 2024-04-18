@@ -3,7 +3,6 @@ on:
   pull_request:
     types:
       - closed
-      - labeled
     branches:
       - create-release-from-label
 
@@ -12,8 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
+      - name: Check label
+        id: check_label
+        run: |
+          first_label=$(jq -r '.pull_request.labels[0].name' <<<'${{ toJson(github.event) }}')
+          echo "::set-output name=LABEL_NAME::$first_label"
+          echo "LABEL=$first_label" >> $GITHUB_ENV
+          echo "Label is $first_label"
       - name: Checkout code
-        if: ${{ github.event.label.name == 'Patch' }}
+        if: ${{ env.LABEL == 'Patch' }}
         uses: actions/checkout@v2
 
 #      - name: Setup Node
