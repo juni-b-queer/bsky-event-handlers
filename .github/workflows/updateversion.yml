@@ -67,4 +67,4 @@ jobs:
 
       - name: Setup the release version and overwrite the existing major version tag
         run: |
-          git push
+          git push --follow-tags
