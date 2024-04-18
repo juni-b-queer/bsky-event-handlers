@@ -1,7 +1,6 @@
 import {HandlerAgent} from "../../src";
 import {AtpSessionData, BskyAgent} from "@atproto/api";
 import dotenv from 'dotenv'
-import {agentGetPostMock, agentLoginMock, agentPostMock, agentResumeSessionMock} from "../testing-utils/BskyAgentMock";
 
 dotenv.config()
 
@@ -15,14 +14,11 @@ describe('HandlerAgent', () => {
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
 
-            const atprotoApiMock = require('@atproto/api');
-            atprotoApiMock.BskyAgent.prototype.login = agentLoginMock;
-            atprotoApiMock.BskyAgent.prototype.post = agentPostMock;
-            atprotoApiMock.BskyAgent.prototype.getPost = agentGetPostMock;
-            atprotoApiMock.BskyAgent.prototype.resumeSession = agentResumeSessionMock;
-            atprotoApiMock.BskyAgent.prototype.session = {did: "did:plc:2bnsooklzchcu5ao7xdjosrs"};
-
-            mockedAgent = new atprotoApiMock.BskyAgent({service: "www"});
+            mockedAgent = {
+                session: {
+                    did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
+                } as AtpSessionData
+            } as BskyAgent;
             handlerAgent = new HandlerAgent(
                 "agentName",
                 testHandle,

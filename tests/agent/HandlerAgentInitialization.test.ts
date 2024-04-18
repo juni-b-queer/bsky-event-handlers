@@ -1,30 +1,23 @@
 import dotenv from 'dotenv'
 import {HandlerAgent} from "../../src";
-import {generateBskyAgentMock, agentLoginMock, agentPostMock, agentGetPostMock, agentResumeSessionMock} from "../testing-utils/BskyAgentMock";
-import atprotoApiMock, {AtpSessionData} from "@atproto/api";
+import atprotoApiMock, {AtpSessionData, BskyAgent} from "@atproto/api";
 
 dotenv.config()
-
-// Create a generic mock of '@atproto/api' module
-jest.mock('@atproto/api', () => jest.genMockFromModule('@atproto/api'));
 
 describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
     let testHandle: string | undefined = process.env.TEST_HANDLE;
     let testPassword: string | undefined = process.env.TEST_PASSWORD;
-
+    const loginMock = jest.fn();
+    const resumeSessionMock = jest.fn();
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
 
             // Require mocked module and define class' methods
-            const atprotoApiMock = require('@atproto/api');
-            atprotoApiMock.BskyAgent.prototype.login = agentLoginMock;
-            atprotoApiMock.BskyAgent.prototype.post = agentPostMock;
-            atprotoApiMock.BskyAgent.prototype.getPost = agentGetPostMock;
-            atprotoApiMock.BskyAgent.prototype.resumeSession = agentResumeSessionMock;
-            atprotoApiMock.BskyAgent.prototype.session = {did: "did:plc:2bnsooklzchcu5ao7xdjosrs"};
-
-            const mockedAgent = new atprotoApiMock.BskyAgent({service: "www"});
+            const mockedAgent =  {
+                login: loginMock,
+                resumeSession: resumeSessionMock
+            } as unknown as BskyAgent;
             handlerAgent = new HandlerAgent(
                 "agentName",
                 testHandle,
@@ -50,8 +43,8 @@ describe('HandlerAgent', () => {
         } as AtpSessionData;
         handlerAgent.setDid = "did:plc:2bnsooklzchcu5ao7xdjosrs";
         await handlerAgent.authenticate();
-        expect(agentLoginMock).toHaveBeenCalledTimes(1);
-        expect(agentLoginMock).toHaveBeenCalledWith({
+        expect(loginMock).toHaveBeenCalledTimes(1);
+        expect(loginMock).toHaveBeenCalledWith({
             identifier: testHandle,
             password: testPassword,
         });
