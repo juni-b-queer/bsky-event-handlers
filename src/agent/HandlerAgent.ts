@@ -1,8 +1,14 @@
-import {AppBskyFeedPost, AtpSessionData, AtpSessionEvent, BskyAgent, RichText,} from "@atproto/api";
-import {debugLog} from "../utils/logging-utils";
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {PostDetails} from "../types/PostDetails";
-import {ProfileView} from "@atproto/api/dist/client/types/app/bsky/actor/defs";
+import {
+  AppBskyFeedPost,
+  AtpSessionData,
+  AtpSessionEvent,
+  BskyAgent,
+  RichText,
+} from "@atproto/api";
+import { debugLog } from "../utils/logging-utils";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { PostDetails } from "../types/PostDetails";
+import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 
 export class HandlerAgent {
   private did: string | undefined;
@@ -82,28 +88,28 @@ export class HandlerAgent {
    */
   async getFollows(userDID: string | undefined = undefined) {
     if (userDID === undefined) {
-      userDID = this.getDid
+      userDID = this.getDid;
     }
-    let resp = await this.agent.getFollows({actor: userDID});
-    return resp.data.follows
+    const resp = await this.agent.getFollows({ actor: userDID });
+    return resp.data.follows;
   }
 
   /**
    *
    */
-  async getFollowers(userDID: string | undefined = undefined){
+  async getFollowers(userDID: string | undefined = undefined) {
     if (userDID === undefined) {
-      userDID = this.getDid
+      userDID = this.getDid;
     }
-    let resp =  await this.agent.getFollowers({actor: userDID})
-    return resp.data.followers
+    const resp = await this.agent.getFollowers({ actor: userDID });
+    return resp.data.followers;
   }
 
   /**
    *
    */
   async isFollowing(userDID: string): Promise<boolean> {
-    let following = this.extractDIDsFromProfiles(await this.getFollows())
+    const following = this.extractDIDsFromProfiles(await this.getFollows());
     return following.includes(userDID);
   }
 
@@ -111,16 +117,15 @@ export class HandlerAgent {
    *
    */
   async isFollowedBy(userDID: string): Promise<boolean> {
-    let followers = this.extractDIDsFromProfiles(await this.getFollowers())
+    const followers = this.extractDIDsFromProfiles(await this.getFollowers());
     return followers.includes(userDID);
   }
-
 
   /**
    *
    */
   async followUser(did: string): Promise<boolean> {
-    await this.agent.follow(did)
+    await this.agent.follow(did);
     return true;
   }
 
@@ -128,30 +133,32 @@ export class HandlerAgent {
    *
    */
   async unfollowUser(did: string): Promise<boolean> {
-    let resp = this.getRecordForDid(did, await this.getFollows() );
-    let followLink = resp?.viewer?.following
-    if(followLink){
+    const resp = this.getRecordForDid(did, await this.getFollows());
+    const followLink = resp?.viewer?.following;
+    if (followLink) {
       await this.agent.deleteFollow(followLink);
       return true;
     }
-    return false
+    return false;
   }
 
   //endregion
 
   //region Follow Helpers
 
-
   /**
    *
    * @param follows
    */
-  extractDIDsFromProfiles(follows: ProfileView[]): string[]{
-    return follows.map(item => item.did);
+  extractDIDsFromProfiles(follows: ProfileView[]): string[] {
+    return follows.map((item) => item.did);
   }
 
-  getRecordForDid(targetDid: string, data: ProfileView[]): ProfileView | undefined {
-    return data.find(item => item.did === targetDid);
+  getRecordForDid(
+    targetDid: string,
+    data: ProfileView[],
+  ): ProfileView | undefined {
+    return data.find((item) => item.did === targetDid);
   }
 
   //endregion

@@ -11,28 +11,31 @@ describe("HandlerAgent", () => {
   const testPassword: string | undefined =
     process.env.TEST_PASSWORD ?? "testpassword";
 
-  let followingMocks = [
-      {
-        did: "isFollowing",
-        viewer:{
-          following: "followLink"
-        }
-      }
-  ]
+  const followingMocks = [
+    {
+      did: "isFollowing",
+      viewer: {
+        following: "followLink",
+      },
+    },
+  ];
 
-  let followedByMocks = [
+  const followedByMocks = [
     {
       did: "isFollowedBy",
-      viewer:{
+      viewer: {
         following: "followLink",
-        followedBy: "followedByLink"
-      }
-    }
-  ]
+        followedBy: "followedByLink",
+      },
+    },
+  ];
 
-
-  const getFollowsMock = jest.fn().mockReturnValue({ data: {follows: followingMocks} })
-  const getFollowersMock = jest.fn().mockReturnValue({ data: {followers: followedByMocks} })
+  const getFollowsMock = jest
+    .fn()
+    .mockReturnValue({ data: { follows: followingMocks } });
+  const getFollowersMock = jest
+    .fn()
+    .mockReturnValue({ data: { followers: followedByMocks } });
   const followMock = jest.fn();
   const deleteFollowMock = jest.fn();
   beforeEach(() => {
@@ -42,7 +45,7 @@ describe("HandlerAgent", () => {
         getFollows: getFollowsMock,
         getFollowers: getFollowersMock,
         follow: followMock,
-        deleteFollow: deleteFollowMock
+        deleteFollow: deleteFollowMock,
       } as unknown as BskyAgent;
       handlerAgent = new HandlerAgent(
         "agentName",
@@ -56,7 +59,7 @@ describe("HandlerAgent", () => {
   it("Get Follows should call agent getFollow", async () => {
     const follows = await handlerAgent.getFollows();
     expect(getFollowsMock).toHaveBeenCalled();
-    console.log(follows)
+    console.log(follows);
     expect(follows).toEqual(followingMocks);
   });
 
