@@ -16,12 +16,18 @@ jobs:
 #        env:
 #          BRANCH: ${{needs.prepare.outputs.branch}}
 #        run: echo "BRANCH=$BRANCH" >> $GITHUB_ENV
-      - name: Get Branch
-        id: get-branch
-        run: echo "FOUND_BRANCH=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")" >> $GITHUB_ENV
-      - name: test
-        id: test
-        run: echo $(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+#      - name: Get Branch
+#        id: get-branch
+#        run: echo "FOUND_BRANCH=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")" >> $GITHUB_ENV
+#      - name: test
+#        id: test
+#        run: echo $(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+      - name: set branch
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=$(echo ${raw##*/} | tr [:upper:] [:lower:])
+          echo "FOUND_BRANCH=$branch" >> $GITHUB_ENV
+          echo "Branch is $branch."
       - name: out test
         run: echo $FOUND_BRANCH
       - name: Early exit
