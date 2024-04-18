@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    permissions: read-all
+    permissions: write-all
     name: Create Release
     runs-on: ubuntu-latest
     steps:
