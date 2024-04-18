@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Cache node modules
         id: cache-node-modules
@@ -46,9 +46,10 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Build Package
-        id: build-package
-        run: npm run build
+      - name: Publish Package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Zip artifact for release
         id: zip-dist
@@ -62,9 +63,9 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          body: Example
-          draft: true
-          prerelease: true
+          body: Todo, get release notes!
+          draft: false
+          prerelease: false
 
       - name: Upload Release Build
         id: upload-release-build
@@ -76,5 +77,3 @@ jobs:
           asset_path: ./dist.zip
           asset_name: dist.zip
           asset_content_type: application/zip
-
-      # TODO Add publish
