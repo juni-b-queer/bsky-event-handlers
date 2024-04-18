@@ -1,5 +1,8 @@
 name: Analyze Code
-on: [push]
+on:
+  push:
+    branches:
+      - '*'
 jobs:
   analyze:
     name: Analyze
