@@ -5,7 +5,8 @@ on:
       - '*.4.*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
-  build:
+  release:
+    permissions: read-all
     name: Create Release
     runs-on: ubuntu-latest
     steps:
