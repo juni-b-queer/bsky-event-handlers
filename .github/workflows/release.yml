@@ -19,12 +19,10 @@ jobs:
           raw=$(git branch -r --contains ${{ github.ref }})
           branch=$(echo ${raw##*/} | tr [:upper:] [:lower:])
           echo "FOUND_BRANCH=$branch" >> $GITHUB_ENV
-          echo "Branch is $branch."
-          echo "Raw is $raw."
       - name: out test
         run: echo $FOUND_BRANCH
       - name: Early exit
-        if: endsWith(env.FOUND_BRANCH, 'better-github-actions') == true
+        if: endsWith(env.FOUND_BRANCH, 'main') == false
         run: |
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
@@ -32,60 +30,60 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FOUND_BRANCH: ${{env.FOUND_BRANCH}}
 
-#      - name: Setup Node
-#        id: setup-node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 18
-#          registry-url: "https://registry.npmjs.org"
-#
-#      - name: Cache node modules
-#        id: cache-node-modules
-#        uses: actions/cache@v3
-#        env:
-#          cache-name: cache-node-modules
-#        with:
-#          # caching node_modules
-#          path: node_modules
-#          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-build-${{ env.cache-name }}-
-#            ${{ runner.os }}-build-
-#            ${{ runner.os }}-
-#
-#      - name: Install Dependencies
-#        id: install-dependencies
-#        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-#        run: npm ci
-#
-#      - name: Publish Package
-#        run: npm publish
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-#
-#      - name: Zip artifact for release
-#        id: zip-dist
-#        run: zip dist.zip ./dist/* -r
-#
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-#        with:
-#          tag_name: ${{ github.ref_name }}
-#          release_name: Release ${{ github.ref_name }}
-#          body: Todo, get release notes!
-#          draft: false
-#          prerelease: false
-#
-#      - name: Upload Release Build
-#        id: upload-release-build
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-#          asset_path: ./dist.zip
-#          asset_name: dist.zip
-#          asset_content_type: application/zip
+      - name: Setup Node
+        id: setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # caching node_modules
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install Dependencies
+        id: install-dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Publish Package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Zip artifact for release
+        id: zip-dist
+        run: zip dist.zip ./dist/* -r
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: Todo, get release notes!
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Build
+        id: upload-release-build
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
