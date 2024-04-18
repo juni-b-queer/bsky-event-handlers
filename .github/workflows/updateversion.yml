@@ -18,8 +18,11 @@ jobs:
           echo "::set-output name=LABEL_NAME::$first_label"
           echo "LABEL=$first_label" >> $GITHUB_ENV
           echo "Label is $first_label"
+
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         id: setup-node
@@ -64,6 +67,8 @@ jobs:
         if: ${{ env.LABEL == 'Major' }}
         run: npm version major
 
-      - name: Setup the release version and overwrite the existing major version tag
-        run: |
-          git push --follow-tags
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: main
