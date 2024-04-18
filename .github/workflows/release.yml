@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     # Map a step output to a job output
     outputs:
-      branch: ${{ steps.get-branch.outputs.BRANCH }}
+      branch: ${{ steps.get-branch.outputs.branch }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,8 +17,8 @@ jobs:
       - name: Get Branch
         id: get-branch
         run: |
-          branch=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
-          echo "BRANCH=$branch" >> "$GITHUB_OUTPUT"
+          foundbranch=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+          echo "branch=$foundbranch" >> "$GITHUB_OUTPUT"
 
   release:
     permissions: write-all
@@ -28,7 +28,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      - name: out test
+        run: echo ${{needs.prepare.output.branch}}
       - name: Early exit
         if: endsWith(needs.prepare.outputs.branch, 'better-github-actions') == false
         run: |
