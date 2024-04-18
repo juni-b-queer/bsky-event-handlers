@@ -1,3 +1,4 @@
+import { BskyAgent } from "@atproto/api";
 import { AbstractValidator } from "../validations/AbstractValidator";
 import { ValidatorInput } from "../types/ValidatorInput";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";

@@ -61,6 +61,7 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
     for (const skeetText of this.inputArray) {
       // @ts-ignore
       lastPost = await this.replyWithNextPost(
+        // @ts-ignore
         agentDetails.agent,
         lastPost,
         skeetText,

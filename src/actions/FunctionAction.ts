@@ -1,10 +1,10 @@
 import { AbstractTriggerAction } from "./AbstractTriggerAction";
 import { PostDetails } from "../types/PostDetails";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 import { AgentDetails } from "../types/AgentDetails";
 
 export class FunctionAction extends AbstractTriggerAction {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
     private actionFunction: (
       arg0: AgentDetails,
@@ -14,8 +14,6 @@ export class FunctionAction extends AbstractTriggerAction {
   ) {
     super();
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async handle(
     agentDetails: AgentDetails,
     op: RepoOp,

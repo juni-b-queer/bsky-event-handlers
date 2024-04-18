@@ -122,6 +122,7 @@ describe("LogInputTextAction", () => {
   beforeEach(() => {
     advanceTo(new Date(Date.UTC(2023, 1, 1, 1, 0, 0)));
     mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "true";
+    mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = "info";
   });
 
   afterEach(() => {
@@ -129,9 +130,9 @@ describe("LogInputTextAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    const expected = "1/31/2023, 07:00 PM | TEST | Hello";
+    const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
 
-    action = new DebugLogAction("TEST", "Hello");
+    action = new DebugLogAction("TEST", "Hello", "info");
 
     await action.handle(agentDetails, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);
@@ -140,7 +141,7 @@ describe("LogInputTextAction", () => {
   it("Should log output of RepoOp object when handle() is called", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | ERROR | Hello";
 
-    action = new DebugLogAction("TEST", "Hello", true);
+    action = new DebugLogAction("TEST", "Hello", "error");
 
     await action.handle(agentDetails, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);

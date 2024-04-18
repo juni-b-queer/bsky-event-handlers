@@ -302,7 +302,7 @@ The `LogInputTextAction` class takes a predefined string as input and logs it wh
 
 The `PostHandler` class extends the AbstractPayloadHandler and is used to handle a post event. It takes in an array of validators and actions to execute if the validators pass. Validators are run sequentially and if all pass, it will execute the actions.
 
-The `PostHandler`'s `requireFollowing` parameter when set to `true`, makes the handler only respond to posts from users that the bot is following.
+The `PostHandler`'s `requireFollowing` parameter when set to `true`, makes the handler only respond to posts from users that follow the bot.
 
 Use the `setFollowers` method to provide a list of users the bot is following.
 

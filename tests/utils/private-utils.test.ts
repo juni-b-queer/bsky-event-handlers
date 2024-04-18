@@ -10,6 +10,6 @@ describe("sleep function", () => {
 
     const difference = Date.now() - lowerBound;
     // We compare the difference with sleepTime, taking into account that actual time difference could be more than sleepTime due to the nature of setTimeout
-    expect(difference).toBeGreaterThanOrEqual(sleepTime - 1);
+    expect(difference).toBeGreaterThanOrEqual(sleepTime);
   });
 });

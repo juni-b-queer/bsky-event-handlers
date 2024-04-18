@@ -1,5 +1,6 @@
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostHandler } from "./PostHandler";
+import { BskyAgent } from "@atproto/api";
 import { AbstractPayloadHandler } from "./AbstractPayloadHandler";
 import { AgentDetails } from "../types/AgentDetails";
 

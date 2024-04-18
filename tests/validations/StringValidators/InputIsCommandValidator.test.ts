@@ -4,6 +4,7 @@ import {
   ValidatorInput,
 } from "../../../src";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 
 describe("InputIsCommandValidator Class", () => {
   let inputIsCommandValidator: InputIsCommandValidator;

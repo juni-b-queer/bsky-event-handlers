@@ -29,6 +29,7 @@ describe("PostHandler", () => {
     commonTestSetup.mockActionFunction = jest.fn();
     // @ts-ignore
     commonTestSetup.testTriggerActions = [
+      // @ts-ignore
       new FunctionAction(commonTestSetup.mockActionFunction),
     ];
     commonTestSetup.mockValidatorFunction = jest
@@ -41,10 +42,12 @@ describe("PostHandler", () => {
       });
     // @ts-ignore
     commonTestSetup.testTriggerErrorActions = [
+      // @ts-ignore
       new FunctionAction(commonTestSetup.mockActionErrorFunction),
     ];
     // @ts-ignore
     commonTestSetup.testTriggerValidators = [
+      // @ts-ignore
       new SimpleFunctionValidator(commonTestSetup.mockValidatorFunction),
     ];
     commonTestSetup.testAgentDetails = {
@@ -170,6 +173,7 @@ async function handlePostByFollower(testSetup: any) {
   await handleTestSetup(
     testSetup,
     true,
+    // @ts-ignore
     ["did:plc:wpp4lklhvmopw6zcy6qb42ru"],
     true,
   );

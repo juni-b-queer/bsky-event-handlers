@@ -1,11 +1,14 @@
 import {
   AgentDetails,
+  InputContainsValidator,
+  IsReplyValidator,
   PostedByUserValidator,
   ValidatorInput,
 } from "../../../src";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 
-describe("PostedByUserValidator", () => {
+describe("IsReplyValidator", () => {
   const validator = new PostedByUserValidator(
     "did:plc:2bnsooklzchcu5ao7xdjosrs",
   );

@@ -1,16 +1,19 @@
 import {
   AgentDetails,
+  InputContainsValidator,
   InputEqualsValidator,
   InputStartsWithValidator,
+  IsReplyValidator,
   OrValidator,
   ValidatorInput,
 } from "../../../src";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 
-describe("OrValidator", () => {
+describe("IsReplyValidator", () => {
   const key = "test";
-  const startsWithKeyValidator = new InputStartsWithValidator(key);
-  const equalsKeyValidator = new InputEqualsValidator(key);
+  const startsWithKeyValidator = new InputStartsWithValidator("test");
+  const equalsKeyValidator = new InputEqualsValidator("test");
   const orValidator = new OrValidator([
     startsWithKeyValidator,
     equalsKeyValidator,
@@ -19,7 +22,7 @@ describe("OrValidator", () => {
   test("shouldTrigger returns true if both validators pass", async () => {
     const op: RepoOp = {
       payload: {
-        text: key,
+        text: "test",
       },
     } as unknown as RepoOp;
 

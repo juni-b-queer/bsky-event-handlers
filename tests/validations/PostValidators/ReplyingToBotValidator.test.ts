@@ -1,9 +1,13 @@
 import {
   AgentDetails,
+  InputContainsValidator,
+  IsReplyValidator,
+  PostedByUserValidator,
   ReplyingToBotValidator,
   ValidatorInput,
 } from "../../../src";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 
 describe("ReplyingToBotValidator", () => {
   const validator = new ReplyingToBotValidator();

@@ -44,7 +44,7 @@ export class DebugLogAction extends AbstractTriggerAction {
   constructor(
     private action: string,
     private message: string,
-    private error: boolean = false,
+    private level: string = "info",
   ) {
     super();
   }
@@ -54,6 +54,6 @@ export class DebugLogAction extends AbstractTriggerAction {
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
-    debugLog(this.action, this.message, this.error);
+    debugLog(this.action, this.message, this.level);
   }
 }

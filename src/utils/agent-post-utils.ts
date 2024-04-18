@@ -78,7 +78,7 @@ export function createAgent(agentDetails: AgentDetails): AgentDetails {
 // @ts-ignore
 export async function authenticateAgent(
   agentDetails: AgentDetails,
-): Promise<AgentDetails> {
+): Promise<AgentDetails|undefined> {
   if (agentDetails.agent) {
     await agentDetails.agent.login({
       identifier: agentDetails.handle,

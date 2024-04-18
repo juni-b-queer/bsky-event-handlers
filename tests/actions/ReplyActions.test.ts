@@ -12,7 +12,6 @@ jest.mock("../../src/utils/agent-post-utils", () => ({
   replyToPost: jest.fn(),
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const replyToPostMock = require("../../src/utils/agent-post-utils").replyToPost;
 
 describe("ReplyWithInputAction tests", () => {

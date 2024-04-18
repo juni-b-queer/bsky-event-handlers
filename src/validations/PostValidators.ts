@@ -1,4 +1,8 @@
-import { getDIDFromURI } from "../utils/agent-post-utils";
+import {
+  getDIDFromURI,
+  getPostDetails,
+  getPosterDID,
+} from "../utils/agent-post-utils";
 import { AbstractValidator } from "./AbstractValidator";
 import { ValidatorInput } from "../types/ValidatorInput";
 

@@ -1,5 +1,7 @@
+import { BskyAgent } from "@atproto/api";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { AgentDetails, FunctionAction, PostDetails } from "../../src";
+import mocked = jest.mocked; // jest helper function for modifying imported modules
 
 describe("FunctionAction", () => {
   const mockBskyAgentDetails = {} as AgentDetails;

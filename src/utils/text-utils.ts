@@ -13,7 +13,7 @@ export function flattenTextUpdated(triggerKey: string, input: string) {
 
 export function removePunctuation(input: string) {
   return input
-    .replace(/[.,/#!$?%^&*;:{}=\-_`~()]/g, "")
+    .replace(/[.,\/#!$?%\^&\*;:{}=\-_`~()]/g, "")
     .replace(/\s{2,}/g, " ");
 }
 

@@ -1,11 +1,15 @@
 import { debugLog, nowDateTime } from "../../src";
 import mocked = jest.mocked;
+import { BskyAgent } from "@atproto/api";
 
 jest.mock("console", () => ({
   log: jest.fn(),
 }));
 
 describe("debugLog function test", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("should not call console.log when debug is disabled", () => {
     const consoleSpy = jest.spyOn(console, "log");
     mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "false";
@@ -17,17 +21,61 @@ describe("debugLog function test", () => {
 
     expect(consoleSpy).not.toHaveBeenCalled();
   });
-  it("should call console.log with correct arguments when debug is enabled and error is false", () => {
+  it("should call console.log with info when debug is enabled and level is info", () => {
     const consoleSpy = jest.spyOn(console, "log");
     mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "true";
+    mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = "info";
 
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message);
+    debugLog(action, message, "info");
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      `${nowDateTime()} | ${action} | ${message}`,
+      `${nowDateTime()} | ${action} | INFO | ${message}`,
+    );
+  });
+
+  it("should not call console.log with info when debug is enabled and level is warn", () => {
+    const consoleSpy = jest.spyOn(console, "log");
+    mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "true";
+    mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = "warn";
+
+    const action = "Action";
+    const message = "Test message";
+
+    debugLog(action, message, "info");
+
+    expect(consoleSpy).not.toHaveBeenCalled();
+  });
+
+  it("should call console.log with warn when debug is enabled and level is warn", () => {
+    const consoleSpy = jest.spyOn(console, "log");
+    mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "true";
+    mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = "warn";
+
+    const action = "Action";
+    const message = "Test message";
+
+    debugLog(action, message, "warn");
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      `${nowDateTime()} | ${action} | WARN | ${message}`,
+    );
+  });
+
+  it("should call console.log with warn when debug is enabled and level is info", () => {
+    const consoleSpy = jest.spyOn(console, "log");
+    mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = "true";
+    mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = "info";
+
+    const action = "Action";
+    const message = "Test message";
+
+    debugLog(action, message, "warn");
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      `${nowDateTime()} | ${action} | WARN | ${message}`,
     );
   });
 
@@ -38,7 +86,7 @@ describe("debugLog function test", () => {
     const action = "Action";
     const message = "Test message";
 
-    debugLog(action, message, true);
+    debugLog(action, message, "error");
 
     expect(consoleSpy).toHaveBeenCalledWith(
       `${nowDateTime()} | ${action} | ERROR | ${message}`,
