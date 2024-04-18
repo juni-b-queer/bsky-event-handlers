@@ -228,27 +228,47 @@ export class HandlerAgent {
   /**
    *
    */
-  deleteSkeet(skeet: string) {}
+  async deleteSkeet(skeetURI: string) {
+    await this.agent.deletePost(skeetURI)
+    // TODO error handling
+    return true;
+  }
 
   /**
    *
    */
-  likeSkeet(skeet: string) {}
+  async likeSkeet(skeetURI: string, skeetCID: string) {
+    await this.agent.like(skeetURI, skeetCID);
+    // TODO error handling
+    return true;
+  }
 
   /**
    *
    */
-  unlikeSkeet(skeet: string) {}
+  async unlikeSkeet(likeURI: string) {
+    await this.agent.deleteLike(likeURI)
+    // TODO error handling
+    return true;
+  }
 
   /**
    *
    */
-  reskeetSkeet(skeet: string) {}
+  async reskeetSkeet(skeetURI: string, skeetCID: string) {
+    await this.agent.repost(skeetURI, skeetCID)
+    // TODO add error handling
+    return true
+  }
 
   /**
    *
    */
-  unreskeetSkeet(skeet: string) {}
+  async unreskeetSkeet(reskeetURI: string) {
+    await this.agent.deleteRepost(reskeetURI)
+    // TODO error handling
+    return true;
+  }
 
   //endregion
 
