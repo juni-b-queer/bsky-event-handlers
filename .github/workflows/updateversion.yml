@@ -47,6 +47,11 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Setup the git config
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
       - name: Update Label for Patch
         if: ${{ env.LABEL == 'Patch' }}
         run: npm version patch
@@ -61,6 +66,4 @@ jobs:
 
       - name: Setup the release version and overwrite the existing major version tag
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
           git push
