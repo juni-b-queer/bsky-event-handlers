@@ -4,7 +4,7 @@ on:
     types:
       - closed
     branches:
-      - create-release-from-label
+      - main
 
 jobs:
   update-version:
