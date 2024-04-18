@@ -6,8 +6,8 @@ dotenv.config()
 
 describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
-    let testHandle: string | undefined = process.env.TEST_HANDLE;
-    let testPassword: string | undefined = process.env.TEST_PASSWORD;
+    let testHandle: string | undefined = process.env.TEST_HANDLE ?? "testhandle";
+    let testPassword: string | undefined = process.env.TEST_PASSWORD ?? "testpassword";
     const loginMock = jest.fn();
     const resumeSessionMock = jest.fn();
     beforeEach(() => {

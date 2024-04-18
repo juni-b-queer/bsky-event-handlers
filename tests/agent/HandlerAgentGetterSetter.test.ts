@@ -8,8 +8,8 @@ jest.mock('@atproto/api', () => jest.genMockFromModule('@atproto/api'));
 
 describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
-    let testHandle: string | undefined = process.env.TEST_HANDLE;
-    let testPassword: string | undefined = process.env.TEST_PASSWORD;
+    let testHandle: string | undefined = process.env.TEST_HANDLE ?? "testhandle";
+    let testPassword: string | undefined = process.env.TEST_PASSWORD ?? "testpassword";
     let mockedAgent: BskyAgent;
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
