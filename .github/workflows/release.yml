@@ -17,9 +17,9 @@ jobs:
       - name: Get Branch
         id: get-branch
         run: |
-          foundbranch=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
-          echo $foundbranch
-          echo "branch=$foundbranch" >> "$GITHUB_OUTPUT"
+          FOUNDBRANCH=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+          export BRANCH=$FOUNDBRANCH
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
           
 
   release:
@@ -38,7 +38,7 @@ jobs:
         run: echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Early exit
-        if: endsWith(env.BRANCH, 'better-github-actions') == false
+        if: endsWith(${{needs.prepare.outputs.branch}}, 'better-github-actions') == false
         run: |
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
