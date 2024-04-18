@@ -38,7 +38,7 @@ jobs:
         run: echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Early exit
-        if: endsWith(${{needs.prepare.outputs.branch}}, 'better-github-actions') == false
+        if: endsWith(env.BRANCH, 'better-github-actions') == false
         run: |
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
