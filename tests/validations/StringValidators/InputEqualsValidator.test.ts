@@ -24,10 +24,12 @@ describe("InputEqualsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   /**
@@ -44,9 +46,11 @@ describe("InputEqualsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

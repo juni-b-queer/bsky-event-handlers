@@ -1,5 +1,6 @@
 import {
-  DebugLogAction, HandlerAgent,
+  DebugLogAction,
+  HandlerAgent,
   LogInputTextAction,
   LogPostDetailsAction,
   LogRepoOperationAction,

@@ -1,6 +1,6 @@
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {PostDetails} from "../types/PostDetails";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { PostDetails } from "../types/PostDetails";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 export abstract class AbstractTriggerAction {
   constructor() {}

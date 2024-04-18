@@ -8,10 +8,9 @@ import {
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { BskyAgent } from "@atproto/api";
 
-
 describe("ReplyWithInputAction tests", () => {
   const replyText = "test reply";
-  let createSkeetMock: jest.Mock<any, any, any>
+  let createSkeetMock: jest.Mock<any, any, any>;
   beforeEach(() => {
     createSkeetMock = jest.fn();
   });
@@ -23,7 +22,7 @@ describe("ReplyWithInputAction tests", () => {
   // Test case for handle method in ReplyWithInputAction class
   it("should call the replyToPost function with correct parameters on handle", async () => {
     const handlerAgent: HandlerAgent = {
-      createSkeet: createSkeetMock
+      createSkeet: createSkeetMock,
     } as unknown as HandlerAgent;
 
     const op: RepoOp = {
@@ -45,7 +44,7 @@ describe("ReplyWithInputAction tests", () => {
 });
 
 describe("ReplyWithGeneratedTextAction", () => {
-  let createSkeetMock: jest.Mock<any, any, any>
+  let createSkeetMock: jest.Mock<any, any, any>;
   beforeEach(() => {
     createSkeetMock = jest.fn();
   });
@@ -56,7 +55,7 @@ describe("ReplyWithGeneratedTextAction", () => {
 
   it("should handle action and generate a reply", async () => {
     const handlerAgent: HandlerAgent = {
-      createSkeet: createSkeetMock
+      createSkeet: createSkeetMock,
     } as unknown as HandlerAgent;
 
     const op: RepoOp = {
@@ -79,10 +78,7 @@ describe("ReplyWithGeneratedTextAction", () => {
 
     await action.handle(handlerAgent, op, postDetails);
 
-    expect(createSkeetMock).toHaveBeenCalledWith(
-        "test message",
-      postDetails,
-    );
+    expect(createSkeetMock).toHaveBeenCalledWith("test message", postDetails);
   });
 });
 
@@ -106,14 +102,12 @@ describe("ReplyRepetitivelyFromStringArray", () => {
 
   let postMock: jest.Mock<any, any, any>;
   beforeEach(() => {
-    postMock = jest.fn(async () => existingPost)
+    postMock = jest.fn(async () => existingPost);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-
 
   it("should reply with each string in the given array repetitively", async () => {
     const triggerAction = new ReplyRepetitivelyFromStringArray(["A", "B", "C"]);
@@ -122,11 +116,11 @@ describe("ReplyRepetitivelyFromStringArray", () => {
       post: postMock,
     } as unknown as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
-        "name",
-        "handle",
-        "password",
-        agent
-    )
+      "name",
+      "handle",
+      "password",
+      agent,
+    );
 
     const op: RepoOp = {
       action: "create",

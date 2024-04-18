@@ -26,7 +26,9 @@ describe("IsReplyValidator", () => {
       repo: "did:plc:2bnsooklzchcu5ao7xdjosrs",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if op.payload.reply is null", async () => {
@@ -41,6 +43,8 @@ describe("IsReplyValidator", () => {
       repo: "bad",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

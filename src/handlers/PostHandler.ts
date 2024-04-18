@@ -3,7 +3,7 @@ import { AbstractValidator } from "../validations/AbstractValidator";
 import { AbstractTriggerAction } from "../actions/AbstractTriggerAction";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { ValidatorInput } from "../types/ValidatorInput";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 // @ts-ignore
 export class PostHandler extends AbstractPayloadHandler {
@@ -18,13 +18,10 @@ export class PostHandler extends AbstractPayloadHandler {
     return this;
   }
 
-  async handle(
-    op: RepoOp,
-    repo: string,
-  ): Promise<void> {
+  async handle(op: RepoOp, repo: string): Promise<void> {
     const validatorData: ValidatorInput = {
       op: op,
-      repo: repo
+      repo: repo,
     };
     const shouldTrigger = await this.shouldTrigger(validatorData);
     if (shouldTrigger) {
@@ -32,7 +29,7 @@ export class PostHandler extends AbstractPayloadHandler {
         // @ts-ignore
         const postDetails = await this.handlerAgent.getPostDetails(op, repo);
         if (!this.handlerAgent.postedByAgent(postDetails)) {
-            await this.runActions(op, postDetails);
+          await this.runActions(op, postDetails);
         }
       } catch (exception) {
         console.log(exception);

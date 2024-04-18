@@ -25,7 +25,9 @@ Install the package
 Then, in your `index.ts` you'll need a few things
 
 Create your bsky agent
+
 ### Todo - change the readme to reflect the new setup
+
 ```typescript
 let agentDetails: AgentDetails = {
   name: "test-bot",

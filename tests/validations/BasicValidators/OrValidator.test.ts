@@ -20,7 +20,6 @@ describe("IsReplyValidator", () => {
   ]);
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-
   test("shouldTrigger returns true if both validators pass", async () => {
     const op: RepoOp = {
       payload: {
@@ -33,7 +32,9 @@ describe("IsReplyValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns true if one validator passes", async () => {
@@ -48,7 +49,9 @@ describe("IsReplyValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if no validators pass", async () => {
@@ -63,6 +66,8 @@ describe("IsReplyValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

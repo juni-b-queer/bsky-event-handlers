@@ -19,11 +19,12 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns true if input contains trigger keyword in other words", async () => {
@@ -35,10 +36,12 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if input does not contain trigger keyword", async () => {
@@ -50,9 +53,11 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

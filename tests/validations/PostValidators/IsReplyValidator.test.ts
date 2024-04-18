@@ -11,7 +11,6 @@ describe("IsReplyValidator", () => {
   const validator = new IsReplyValidator();
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-
   test("shouldTrigger returns true if op.payload.reply is not null", async () => {
     const op: RepoOp = {
       payload: {
@@ -34,7 +33,9 @@ describe("IsReplyValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if op.payload.reply is null", async () => {
@@ -49,6 +50,8 @@ describe("IsReplyValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

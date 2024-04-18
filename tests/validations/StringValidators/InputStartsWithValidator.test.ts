@@ -23,7 +23,9 @@ describe("InputStartsWithValidator", () => {
       repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
@@ -35,10 +37,12 @@ describe("InputStartsWithValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 
   test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
@@ -50,9 +54,11 @@ describe("InputStartsWithValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo"
+      repo: "testRepo",
     };
 
-    expect(await strictValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(
+      await strictValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(false);
   });
 });

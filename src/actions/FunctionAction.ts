@@ -1,7 +1,7 @@
-import {AbstractTriggerAction} from "./AbstractTriggerAction";
-import {PostDetails} from "../types/PostDetails";
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { AbstractTriggerAction } from "./AbstractTriggerAction";
+import { PostDetails } from "../types/PostDetails";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 export class FunctionAction extends AbstractTriggerAction {
   constructor(

@@ -1,5 +1,5 @@
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {FunctionAction, HandlerAgent, PostDetails} from "../../src";
+import { FunctionAction, HandlerAgent, PostDetails } from "../../src";
 import mocked = jest.mocked; // jest helper function for modifying imported modules
 
 describe("FunctionAction", () => {
@@ -27,13 +27,13 @@ describe("FunctionAction", () => {
   describe("handle", () => {
     it("runs provided function with proper arguments", async () => {
       await functionAction.handle(
-          mockHandlerAgent,
+        mockHandlerAgent,
         mockRepoOp,
         mockPostDetails,
       );
 
       expect(mockActionFunction).toHaveBeenCalledWith(
-          mockHandlerAgent,
+        mockHandlerAgent,
         mockRepoOp,
         mockPostDetails,
       );

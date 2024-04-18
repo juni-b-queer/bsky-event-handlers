@@ -3,7 +3,7 @@ import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscrib
 import { AbstractTriggerAction } from "./AbstractTriggerAction";
 import { PostDetails } from "../types/PostDetails";
 import { sleep } from "../utils/private-utils";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 export class ReplyWithInputAction extends AbstractTriggerAction {
   constructor(private replyText: string) {
@@ -86,7 +86,7 @@ export class ReplyRepetitivelyFromStringArray extends AbstractTriggerAction {
       },
     };
 
-    if(handlerAgent.hasPostReplyRoot(currentPost)){
+    if (handlerAgent.hasPostReplyRoot(currentPost)) {
       reply.root = handlerAgent.getPostReplyRoot(currentPost);
     }
 

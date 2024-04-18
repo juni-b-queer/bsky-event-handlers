@@ -34,18 +34,20 @@ describe("ReplyingToBotValidator", () => {
       repo: "did:plc:2bnsooklzchcu33sss5ao7xdjosrs",
     };
     const bskyAgent: BskyAgent = {
-      session:{
-        did: "did:plc:2bnsooklzchcu5ao7xdjosrs"
-      }
+      session: {
+        did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
+      },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
-        'name',
-        'handle',
-        'password',
-        bskyAgent
+      "name",
+      "handle",
+      "password",
+      bskyAgent,
     );
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      true,
+    );
   });
 
   test("shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details", async () => {
@@ -67,21 +69,23 @@ describe("ReplyingToBotValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "bad"
+      repo: "bad",
     };
 
     const bskyAgent: BskyAgent = {
-      session:{
-        did: ""
-      }
+      session: {
+        did: "",
+      },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
-        'name',
-        'handle',
-        'password',
-        bskyAgent
+      "name",
+      "handle",
+      "password",
+      bskyAgent,
     );
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+      false,
+    );
   });
 });

@@ -3,21 +3,22 @@ import { ValidatorInput } from "../types/ValidatorInput";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostDetails } from "../types/PostDetails";
 import { AbstractTriggerAction } from "../actions/AbstractTriggerAction";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 export abstract class AbstractPayloadHandler {
-
-
   constructor(
     private triggerValidators: Array<AbstractValidator>,
     private triggerActions: Array<AbstractTriggerAction>,
-    public handlerAgent: HandlerAgent
+    public handlerAgent: HandlerAgent,
   ) {}
 
   async shouldTrigger(validatorInput: ValidatorInput): Promise<boolean> {
     const willTrigger = true;
     for (const validator of this.triggerValidators) {
-      const response = await validator.shouldTrigger(validatorInput, this.handlerAgent);
+      const response = await validator.shouldTrigger(
+        validatorInput,
+        this.handlerAgent,
+      );
       if (!response) {
         return false;
       }
@@ -32,8 +33,5 @@ export abstract class AbstractPayloadHandler {
   }
 
   //@ts-ignore
-  abstract async handle(
-    op: RepoOp,
-    repo: string,
-  ): Promise<void>;
+  abstract async handle(op: RepoOp, repo: string): Promise<void>;
 }

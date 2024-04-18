@@ -11,8 +11,6 @@ export class HandlerController {
     return this.replyOnly;
   }
 
-
-
   handle(op: RepoOp, repo: string) {
     this.handlers.forEach((handler) => {
       handler.handle(op, repo);

@@ -2,11 +2,11 @@ import { PostHandler } from "../PostHandler";
 import { InputIsCommandValidator } from "../../validations/StringValidators";
 import { ReplyWithInputAction } from "../../actions/ReplyActions";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {HandlerAgent} from "../../agent/HandlerAgent";
+import { HandlerAgent } from "../../agent/HandlerAgent";
 
 export class OfflineHandler extends PostHandler {
   constructor(
-      public handlerAgent: HandlerAgent,
+    public handlerAgent: HandlerAgent,
     private command: string,
     private response: string = "Bot functionality offline",
   ) {

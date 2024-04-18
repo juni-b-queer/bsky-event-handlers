@@ -40,7 +40,7 @@ export * from "./firehose/FirehoseSubscription";
  * Agent
  */
 
-export {HandlerAgent} from "./agent/HandlerAgent";
+export { HandlerAgent } from "./agent/HandlerAgent";
 /**
  * Types
  */

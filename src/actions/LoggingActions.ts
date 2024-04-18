@@ -1,8 +1,8 @@
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {AbstractTriggerAction} from "./AbstractTriggerAction";
-import {PostDetails} from "../types/PostDetails";
-import {debugLog} from "../utils/logging-utils";
-import {HandlerAgent} from "../agent/HandlerAgent";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { AbstractTriggerAction } from "./AbstractTriggerAction";
+import { PostDetails } from "../types/PostDetails";
+import { debugLog } from "../utils/logging-utils";
+import { HandlerAgent } from "../agent/HandlerAgent";
 
 export class LogPostDetailsAction extends AbstractTriggerAction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,7 +18,7 @@ export class LogPostDetailsAction extends AbstractTriggerAction {
 export class LogRepoOperationAction extends AbstractTriggerAction {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-      handlerAgent: HandlerAgent,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
@@ -32,7 +32,7 @@ export class LogInputTextAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-      handlerAgent: HandlerAgent,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {
@@ -50,7 +50,7 @@ export class DebugLogAction extends AbstractTriggerAction {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-      handlerAgent: HandlerAgent,
+    handlerAgent: HandlerAgent,
     op: RepoOp,
     postDetails: PostDetails,
   ): Promise<any> {

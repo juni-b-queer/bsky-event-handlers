@@ -1,10 +1,10 @@
-import {PostHandler} from "../PostHandler";
-import {IsBadBotValidator} from "../../validations/BotValidators";
-import {ReplyingToBotValidator} from "../../validations/PostValidators";
-import {ReplyWithInputAction} from "../../actions/ReplyActions";
-import {DebugLogAction} from "../../actions/LoggingActions";
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {HandlerAgent} from "../../agent/HandlerAgent";
+import { PostHandler } from "../PostHandler";
+import { IsBadBotValidator } from "../../validations/BotValidators";
+import { ReplyingToBotValidator } from "../../validations/PostValidators";
+import { ReplyWithInputAction } from "../../actions/ReplyActions";
+import { DebugLogAction } from "../../actions/LoggingActions";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { HandlerAgent } from "../../agent/HandlerAgent";
 
 export class BadBotHandler extends PostHandler {
   constructor(public handlerAgent: HandlerAgent) {
@@ -18,10 +18,7 @@ export class BadBotHandler extends PostHandler {
     );
   }
 
-  async handle(
-    op: RepoOp,
-    repo: string,
-  ): Promise<void> {
+  async handle(op: RepoOp, repo: string): Promise<void> {
     return super.handle(op, repo);
   }
 }

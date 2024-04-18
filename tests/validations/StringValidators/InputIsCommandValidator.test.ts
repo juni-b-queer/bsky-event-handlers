@@ -17,7 +17,6 @@ describe("InputIsCommandValidator Class", () => {
   } as RepoOp;
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-
   beforeEach(() => {
     inputIsCommandValidator = new InputIsCommandValidator("key");
   });
@@ -25,62 +24,62 @@ describe("InputIsCommandValidator Class", () => {
   it("should test shouldTrigger function - Prefix case", async () => {
     validatorInput = {
       op: repoOp,
-      repo: "someRepo"
+      repo: "someRepo",
     };
 
     // @ts-ignore
     validatorInput.op.payload.text = "!key someCommand";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(true);
 
     // @ts-ignore
     validatorInput.op.payload.text = "!key";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(true);
 
     // @ts-ignore
     validatorInput.op.payload.text = "someCommand !key";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(false);
 
     // @ts-ignore
     validatorInput.op.payload.text = "someCommand";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(false);
   });
 
   it("should test shouldTrigger function - Suffix case", async () => {
     validatorInput = {
       op: repoOp,
-      repo: "someRepo"
+      repo: "someRepo",
     };
 
     // @ts-ignore
     validatorInput.op.payload.text = "key! someCommand";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(true);
 
     // @ts-ignore
     validatorInput.op.payload.text = "key!";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(true);
 
     // @ts-ignore
     validatorInput.op.payload.text = "someCommand key!";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(false);
 
     // @ts-ignore
     validatorInput.op.payload.text = "someCommand";
-    expect(await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
+    expect(
+      await inputIsCommandValidator.shouldTrigger(validatorInput, handlerAgent),
+    ).toBe(false);
   });
 });
