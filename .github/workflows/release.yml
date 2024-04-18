@@ -1,8 +1,10 @@
 name: Create Release
 on:
   push:
+    branches:
+      - better-github-actions
     tags:
-      - 'v*0.4.*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
