@@ -4,7 +4,7 @@ on:
     branches:
       - better-github-actions
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - '*.4.*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
