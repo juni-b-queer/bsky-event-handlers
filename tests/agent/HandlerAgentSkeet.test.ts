@@ -25,7 +25,7 @@ describe("HandlerAgent", () => {
         like: likeMock,
         deleteLike: deleteLikeMock,
         repost: repostMock,
-        deleteRepost: deleteRepostMock
+        deleteRepost: deleteRepostMock,
       } as unknown as BskyAgent;
       handlerAgent = new HandlerAgent(
         "agentName",
@@ -42,10 +42,10 @@ describe("HandlerAgent", () => {
       reply: undefined,
     };
     await handlerAgent.post(input);
-    expect(postMock).toBeCalledWith(input)
+    expect(postMock).toBeCalledWith(input);
   });
 
-  describe("CreateSkeet", () =>{
+  describe("CreateSkeet", () => {
     it("createSkeet should call post with input text and no reply if no existingPostDetails", async () => {
       // todo
     });
@@ -57,14 +57,14 @@ describe("HandlerAgent", () => {
     it("createSkeet should call post with input text and root reply if existingPostDetails is present and a reply", async () => {
       // todo
     });
-  })
+  });
 
   it("DeleteSkeet should call deletePost for given post", async () => {
     await handlerAgent.deleteSkeet("skeetURI");
     expect(deletePostMock).toBeCalledWith("skeetURI");
   });
 
-  describe("Like", () =>{
+  describe("Like", () => {
     it("likeSkeet should call like for given post", async () => {
       await handlerAgent.likeSkeet("skeetURI", "skeetCID");
       expect(likeMock).toBeCalledWith("skeetURI", "skeetCID");
@@ -74,9 +74,9 @@ describe("HandlerAgent", () => {
       await handlerAgent.unlikeSkeet("likeURI");
       expect(deleteLikeMock).toBeCalledWith("likeURI");
     });
-  })
+  });
 
-  describe("Reskeet", () =>{
+  describe("Reskeet", () => {
     it("reskeet should call repost for given post", async () => {
       await handlerAgent.reskeetSkeet("skeetURI", "skeetCID");
       expect(repostMock).toBeCalledWith("skeetURI", "skeetCID");
@@ -86,6 +86,5 @@ describe("HandlerAgent", () => {
       await handlerAgent.unreskeetSkeet("reskeetURI");
       expect(deleteRepostMock).toBeCalledWith("reskeetURI");
     });
-  })
-
+  });
 });

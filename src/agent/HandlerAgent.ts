@@ -229,7 +229,7 @@ export class HandlerAgent {
    *
    */
   async deleteSkeet(skeetURI: string) {
-    await this.agent.deletePost(skeetURI)
+    await this.agent.deletePost(skeetURI);
     // TODO error handling
     return true;
   }
@@ -247,7 +247,7 @@ export class HandlerAgent {
    *
    */
   async unlikeSkeet(likeURI: string) {
-    await this.agent.deleteLike(likeURI)
+    await this.agent.deleteLike(likeURI);
     // TODO error handling
     return true;
   }
@@ -256,16 +256,16 @@ export class HandlerAgent {
    *
    */
   async reskeetSkeet(skeetURI: string, skeetCID: string) {
-    await this.agent.repost(skeetURI, skeetCID)
+    await this.agent.repost(skeetURI, skeetCID);
     // TODO add error handling
-    return true
+    return true;
   }
 
   /**
    *
    */
   async unreskeetSkeet(reskeetURI: string) {
-    await this.agent.deleteRepost(reskeetURI)
+    await this.agent.deleteRepost(reskeetURI);
     // TODO error handling
     return true;
   }
