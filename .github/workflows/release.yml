@@ -28,6 +28,7 @@ jobs:
           branch=$(echo ${raw##*/} | tr [:upper:] [:lower:])
           echo "FOUND_BRANCH=$branch" >> $GITHUB_ENV
           echo "Branch is $branch."
+          echo "Raw is $raw."
       - name: out test
         run: echo $FOUND_BRANCH
       - name: Early exit
