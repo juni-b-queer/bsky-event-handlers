@@ -15,7 +15,7 @@ jobs:
 
       - name: Exit if not on master branch
         if: endsWith(github.ref, 'main') == false
-        run: exit -1
+        run: exit 0
 
       - name: Setup Node
         id: setup-node
