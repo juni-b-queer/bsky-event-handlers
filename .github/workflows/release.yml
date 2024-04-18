@@ -5,21 +5,32 @@ on:
       - '*.4.*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
-  release:
-    permissions: write-all
-    name: Create Release
+  prepare:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      branch: ${{ steps.get-branch.outputs.BRANCH }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Get Branch
+        id: get-branch
         run: |
           branch=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
-          echo ::set-env name=BRANCH::$branch
+          echo "BRANCH=$branch" >> "$GITHUB_OUTPUT"
+
+  release:
+    permissions: write-all
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Early exit
-        if: endsWith(env.BRANCH, 'better-github-actions') == false
+        if: endsWith(needs.prepare.outputs.branch, 'better-github-actions') == false
         run: |
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
