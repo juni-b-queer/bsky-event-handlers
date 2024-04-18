@@ -1,10 +1,9 @@
-import { PostHandler } from "../PostHandler";
-import { IsGoodBotValidator } from "../../validations/BotValidators";
-import { ReplyingToBotValidator } from "../../validations/PostValidators";
-import { ReplyWithInputAction } from "../../actions/ReplyActions";
-import { DebugLogAction } from "../../actions/LoggingActions";
-import { AgentDetails } from "../../types/AgentDetails";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import {PostHandler} from "../PostHandler";
+import {IsGoodBotValidator} from "../../validations/BotValidators";
+import {ReplyingToBotValidator} from "../../validations/PostValidators";
+import {ReplyWithInputAction} from "../../actions/ReplyActions";
+import {DebugLogAction} from "../../actions/LoggingActions";
+import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import {HandlerAgent} from "../../agent/HandlerAgent";
 
 export class GoodBotHandler extends PostHandler {

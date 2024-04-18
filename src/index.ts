@@ -45,7 +45,6 @@ export {HandlerAgent} from "./agent/HandlerAgent";
  * Types
  */
 export { PostDetails } from "./types/PostDetails";
-export { AgentDetails } from "./types/AgentDetails";
 export { ValidatorInput } from "./types/ValidatorInput";
 
 /**

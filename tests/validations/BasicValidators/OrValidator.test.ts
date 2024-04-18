@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputContainsValidator,
   InputEqualsValidator,
   InputStartsWithValidator,
@@ -18,6 +18,8 @@ describe("IsReplyValidator", () => {
     startsWithKeyValidator,
     equalsKeyValidator,
   ]);
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+
 
   test("shouldTrigger returns true if both validators pass", async () => {
     const op: RepoOp = {
@@ -29,10 +31,9 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns true if one validator passes", async () => {
@@ -45,10 +46,9 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns false if no validators pass", async () => {
@@ -61,9 +61,8 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await orValidator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await orValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });

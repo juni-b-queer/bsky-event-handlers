@@ -20,6 +20,7 @@ describe('HandlerAgent', () => {
             atprotoApiMock.BskyAgent.prototype.post = agentPostMock;
             atprotoApiMock.BskyAgent.prototype.getPost = agentGetPostMock;
             atprotoApiMock.BskyAgent.prototype.resumeSession = agentResumeSessionMock;
+            atprotoApiMock.BskyAgent.prototype.session = {did: "did:plc:2bnsooklzchcu5ao7xdjosrs"};
 
             mockedAgent = new atprotoApiMock.BskyAgent({service: "www"});
             handlerAgent = new HandlerAgent(

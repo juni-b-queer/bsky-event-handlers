@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputContainsValidator,
   IsReplyValidator,
   PostedByUserValidator,
@@ -12,6 +12,7 @@ describe("IsReplyValidator", () => {
   const validator = new PostedByUserValidator(
     "did:plc:2bnsooklzchcu5ao7xdjosrs",
   );
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
   test("shouldTrigger returns true if op.payload.reply is not null", async () => {
     const op: RepoOp = {
@@ -23,10 +24,9 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "did:plc:2bnsooklzchcu5ao7xdjosrs",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns false if op.payload.reply is null", async () => {
@@ -39,9 +39,8 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "bad",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });

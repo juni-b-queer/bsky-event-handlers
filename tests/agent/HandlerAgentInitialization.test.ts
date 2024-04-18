@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import {HandlerAgent} from "../../src";
 import {generateBskyAgentMock, agentLoginMock, agentPostMock, agentGetPostMock, agentResumeSessionMock} from "../testing-utils/BskyAgentMock";
-import {AtpSessionData} from "@atproto/api";
+import atprotoApiMock, {AtpSessionData} from "@atproto/api";
 
 dotenv.config()
 
@@ -22,6 +22,7 @@ describe('HandlerAgent', () => {
             atprotoApiMock.BskyAgent.prototype.post = agentPostMock;
             atprotoApiMock.BskyAgent.prototype.getPost = agentGetPostMock;
             atprotoApiMock.BskyAgent.prototype.resumeSession = agentResumeSessionMock;
+            atprotoApiMock.BskyAgent.prototype.session = {did: "did:plc:2bnsooklzchcu5ao7xdjosrs"};
 
             const mockedAgent = new atprotoApiMock.BskyAgent({service: "www"});
             handlerAgent = new HandlerAgent(

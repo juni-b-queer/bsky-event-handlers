@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputContainsValidator,
   IsReplyValidator,
   ValidatorInput,
@@ -9,6 +9,8 @@ import { BskyAgent } from "@atproto/api";
 
 describe("IsReplyValidator", () => {
   const validator = new IsReplyValidator();
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+
 
   test("shouldTrigger returns true if op.payload.reply is not null", async () => {
     const op: RepoOp = {
@@ -30,10 +32,9 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns false if op.payload.reply is null", async () => {
@@ -46,9 +47,8 @@ describe("IsReplyValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });

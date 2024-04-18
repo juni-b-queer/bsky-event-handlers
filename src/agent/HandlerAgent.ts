@@ -17,6 +17,8 @@ export class HandlerAgent {
             this.agent = this.initializeBskyAgent();
         } else {
             this.agent = agent;
+            this.setDid = agent.session?.did;
+            this.setSession = agent.session;
         }
     }
 
@@ -147,28 +149,6 @@ export class HandlerAgent {
 
     /**
      *
-     */
-    getPosterDID(postDetails: PostDetails) {
-        return (postDetails.uri.match(/did:[^/]*/) || [])[0];
-    }
-
-    /**
-     *
-     */
-    postedByAgent(postDetails: PostDetails) {
-        // @ts-ignore
-        return this.getPosterDID(postDetails) === this.did;
-    }
-
-    /**
-     *
-     */
-    getDIDFromURI(uri: string) {
-        return (uri.match(/did:[^/]*/) || [])[0];
-    }
-
-    /**
-     *
      * @param details
      */
     async post(details: Partial<AppBskyFeedPost.Record> & Omit<AppBskyFeedPost.Record, "createdAt">) {
@@ -211,24 +191,6 @@ export class HandlerAgent {
         }
     }
 
-    hasPostReplyRoot(postDetails: PostDetails): boolean {
-        if ("reply" in postDetails.value && postDetails.value?.reply !== undefined) {
-            if ("root" in postDetails.value.reply && postDetails.value.reply?.root !== undefined) {
-                return true;
-            }
-        }
-        return false
-    }
-
-    getPostReplyRoot(postDetails: PostDetails): any | boolean {
-        if ("reply" in postDetails.value && postDetails.value?.reply !== undefined) {
-            if ("root" in postDetails.value.reply && postDetails.value.reply?.root !== undefined) {
-                return postDetails.value.reply.root;
-            }
-        }
-        return false;
-    }
-
     /**
      *
      */
@@ -262,6 +224,49 @@ export class HandlerAgent {
      */
     unreskeetSkeet(skeet: string) {
 
+    }
+
+    //endregion
+
+    //region Post Helpers
+    /**
+     *
+     */
+    getPosterDID(postDetails: PostDetails) {
+        return (postDetails.uri.match(/did:[^/]*/) || [])[0];
+    }
+
+    /**
+     *
+     */
+    postedByAgent(postDetails: PostDetails) {
+        // @ts-ignore
+        return this.getPosterDID(postDetails) === this.getDid;
+    }
+
+    /**
+     *
+     */
+    getDIDFromURI(uri: string) {
+        return (uri.match(/did:[^/]*/) || [])[0];
+    }
+
+    hasPostReplyRoot(postDetails: PostDetails): boolean {
+        if ("reply" in postDetails.value && postDetails.value?.reply !== undefined) {
+            if ("root" in postDetails.value.reply && postDetails.value.reply?.root !== undefined) {
+                return true;
+            }
+        }
+        return false
+    }
+
+    getPostReplyRoot(postDetails: PostDetails): any | boolean {
+        if ("reply" in postDetails.value && postDetails.value?.reply !== undefined) {
+            if ("root" in postDetails.value.reply && postDetails.value.reply?.root !== undefined) {
+                return postDetails.value.reply.root;
+            }
+        }
+        return false;
     }
 
     //endregion

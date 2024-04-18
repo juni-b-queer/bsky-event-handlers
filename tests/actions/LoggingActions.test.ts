@@ -1,6 +1,5 @@
 import {
-  AgentDetails,
-  DebugLogAction,
+  DebugLogAction, HandlerAgent,
   LogInputTextAction,
   LogPostDetailsAction,
   LogRepoOperationAction,
@@ -12,14 +11,14 @@ import mocked = jest.mocked;
 
 describe("LogPostDetailsAction", () => {
   let action: LogPostDetailsAction;
-  let agentDetails: AgentDetails;
+  let handlerAgent: HandlerAgent;
   let op: RepoOp;
   let postDetails: PostDetails;
   console.log = jest.fn();
 
   beforeEach(() => {
     action = new LogPostDetailsAction();
-    agentDetails = {} as AgentDetails;
+    handlerAgent = {} as HandlerAgent;
     op = {
       action: "create",
       path: "test_path",
@@ -37,20 +36,20 @@ describe("LogPostDetailsAction", () => {
   });
 
   it("Calls console.log with correct arguments in handle method", async () => {
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(handlerAgent, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(postDetails);
   });
 });
 
 describe("LogRepoOperationAction", () => {
   let action: LogRepoOperationAction;
-  let agentDetails: AgentDetails;
+  let handlerAgent: HandlerAgent;
   let op: RepoOp;
   let postDetails: PostDetails;
   console.log = jest.fn();
 
   beforeEach(() => {
-    agentDetails = {} as AgentDetails;
+    handlerAgent = {} as HandlerAgent;
     op = {
       action: "create",
       path: "test_path",
@@ -69,7 +68,7 @@ describe("LogRepoOperationAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(handlerAgent, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(op);
   });
 });
@@ -77,14 +76,14 @@ describe("LogRepoOperationAction", () => {
 describe("LogInputTextAction", () => {
   let input: string;
   let action: LogInputTextAction;
-  let agentDetails: AgentDetails;
+  let handlerAgent: HandlerAgent;
   let op: RepoOp;
   let postDetails: PostDetails;
   console.log = jest.fn();
 
   beforeEach(() => {
     input = "hello";
-    agentDetails = {} as AgentDetails;
+    handlerAgent = {} as HandlerAgent;
     op = {
       action: "create",
       path: "test_path",
@@ -107,14 +106,14 @@ describe("LogInputTextAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(handlerAgent, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(input);
   });
 });
 
 describe("LogInputTextAction", () => {
   let action: DebugLogAction;
-  const agentDetails: AgentDetails = {} as AgentDetails;
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
   const op: RepoOp = {} as RepoOp;
   const postDetails: PostDetails = {} as PostDetails;
   console.log = jest.fn();
@@ -134,7 +133,7 @@ describe("LogInputTextAction", () => {
 
     action = new DebugLogAction("TEST", "Hello", "info");
 
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(handlerAgent, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 
@@ -143,7 +142,7 @@ describe("LogInputTextAction", () => {
 
     action = new DebugLogAction("TEST", "Hello", "error");
 
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(handlerAgent, op, postDetails);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 });

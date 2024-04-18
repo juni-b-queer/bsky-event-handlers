@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputContainsValidator,
   ValidatorInput,
 } from "../../../src";
@@ -8,6 +8,7 @@ import { BskyAgent } from "@atproto/api";
 
 describe("InputContainsValidator", () => {
   const validator = new InputContainsValidator("test");
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
   test("shouldTrigger returns true if input contains with trigger keyword", async () => {
     const op: RepoOp = {
@@ -18,11 +19,11 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns true if input contains trigger keyword in other words", async () => {
@@ -34,11 +35,10 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns false if input does not contain trigger keyword", async () => {
@@ -50,10 +50,9 @@ describe("InputContainsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });

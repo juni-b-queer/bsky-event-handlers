@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputEqualsValidator,
   ValidatorInput,
 } from "../../../src";
@@ -8,6 +8,7 @@ import { BskyAgent } from "@atproto/api";
 
 describe("InputEqualsValidator", () => {
   const validator = new InputEqualsValidator("test");
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
   /**
    * Test: shouldTrigger returns true if input is trigger keyword
@@ -23,11 +24,10 @@ describe("InputEqualsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   /**
@@ -44,10 +44,9 @@ describe("InputEqualsValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });

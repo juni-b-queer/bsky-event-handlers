@@ -1,5 +1,5 @@
 import {
-  AgentDetails,
+  HandlerAgent,
   InputStartsWithValidator,
   ValidatorInput,
 } from "../../../src";
@@ -9,6 +9,7 @@ import { BskyAgent } from "@atproto/api";
 describe("InputStartsWithValidator", () => {
   const validator = new InputStartsWithValidator("test");
   const strictValidator = new InputStartsWithValidator("test", true);
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
   test("shouldTrigger returns true if input starts with trigger keyword", async () => {
     const op: RepoOp = {
@@ -20,10 +21,9 @@ describe("InputStartsWithValidator", () => {
     const validatorInput: ValidatorInput = {
       op: op,
       repo: "testRepo",
-      agentDetails: {} as AgentDetails,
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(true);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(true);
   });
 
   test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
@@ -35,11 +35,10 @@ describe("InputStartsWithValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await validator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 
   test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
@@ -51,10 +50,9 @@ describe("InputStartsWithValidator", () => {
 
     const validatorInput: ValidatorInput = {
       op: op,
-      repo: "testRepo",
-      agentDetails: {} as AgentDetails,
+      repo: "testRepo"
     };
 
-    expect(await strictValidator.shouldTrigger(validatorInput)).toBe(false);
+    expect(await strictValidator.shouldTrigger(validatorInput, handlerAgent)).toBe(false);
   });
 });
