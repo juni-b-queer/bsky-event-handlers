@@ -1,0 +1,15 @@
+name: Update Version on merge
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - create-release-from-label
+
+jobs:
+  check_merged:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: name
+        run: echo "hello world"
