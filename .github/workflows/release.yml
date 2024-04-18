@@ -32,10 +32,15 @@ jobs:
         uses: actions/checkout@v2
       - name: out test
         run: echo ${{needs.prepare.outputs.branch}}
-      - name: Set env BRANCH
-        env:
-          BRANCH: ${{needs.prepare.outputs.branch}}
-        run: echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+#      - name: Set env BRANCH
+#        env:
+#          BRANCH: ${{needs.prepare.outputs.branch}}
+#        run: echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+      - name: Get Branch
+        id: get-branch
+        run: |
+          FOUNDBRANCH=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+          export BRANCH=$FOUNDBRANCH
 
       - name: Early exit
         if: endsWith(env.BRANCH, 'better-github-actions') == false
