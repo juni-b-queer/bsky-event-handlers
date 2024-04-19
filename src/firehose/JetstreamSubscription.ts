@@ -65,26 +65,6 @@ export class JetstreamSubscription {
   }
 
   /**
-   * Calculates the time elapsed since the last message was received.
-   *
-   * @return {number} The time elapsed in milliseconds since the last message was received. If the last message time is undefined, -1 is returned.
-   */
-  public timeSinceLastMessage() {
-    if (this.lastMessageTime !== undefined) {
-      const currentTime = Date.now();
-      const diff = currentTime - this.lastMessageTime;
-      DebugLog.info(
-        "FIREHOSE",
-        `Checking for restart. Time since last received message: ${diff}`,
-      );
-      return diff;
-    } else {
-      DebugLog.error("FIREHOSE", `LastMessageTime is undefined`);
-      return -1;
-    }
-  }
-
-  /**
    *
    */
   public createSubscription() {
@@ -118,9 +98,6 @@ export class JetstreamSubscription {
   handleCreate(createMessage: CreateMessage) {
     switch (createMessage.collection) {
       case "app.bsky.feed.post":
-        // if(createMessage.record.embed){
-        //     console.log(JSON.stringify(createMessage,null,2))
-        // }
         this.handlerControllers.post?.c?.forEach(
           (handler: CreateSkeetHandler) => {
             handler.handle(createMessage as CreateSkeetMessage);

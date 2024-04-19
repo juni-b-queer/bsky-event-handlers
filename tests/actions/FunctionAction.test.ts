@@ -1,42 +1,32 @@
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { FunctionAction, HandlerAgent, PostDetails } from "../../src";
-import mocked = jest.mocked; // jest helper function for modifying imported modules
+import {FunctionAction, HandlerAgent, JetstreamMessage} from "../../src";
 
 describe("FunctionAction", () => {
-  const mockHandlerAgent = {} as HandlerAgent;
-  const mockRepoOp: RepoOp = {
-    action: "update",
-    path: "testPath",
-    cid: null,
-  };
-  const mockPostDetails: PostDetails = {
-    uri: "testUri",
-    cid: "testCid",
-    value: {},
-  };
+    const mockHandlerAgent = {} as HandlerAgent;
 
-  let mockActionFunction = jest.fn();
-  let functionAction: FunctionAction;
+    const mockMessage: JetstreamMessage = {
+        collection: "", did: "", opType: "", rkey: "", seq: 0,
+    }
 
-  beforeEach(() => {
-    mockActionFunction = jest.fn();
-    jest.clearAllMocks(); // clearing mocks
-    functionAction = new FunctionAction(mockActionFunction);
-  });
+    let mockActionFunction = jest.fn();
+    let functionAction: FunctionAction;
 
-  describe("handle", () => {
-    it("runs provided function with proper arguments", async () => {
-      await functionAction.handle(
-        mockHandlerAgent,
-        mockRepoOp,
-        mockPostDetails,
-      );
-
-      expect(mockActionFunction).toHaveBeenCalledWith(
-        mockHandlerAgent,
-        mockRepoOp,
-        mockPostDetails,
-      );
+    beforeEach(() => {
+        mockActionFunction = jest.fn();
+        jest.clearAllMocks(); // clearing mocks
+        functionAction = new FunctionAction(mockActionFunction);
     });
-  });
+
+    describe("handle", () => {
+        it("runs provided function with proper arguments", async () => {
+            await functionAction.handle(
+                mockHandlerAgent,
+                mockMessage
+            );
+
+            expect(mockActionFunction).toHaveBeenCalledWith(
+                mockHandlerAgent,
+                mockMessage
+            );
+        });
+    });
 });

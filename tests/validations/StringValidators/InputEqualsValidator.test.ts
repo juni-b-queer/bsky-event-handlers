@@ -1,10 +1,4 @@
-import {
-  HandlerAgent,
-  InputEqualsValidator,
-  ValidatorInput,
-} from "../../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
+import {CreateSkeetMessage, HandlerAgent, InputEqualsValidator, Subject,} from "../../../src";
 
 describe("InputEqualsValidator", () => {
   const validator = new InputEqualsValidator("test");
@@ -16,18 +10,17 @@ describe("InputEqualsValidator", () => {
    * matches the trigger keyword.
    */
   test("shouldTrigger returns true if input is trigger keyword", async () => {
-    const op: RepoOp = {
-      payload: {
+    const message: CreateSkeetMessage = {
+      collection: "", did: "", opType: "", rkey: "", seq: 0,
+      record: {
         text: "test",
-      },
-    } as unknown as RepoOp;
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject
+      }
+    }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
       true,
     );
   });
@@ -38,18 +31,17 @@ describe("InputEqualsValidator", () => {
    * does not match the trigger keyword.
    */
   test("shouldTrigger returns false if input does not equal trigger keyword", async () => {
-    const op: RepoOp = {
-      payload: {
+    const message: CreateSkeetMessage = {
+      collection: "", did: "", opType: "", rkey: "", seq: 0,
+      record: {
         text: "message test",
-      },
-    } as unknown as RepoOp;
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject
+      }
+    }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
       false,
     );
   });

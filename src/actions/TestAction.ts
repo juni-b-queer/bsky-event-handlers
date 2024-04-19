@@ -1,6 +1,6 @@
-import { HandlerAgent } from "../../agent/HandlerAgent";
-import { JetstreamMessage } from "../../types/JetstreamTypes";
-import { DebugLog } from "../../utils/DebugLog";
+import { HandlerAgent } from "../agent/HandlerAgent";
+import { JetstreamMessage } from "../types/JetstreamTypes";
+import { DebugLog } from "../utils/DebugLog";
 
 export class TestAction {
   async handle(

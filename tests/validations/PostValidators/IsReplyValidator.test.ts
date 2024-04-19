@@ -1,57 +1,49 @@
-import {
-  HandlerAgent,
-  InputContainsValidator,
-  IsReplyValidator,
-  ValidatorInput,
-} from "../../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
+import {CreateSkeetMessage, HandlerAgent, IsReplyValidator, Subject,} from "../../../src";
 
 describe("IsReplyValidator", () => {
-  const validator = new IsReplyValidator();
-  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const validator = new IsReplyValidator();
+    const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if op.payload.reply is not null", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "test message",
-        reply: {
-          parent: {
-            cid: "test",
-            uri: "test",
-          },
-          root: {
-            cid: "test",
-            uri: "test",
-          },
-        },
-      },
-    } as unknown as RepoOp;
+    test("shouldTrigger returns true if op.payload.reply is not null", async () => {
+        const message: CreateSkeetMessage = {
+            collection: "", did: "", opType: "", rkey: "", seq: 0,
+            record: {
+                text: "test",
+                $type: "",
+                createdAt: "",
+                subject: {} as Subject,
+                reply: {
+                    parent: {
+                        cid: "test",
+                        uri: "test",
+                    },
+                    root: {
+                        cid: "test",
+                        uri: "test",
+                    }
+                }
+            }
+        }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
-  });
+        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+            true,
+        );
+    });
 
-  test("shouldTrigger returns false if op.payload.reply is null", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "test message",
-      },
-    } as unknown as RepoOp;
+    test("shouldTrigger returns false if op.payload.reply is null", async () => {
+        const message: CreateSkeetMessage = {
+            collection: "", did: "", opType: "", rkey: "", seq: 0,
+            record: {
+                text: "test",
+                $type: "",
+                createdAt: "",
+                subject: {} as Subject,
+            }
+        }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
-  });
+        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+            false,
+        );
+    });
 });

@@ -16,7 +16,7 @@ export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeet
  * Validators
  */
 export { AbstractValidator } from "./validations/AbstractValidator";
-export { TestValidator } from "./validations/v2/TestValidator";
+export { TestValidator } from "./validations/TestValidator";
 export * from "./validations/BasicValidators";
 export * from "./validations/StringValidators";
 export * from "./validations/PostValidators";
@@ -25,13 +25,11 @@ export * from "./validations/BotValidators";
 /**
  * Actions
  */
-export * from "./actions/v2/AbstractMessageAction";
-export * from "./actions/v2/TestAction";
-
-// export * from "./actions/AbstractTriggerAction";
+export * from "./actions/AbstractMessageAction";
+export * from "./actions/TestAction";
 export * from "./actions/FunctionAction";
 // export * from "./actions/ReplyActions";
-// export * from "./actions/LoggingActions";
+export * from "./actions/LoggingActions";
 
 /**
  * Firehose

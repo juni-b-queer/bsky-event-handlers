@@ -1,5 +1,5 @@
 import { AbstractMessageHandler } from "../AbstractMessageHandler";
-import { AbstractMessageAction } from "../../../actions/v2/AbstractMessageAction";
+import { AbstractMessageAction } from "../../../actions/AbstractMessageAction";
 import {
   CreateSkeetMessage,
   JetstreamMessage,

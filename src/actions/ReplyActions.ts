@@ -1,6 +1,5 @@
 import { BskyAgent, RichText } from "@atproto/api";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { AbstractTriggerAction } from "./AbstractTriggerAction";
 import { PostDetails } from "../types/PostDetails";
 import { sleep } from "../utils/private-utils";
 import { HandlerAgent } from "../agent/HandlerAgent";

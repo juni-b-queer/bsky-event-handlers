@@ -1,49 +1,39 @@
-import {
-  HandlerAgent,
-  InputContainsValidator,
-  IsReplyValidator,
-  PostedByUserValidator,
-  ValidatorInput,
-} from "../../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
+import {CreateSkeetMessage, HandlerAgent, IsReplyValidator, PostedByUserValidator, Subject,} from "../../../src";
 
-describe("IsReplyValidator", () => {
+describe("Posted by user validator", () => {
   const validator = new PostedByUserValidator(
     "did:plc:2bnsooklzchcu5ao7xdjosrs",
   );
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if op.payload.reply is not null", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "test message",
-      },
-    } as unknown as RepoOp;
+  test("shouldTrigger returns true if posted by same did", async () => {
+    const message: CreateSkeetMessage = {
+      collection: "", did: "did:plc:2bnsooklzchcu5ao7xdjosrs", opType: "", rkey: "", seq: 0,
+      record: {
+        text: "test",
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject,
+      }
+    }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "did:plc:2bnsooklzchcu5ao7xdjosrs",
-    };
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
       true,
     );
   });
 
-  test("shouldTrigger returns false if op.payload.reply is null", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "test message",
-      },
-    } as unknown as RepoOp;
+  test("shouldTrigger returns false not posted by same user", async () => {
+    const message: CreateSkeetMessage = {
+      collection: "", did: "did:plc:bad", opType: "", rkey: "", seq: 0,
+      record: {
+        text: "test",
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject,
+      }
+    }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "bad",
-    };
-
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
       false,
     );
   });

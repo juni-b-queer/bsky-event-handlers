@@ -1,12 +1,11 @@
 import {
   HandlerAgent,
   PostDetails,
-  ReplyRepetitivelyFromStringArray,
-  ReplyWithGeneratedTextAction,
-  ReplyWithInputAction,
 } from "../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
+import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import {BskyAgent} from "@atproto/api";
+
+// TODO rewrite tests after the actions are rewritten
 
 describe("ReplyWithInputAction tests", () => {
   const replyText = "test reply";

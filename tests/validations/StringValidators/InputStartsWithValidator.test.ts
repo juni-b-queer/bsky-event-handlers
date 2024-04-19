@@ -1,64 +1,55 @@
-import {
-  HandlerAgent,
-  InputStartsWithValidator,
-  ValidatorInput,
-} from "../../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
+import {CreateSkeetMessage, HandlerAgent, InputStartsWithValidator, Subject,} from "../../../src";
 
 describe("InputStartsWithValidator", () => {
-  const validator = new InputStartsWithValidator("test");
-  const strictValidator = new InputStartsWithValidator("test", true);
-  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const validator = new InputStartsWithValidator("test");
+    const strictValidator = new InputStartsWithValidator("test", true);
+    const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if input starts with trigger keyword", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "test message",
-      },
-    } as unknown as RepoOp;
+    test("shouldTrigger returns true if input starts with trigger keyword", async () => {
+        const message: CreateSkeetMessage = {
+            collection: "", did: "", opType: "", rkey: "", seq: 0,
+            record: {
+                text: "test message",
+                $type: "",
+                createdAt: "",
+                subject: {} as Subject
+            }
+        }
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
+        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+            true,
+        );
+    });
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      true,
-    );
-  });
+    test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
+        const message: CreateSkeetMessage = {
+            collection: "", did: "", opType: "", rkey: "", seq: 0,
+            record: {
+                text: "message test",
+                $type: "",
+                createdAt: "",
+                subject: {} as Subject
+            }
+        }
 
-  test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "message test",
-      },
-    } as unknown as RepoOp;
+        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+            false,
+        );
+    });
 
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
+    test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
+        const message: CreateSkeetMessage = {
+            collection: "", did: "", opType: "", rkey: "", seq: 0,
+            record: {
+                text: "Test message",
+                $type: "",
+                createdAt: "",
+                subject: {} as Subject
+            }
+        }
 
-    expect(await validator.shouldTrigger(validatorInput, handlerAgent)).toBe(
-      false,
-    );
-  });
-
-  test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
-    const op: RepoOp = {
-      payload: {
-        text: "Test message",
-      },
-    } as unknown as RepoOp;
-
-    const validatorInput: ValidatorInput = {
-      op: op,
-      repo: "testRepo",
-    };
-
-    expect(
-      await strictValidator.shouldTrigger(validatorInput, handlerAgent),
-    ).toBe(false);
-  });
+        expect(
+            await strictValidator.shouldTrigger(message, handlerAgent),
+        ).toBe(false);
+    });
 });
