@@ -1,4 +1,9 @@
-import {CreateSkeetMessage, HandlerAgent, InputEqualsValidator, Subject,} from "../../../src";
+import {
+  CreateSkeetMessage,
+  HandlerAgent,
+  InputEqualsValidator,
+  Subject,
+} from "../../../src";
 
 describe("InputEqualsValidator", () => {
   const validator = new InputEqualsValidator("test");
@@ -11,18 +16,20 @@ describe("InputEqualsValidator", () => {
    */
   test("shouldTrigger returns true if input is trigger keyword", async () => {
     const message: CreateSkeetMessage = {
-      collection: "", did: "", opType: "", rkey: "", seq: 0,
+      collection: "",
+      did: "",
+      opType: "",
+      rkey: "",
+      seq: 0,
       record: {
         text: "test",
         $type: "",
         createdAt: "",
-        subject: {} as Subject
-      }
-    }
+        subject: {} as Subject,
+      },
+    };
 
-    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
-      true,
-    );
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
   });
 
   /**
@@ -32,17 +39,19 @@ describe("InputEqualsValidator", () => {
    */
   test("shouldTrigger returns false if input does not equal trigger keyword", async () => {
     const message: CreateSkeetMessage = {
-      collection: "", did: "", opType: "", rkey: "", seq: 0,
+      collection: "",
+      did: "",
+      opType: "",
+      rkey: "",
+      seq: 0,
       record: {
         text: "message test",
         $type: "",
         createdAt: "",
-        subject: {} as Subject
-      }
-    }
+        subject: {} as Subject,
+      },
+    };
 
-    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
-      false,
-    );
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(false);
   });
 });

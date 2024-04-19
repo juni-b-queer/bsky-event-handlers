@@ -1,7 +1,7 @@
-import {AbstractValidator} from "../../validations/AbstractValidator";
-import {HandlerAgent} from "../../agent/HandlerAgent";
-import {JetstreamMessage} from "../../types/JetstreamTypes";
-import {AbstractMessageAction} from "../../actions/AbstractMessageAction";
+import { AbstractValidator } from "../../validations/AbstractValidator";
+import { HandlerAgent } from "../../agent/HandlerAgent";
+import { JetstreamMessage } from "../../types/JetstreamTypes";
+import { AbstractMessageAction } from "../../actions/AbstractMessageAction";
 
 export abstract class AbstractMessageHandler {
   constructor(

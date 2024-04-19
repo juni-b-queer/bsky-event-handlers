@@ -1,9 +1,6 @@
-import {
-  HandlerAgent,
-  PostDetails,
-} from "../../src";
-import {RepoOp} from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import {BskyAgent} from "@atproto/api";
+import { HandlerAgent, PostDetails } from "../../src";
+import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { BskyAgent } from "@atproto/api";
 
 // TODO rewrite tests after the actions are rewritten
 
