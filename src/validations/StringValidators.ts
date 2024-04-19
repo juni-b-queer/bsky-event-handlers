@@ -2,6 +2,7 @@ import { flattenTextUpdated } from "../utils/text-utils";
 import { AbstractValidator } from "./AbstractValidator";
 import { ValidatorInput } from "../types/ValidatorInput";
 import { HandlerAgent } from "../agent/HandlerAgent";
+import { CreateSkeetMessage } from "../types/JetstreamTypes";
 
 export class InputIsCommandValidator extends AbstractValidator {
   constructor(
@@ -12,17 +13,17 @@ export class InputIsCommandValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     if (this.strict) {
-      const input = this.getTextFromPost(validatorInput.op);
+      const input = this.getTextFromPost(message);
       return (
         input.startsWith(`!${this.triggerKey}`) ||
         input.startsWith(`${this.triggerKey}!`)
       );
     } else {
-      const input = this.getTextFromPost(validatorInput.op).toLowerCase();
+      const input = this.getTextFromPost(message).toLowerCase();
       const lowerCaseTriggerKey = this.triggerKey.toLowerCase();
       return (
         input.startsWith(`!${lowerCaseTriggerKey}`) ||
@@ -41,10 +42,10 @@ export class InputStartsWithValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    const input = this.getTextFromPost(validatorInput.op);
+    const input = this.getTextFromPost(message);
     if (this.strict) {
       return input.startsWith(this.triggerKey);
     }
@@ -59,10 +60,10 @@ export class InputContainsValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    const input = this.getTextFromPost(validatorInput.op);
+    const input = this.getTextFromPost(message);
 
     const flatText = flattenTextUpdated(this.triggerKey, input);
     return flatText.includes(this.triggerKey);
@@ -75,10 +76,10 @@ export class InputEqualsValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    const input = this.getTextFromPost(validatorInput.op);
+    const input = this.getTextFromPost(message);
 
     return input === this.triggerKey;
   }

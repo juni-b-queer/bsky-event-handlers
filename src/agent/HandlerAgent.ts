@@ -9,6 +9,7 @@ import { debugLog } from "../utils/logging-utils";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostDetails } from "../types/PostDetails";
 import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
+import { JetstreamMessage } from "../types/JetstreamTypes";
 
 export class HandlerAgent {
   private did: string | undefined;
@@ -283,9 +284,8 @@ export class HandlerAgent {
   /**
    *
    */
-  postedByAgent(postDetails: PostDetails) {
-    // @ts-ignore
-    return this.getPosterDID(postDetails) === this.getDid;
+  postedByAgent(message: JetstreamMessage) {
+    return message.did === this.getDid;
   }
 
   /**

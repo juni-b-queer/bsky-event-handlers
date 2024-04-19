@@ -3,17 +3,17 @@
 Validators are used to determine whether or not an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
 
 - [Basic Validator](#basic-validator)
-    - [SimpleFunctionValidator](#simplefunctionvalidator)
-    - [OrValidator](#orvalidator)
+  - [SimpleFunctionValidator](#simplefunctionvalidator)
+  - [OrValidator](#orvalidator)
 - [Post Validators](#post-validators)
-    - [PostedByUserValidator](#postedbyuservalidator)
-    - [ReplyingToBotValidator](#replyingtobotvalidator)
-    - [IsReplyValidator](#isreplyvalidator)
+  - [PostedByUserValidator](#postedbyuservalidator)
+  - [ReplyingToBotValidator](#replyingtobotvalidator)
+  - [IsReplyValidator](#isreplyvalidator)
 - [String Validators](#string-validators)
-    - [InputIsCommandValidator](#inputiscommandvalidator)
-    - [InputStartsWithValidator](#inputstartswithvalidator)
-    - [InputContainsValidator](#inputcontainsvalidator)
-    - [InputEqualsValidator](#inputequalsvalidator)
+  - [InputIsCommandValidator](#inputiscommandvalidator)
+  - [InputStartsWithValidator](#inputstartswithvalidator)
+  - [InputContainsValidator](#inputcontainsvalidator)
+  - [InputEqualsValidator](#inputequalsvalidator)
 
 ## Basic validator
 

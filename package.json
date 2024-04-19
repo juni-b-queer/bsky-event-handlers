@@ -31,6 +31,7 @@
   "homepage": "https://github.com/juni-b-queer/bsky-event-handlers#readme",
   "devDependencies": {
     "@types/jest": "^29.5.11",
+    "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "dotenv": "^16.4.5",
@@ -46,6 +47,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.7.4",
-    "atproto-firehose": "^0.2.2"
+    "atproto-firehose": "^0.2.2",
+    "ws": "^8.16.0"
   }
 }

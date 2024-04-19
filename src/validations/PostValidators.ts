@@ -1,6 +1,8 @@
 import { AbstractValidator } from "./AbstractValidator";
 import { ValidatorInput } from "../types/ValidatorInput";
 import { HandlerAgent } from "../agent/HandlerAgent";
+import { CreateSkeetMessage } from "../types/JetstreamTypes";
+import { ComAtprotoServerCreateAccount } from "@atproto/api";
 
 export class PostedByUserValidator extends AbstractValidator {
   constructor(private userDid: string) {
@@ -8,10 +10,10 @@ export class PostedByUserValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return this.userDid === validatorInput.repo;
+    return this.userDid === message.did;
   }
 }
 
@@ -21,16 +23,13 @@ export class ReplyingToBotValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     // @ts-ignore
     // let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
 
-    const posterDID = handlerAgent.getDIDFromURI(
-      // @ts-ignore
-      validatorInput.op.payload.reply.parent.uri,
-    );
+    const posterDID = message.did;
 
     return handlerAgent.getDid === posterDID;
   }
@@ -42,13 +41,10 @@ export class IsReplyValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    const payload = validatorInput.op.payload;
     // @ts-ignore
-    console.log(payload.reply);
-    // @ts-ignore
-    return payload.reply !== undefined;
+    return message.record.reply !== undefined;
   }
 }

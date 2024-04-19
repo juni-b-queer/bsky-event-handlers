@@ -88,6 +88,7 @@ export class FirehoseSubscription {
   public createSubscription() {
     this.lastMessageTime = Date.now();
     this.firehoseClient.on("message", (m: SubscribeReposMessage) => {
+      console.log(m);
       if (ComAtprotoSyncSubscribeRepos.isCommit(m)) {
         m.ops.forEach((op: RepoOp) => {
           // console.log(op)

@@ -4,13 +4,13 @@ Actions are the set of operations that are executed in response to certain valid
 
 - [FunctionAction](#functionaction)
 - [Reply Actions](#reply-actions)
-    - [ReplyWithInputAction](#replywithinputaction)
-    - [ReplyWithGeneratedTextAction](#replywithgeneratedtextaction)
-    - [ReplyRepetitivelyFromStringArray](#replyrepetitivelyfromstringarray)
+  - [ReplyWithInputAction](#replywithinputaction)
+  - [ReplyWithGeneratedTextAction](#replywithgeneratedtextaction)
+  - [ReplyRepetitivelyFromStringArray](#replyrepetitivelyfromstringarray)
 - [Logging Actions](#logging-actions)
-    - [LogPostDetailsAction](#logpostdetailsaction)
-    - [LogRepoOperationAction](#logrepooperationaction)
-    - [LogInputTextAction](#loginputtextaction)
+  - [LogPostDetailsAction](#logpostdetailsaction)
+  - [LogRepoOperationAction](#logrepooperationaction)
+  - [LogInputTextAction](#loginputtextaction)
 
 ### FunctionAction
 

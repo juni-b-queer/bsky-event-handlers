@@ -2,6 +2,7 @@ import { ValidatorInput } from "../types/ValidatorInput";
 import { isBadBotResponse, isGoodBotResponse } from "../utils/text-utils";
 import { AbstractValidator } from "./AbstractValidator";
 import { HandlerAgent } from "../agent/HandlerAgent";
+import { CreateSkeetMessage, JetstreamMessage } from "../types/JetstreamTypes";
 
 export class IsGoodBotValidator extends AbstractValidator {
   constructor() {
@@ -9,10 +10,10 @@ export class IsGoodBotValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return isGoodBotResponse(this.getTextFromPost(validatorInput.op));
+    return isGoodBotResponse(this.getTextFromPost(message));
   }
 }
 
@@ -22,9 +23,9 @@ export class IsBadBotValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return isBadBotResponse(this.getTextFromPost(validatorInput.op));
+    return isBadBotResponse(this.getTextFromPost(message));
   }
 }
