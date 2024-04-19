@@ -1,55 +1,3 @@
-export interface Record {
-  $type: string;
-  createdAt: string;
-  subject: Subject;
-}
-
-export interface CreateSkeetRecord extends Record {
-  embed?: { $type: string; images?: ImageEmbed[]; external?: External };
-  facets?: Facet[];
-  langs?: string[];
-  text?: string;
-  reply?: Reply;
-}
-
-export interface CreateSkeetMessage extends JetstreamMessage {
-  did: string;
-  seq: number;
-  opType: string;
-  collection: string;
-  rkey: string;
-  record: CreateSkeetRecord;
-}
-export interface CreateMessage extends JetstreamMessage {
-  did: string;
-  seq: number;
-  opType: string;
-  collection: string;
-  rkey: string;
-  record: Record;
-}
-
-export interface DeleteMessage extends JetstreamMessage {
-  did: string;
-  seq: number;
-  opType: string;
-  collection: string;
-  rkey: string;
-}
-
-export interface JetstreamMessage {
-  did: string;
-  seq: number;
-  opType: string;
-  collection: string;
-  rkey: string;
-}
-
-export interface Subject {
-  cid: string;
-  uri: string;
-}
-
 export interface AspectRatio {
   height: number;
   width: number;
@@ -57,6 +5,11 @@ export interface AspectRatio {
 
 export interface Ref {
   $link: string;
+}
+
+export interface Subject {
+  cid: string;
+  uri: string;
 }
 
 export interface Image {
@@ -97,4 +50,36 @@ export interface ImageEmbed {
 export interface Reply {
   parent: Subject;
   root: Subject;
+}
+
+export interface Record {
+  $type: string;
+  createdAt: string;
+  subject: Subject;
+}
+
+export interface CreateSkeetRecord extends Record {
+  embed?: { $type: string; images?: ImageEmbed[]; external?: External };
+  facets?: Facet[];
+  langs?: string[];
+  text?: string;
+  reply?: Reply;
+}
+
+export interface JetstreamMessage {
+  did: string;
+  seq: number;
+  opType: "c" | "d";
+  collection: string;
+  rkey: string;
+}
+
+export interface CreateMessage extends JetstreamMessage {
+  record: Record;
+}
+
+export interface DeleteMessage extends JetstreamMessage {}
+
+export interface CreateSkeetMessage extends JetstreamMessage {
+  record: CreateSkeetRecord;
 }
