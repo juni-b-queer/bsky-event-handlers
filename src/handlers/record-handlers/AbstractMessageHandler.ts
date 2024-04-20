@@ -1,8 +1,11 @@
 import { AbstractValidator } from "../../validations/AbstractValidator";
 import { HandlerAgent } from "../../agent/HandlerAgent";
-import {CreateSkeetMessage, JetstreamMessage} from "../../types/JetstreamTypes";
+import {
+  CreateSkeetMessage,
+  JetstreamMessage,
+} from "../../types/JetstreamTypes";
 import { AbstractMessageAction } from "../../actions/AbstractMessageAction";
-import {DebugLog} from "../../utils/DebugLog";
+import { DebugLog } from "../../utils/DebugLog";
 
 export abstract class AbstractMessageHandler {
   constructor(
@@ -35,12 +38,11 @@ export abstract class AbstractMessageHandler {
   abstract async handle(message: JetstreamMessage): Promise<void>;
 }
 
-
 export class MessageHandler extends AbstractMessageHandler {
   constructor(
-      validators: Array<AbstractValidator>,
-      actions: Array<AbstractMessageAction>,
-      handlerAgent: HandlerAgent,
+    validators: Array<AbstractValidator>,
+    actions: Array<AbstractMessageAction>,
+    handlerAgent: HandlerAgent,
   ) {
     super(validators, actions, handlerAgent);
     return this;
@@ -57,4 +59,3 @@ export class MessageHandler extends AbstractMessageHandler {
     }
   }
 }
-

@@ -2,7 +2,9 @@ import {
   containsNumbers,
   containsPunctuation,
   containsSpaces,
-  flattenTextUpdated, isBadBotResponse, isGoodBotResponse,
+  flattenTextUpdated,
+  isBadBotResponse,
+  isGoodBotResponse,
   removeNumbers,
   removePunctuation,
   removeSpaces,
@@ -224,49 +226,48 @@ describe("Trim Command From Input", () => {
   });
 });
 
-describe('isGoodBotResponse function', () => {
+describe("isGoodBotResponse function", () => {
   it('returns true when input starts with positive connotation word followed by "bot"', () => {
-    expect(isGoodBotResponse('Great bot')).toBeTruthy();
-    expect(isGoodBotResponse('good Bot')).toBeTruthy();
+    expect(isGoodBotResponse("Great bot")).toBeTruthy();
+    expect(isGoodBotResponse("good Bot")).toBeTruthy();
   });
 
   it('returns true when input includes "thank you"', () => {
-    expect(isGoodBotResponse('Thank you bot')).toBeTruthy();
+    expect(isGoodBotResponse("Thank you bot")).toBeTruthy();
   });
 
   it('returns false when input does not start with positive connotation word followed by "bot"', () => {
-    expect(isGoodBotResponse('Bad bot')).toBeFalsy();
+    expect(isGoodBotResponse("Bad bot")).toBeFalsy();
   });
 
   it('returns false when input does not include "thank you"', () => {
-    expect(isGoodBotResponse('Good job bot')).toBeFalsy();
+    expect(isGoodBotResponse("Good job bot")).toBeFalsy();
   });
 });
 
-describe('isBadBotResponse function', () => {
+describe("isBadBotResponse function", () => {
   it('should return true when negative connotation word comes before "bot"', () => {
-    const input = 'bad bot!';
+    const input = "bad bot!";
     expect(isBadBotResponse(input)).toBe(true);
   });
 
   it('should return false when word before "bot" is not a negative connotation word', () => {
-    const input = 'good bot';
+    const input = "good bot";
     expect(isBadBotResponse(input)).toBe(false);
   });
 
   it('should return false when "bot" is not in the phrase', () => {
-    const input = 'bad banana';
+    const input = "bad banana";
     expect(isBadBotResponse(input)).toBe(false);
   });
 
   it('should return true even when mixed case and punctuation are used before "bot"', () => {
-    const input = 'bAD! bot';
+    const input = "bAD! bot";
     expect(isBadBotResponse(input)).toBe(true);
   });
 
   it('should return false if "bot" is not the second word', () => {
-    const input = 'bot is bad';
+    const input = "bot is bad";
     expect(isBadBotResponse(input)).toBe(false);
   });
-
 });

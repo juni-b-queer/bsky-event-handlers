@@ -9,7 +9,7 @@ export abstract class AbstractMessageAction {
 
   // @ts-ignore
   abstract async handle(
-      message: JetstreamMessage,
+    message: JetstreamMessage,
     handlerAgent: HandlerAgent,
   ): Promise<any | void>;
 }

@@ -6,7 +6,7 @@ import {
   DeleteMessage,
 } from "../types/JetstreamTypes";
 import { CreateSkeetHandler } from "../handlers/record-handlers/skeet/CreateSkeetHandler";
-import {MessageHandler} from "../handlers/record-handlers/AbstractMessageHandler";
+import { MessageHandler } from "../handlers/record-handlers/AbstractMessageHandler";
 
 export interface JetstreamSubscriptionHandlers {
   post?: {
@@ -43,7 +43,6 @@ export class JetstreamSubscription {
     private wsURL: string = "ws://localhost:6008/subscribe",
   ) {
     this.generateWsURL();
-
   }
 
   public set setWsURL(url: string) {
@@ -76,7 +75,7 @@ export class JetstreamSubscription {
 
     this.wsClient.on("message", (data, isBinary) => {
       const message = !isBinary ? data : data.toString();
-      console.log(message)
+      console.log(message);
       if (typeof message === "string") {
         const data = JSON.parse(message);
         switch (data.opType) {
@@ -107,24 +106,22 @@ export class JetstreamSubscription {
         );
         break;
       case "app.bsky.feed.like":
-        this.handlerControllers.like?.c?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(createMessage);
-            },
-        );
+        this.handlerControllers.like?.c?.forEach((handler: MessageHandler) => {
+          handler.handle(createMessage);
+        });
         break;
       case "app.bsky.feed.repost":
         this.handlerControllers.repost?.c?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(createMessage);
-            },
+          (handler: MessageHandler) => {
+            handler.handle(createMessage);
+          },
         );
         break;
       case "app.bsky.graph.follow":
         this.handlerControllers.follow?.c?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(createMessage);
-            },
+          (handler: MessageHandler) => {
+            handler.handle(createMessage);
+          },
         );
         break;
     }
@@ -133,31 +130,27 @@ export class JetstreamSubscription {
   handleDelete(deleteMessage: DeleteMessage) {
     switch (deleteMessage.collection) {
       case "app.bsky.feed.post":
-        this.handlerControllers.post?.d?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(deleteMessage);
-            },
-        );
+        this.handlerControllers.post?.d?.forEach((handler: MessageHandler) => {
+          handler.handle(deleteMessage);
+        });
         break;
       case "app.bsky.feed.like":
-        this.handlerControllers.like?.d?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(deleteMessage);
-            },
-        );
+        this.handlerControllers.like?.d?.forEach((handler: MessageHandler) => {
+          handler.handle(deleteMessage);
+        });
         break;
       case "app.bsky.feed.repost":
         this.handlerControllers.repost?.d?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(deleteMessage);
-            },
+          (handler: MessageHandler) => {
+            handler.handle(deleteMessage);
+          },
         );
         break;
       case "app.bsky.graph.follow":
         this.handlerControllers.follow?.d?.forEach(
-            (handler: MessageHandler) => {
-              handler.handle(deleteMessage);
-            },
+          (handler: MessageHandler) => {
+            handler.handle(deleteMessage);
+          },
         );
         break;
     }

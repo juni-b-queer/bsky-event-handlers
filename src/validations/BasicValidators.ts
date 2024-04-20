@@ -51,7 +51,6 @@ export class OrValidator extends AbstractValidator {
   }
 }
 
-
 /**
  * @class NotValidator
  * @extends AbstractValidator
@@ -63,11 +62,10 @@ export class NotValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-      message: JetstreamMessage,
-      handlerAgent: HandlerAgent,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     let willTrigger = await this.validator.shouldTrigger(message, handlerAgent);
     return !willTrigger;
   }
 }
-

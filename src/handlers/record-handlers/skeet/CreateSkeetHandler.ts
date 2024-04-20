@@ -21,7 +21,7 @@ export class CreateSkeetHandler extends AbstractMessageHandler {
 
   async handle(message: CreateSkeetMessage): Promise<void> {
     const shouldTrigger = await this.shouldTrigger(message);
-    console.log(shouldTrigger)
+    console.log(shouldTrigger);
     if (shouldTrigger) {
       try {
         await this.runActions(message);

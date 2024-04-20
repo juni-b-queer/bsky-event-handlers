@@ -10,9 +10,8 @@ export class FunctionAction extends AbstractMessageAction {
   }
 
   async handle(
-      message: JetstreamMessage,
+    message: JetstreamMessage,
     handlerAgent: HandlerAgent,
-
   ): Promise<any> {
     await this.actionFunction(message, handlerAgent);
   }

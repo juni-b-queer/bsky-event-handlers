@@ -71,7 +71,7 @@ export function isGoodBotResponse(input: string): boolean {
       return true;
     }
   }
-  return input.toLowerCase().includes("thank you")
+  return input.toLowerCase().includes("thank you");
 }
 
 export function isBadBotResponse(input: string): boolean {

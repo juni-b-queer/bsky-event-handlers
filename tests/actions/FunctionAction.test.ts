@@ -26,7 +26,7 @@ describe("FunctionAction", () => {
 
       expect(mockActionFunction).toHaveBeenCalledWith(
         mockMessage,
-          mockHandlerAgent
+        mockHandlerAgent,
       );
     });
   });
