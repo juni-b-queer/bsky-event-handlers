@@ -13,7 +13,7 @@ describe("InputContainsValidator", () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
       record: {
@@ -31,7 +31,7 @@ describe("InputContainsValidator", () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
       record: {
@@ -49,7 +49,7 @@ describe("InputContainsValidator", () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
       record: {

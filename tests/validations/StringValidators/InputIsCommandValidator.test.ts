@@ -11,7 +11,7 @@ describe("InputIsCommandValidator Class", () => {
   let message: CreateSkeetMessage = {
     collection: "",
     did: "",
-    opType: "",
+    opType: "c",
     rkey: "",
     seq: 0,
     record: {

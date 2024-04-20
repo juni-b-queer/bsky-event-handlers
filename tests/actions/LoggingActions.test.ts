@@ -19,7 +19,7 @@ describe("LogMessageAction", () => {
     message = {
       collection: "",
       did: "",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
     };
@@ -31,7 +31,7 @@ describe("LogMessageAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(handlerAgent, message);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(message);
   });
 });
@@ -49,7 +49,7 @@ describe("LogInputTextAction", () => {
     message = {
       collection: "",
       did: "",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
     };
@@ -61,7 +61,7 @@ describe("LogInputTextAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(handlerAgent, message);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(input);
   });
 });
@@ -87,7 +87,7 @@ describe("LogInputTextAction", () => {
 
     action = new DebugLogAction("TEST", "Hello", "info");
 
-    await action.handle(handlerAgent, message);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 
@@ -96,7 +96,7 @@ describe("LogInputTextAction", () => {
 
     action = new DebugLogAction("TEST", "Hello", "error");
 
-    await action.handle(handlerAgent, message);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 });

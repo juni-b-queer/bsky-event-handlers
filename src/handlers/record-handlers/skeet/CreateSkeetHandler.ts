@@ -11,9 +11,9 @@ import { DebugLog } from "../../../utils/DebugLog";
 // @ts-ignore
 export class CreateSkeetHandler extends AbstractMessageHandler {
   constructor(
-    private validators: Array<AbstractValidator>,
-    private actions: Array<AbstractMessageAction>,
-    public handlerAgent: HandlerAgent,
+    validators: Array<AbstractValidator>,
+    actions: Array<AbstractMessageAction>,
+    handlerAgent: HandlerAgent,
   ) {
     super(validators, actions, handlerAgent);
     return this;
@@ -21,11 +21,10 @@ export class CreateSkeetHandler extends AbstractMessageHandler {
 
   async handle(message: CreateSkeetMessage): Promise<void> {
     const shouldTrigger = await this.shouldTrigger(message);
+    console.log(shouldTrigger)
     if (shouldTrigger) {
       try {
-        if (!this.handlerAgent.postedByAgent(message)) {
-          await this.runActions(message);
-        }
+        await this.runActions(message);
       } catch (exception) {
         DebugLog.error("Skeet Handler", exception as string);
       }

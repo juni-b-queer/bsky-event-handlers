@@ -1,7 +1,8 @@
 import { AbstractValidator } from "../../validations/AbstractValidator";
 import { HandlerAgent } from "../../agent/HandlerAgent";
-import { JetstreamMessage } from "../../types/JetstreamTypes";
+import {CreateSkeetMessage, JetstreamMessage} from "../../types/JetstreamTypes";
 import { AbstractMessageAction } from "../../actions/AbstractMessageAction";
+import {DebugLog} from "../../utils/DebugLog";
 
 export abstract class AbstractMessageHandler {
   constructor(
@@ -26,10 +27,34 @@ export abstract class AbstractMessageHandler {
 
   async runActions(message: JetstreamMessage) {
     for (const action of this.actions) {
-      await action.handle(this.handlerAgent, message);
+      await action.handle(message, this.handlerAgent);
     }
   }
 
   //@ts-ignore
   abstract async handle(message: JetstreamMessage): Promise<void>;
 }
+
+
+export class MessageHandler extends AbstractMessageHandler {
+  constructor(
+      validators: Array<AbstractValidator>,
+      actions: Array<AbstractMessageAction>,
+      handlerAgent: HandlerAgent,
+  ) {
+    super(validators, actions, handlerAgent);
+    return this;
+  }
+
+  async handle(message: JetstreamMessage): Promise<void> {
+    const shouldTrigger = await this.shouldTrigger(message);
+    if (shouldTrigger) {
+      try {
+        await this.runActions(message);
+      } catch (exception) {
+        DebugLog.error("Message Handler", exception as string);
+      }
+    }
+  }
+}
+

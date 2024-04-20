@@ -6,23 +6,24 @@ import {
   DeleteMessage,
 } from "../types/JetstreamTypes";
 import { CreateSkeetHandler } from "../handlers/record-handlers/skeet/CreateSkeetHandler";
+import {MessageHandler} from "../handlers/record-handlers/AbstractMessageHandler";
 
 export interface JetstreamSubscriptionHandlers {
   post?: {
     c?: CreateSkeetHandler[];
-    d?: CreateSkeetHandler[];
+    d?: MessageHandler[]; // TODO
   };
   like?: {
-    c?: CreateSkeetHandler[];
-    d?: CreateSkeetHandler[];
+    c?: MessageHandler[]; // TODO
+    d?: MessageHandler[]; // TODO
   };
   repost?: {
-    c?: CreateSkeetHandler[];
-    d?: CreateSkeetHandler[];
+    c?: MessageHandler[]; // TODO
+    d?: MessageHandler[]; // TODO
   };
   follow?: {
-    c?: CreateSkeetHandler[];
-    d?: CreateSkeetHandler[];
+    c?: MessageHandler[]; // TODO
+    d?: MessageHandler[]; // TODO
   };
 }
 
@@ -34,18 +35,15 @@ export class JetstreamSubscription {
   /**
    * Creates a new instance of the Firehose Subscription.
    *
-   * @param {Array<HandlerController>} handlerControllers - An array of handler controllers.
-   * @param options
+   * @param {JetstreamSubscriptionHandlers} handlerControllers - An array of handler controllers.
    * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
    */
   constructor(
     private handlerControllers: JetstreamSubscriptionHandlers,
     private wsURL: string = "ws://localhost:6008/subscribe",
   ) {
-    DebugLog.warn("FIREHOSE", `Initializing`);
     this.generateWsURL();
-    DebugLog.info("FIREHOSE", `Websocket URL: ${this.wsURL}`);
-    this.createSubscription();
+
   }
 
   public set setWsURL(url: string) {
@@ -68,6 +66,8 @@ export class JetstreamSubscription {
    *
    */
   public createSubscription() {
+    DebugLog.warn("FIREHOSE", `Initializing`);
+    DebugLog.info("FIREHOSE", `Websocket URL: ${this.wsURL}`);
     this.wsClient = new WebSocket(this.wsURL);
 
     this.wsClient.on("open", () => {
@@ -76,6 +76,7 @@ export class JetstreamSubscription {
 
     this.wsClient.on("message", (data, isBinary) => {
       const message = !isBinary ? data : data.toString();
+      console.log(message)
       if (typeof message === "string") {
         const data = JSON.parse(message);
         switch (data.opType) {
@@ -95,6 +96,7 @@ export class JetstreamSubscription {
     });
   }
 
+  // TODO There has got to be a better way to do this, I'm just to high to do it now
   handleCreate(createMessage: CreateMessage) {
     switch (createMessage.collection) {
       case "app.bsky.feed.post":
@@ -103,19 +105,27 @@ export class JetstreamSubscription {
             handler.handle(createMessage as CreateSkeetMessage);
           },
         );
-        // console.log(createMessage)
         break;
       case "app.bsky.feed.like":
-        // console.log(collection)
-        // console.log(createMessage)
+        this.handlerControllers.like?.c?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(createMessage);
+            },
+        );
         break;
       case "app.bsky.feed.repost":
-        // console.log(collection)
-        // console.log(createMessage)
+        this.handlerControllers.repost?.c?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(createMessage);
+            },
+        );
         break;
       case "app.bsky.graph.follow":
-        // console.log(collection)
-        // console.log(createMessage)
+        this.handlerControllers.follow?.c?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(createMessage);
+            },
+        );
         break;
     }
   }
@@ -123,19 +133,32 @@ export class JetstreamSubscription {
   handleDelete(deleteMessage: DeleteMessage) {
     switch (deleteMessage.collection) {
       case "app.bsky.feed.post":
-        // console.log(deleteMessage)
+        this.handlerControllers.post?.d?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(deleteMessage);
+            },
+        );
         break;
       case "app.bsky.feed.like":
-        // console.log(collection)
-        // console.log(deleteMessage)
+        this.handlerControllers.like?.d?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(deleteMessage);
+            },
+        );
         break;
       case "app.bsky.feed.repost":
-        // console.log(collection)
-        // console.log(deleteMessage)
+        this.handlerControllers.repost?.d?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(deleteMessage);
+            },
+        );
         break;
       case "app.bsky.graph.follow":
-        // console.log(collection)
-        // console.log(deleteMessage)
+        this.handlerControllers.follow?.d?.forEach(
+            (handler: MessageHandler) => {
+              handler.handle(deleteMessage);
+            },
+        );
         break;
     }
   }

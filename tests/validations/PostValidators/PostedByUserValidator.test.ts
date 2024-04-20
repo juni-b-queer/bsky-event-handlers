@@ -16,7 +16,7 @@ describe("Posted by user validator", () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
       record: {
@@ -34,7 +34,7 @@ describe("Posted by user validator", () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "did:plc:bad",
-      opType: "",
+      opType: "c",
       rkey: "",
       seq: 0,
       record: {

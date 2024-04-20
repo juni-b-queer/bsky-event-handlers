@@ -50,3 +50,24 @@ export class OrValidator extends AbstractValidator {
     return willTrigger;
   }
 }
+
+
+/**
+ * @class NotValidator
+ * @extends AbstractValidator
+ * @description A class that represents a validator that negates the result of another validator.
+ */
+export class NotValidator extends AbstractValidator {
+  constructor(private validator: AbstractValidator) {
+    super();
+  }
+
+  async shouldTrigger(
+      message: JetstreamMessage,
+      handlerAgent: HandlerAgent,
+  ): Promise<boolean> {
+    let willTrigger = await this.validator.shouldTrigger(message, handlerAgent);
+    return !willTrigger;
+  }
+}
+

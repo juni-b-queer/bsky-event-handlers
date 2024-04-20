@@ -1,7 +1,7 @@
 /**
  * Handlers
  */
-export { AbstractMessageHandler } from "./handlers/record-handlers/AbstractMessageHandler";
+export * from "./handlers/record-handlers/AbstractMessageHandler";
 export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeetHandler";
 
 /**

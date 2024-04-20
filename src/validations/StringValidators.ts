@@ -23,6 +23,7 @@ export class InputIsCommandValidator extends AbstractValidator {
         input.startsWith(`${this.triggerKey}!`)
       );
     } else {
+
       const input = this.getTextFromPost(message).toLowerCase();
       const lowerCaseTriggerKey = this.triggerKey.toLowerCase();
       return (
@@ -80,6 +81,7 @@ export class InputEqualsValidator extends AbstractValidator {
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     const input = this.getTextFromPost(message);
+    console.log(input === this.triggerKey)
 
     return input === this.triggerKey;
   }

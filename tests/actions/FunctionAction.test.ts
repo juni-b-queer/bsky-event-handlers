@@ -6,7 +6,7 @@ describe("FunctionAction", () => {
   const mockMessage: JetstreamMessage = {
     collection: "",
     did: "",
-    opType: "",
+    opType: "c",
     rkey: "",
     seq: 0,
   };
@@ -22,11 +22,11 @@ describe("FunctionAction", () => {
 
   describe("handle", () => {
     it("runs provided function with proper arguments", async () => {
-      await functionAction.handle(mockHandlerAgent, mockMessage);
+      await functionAction.handle(mockMessage, mockHandlerAgent);
 
       expect(mockActionFunction).toHaveBeenCalledWith(
-        mockHandlerAgent,
         mockMessage,
+          mockHandlerAgent
       );
     });
   });
