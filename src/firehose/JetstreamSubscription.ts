@@ -8,6 +8,10 @@ import {
 import { CreateSkeetHandler } from "../handlers/record-handlers/skeet/CreateSkeetHandler";
 import { MessageHandler } from "../handlers/record-handlers/AbstractMessageHandler";
 
+// TODO update jetstreamMessage to have cid!!!!!!
+//TODO DO THIS! SERIOUSLY! YOU'LL NEED IT WHEN YOU FIX THE REPLY ACTIONS
+
+// TODO ADD interface for c and d so they're reusable and don't look so icky down there
 export interface JetstreamSubscriptionHandlers {
   post?: {
     c?: CreateSkeetHandler[];
