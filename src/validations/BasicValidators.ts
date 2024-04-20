@@ -65,7 +65,7 @@ export class NotValidator extends AbstractValidator {
     message: JetstreamMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    let willTrigger = await this.validator.shouldTrigger(message, handlerAgent);
+    const willTrigger = await this.validator.shouldTrigger(message, handlerAgent);
     return !willTrigger;
   }
 }

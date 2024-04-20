@@ -8,7 +8,7 @@ import {
 describe("InputIsCommandValidator Class", () => {
   let inputIsCommandValidator: InputIsCommandValidator;
   // @ts-ignore
-  let message: CreateSkeetMessage = {
+  const message: CreateSkeetMessage = {
     collection: "",
     did: "",
     opType: "c",
