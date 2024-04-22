@@ -32,6 +32,7 @@ export * from "./actions/TestAction";
 export * from "./actions/FunctionAction";
 // export * from "./actions/ReplyActions";
 export * from "./actions/LoggingActions";
+export * from "./actions/post/SkeetActions";
 
 /**
  * Firehose

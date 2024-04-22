@@ -82,7 +82,7 @@ describe("LogInputTextAction", () => {
     jest.clearAllMocks();
   });
 
-  it("Should log output of RepoOp object when handle() is called", async () => {
+  it("Should log info", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
 
     action = new DebugLogAction("TEST", "Hello", "info");
@@ -91,7 +91,16 @@ describe("LogInputTextAction", () => {
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 
-  it("Should log output of RepoOp object when handle() is called", async () => {
+  it("Should log warn", async () => {
+    const expected = "1/31/2023, 07:00 PM | TEST | WARN | Hello";
+
+    action = new DebugLogAction("TEST", "Hello", "warn");
+
+    await action.handle(message, handlerAgent);
+    expect(console.log).toHaveBeenCalledWith(expected);
+  });
+
+  it("Should log error", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | ERROR | Hello";
 
     action = new DebugLogAction("TEST", "Hello", "error");

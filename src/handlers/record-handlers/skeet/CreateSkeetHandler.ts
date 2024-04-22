@@ -19,12 +19,12 @@ export class CreateSkeetHandler extends AbstractMessageHandler {
     return this;
   }
 
-  async handle(message: CreateSkeetMessage): Promise<void> {
-    const shouldTrigger = await this.shouldTrigger(message);
+  async handle(message: JetstreamMessage): Promise<void> {
+    const shouldTrigger = await this.shouldTrigger(message as CreateSkeetMessage);
     console.log(shouldTrigger);
     if (shouldTrigger) {
       try {
-        await this.runActions(message);
+        await this.runActions(message as CreateSkeetMessage);
       } catch (exception) {
         DebugLog.error("Skeet Handler", exception as string);
       }
