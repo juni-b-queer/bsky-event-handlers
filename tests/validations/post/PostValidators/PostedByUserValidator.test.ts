@@ -1,24 +1,26 @@
 import {
   CreateSkeetMessage,
   HandlerAgent,
-  InputStartsWithValidator,
+  IsReplyValidator,
+  PostedByUserValidator,
   Subject,
-} from "../../../src";
+} from "../../../../src";
 
-describe("InputStartsWithValidator", () => {
-  const validator = new InputStartsWithValidator("test");
-  const strictValidator = new InputStartsWithValidator("test", true);
+describe("Posted by user validator", () => {
+  const validator = new PostedByUserValidator(
+    "did:plc:2bnsooklzchcu5ao7xdjosrs",
+  );
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if input starts with trigger keyword", async () => {
+  it("shouldTrigger returns true if posted by same did", async () => {
     const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
+      collection: "app.bsky.feed.post",
+      did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
       opType: "c",
       rkey: "",
       seq: 0,
       record: {
-        text: "test message",
+        text: "test",
         $type: "",
         createdAt: "",
         subject: {} as Subject,
@@ -28,15 +30,15 @@ describe("InputStartsWithValidator", () => {
     expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
   });
 
-  test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
+  it("shouldTrigger returns false not posted by same user", async () => {
     const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
+      collection: "app.bsky.feed.post",
+      did: "did:plc:bad",
       opType: "c",
       rkey: "",
       seq: 0,
       record: {
-        text: "message test",
+        text: "test",
         $type: "",
         createdAt: "",
         subject: {} as Subject,
@@ -46,23 +48,21 @@ describe("InputStartsWithValidator", () => {
     expect(await validator.shouldTrigger(message, handlerAgent)).toBe(false);
   });
 
-  test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
+  it("shouldTrigger returns false if not a post", async () => {
     const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
+      collection: "app.bsky.feed.like",
+      did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
       opType: "c",
       rkey: "",
       seq: 0,
       record: {
-        text: "Test message",
+        text: "test",
         $type: "",
         createdAt: "",
         subject: {} as Subject,
       },
     };
 
-    expect(await strictValidator.shouldTrigger(message, handlerAgent)).toBe(
-      false,
-    );
+    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(false);
   });
 });

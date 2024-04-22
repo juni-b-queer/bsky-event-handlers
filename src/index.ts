@@ -17,10 +17,12 @@ export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeet
  */
 export { AbstractValidator } from "./validations/AbstractValidator";
 export { TestValidator } from "./validations/TestValidator";
-export * from "./validations/BasicValidators";
-export * from "./validations/StringValidators";
-export * from "./validations/PostValidators";
+export * from "./validations/LogicalValidators";
 export * from "./validations/BotValidators";
+export * from "./validations/GenericValidators";
+
+export * from "./validations/post/StringValidators";
+export * from "./validations/post/PostValidators";
 
 /**
  * Actions

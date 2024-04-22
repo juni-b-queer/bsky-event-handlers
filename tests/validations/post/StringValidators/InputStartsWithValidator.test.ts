@@ -1,15 +1,16 @@
 import {
   CreateSkeetMessage,
   HandlerAgent,
-  InputContainsValidator,
+  InputStartsWithValidator,
   Subject,
-} from "../../../src";
+} from "../../../../src";
 
-describe("InputContainsValidator", () => {
-  const validator = new InputContainsValidator("test");
+describe("InputStartsWithValidator", () => {
+  const validator = new InputStartsWithValidator("test");
+  const strictValidator = new InputStartsWithValidator("test", true);
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if input contains with trigger keyword", async () => {
+  test("shouldTrigger returns true if input starts with trigger keyword", async () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "",
@@ -27,7 +28,7 @@ describe("InputContainsValidator", () => {
     expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
   });
 
-  test("shouldTrigger returns true if input contains trigger keyword in other words", async () => {
+  test("shouldTrigger returns false if input does not start with trigger keyword", async () => {
     const message: CreateSkeetMessage = {
       collection: "",
       did: "",
@@ -35,25 +36,7 @@ describe("InputContainsValidator", () => {
       rkey: "",
       seq: 0,
       record: {
-        text: "blahblahtestblahblah",
-        $type: "",
-        createdAt: "",
-        subject: {} as Subject,
-      },
-    };
-
-    expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
-  });
-
-  test("shouldTrigger returns false if input does not contain trigger keyword", async () => {
-    const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
-      opType: "c",
-      rkey: "",
-      seq: 0,
-      record: {
-        text: "message example",
+        text: "message test",
         $type: "",
         createdAt: "",
         subject: {} as Subject,
@@ -61,5 +44,25 @@ describe("InputContainsValidator", () => {
     };
 
     expect(await validator.shouldTrigger(message, handlerAgent)).toBe(false);
+  });
+
+  test("shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword", async () => {
+    const message: CreateSkeetMessage = {
+      collection: "",
+      did: "",
+      opType: "c",
+      rkey: "",
+      seq: 0,
+      record: {
+        text: "Test message",
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject,
+      },
+    };
+
+    expect(await strictValidator.shouldTrigger(message, handlerAgent)).toBe(
+      false,
+    );
   });
 });

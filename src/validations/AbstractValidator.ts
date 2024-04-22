@@ -6,10 +6,10 @@ import { CreateSkeetMessage, JetstreamMessage } from "../types/JetstreamTypes";
 export abstract class AbstractValidator {
   constructor() {}
 
-  getTextFromPost(message: CreateSkeetMessage): string {
-    // console.log(message.record.text)
-    // @ts-ignore
-    return message.record.text;
+  getTextFromPost(message: JetstreamMessage): string {
+    const createSkeetMessage = message as CreateSkeetMessage;
+    const text = createSkeetMessage.record.text;
+    return <string>text;
   }
 
   // @ts-ignore

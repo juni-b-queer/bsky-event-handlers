@@ -1,5 +1,5 @@
 import { PostHandler } from "../PostHandler";
-import { InputIsCommandValidator } from "../../validations/StringValidators";
+import { InputIsCommandValidator } from "../../validations/post/StringValidators";
 import { ReplyWithInputAction } from "../../actions/ReplyActions";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { HandlerAgent } from "../../agent/HandlerAgent";

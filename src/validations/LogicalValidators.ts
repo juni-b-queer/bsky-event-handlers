@@ -11,6 +11,7 @@ export class SimpleFunctionValidator extends AbstractValidator {
   constructor(
     private triggerValidator: (
       arg0: JetstreamMessage,
+      arg1: HandlerAgent
     ) => boolean | PromiseLike<boolean>,
   ) {
     super();
@@ -20,7 +21,7 @@ export class SimpleFunctionValidator extends AbstractValidator {
     message: JetstreamMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return await this.triggerValidator(message);
+    return await this.triggerValidator(message, handlerAgent);
   }
 }
 

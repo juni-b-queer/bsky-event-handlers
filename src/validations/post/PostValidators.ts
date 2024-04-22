@@ -1,7 +1,7 @@
-import { AbstractValidator } from "./AbstractValidator";
-import { ValidatorInput } from "../types/ValidatorInput";
-import { HandlerAgent } from "../agent/HandlerAgent";
-import { CreateSkeetMessage } from "../types/JetstreamTypes";
+import { AbstractValidator } from "../AbstractValidator";
+import { ValidatorInput } from "../../types/ValidatorInput";
+import { HandlerAgent } from "../../agent/HandlerAgent";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 import { ComAtprotoServerCreateAccount } from "@atproto/api";
 
 export class PostedByUserValidator extends AbstractValidator {
@@ -13,9 +13,12 @@ export class PostedByUserValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return this.userDid === message.did;
+
+    return this.userDid === message.did
+        && message.collection == "app.bsky.feed.post";
   }
 }
+
 
 export class ReplyingToBotValidator extends AbstractValidator {
   constructor() {

@@ -1,8 +1,8 @@
-import { flattenTextUpdated } from "../utils/text-utils";
-import { AbstractValidator } from "./AbstractValidator";
-import { ValidatorInput } from "../types/ValidatorInput";
-import { HandlerAgent } from "../agent/HandlerAgent";
-import { CreateSkeetMessage } from "../types/JetstreamTypes";
+import { flattenTextUpdated } from "../../utils/text-utils";
+import { AbstractValidator } from "../AbstractValidator";
+import { ValidatorInput } from "../../types/ValidatorInput";
+import { HandlerAgent } from "../../agent/HandlerAgent";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 
 export class InputIsCommandValidator extends AbstractValidator {
   constructor(

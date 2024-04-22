@@ -3,7 +3,7 @@ import {
   HandlerAgent,
   InputEqualsValidator,
   Subject,
-} from "../../../src";
+} from "../../../../src";
 
 describe("InputEqualsValidator", () => {
   const validator = new InputEqualsValidator("test");

@@ -3,7 +3,7 @@ import {
   HandlerAgent,
   ReplyingToBotValidator,
   Subject,
-} from "../../../src";
+} from "../../../../src";
 import { BskyAgent } from "@atproto/api";
 
 describe("ReplyingToBotValidator", () => {

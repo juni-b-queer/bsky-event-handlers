@@ -2,20 +2,17 @@ import {
   CreateSkeetMessage,
   HandlerAgent,
   IsReplyValidator,
-  PostedByUserValidator,
   Subject,
-} from "../../../src";
+} from "../../../../src";
 
-describe("Posted by user validator", () => {
-  const validator = new PostedByUserValidator(
-    "did:plc:2bnsooklzchcu5ao7xdjosrs",
-  );
+describe("IsReplyValidator", () => {
+  const validator = new IsReplyValidator();
   const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
-  test("shouldTrigger returns true if posted by same did", async () => {
+  test("shouldTrigger returns true if op.payload.reply is not null", async () => {
     const message: CreateSkeetMessage = {
       collection: "",
-      did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
+      did: "",
       opType: "c",
       rkey: "",
       seq: 0,
@@ -24,16 +21,26 @@ describe("Posted by user validator", () => {
         $type: "",
         createdAt: "",
         subject: {} as Subject,
+        reply: {
+          parent: {
+            cid: "test",
+            uri: "test",
+          },
+          root: {
+            cid: "test",
+            uri: "test",
+          },
+        },
       },
     };
 
     expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
   });
 
-  test("shouldTrigger returns false not posted by same user", async () => {
+  test("shouldTrigger returns false if op.payload.reply is null", async () => {
     const message: CreateSkeetMessage = {
       collection: "",
-      did: "did:plc:bad",
+      did: "",
       opType: "c",
       rkey: "",
       seq: 0,

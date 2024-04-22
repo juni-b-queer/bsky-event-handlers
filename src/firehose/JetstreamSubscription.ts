@@ -12,23 +12,15 @@ import { MessageHandler } from "../handlers/record-handlers/AbstractMessageHandl
 //TODO DO THIS! SERIOUSLY! YOU'LL NEED IT WHEN YOU FIX THE REPLY ACTIONS
 
 // TODO ADD interface for c and d so they're reusable and don't look so icky down there
+export interface CreateAndDeleteHandlersInterface {
+  c?: MessageHandler[],
+  d?: MessageHandler[]
+}
 export interface JetstreamSubscriptionHandlers {
-  post?: {
-    c?: CreateSkeetHandler[];
-    d?: MessageHandler[]; // TODO
-  };
-  like?: {
-    c?: MessageHandler[]; // TODO
-    d?: MessageHandler[]; // TODO
-  };
-  repost?: {
-    c?: MessageHandler[]; // TODO
-    d?: MessageHandler[]; // TODO
-  };
-  follow?: {
-    c?: MessageHandler[]; // TODO
-    d?: MessageHandler[]; // TODO
-  };
+  post?: CreateAndDeleteHandlersInterface;
+  like?: CreateAndDeleteHandlersInterface;
+  repost?: CreateAndDeleteHandlersInterface;
+  follow?: CreateAndDeleteHandlersInterface;
 }
 
 export class JetstreamSubscription {

@@ -1,6 +1,6 @@
 import { PostHandler } from "../PostHandler";
 import { IsBadBotValidator } from "../../validations/BotValidators";
-import { ReplyingToBotValidator } from "../../validations/PostValidators";
+import { ReplyingToBotValidator } from "../../validations/post/PostValidators";
 import { ReplyWithInputAction } from "../../actions/ReplyActions";
 import { DebugLogAction } from "../../actions/LoggingActions";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
