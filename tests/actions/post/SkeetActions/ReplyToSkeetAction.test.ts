@@ -1,7 +1,8 @@
 import {
   CreateSkeetMessage,
   CreateSkeetRecord,
-  HandlerAgent, Reply,
+  HandlerAgent,
+  Reply,
   ReplyToSkeetAction,
 } from "../../../../src";
 
@@ -11,15 +12,15 @@ describe("Reply To Skeet Action", () => {
   let message: CreateSkeetMessage;
   const mockCreateSkeet = jest.fn();
   const mockReply: Reply = {
-    root:{
+    root: {
       cid: "",
-      uri: ""
+      uri: "",
     },
-    parent:{
+    parent: {
       cid: "",
-      uri: ""
-    }
-  }
+      uri: "",
+    },
+  };
   const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
 
   const skeetText: string = "Test Text";
@@ -27,7 +28,7 @@ describe("Reply To Skeet Action", () => {
   beforeEach(() => {
     handlerAgent = {
       createSkeet: mockCreateSkeet,
-      generateReplyFromMessage: mockGenerateReplyFromMessage
+      generateReplyFromMessage: mockGenerateReplyFromMessage,
     } as unknown as HandlerAgent;
     message = {
       record: {} as CreateSkeetRecord,
@@ -36,7 +37,7 @@ describe("Reply To Skeet Action", () => {
       opType: "c",
       rkey: "rkey",
       seq: 0,
-      cid: "cid"
+      cid: "cid",
     };
     action = new ReplyToSkeetAction(skeetText);
   });

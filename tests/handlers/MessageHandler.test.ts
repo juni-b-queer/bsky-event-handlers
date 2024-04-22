@@ -68,7 +68,7 @@ describe("MessageHandler", () => {
         opType: "c",
         rkey: "",
         seq: 0,
-        cid: "cid"
+        cid: "cid",
       };
       await messageHandler.handle(message);
 
@@ -86,7 +86,7 @@ describe("MessageHandler", () => {
         opType: "d",
         rkey: "",
         seq: 0,
-        cid: "cid"
+        cid: "cid",
       };
       await messageHandler.handle(message);
 
@@ -101,7 +101,7 @@ describe("MessageHandler", () => {
         opType: "c",
         rkey: "",
         seq: 3,
-        cid: "cid"
+        cid: "cid",
       };
       await messageHandler.handle(message);
 

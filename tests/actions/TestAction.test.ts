@@ -21,7 +21,7 @@ describe("TestAction", () => {
       opType: "c",
       rkey: "",
       seq: 0,
-      cid: "cid"
+      cid: "cid",
     };
     action = new TestAction();
     advanceTo(new Date(Date.UTC(2023, 1, 1, 1, 0, 0)));

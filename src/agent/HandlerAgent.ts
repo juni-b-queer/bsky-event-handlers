@@ -9,7 +9,12 @@ import { debugLog } from "../utils/logging-utils";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostDetails } from "../types/PostDetails";
 import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
-import {CreateSkeetMessage, JetstreamMessage, Reply, Subject} from "../types/JetstreamTypes";
+import {
+  CreateSkeetMessage,
+  JetstreamMessage,
+  Reply,
+  Subject,
+} from "../types/JetstreamTypes";
 import * as repl from "repl";
 
 export class HandlerAgent {
@@ -44,7 +49,8 @@ export class HandlerAgent {
    *
    */
   initializeBskyAgent(): BskyAgent {
-    return new BskyAgent({ // TODO Test
+    return new BskyAgent({
+      // TODO Test
       service: "https://bsky.social/",
       persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
         this.setDid = sess?.did;
@@ -286,29 +292,30 @@ export class HandlerAgent {
   /**
    *
    */
-  generateReplyFromMessage(message: CreateSkeetMessage): Reply{
+  generateReplyFromMessage(message: CreateSkeetMessage): Reply {
     let reply: Reply; //TODO Test
-    let parentReply: Subject = {
+    const parentReply: Subject = {
       cid: message.cid,
-      uri: `at:/${message.did}/app.bsky.feed.post/${message.rkey}`
-    }
+      uri: `at:/${message.did}/app.bsky.feed.post/${message.rkey}`,
+    };
     // if message is a reply
-    if(message.record.reply){
+    if (message.record.reply) {
       reply = {
         root: message.record.reply.root,
-        parent: parentReply
-      }
-    }else{
+        parent: parentReply,
+      };
+    } else {
       reply = {
         root: parentReply,
-        parent: parentReply
-      }
+        parent: parentReply,
+      };
     }
     return reply;
   }
 
   hasPostReplyRoot(postDetails: PostDetails): boolean {
-    if ( //TODO Test
+    if (
+      //TODO Test
       "reply" in postDetails.value &&
       postDetails.value?.reply !== undefined
     ) {
@@ -323,7 +330,8 @@ export class HandlerAgent {
   }
 
   getPostReplyRoot(postDetails: PostDetails): any | boolean {
-    if ( //TODO Test
+    if (
+      //TODO Test
       "reply" in postDetails.value &&
       postDetails.value?.reply !== undefined
     ) {

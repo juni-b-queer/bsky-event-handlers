@@ -1,7 +1,9 @@
 import { AbstractMessageAction } from "../AbstractMessageAction";
 import {
   CreateSkeetMessage,
-  JetstreamMessage, Reply, Subject,
+  JetstreamMessage,
+  Reply,
+  Subject,
 } from "../../types/JetstreamTypes";
 import { HandlerAgent } from "../../agent/HandlerAgent";
 import * as repl from "repl";
@@ -30,7 +32,7 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<any> {
-    let reply: Reply = handlerAgent.generateReplyFromMessage(message);
+    const reply: Reply = handlerAgent.generateReplyFromMessage(message);
     await handlerAgent.createSkeet(this.replyText, reply);
   }
 }

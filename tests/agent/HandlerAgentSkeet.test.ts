@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import {HandlerAgent, Reply, Subject} from "../../src";
+import { HandlerAgent, Reply, Subject } from "../../src";
 import atprotoApiMock, { AtpSessionData, BskyAgent } from "@atproto/api";
 
 dotenv.config();
@@ -48,21 +48,20 @@ describe("HandlerAgent", () => {
   describe("CreateSkeet", () => {
     it("createSkeet should call post with input text and no reply if no skeetReply", async () => {
       await handlerAgent.createSkeet("Test post");
-      expect(postMock).toBeCalledWith({text: "Test post"});
+      expect(postMock).toBeCalledWith({ text: "Test post" });
     });
 
     it("createSkeet should call post with input text and reply if existingPostDetails is present", async () => {
-      let subject: Subject = {
+      const subject: Subject = {
         cid: "",
-        uri: ""
-      }
-      let reply: Reply = {
+        uri: "",
+      };
+      const reply: Reply = {
         parent: subject,
-        root: subject
-
-      }
+        root: subject,
+      };
       await handlerAgent.createSkeet("Test post", reply);
-      expect(postMock).toBeCalledWith({text: "Test post", reply: reply});
+      expect(postMock).toBeCalledWith({ text: "Test post", reply: reply });
     });
   });
 
