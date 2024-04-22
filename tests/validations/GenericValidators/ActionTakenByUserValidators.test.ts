@@ -1,4 +1,9 @@
-import {ActionTakenByUserValidator, CreateSkeetMessage, HandlerAgent, Subject,} from "../../../src";
+import {
+  ActionTakenByUserValidator,
+  CreateSkeetMessage,
+  HandlerAgent,
+  Subject,
+} from "../../../src";
 
 describe("Action Taken By User", () => {
   const validator = new ActionTakenByUserValidator(

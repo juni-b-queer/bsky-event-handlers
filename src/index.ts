@@ -16,7 +16,7 @@ export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeet
  * Validators
  */
 export { AbstractValidator } from "./validations/AbstractValidator";
-export { TestValidator } from "./validations/TestValidator";
+export * from "./validations/TestValidator";
 export * from "./validations/LogicalValidators";
 export * from "./validations/BotValidators";
 export * from "./validations/GenericValidators";

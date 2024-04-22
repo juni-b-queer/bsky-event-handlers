@@ -11,7 +11,7 @@ export class SimpleFunctionValidator extends AbstractValidator {
   constructor(
     private triggerValidator: (
       arg0: JetstreamMessage,
-      arg1: HandlerAgent
+      arg1: HandlerAgent,
     ) => boolean | PromiseLike<boolean>,
   ) {
     super();
@@ -66,7 +66,10 @@ export class NotValidator extends AbstractValidator {
     message: JetstreamMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    const willTrigger = await this.validator.shouldTrigger(message, handlerAgent);
+    const willTrigger = await this.validator.shouldTrigger(
+      message,
+      handlerAgent,
+    );
     return !willTrigger;
   }
 }

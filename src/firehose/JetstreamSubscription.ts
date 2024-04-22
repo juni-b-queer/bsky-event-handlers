@@ -13,8 +13,8 @@ import { MessageHandler } from "../handlers/record-handlers/AbstractMessageHandl
 
 // TODO ADD interface for c and d so they're reusable and don't look so icky down there
 export interface CreateAndDeleteHandlersInterface {
-  c?: MessageHandler[],
-  d?: MessageHandler[]
+  c?: MessageHandler[];
+  d?: MessageHandler[];
 }
 export interface JetstreamSubscriptionHandlers {
   post?: CreateAndDeleteHandlersInterface;

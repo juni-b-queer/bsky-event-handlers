@@ -106,25 +106,25 @@ describe("InputIsCommandValidator Not strict Class", () => {
     // @ts-ignore
     message.record.text = "!Key someCommand";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(true);
 
     // @ts-ignore
     message.record.text = "!keY";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(true);
 
     // @ts-ignore
     message.record.text = "someCommand !key";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(false);
 
     // @ts-ignore
     message.record.text = "someCommand";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(false);
   });
 
@@ -132,25 +132,25 @@ describe("InputIsCommandValidator Not strict Class", () => {
     // @ts-ignore
     message.record.text = "keY! someCommand";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(true);
 
     // @ts-ignore
     message.record.text = "Key!";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(true);
 
     // @ts-ignore
     message.record.text = "someCommand key!";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(false);
 
     // @ts-ignore
     message.record.text = "someCommand";
     expect(
-        await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
+      await inputIsCommandValidator.shouldTrigger(message, handlerAgent),
     ).toBe(false);
   });
 });

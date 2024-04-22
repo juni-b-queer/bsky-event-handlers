@@ -13,12 +13,11 @@ export class PostedByUserValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-
-    return this.userDid === message.did
-        && message.collection == "app.bsky.feed.post";
+    return (
+      this.userDid === message.did && message.collection == "app.bsky.feed.post"
+    );
   }
 }
-
 
 export class ReplyingToBotValidator extends AbstractValidator {
   constructor() {
