@@ -19,6 +19,7 @@ describe("Posted by user validator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -37,6 +38,7 @@ describe("Posted by user validator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -55,6 +57,7 @@ describe("Posted by user validator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",

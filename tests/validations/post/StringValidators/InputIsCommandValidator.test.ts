@@ -14,6 +14,7 @@ describe("InputIsCommandValidator Class", () => {
     opType: "c",
     rkey: "",
     seq: 0,
+    cid: "cid",
     record: {
       text: "test",
       $type: "",
@@ -89,6 +90,7 @@ describe("InputIsCommandValidator Not strict Class", () => {
     opType: "c",
     rkey: "",
     seq: 0,
+    cid: "cid",
     record: {
       text: "test",
       $type: "",

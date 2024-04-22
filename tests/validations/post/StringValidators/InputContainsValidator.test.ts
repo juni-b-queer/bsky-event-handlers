@@ -16,6 +16,7 @@ describe("InputContainsValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test message",
         $type: "",
@@ -34,6 +35,7 @@ describe("InputContainsValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "blahblahtestblahblah",
         $type: "",
@@ -52,6 +54,7 @@ describe("InputContainsValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "message example",
         $type: "",

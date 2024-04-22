@@ -21,6 +21,7 @@ describe("InputEqualsValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -44,6 +45,7 @@ describe("InputEqualsValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "message test",
         $type: "",

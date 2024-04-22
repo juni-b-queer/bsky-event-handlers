@@ -16,6 +16,7 @@ describe("IsReplyValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -44,6 +45,7 @@ describe("IsReplyValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",

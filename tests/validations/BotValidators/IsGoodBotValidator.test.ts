@@ -16,6 +16,7 @@ describe("IsGoodBotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "great bot",
         $type: "",
@@ -35,6 +36,7 @@ describe("IsGoodBotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "ok thank you",
         $type: "",
@@ -54,6 +56,7 @@ describe("IsGoodBotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "bad bot",
         $type: "",

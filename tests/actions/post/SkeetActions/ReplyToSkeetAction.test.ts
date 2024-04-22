@@ -1,7 +1,7 @@
 import {
   CreateSkeetMessage,
   CreateSkeetRecord,
-  HandlerAgent,
+  HandlerAgent, Reply,
   ReplyToSkeetAction,
 } from "../../../../src";
 
@@ -10,19 +10,33 @@ describe("Reply To Skeet Action", () => {
   let handlerAgent: HandlerAgent;
   let message: CreateSkeetMessage;
   const mockCreateSkeet = jest.fn();
+  const mockReply: Reply = {
+    root:{
+      cid: "",
+      uri: ""
+    },
+    parent:{
+      cid: "",
+      uri: ""
+    }
+  }
+  const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
+
   const skeetText: string = "Test Text";
 
   beforeEach(() => {
     handlerAgent = {
       createSkeet: mockCreateSkeet,
+      generateReplyFromMessage: mockGenerateReplyFromMessage
     } as unknown as HandlerAgent;
     message = {
       record: {} as CreateSkeetRecord,
-      collection: "",
-      did: "",
+      collection: "app.bsky.feed.post",
+      did: "did:plc:did",
       opType: "c",
-      rkey: "",
+      rkey: "rkey",
       seq: 0,
+      cid: "cid"
     };
     action = new ReplyToSkeetAction(skeetText);
   });
@@ -33,6 +47,6 @@ describe("Reply To Skeet Action", () => {
 
   it("Should call CreateSkeet with text", async () => {
     await action.handle(message, handlerAgent);
-    expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText);
+    expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, mockReply);
   });
 });

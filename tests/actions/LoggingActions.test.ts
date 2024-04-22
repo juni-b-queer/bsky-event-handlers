@@ -22,6 +22,7 @@ describe("LogMessageAction", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     action = new LogMessageAction();
   });
@@ -52,6 +53,7 @@ describe("LogInputTextAction", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     action = new LogInputTextAction(input);
   });
@@ -80,6 +82,16 @@ describe("LogInputTextAction", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+
+  it("Should log info when no level given", async () => {
+    const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
+
+    action = new DebugLogAction("TEST", "Hello");
+
+    await action.handle(message, handlerAgent);
+    expect(console.log).toHaveBeenCalledWith(expected);
   });
 
   it("Should log info", async () => {

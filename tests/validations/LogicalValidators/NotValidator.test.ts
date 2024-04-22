@@ -21,6 +21,7 @@ describe("NotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -39,6 +40,7 @@ describe("NotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "blah",
         $type: "",

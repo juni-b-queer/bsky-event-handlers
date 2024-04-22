@@ -9,6 +9,7 @@ describe("FunctionAction", () => {
     opType: "c",
     rkey: "",
     seq: 0,
+    cid: "cid"
   };
 
   let mockActionFunction = jest.fn();

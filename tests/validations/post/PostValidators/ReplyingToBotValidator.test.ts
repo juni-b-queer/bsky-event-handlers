@@ -16,6 +16,7 @@ describe("ReplyingToBotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -46,6 +47,7 @@ describe("ReplyingToBotValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",

@@ -72,6 +72,7 @@ describe("CreateSkeetHandler", () => {
         record: {} as CreateSkeetRecord,
         rkey: "",
         seq: 0,
+        cid: "cid"
       };
       await createSkeetHandler.handle(message);
 
@@ -90,6 +91,7 @@ describe("CreateSkeetHandler", () => {
         record: {} as CreateSkeetRecord,
         rkey: "",
         seq: 0,
+        cid: "cid"
       };
       await createSkeetHandler.handle(message);
 
@@ -105,6 +107,7 @@ describe("CreateSkeetHandler", () => {
         record: {} as CreateSkeetRecord,
         rkey: "",
         seq: 3,
+        cid: "cid"
       };
       await createSkeetHandler.handle(message);
 

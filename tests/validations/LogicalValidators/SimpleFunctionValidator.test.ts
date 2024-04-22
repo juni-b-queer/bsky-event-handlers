@@ -13,6 +13,7 @@ describe("FunctionAction", () => {
     opType: "c",
     rkey: "",
     seq: 0,
+    cid: "cid",
   };
 
   let mockvalidatorFunction = jest.fn();

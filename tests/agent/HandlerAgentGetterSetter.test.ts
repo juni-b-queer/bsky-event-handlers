@@ -52,6 +52,9 @@ describe("HandlerAgent", () => {
     const testDid = "TestDid";
     handlerAgent.setDid = testDid;
     expect(handlerAgent.getDid).toBe(testDid);
+
+    handlerAgent.setDid = undefined;
+    expect(handlerAgent.getDid).toBe("");
   });
 
   it("#getSession & setSession should set correct session value", () => {
@@ -60,5 +63,8 @@ describe("HandlerAgent", () => {
     } as AtpSessionData;
     handlerAgent.setSession = testSession;
     expect(handlerAgent.getSession).toBe(testSession);
+
+    handlerAgent.setSession = undefined;
+    expect(handlerAgent.getSession).toBe(false);
   });
 });

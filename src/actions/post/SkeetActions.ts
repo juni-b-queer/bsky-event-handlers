@@ -1,9 +1,10 @@
 import { AbstractMessageAction } from "../AbstractMessageAction";
 import {
   CreateSkeetMessage,
-  JetstreamMessage,
+  JetstreamMessage, Reply, Subject,
 } from "../../types/JetstreamTypes";
 import { HandlerAgent } from "../../agent/HandlerAgent";
+import * as repl from "repl";
 
 export class CreateSkeetAction extends AbstractMessageAction {
   constructor(private skeetText: string) {
@@ -19,7 +20,6 @@ export class CreateSkeetAction extends AbstractMessageAction {
   }
 }
 
-// TODO handle reply!
 export class ReplyToSkeetAction extends AbstractMessageAction {
   constructor(private replyText: string) {
     super();
@@ -30,6 +30,7 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<any> {
-    await handlerAgent.createSkeet(this.replyText);
+    let reply: Reply = handlerAgent.generateReplyFromMessage(message);
+    await handlerAgent.createSkeet(this.replyText, reply);
   }
 }

@@ -72,6 +72,7 @@ export interface JetstreamMessage {
   opType: "c" | "d";
   collection: string;
   rkey: string;
+  cid: string;
 }
 
 export interface CreateMessage extends JetstreamMessage {

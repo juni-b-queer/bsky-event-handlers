@@ -67,6 +67,7 @@ describe("JetstreamSubscription", () => {
       record: {} as Record,
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleCreate(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -84,6 +85,7 @@ describe("JetstreamSubscription", () => {
       record: {} as Record,
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleCreate(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -101,6 +103,7 @@ describe("JetstreamSubscription", () => {
       record: {} as Record,
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleCreate(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -118,6 +121,7 @@ describe("JetstreamSubscription", () => {
       record: {} as Record,
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleCreate(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -133,6 +137,7 @@ describe("JetstreamSubscription", () => {
       opType: "d",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleDelete(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -148,6 +153,7 @@ describe("JetstreamSubscription", () => {
       opType: "d",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleDelete(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -163,6 +169,7 @@ describe("JetstreamSubscription", () => {
       opType: "d",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleDelete(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
@@ -178,6 +185,7 @@ describe("JetstreamSubscription", () => {
       opType: "d",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     jetSub.handleDelete(msg);
     expect(dummyHandler.handle).toHaveBeenCalledTimes(1);

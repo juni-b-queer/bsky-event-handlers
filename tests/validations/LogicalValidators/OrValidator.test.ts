@@ -24,6 +24,7 @@ describe("OrValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test",
         $type: "",
@@ -42,6 +43,7 @@ describe("OrValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "test message",
         $type: "",
@@ -60,6 +62,7 @@ describe("OrValidator", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid",
       record: {
         text: "random",
         $type: "",

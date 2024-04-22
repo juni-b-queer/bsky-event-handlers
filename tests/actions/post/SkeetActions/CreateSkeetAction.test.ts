@@ -21,6 +21,7 @@ describe("Create Skeet Action", () => {
       opType: "c",
       rkey: "",
       seq: 0,
+      cid: "cid"
     };
     action = new CreateSkeetAction(skeetText);
   });

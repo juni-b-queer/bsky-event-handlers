@@ -9,7 +9,8 @@ import { debugLog } from "../utils/logging-utils";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { PostDetails } from "../types/PostDetails";
 import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
-import { JetstreamMessage } from "../types/JetstreamTypes";
+import {CreateSkeetMessage, JetstreamMessage, Reply, Subject} from "../types/JetstreamTypes";
+import * as repl from "repl";
 
 export class HandlerAgent {
   private did: string | undefined;
@@ -26,7 +27,7 @@ export class HandlerAgent {
     agent: BskyAgent | null = null,
   ) {
     if (!agent) {
-      this.agent = this.initializeBskyAgent();
+      this.agent = this.initializeBskyAgent(); // TODO TEST
     } else {
       this.agent = agent;
       this.setDid = agent.session?.did;
@@ -43,7 +44,7 @@ export class HandlerAgent {
    *
    */
   initializeBskyAgent(): BskyAgent {
-    return new BskyAgent({
+    return new BskyAgent({ // TODO Test
       service: "https://bsky.social/",
       persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
         this.setDid = sess?.did;
@@ -57,7 +58,7 @@ export class HandlerAgent {
    */
   async authenticate() {
     if (!this.agent) {
-      this.agent = this.initializeBskyAgent();
+      this.agent = this.initializeBskyAgent(); // TODO Test
     }
     if (this.agent) {
       await this.agent.login({
@@ -65,7 +66,7 @@ export class HandlerAgent {
         password: this.password,
       });
       if (!this.session) {
-        throw new Error(
+        throw new Error( // TODO test
           "Could not retrieve bluesky session data for reply bot",
         );
       } else {
@@ -75,7 +76,7 @@ export class HandlerAgent {
       await this.agent.resumeSession(this.session);
 
       if (!this.agent) {
-        throw new Error(`Could not get agent from ${this.agentName}`);
+        throw new Error(`Could not get agent from ${this.agentName}`); // TODO test
       }
       return this;
     }
@@ -140,7 +141,7 @@ export class HandlerAgent {
       await this.agent.deleteFollow(followLink);
       return true;
     }
-    return false;
+    return false; // TODO test
   }
 
   //endregion
@@ -170,7 +171,7 @@ export class HandlerAgent {
    *
    */
   async getPostDetails(op: RepoOp, repo: string) {
-    const rkey = op.path.split("/")[1];
+    const rkey = op.path.split("/")[1]; // TODO test
     return await this.agent.getPost({
       repo: repo,
       rkey: rkey,
@@ -193,34 +194,21 @@ export class HandlerAgent {
    */
   async createSkeet(
     newPostDetails: string,
-    existingPostDetails: PostDetails | null = null,
+    skeetReply: Reply | undefined = undefined,
   ) {
+    // TODO Add in handling for facets and maybe images?
     const replyText = new RichText({
       text: newPostDetails,
     });
-    if (!existingPostDetails) {
+    if (skeetReply == undefined) {
       // if it's not a reply
       return await this.agent.post({
         text: replyText.text,
       });
     } else {
-      const reply = {
-        root: {
-          cid: existingPostDetails.cid,
-          uri: existingPostDetails.uri,
-        },
-        parent: {
-          cid: existingPostDetails.cid,
-          uri: existingPostDetails.uri,
-        },
-      };
-
-      if (this.hasPostReplyRoot(existingPostDetails)) {
-        reply.root = this.getPostReplyRoot(existingPostDetails);
-      }
-
       return await this.agent.post({
-        reply: reply,
+        // @ts-ignore
+        reply: skeetReply,
         text: replyText.text,
       });
     }
@@ -278,25 +266,49 @@ export class HandlerAgent {
    *
    */
   getPosterDID(postDetails: PostDetails) {
-    return (postDetails.uri.match(/did:[^/]*/) || [])[0];
+    return (postDetails.uri.match(/did:[^/]*/) || [])[0]; // TODO test?
   }
 
   /**
    *
    */
   postedByAgent(message: JetstreamMessage) {
-    return message.did === this.getDid;
+    return message.did === this.getDid; //TODO Test
   }
 
   /**
    *
    */
   getDIDFromURI(uri: string) {
-    return (uri.match(/did:[^/]*/) || [])[0];
+    return (uri.match(/did:[^/]*/) || [])[0]; //TODO Test
+  }
+
+  /**
+   *
+   */
+  generateReplyFromMessage(message: CreateSkeetMessage): Reply{
+    let reply: Reply; //TODO Test
+    let parentReply: Subject = {
+      cid: message.cid,
+      uri: `at:/${message.did}/app.bsky.feed.post/${message.rkey}`
+    }
+    // if message is a reply
+    if(message.record.reply){
+      reply = {
+        root: message.record.reply.root,
+        parent: parentReply
+      }
+    }else{
+      reply = {
+        root: parentReply,
+        parent: parentReply
+      }
+    }
+    return reply;
   }
 
   hasPostReplyRoot(postDetails: PostDetails): boolean {
-    if (
+    if ( //TODO Test
       "reply" in postDetails.value &&
       postDetails.value?.reply !== undefined
     ) {
@@ -311,7 +323,7 @@ export class HandlerAgent {
   }
 
   getPostReplyRoot(postDetails: PostDetails): any | boolean {
-    if (
+    if ( //TODO Test
       "reply" in postDetails.value &&
       postDetails.value?.reply !== undefined
     ) {
@@ -343,7 +355,7 @@ export class HandlerAgent {
    */
   public get getAgent(): BskyAgent | boolean {
     if (!this.agent) {
-      return false;
+      return false; //TODO Test
     }
     return this.agent;
   }
@@ -362,7 +374,7 @@ export class HandlerAgent {
    */
   public get getAgentName(): string | boolean {
     if (!this.agentName) {
-      return false;
+      return false; //TODO Test
     }
     return this.agentName;
   }
@@ -381,7 +393,7 @@ export class HandlerAgent {
    */
   public get getHandle(): string | boolean {
     if (!this.handle) {
-      return false;
+      return false; //TODO Test
     }
     return this.handle;
   }
@@ -391,7 +403,7 @@ export class HandlerAgent {
    * @param {string} value - The new value for password.
    */
   public set setPassword(value: string) {
-    this.password = value;
+    this.password = value; //TODO Test
   }
 
   /**
@@ -427,7 +439,7 @@ export class HandlerAgent {
    */
   public get getSession(): AtpSessionData | boolean {
     if (!this.session) {
-      return false;
+      return false; //TODO Test
     }
     return this.session;
   }
