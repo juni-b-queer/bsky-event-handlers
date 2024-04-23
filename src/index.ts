@@ -8,9 +8,9 @@ export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeet
  * Premade Handlers
  */
 
-// export { GoodBotHandler } from "./handlers/premade-handlers/GoodBotHandler";
-// export { BadBotHandler } from "./handlers/premade-handlers/BadBotHandler";
-// export { OfflineHandler } from "./handlers/premade-handlers/OfflineHandler";
+export { GoodBotHandler } from "./handlers/premade-handlers/GoodBotHandler";
+export { BadBotHandler } from "./handlers/premade-handlers/BadBotHandler";
+export { OfflineHandler } from "./handlers/premade-handlers/OfflineHandler";
 
 /**
  * Validators
