@@ -3,57 +3,68 @@
 Actions are the set of operations that are executed in response to certain validation or criteria fulfillment. This could range from sending reply posts, logging particular information, or executing any function, to more complex sequences of operations. You even have the ability to create custom actions based on your needs.
 
 - [FunctionAction](#functionaction)
-- [Reply Actions](#reply-actions)
-  - [ReplyWithInputAction](#replywithinputaction)
-  - [ReplyWithGeneratedTextAction](#replywithgeneratedtextaction)
-  - [ReplyRepetitivelyFromStringArray](#replyrepetitivelyfromstringarray)
 - [Logging Actions](#logging-actions)
-  - [LogPostDetailsAction](#logpostdetailsaction)
-  - [LogRepoOperationAction](#logrepooperationaction)
+  - [LogMessageAction](#logmessageaction)
   - [LogInputTextAction](#loginputtextaction)
+  - [DebugLogAction](#debuglogaction)
+- Post
+  - [Skeet Actions](#skeet-actions)
+    - [CreateSkeetAction](#createskeetaction)
+    - [CreateSkeetWithGeneratedTextAction](#createskeetwithgeneratedtextaction)
+    - [ReplyToSkeetAction](#replytoskeetaction)
+    - [ReplyToSkeetWithGeneratedTextAction](#replytoskeetwithgeneratedtextaction)
 
-### FunctionAction
+## FunctionAction
 
-The `FunctionAction` class takes a function as an argument. This function gets executed when the handle method is called and it should accept `AgentDetails`, `RepoOp`, and `PostDetails` as arguments.
+The `FunctionAction` class takes a function as an argument. This function gets executed when the handle method is called and it should accept `JeststreamMessage` and `HandlerAgent` as arguments.
 
-`new FunctionAction((agentDetails, op, postDetails) => { // Function implementation goes here });`
+`new FunctionAction((message, handlerAgent) => { // Function implementation goes here });`
 
-## Reply Actions
-
-### ReplyWithInputAction
-
-The `ReplyWithInputAction` class takes a predefined response text as input and sends it as a reply to a post.
-
-`new ReplyWithInputAction("This is my response text");`
-
-### ReplyWithGeneratedTextAction
-
-The `ReplyWithGeneratedTextAction` class leverages a reply generating function to generate a reply to a post. The function should return a string which will be used as the response text.
-
-`new ReplyWithGeneratedTextAction(myResponseTextGeneratingFunction);`
-
-### ReplyRepetitivelyFromStringArray
-
-The `ReplyRepetitivelyFromStringArray` class takes in an array of strings. Each string is sent as a reply to the post, one after another, with a delay of 50 milliseconds in between each post.
-
-`new ReplyRepetitivelyFromStringArray(["Response text 1", "Response text 2", "Response text 3"]);`
 
 ## Logging Actions
 
-### LogPostDetailsAction
+### LogMessageAction
 
-The `LogPostDetailsAction` class logs the post details when the handle method is called.
+The `LogMessageAction` class logs message received from jetstream.
 
-`new LogPostDetailsAction();`
-
-### LogRepoOperationAction
-
-The `LogRepoOperationAction` class logs the repository operation details when the handle method is called.
-
-`new LogRepoOperationAction()`
+`new LogMessageAction();`
 
 ### LogInputTextAction
 
-The `LogInputTextAction` class takes a predefined string as input and logs it when the handle method is called.
+The `LogInputTextAction` class logs given input text.
 
-`new LogInputTextAction("This is my log text");`
+`new LogInputTextAction("input text")`
+
+### DebugLogAction
+
+The `DebugLogAction` class will output to the log using the DebugLog class. give it the action, the message, and log level
+
+`new DebugLogAction("Action", "Text", info|warn|error);`
+
+
+## Skeet Actions
+
+### CreateSkeetAction
+Pass in a string, and when the validations pass, it will create a new skeet from the agent with the given input text.
+
+`new CreateSkeetAction("Skeet text")`
+
+### CreateSkeetWithGeneratedTextAction
+The `CreateSkeetWithGeneratedTextAction` accepts a function with 2 arguments, `JetstreamMessage` and `HandlerAgent`. This function should return a string
+When the validations pass, it will call the function to generate the response text
+
+`new CreateSkeetWithGeneratedTextAction((message: JetstreamMessage, handlerAgent) => { // Function implementation goes here });`
+
+
+### ReplyToSkeetAction
+The `ReplyToSkeetAction` only works on post creation messages for now.
+Pass in a string, and when the validations pass, it will reply to the created skeet with a new skeet using the given input text
+
+`new ReplyToSkeetAction("Reply Text")`
+
+### ReplyToSkeetWithGeneratedTextAction
+The `ReplyToSkeetWithGeneratedTextAction` only works on post creation messages for now.
+Similar to the CreateSkeetWithGeneratedTextAction, it accepts a function with 2 arguments, but the first is a `CreateSkeetMessage` and the second is the same, being a `HandlerAgent`. This function should return a string
+When the validations pass, it will call the function to generate the response text
+
+`new ReplyToSkeetWithGeneratedTextAction((message: CreateSkeetMessage, handlerAgent) => { // Function implementation goes here });`
