@@ -4,7 +4,7 @@ import {
   IsReplyValidator,
   Subject,
 } from "../../../../src";
-import {BskyAgent} from "@atproto/api";
+import { BskyAgent } from "@atproto/api";
 
 describe("IsReplyValidator", () => {
   const validator = new IsReplyValidator();
@@ -14,10 +14,10 @@ describe("IsReplyValidator", () => {
     },
   } as BskyAgent;
   const handlerAgent: HandlerAgent = new HandlerAgent(
-      "name",
-      "handle",
-      "password",
-      bskyAgent,
+    "name",
+    "handle",
+    "password",
+    bskyAgent,
   );
 
   test("shouldTrigger returns true if op.payload.reply is not null", async () => {
