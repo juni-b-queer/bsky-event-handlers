@@ -1,5 +1,4 @@
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { PostDetails } from "../types/PostDetails";
 import { HandlerAgent } from "../agent/HandlerAgent";
 import { JetstreamMessage } from "../types/JetstreamTypes";
 import { DebugLog } from "../utils/DebugLog";

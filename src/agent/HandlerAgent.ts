@@ -168,16 +168,6 @@ export class HandlerAgent {
 
   //region Post interactions
 
-  /**
-   *
-   */
-  async getPostDetails(op: RepoOp, repo: string) {
-    const rkey = op.path.split("/")[1]; // TODO test
-    return await this.agent.getPost({
-      repo: repo,
-      rkey: rkey,
-    });
-  }
 
   /**
    *
