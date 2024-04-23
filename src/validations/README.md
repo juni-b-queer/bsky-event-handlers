@@ -24,6 +24,10 @@ Validators are used to determine whether or not an action should be triggered. W
   - [Follow Validators](#follow-validators)
     - [NewFollowerForUserValidator](#newfollowerforuservalidator)
     - [UserFollowedValidator](#userfollowedvalidator)
+- Like
+  - Coming soon
+- Repost
+  - Coming soon
 - Testing
   - [Test Validator](#test-validator)
 
