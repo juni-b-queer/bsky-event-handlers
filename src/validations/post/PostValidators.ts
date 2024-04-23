@@ -1,8 +1,6 @@
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorInput } from "../../types/ValidatorInput";
 import { HandlerAgent } from "../../agent/HandlerAgent";
 import { CreateSkeetMessage } from "../../types/JetstreamTypes";
-import { ComAtprotoServerCreateAccount } from "@atproto/api";
 
 export class PostedByUserValidator extends AbstractValidator {
   constructor(private userDid: string) {
@@ -33,7 +31,8 @@ export class ReplyingToBotValidator extends AbstractValidator {
 
     const posterDID = message.did;
 
-    return handlerAgent.getDid === posterDID;
+    return handlerAgent.getDid === posterDID
+        && message.collection == "app.bsky.feed.post";
   }
 }
 

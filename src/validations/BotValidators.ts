@@ -1,8 +1,7 @@
-import { ValidatorInput } from "../types/ValidatorInput";
 import { isBadBotResponse, isGoodBotResponse } from "../utils/text-utils";
 import { AbstractValidator } from "./AbstractValidator";
 import { HandlerAgent } from "../agent/HandlerAgent";
-import { CreateSkeetMessage, JetstreamMessage } from "../types/JetstreamTypes";
+import { CreateSkeetMessage } from "../types/JetstreamTypes";
 
 export class IsGoodBotValidator extends AbstractValidator {
   constructor() {
@@ -13,7 +12,9 @@ export class IsGoodBotValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return isGoodBotResponse(this.getTextFromPost(message));
+    let isReplyToBot = handlerAgent.getDid === message.did
+        && message.collection == "app.bsky.feed.post";
+    return isGoodBotResponse(this.getTextFromPost(message)) && isReplyToBot;
   }
 }
 
@@ -26,6 +27,8 @@ export class IsBadBotValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    return isBadBotResponse(this.getTextFromPost(message));
+    let isReplyToBot = handlerAgent.getDid === message.did
+        && message.collection == "app.bsky.feed.post";
+    return isBadBotResponse(this.getTextFromPost(message)) && isReplyToBot;
   }
 }
