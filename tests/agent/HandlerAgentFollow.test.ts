@@ -59,7 +59,6 @@ describe("HandlerAgent", () => {
   it("Get Follows should call agent getFollow", async () => {
     const follows = await handlerAgent.getFollows();
     expect(getFollowsMock).toHaveBeenCalled();
-    console.log(follows);
     expect(follows).toEqual(followingMocks);
   });
 

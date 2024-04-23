@@ -3,10 +3,11 @@
 Validators are used to determine whether or not an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
 
 ## Create a Validator
+
 Coming soon (also you can just look at the code of the existing ones for now, they're pretty simple)
 
-
 ## Existing Validators
+
 - [Logical Validator](#logical-validator)
   - [SimpleFunctionValidator](#simplefunctionvalidator)
   - [OrValidator](#orvalidator)
