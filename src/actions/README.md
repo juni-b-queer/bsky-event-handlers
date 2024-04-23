@@ -2,6 +2,10 @@
 
 Actions are the set of operations that are executed in response to certain validation or criteria fulfillment. This could range from sending reply posts, logging particular information, or executing any function, to more complex sequences of operations. You even have the ability to create custom actions based on your needs.
 
+## Create an Action
+Coming soon (also you can just look at the code of the existing ones for now, they're pretty simple)
+
+## Existing Actions
 - [FunctionAction](#functionaction)
 - [Logging Actions](#logging-actions)
   - [LogMessageAction](#logmessageaction)
