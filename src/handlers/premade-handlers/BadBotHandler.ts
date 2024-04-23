@@ -6,7 +6,10 @@ import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
 import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 
 export class BadBotHandler extends CreateSkeetHandler {
-  constructor(public handlerAgent: HandlerAgent, public response: string = "I'm sorry 😓") {
+  constructor(
+    public handlerAgent: HandlerAgent,
+    public response: string = "I'm sorry 😓",
+  ) {
     super(
       [new IsBadBotValidator()],
       [

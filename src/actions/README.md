@@ -20,7 +20,6 @@ The `FunctionAction` class takes a function as an argument. This function gets e
 
 `new FunctionAction((message, handlerAgent) => { // Function implementation goes here });`
 
-
 ## Logging Actions
 
 ### LogMessageAction
@@ -41,28 +40,30 @@ The `DebugLogAction` class will output to the log using the DebugLog class. give
 
 `new DebugLogAction("Action", "Text", info|warn|error);`
 
-
 ## Skeet Actions
 
 ### CreateSkeetAction
+
 Pass in a string, and when the validations pass, it will create a new skeet from the agent with the given input text.
 
 `new CreateSkeetAction("Skeet text")`
 
 ### CreateSkeetWithGeneratedTextAction
+
 The `CreateSkeetWithGeneratedTextAction` accepts a function with 2 arguments, `JetstreamMessage` and `HandlerAgent`. This function should return a string
 When the validations pass, it will call the function to generate the response text
 
 `new CreateSkeetWithGeneratedTextAction((message: JetstreamMessage, handlerAgent) => { // Function implementation goes here });`
 
-
 ### ReplyToSkeetAction
+
 The `ReplyToSkeetAction` only works on post creation messages for now.
 Pass in a string, and when the validations pass, it will reply to the created skeet with a new skeet using the given input text
 
 `new ReplyToSkeetAction("Reply Text")`
 
 ### ReplyToSkeetWithGeneratedTextAction
+
 The `ReplyToSkeetWithGeneratedTextAction` only works on post creation messages for now.
 Similar to the CreateSkeetWithGeneratedTextAction, it accepts a function with 2 arguments, but the first is a `CreateSkeetMessage` and the second is the same, being a `HandlerAgent`. This function should return a string
 When the validations pass, it will call the function to generate the response text

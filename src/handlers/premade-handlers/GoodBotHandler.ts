@@ -6,7 +6,10 @@ import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 import { CreateSkeetHandler } from "../skeet/CreateSkeetHandler";
 
 export class GoodBotHandler extends CreateSkeetHandler {
-  constructor(public handlerAgent: HandlerAgent, public response: string = "Thank you 🥹") {
+  constructor(
+    public handlerAgent: HandlerAgent,
+    public response: string = "Thank you 🥹",
+  ) {
     super(
       [new IsGoodBotValidator()],
       [

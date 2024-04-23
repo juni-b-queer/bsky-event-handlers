@@ -133,7 +133,7 @@ Defines a reply with references to its parent and root subjects.
 A generic record with timestamps and associated subject.
 
 | Property  | Type             | Description                                              |
-| --------- |------------------|----------------------------------------------------------|
+| --------- | ---------------- | -------------------------------------------------------- |
 | $type     | string           | The type of the record.                                  |
 | createdAt | string           | The creation timestamp of the record.                    |
 | subject   | Subject / string | The associated subject of the record. Or DID as a string |

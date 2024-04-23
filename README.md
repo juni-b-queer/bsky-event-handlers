@@ -32,9 +32,9 @@ Create your bsky agent and prepare your jetstreamSubscription variable
 
 ```typescript
 const testAgent = new HandlerAgent(
-        'test-bot',
-        <string>Bun.env.TEST_BSKY_HANDLE,
-        <string>Bun.env.TEST_BSKY_PASSWORD
+  "test-bot",
+  <string>Bun.env.TEST_BSKY_HANDLE,
+  <string>Bun.env.TEST_BSKY_PASSWORD,
 );
 
 let jetstreamSubscription: JetstreamSubscription;
@@ -47,43 +47,44 @@ const handlers: JetstreamSubscriptionHandlers = {
   post: {
     c: [
       new CreateSkeetHandler(
-              [new InputEqualsValidator("Hello")],
-              [new ReplyToSkeetAction("World!")],
-              testAgent
-      )
+        [new InputEqualsValidator("Hello")],
+        [new ReplyToSkeetAction("World!")],
+        testAgent,
+      ),
     ],
-    d: []
+    d: [],
   },
   like: {
     c: [],
-    d: []
+    d: [],
   },
   follow: {
     c: [],
-    d: []
+    d: [],
   },
   repost: {
     c: [],
-    d: []
-  }
-}
+    d: [],
+  },
+};
 ```
 
 If you're not acting on the creation/deletion of either of the four options, you can exclude them from this object
 
 for our example, we'll only be acting upon post creations, so our handlers will look like
+
 ```typescript
 const handlers: JetstreamSubscriptionHandlers = {
   post: {
     c: [
       new CreateSkeetHandler(
-              [new InputEqualsValidator("Hello")],
-              [new ReplyToSkeetAction("World!")],
-              testAgent
-      )
+        [new InputEqualsValidator("Hello")],
+        [new ReplyToSkeetAction("World!")],
+        testAgent,
+      ),
     ],
-  }
-}
+  },
+};
 ```
 
 By excluding the others, the Jetstream subscription will automatically update it's subscription url to query for only post events.
@@ -92,23 +93,22 @@ Then in out `initialize` function, we authenticate the agent, and create the Jet
 
 ```typescript
 async function initialize() {
-    await testAgent.authenticate()
-    DebugLog.info("INIT", 'Initialized!')
-  
-    jetstreamSubscription = new JetstreamSubscription(
-        handlers,
-        <string>Bun.env.JETSTREAM_URL
-    );
+  await testAgent.authenticate();
+  DebugLog.info("INIT", "Initialized!");
+
+  jetstreamSubscription = new JetstreamSubscription(
+    handlers,
+    <string>Bun.env.JETSTREAM_URL,
+  );
 }
 ```
 
 Then finally, we call initialize, then start the subscription to listen for events
 
 ```typescript
-initialize().then(() =>{
-    jetstreamSubscription.createSubscription()
+initialize().then(() => {
+  jetstreamSubscription.createSubscription();
 });
-
 ```
 
 All together, a simple bot index.ts would look like
@@ -121,42 +121,41 @@ import {
   CreateSkeetHandler,
   InputEqualsValidator,
   ReplyToSkeetAction,
-  DebugLog
+  DebugLog,
 } from "bsky-event-handlers";
 
 const testAgent = new HandlerAgent(
-        'test-bot',
-        <string>Bun.env.TEST_BSKY_HANDLE,
-        <string>Bun.env.TEST_BSKY_PASSWORD
+  "test-bot",
+  <string>Bun.env.TEST_BSKY_HANDLE,
+  <string>Bun.env.TEST_BSKY_PASSWORD,
 );
 
 let jetstreamSubscription: JetstreamSubscription;
-
 
 const handlers: JetstreamSubscriptionHandlers = {
   post: {
     c: [
       new CreateSkeetHandler(
-              [new InputEqualsValidator("Hello")],
-              [new ReplyToSkeetAction("World!")],
-              testAgent
-      )
+        [new InputEqualsValidator("Hello")],
+        [new ReplyToSkeetAction("World!")],
+        testAgent,
+      ),
     ],
-  }
-}
+  },
+};
 
 async function initialize() {
-  await testAgent.authenticate()
-  DebugLog.info("INIT", 'Initialized!')
+  await testAgent.authenticate();
+  DebugLog.info("INIT", "Initialized!");
 
   jetstreamSubscription = new JetstreamSubscription(
-          handlers,
-          <string>Bun.env.JETSTREAM_URL
+    handlers,
+    <string>Bun.env.JETSTREAM_URL,
   );
 }
 
-initialize().then(() =>{
-  jetstreamSubscription.createSubscription()
+initialize().then(() => {
+  jetstreamSubscription.createSubscription();
 });
 ```
 
@@ -165,7 +164,9 @@ A simple hello world bot is only 44 lines of code, and that's including the impo
 For full example code with Jetstream setup and docker usage, see my [Test firehose bot](https://github.com/juni-b-queer/test-firehose-bot)
 
 ### Env requirements
+
 Your .env should look something like this
+
 ```.env
 TEST_BSKY_HANDLE=handle.bsky.social
 TEST_BSKY_PASSWORD=app-pass-word
@@ -173,7 +174,6 @@ DEBUG_LOG_ACTIVE=true #This will enable DebugLog
 DEBUG_LOG_LEVEL=info # This sets the minimum log level that will be output
 JETSTREAM_URL='ws://localhost:6008/subscribe'
 ```
-
 
 # Overview
 
