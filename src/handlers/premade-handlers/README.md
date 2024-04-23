@@ -26,7 +26,6 @@ And the third is what the response will be if someone uses the command
 
 `new OfflineHandler(handlerAgent, "command", "response")`
 
-
 # Creating premade handlers
 
 Coming soon (but also look at the existing ones, they're pretty simple)

@@ -127,7 +127,7 @@ describe("IsBadBotValidator", () => {
       },
     };
     expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
-        false,
+      false,
     );
   });
 });

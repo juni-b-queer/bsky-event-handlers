@@ -141,7 +141,6 @@ describe("IsGoodBotValidator", () => {
     );
   });
 
-
   it("shouldTrigger returns false for non reply", async () => {
     const positiveMessage: CreateSkeetMessage = {
       collection: "app.bsky.feed.like",
@@ -158,7 +157,7 @@ describe("IsGoodBotValidator", () => {
       },
     };
     expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
-        false,
+      false,
     );
   });
 });
