@@ -1,8 +1,8 @@
 import { InputIsCommandValidator } from "../../validations/post/StringValidators";
 import { HandlerAgent } from "../../agent/HandlerAgent";
-import {CreateSkeetHandler} from "../record-handlers/skeet/CreateSkeetHandler";
-import {ReplyToSkeetAction} from "../../actions/post/SkeetActions";
-import {CreateSkeetMessage} from "../../types/JetstreamTypes";
+import { CreateSkeetHandler } from "../record-handlers/skeet/CreateSkeetHandler";
+import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 
 export class OfflineHandler extends CreateSkeetHandler {
   constructor(

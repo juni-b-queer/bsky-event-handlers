@@ -16,7 +16,7 @@ export class IsGoodBotValidator extends AbstractValidator {
       return false;
     }
     const replyingToDid = handlerAgent.getDIDFromUri(
-        // @ts-ignore
+      // @ts-ignore
       message.record.reply?.parent.uri,
     );
     const isReplyToBot =
@@ -39,7 +39,7 @@ export class IsBadBotValidator extends AbstractValidator {
       return false;
     }
     const replyingToDid = handlerAgent.getDIDFromUri(
-        // @ts-ignore
+      // @ts-ignore
       message.record.reply?.parent.uri,
     );
     const isReplyToBot =

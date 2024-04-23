@@ -1,9 +1,9 @@
 import { IsGoodBotValidator } from "../../validations/BotValidators";
 import { DebugLogAction } from "../../actions/LoggingActions";
 import { HandlerAgent } from "../../agent/HandlerAgent";
-import {ReplyToSkeetAction} from "../../actions/post/SkeetActions";
-import {CreateSkeetMessage} from "../../types/JetstreamTypes";
-import {CreateSkeetHandler} from "../record-handlers/skeet/CreateSkeetHandler";
+import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
+import { CreateSkeetHandler } from "../record-handlers/skeet/CreateSkeetHandler";
 
 export class GoodBotHandler extends CreateSkeetHandler {
   constructor(public handlerAgent: HandlerAgent) {

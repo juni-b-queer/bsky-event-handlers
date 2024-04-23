@@ -26,14 +26,11 @@ export class ReplyingToBotValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    // @ts-ignore
-    // let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
-
     if (!handlerAgent.hasPostReply(message)) {
       return false;
     }
     const replyingToDid = handlerAgent.getDIDFromUri(
-        // @ts-ignore
+      // @ts-ignore
       message.record.reply?.parent.uri,
     );
 
@@ -53,7 +50,6 @@ export class IsReplyValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    // @ts-ignore
-    return message.record.reply !== undefined;
+    return handlerAgent.hasPostReply(message);
   }
 }

@@ -4,10 +4,21 @@ import {
   IsReplyValidator,
   Subject,
 } from "../../../../src";
+import {BskyAgent} from "@atproto/api";
 
 describe("IsReplyValidator", () => {
   const validator = new IsReplyValidator();
-  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+  const bskyAgent: BskyAgent = {
+    session: {
+      did: "did:plc:blah",
+    },
+  } as BskyAgent;
+  const handlerAgent: HandlerAgent = new HandlerAgent(
+      "name",
+      "handle",
+      "password",
+      bskyAgent,
+  );
 
   test("shouldTrigger returns true if op.payload.reply is not null", async () => {
     const message: CreateSkeetMessage = {
