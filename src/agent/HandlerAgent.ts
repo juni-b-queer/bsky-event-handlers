@@ -293,7 +293,7 @@ export class HandlerAgent {
     let reply: Reply; //TODO Test
     const parentReply: Subject = {
       cid: message.cid,
-      uri: `at:/${message.did}/app.bsky.feed.post/${message.rkey}`,
+      uri: `at://${message.did}/app.bsky.feed.post/${message.rkey}`,
     };
     // if message is a reply
     if (message.record.reply) {
