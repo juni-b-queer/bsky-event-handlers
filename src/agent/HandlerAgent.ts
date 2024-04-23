@@ -168,7 +168,6 @@ export class HandlerAgent {
 
   //region Post interactions
 
-
   /**
    *
    * @param details
