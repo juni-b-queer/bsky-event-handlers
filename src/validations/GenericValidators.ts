@@ -1,5 +1,5 @@
 import { AbstractValidator } from "./AbstractValidator";
-import { CreateSkeetMessage } from "../types/JetstreamTypes";
+import { JetstreamMessage } from "../types/JetstreamTypes";
 import { HandlerAgent } from "../agent/HandlerAgent";
 
 export class ActionTakenByUserValidator extends AbstractValidator {
@@ -8,7 +8,7 @@ export class ActionTakenByUserValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-    message: CreateSkeetMessage,
+    message: JetstreamMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     return this.userDid === message.did;

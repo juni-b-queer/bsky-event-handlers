@@ -23,7 +23,6 @@ export class CreateSkeetHandler extends AbstractMessageHandler {
     const shouldTrigger = await this.shouldTrigger(
       message as CreateSkeetMessage,
     );
-    console.log(shouldTrigger);
     if (shouldTrigger) {
       try {
         await this.runActions(message as CreateSkeetMessage);

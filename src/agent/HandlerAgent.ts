@@ -38,9 +38,6 @@ export class HandlerAgent {
       this.setDid = agent.session?.did;
       this.setSession = agent.session;
     }
-
-    // this.persistSession = this.persistSession.bind(this);
-    // this.initializeBskyAgent = this.initializeBskyAgent.bind(this);
   }
 
   //region INIT Agent

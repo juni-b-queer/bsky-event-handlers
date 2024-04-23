@@ -55,7 +55,7 @@ export interface Reply {
 export interface Record {
   $type: string;
   createdAt: string;
-  subject: Subject;
+  subject: Subject | string;
 }
 
 export interface CreateSkeetRecord extends Record {

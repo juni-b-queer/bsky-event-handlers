@@ -39,6 +39,7 @@ export class JetstreamSubscription {
     private wsURL: string = "ws://localhost:6008/subscribe",
   ) {
     this.generateWsURL();
+    DebugLog.info("FIREHOSE", `Websocket URL: ${this.wsURL}`);
   }
 
   public set setWsURL(url: string) {
@@ -62,7 +63,7 @@ export class JetstreamSubscription {
    */
   public createSubscription() {
     DebugLog.warn("FIREHOSE", `Initializing`);
-    DebugLog.info("FIREHOSE", `Websocket URL: ${this.wsURL}`);
+
     this.wsClient = new WebSocket(this.wsURL);
 
     this.wsClient.on("open", () => {
@@ -71,7 +72,6 @@ export class JetstreamSubscription {
 
     this.wsClient.on("message", (data, isBinary) => {
       const message = !isBinary ? data : data.toString();
-      console.log(message);
       if (typeof message === "string") {
         const data = JSON.parse(message);
         switch (data.opType) {
@@ -86,8 +86,11 @@ export class JetstreamSubscription {
     });
 
     this.wsClient.on("close", () => {
+      DebugLog.error("JETSTREAM", "Subscription Closed")
       this.wsClient.close();
-      this.createSubscription();
+      setTimeout(() => {
+        this.createSubscription();
+      }, 5000)
     });
   }
 
@@ -151,9 +154,4 @@ export class JetstreamSubscription {
         break;
     }
   }
-
-  /**
-   *
-   */
-  public restartSubscription() {}
 }

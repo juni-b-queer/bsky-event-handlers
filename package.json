@@ -49,7 +49,6 @@
   },
   "dependencies": {
     "@atproto/api": "^0.7.4",
-    "atproto-firehose": "^0.2.2",
     "ws": "^8.16.0"
   }
 }
