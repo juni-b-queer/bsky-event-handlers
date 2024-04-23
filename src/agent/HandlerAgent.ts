@@ -7,7 +7,6 @@ import {
 } from "@atproto/api";
 import { debugLog } from "../utils/logging-utils";
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { PostDetails } from "../types/PostDetails";
 import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 import {
   CreateSkeetMessage,
@@ -15,7 +14,6 @@ import {
   Reply,
   Subject,
 } from "../types/JetstreamTypes";
-import * as repl from "repl";
 
 export class HandlerAgent {
   private did: string | undefined;
@@ -268,8 +266,8 @@ export class HandlerAgent {
   /**
    *
    */
-  getPosterDID(postDetails: PostDetails) {
-    return (postDetails.uri.match(/did:[^/]*/) || [])[0]; // TODO test?
+  getDIDFromUri(uri: string) {
+    return (uri.match(/did:[^/]*/) || [])[0];
   }
 
   /**
@@ -277,13 +275,6 @@ export class HandlerAgent {
    */
   postedByAgent(message: JetstreamMessage) {
     return message.did === this.getDid; //TODO Test
-  }
-
-  /**
-   *
-   */
-  getDIDFromURI(uri: string) {
-    return (uri.match(/did:[^/]*/) || [])[0]; //TODO Test
   }
 
   /**
@@ -310,36 +301,12 @@ export class HandlerAgent {
     return reply;
   }
 
-  hasPostReplyRoot(postDetails: PostDetails): boolean {
-    if (
-      //TODO Test
-      "reply" in postDetails.value &&
-      postDetails.value?.reply !== undefined
-    ) {
-      if (
-        "root" in postDetails.value.reply &&
-        postDetails.value.reply?.root !== undefined
-      ) {
-        return true;
-      }
-    }
-    return false;
+  hasPostReply(message: CreateSkeetMessage) {
+    return "reply" in message.record && message.record?.reply !== undefined;
   }
 
-  getPostReplyRoot(postDetails: PostDetails): any | boolean {
-    if (
-      //TODO Test
-      "reply" in postDetails.value &&
-      postDetails.value?.reply !== undefined
-    ) {
-      if (
-        "root" in postDetails.value.reply &&
-        postDetails.value.reply?.root !== undefined
-      ) {
-        return postDetails.value.reply.root;
-      }
-    }
-    return false;
+  getPostReply(message: CreateSkeetMessage) {
+    return message.record.reply;
   }
 
   //endregion

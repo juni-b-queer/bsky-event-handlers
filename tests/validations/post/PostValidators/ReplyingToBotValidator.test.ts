@@ -11,7 +11,7 @@ describe("ReplyingToBotValidator", () => {
 
   test("shouldTrigger returns true if the did is the same as the agent", async () => {
     const message: CreateSkeetMessage = {
-      collection: "",
+      collection: "app.bsky.feed.post",
       did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
       opType: "c",
       rkey: "",
@@ -22,12 +22,22 @@ describe("ReplyingToBotValidator", () => {
         $type: "",
         createdAt: "",
         subject: {} as Subject,
+        reply: {
+          root: {
+            cid: "cid",
+            uri: "at://did:plc:blah/app.bsky.feed.post/rkey",
+          },
+          parent: {
+            cid: "cid",
+            uri: "at://did:plc:blah/app.bsky.feed.post/rkey",
+          },
+        },
       },
     };
 
     const bskyAgent: BskyAgent = {
       session: {
-        did: "did:plc:2bnsooklzchcu5ao7xdjosrs",
+        did: "did:plc:blah",
       },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
@@ -42,7 +52,7 @@ describe("ReplyingToBotValidator", () => {
 
   test("shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details", async () => {
     const message: CreateSkeetMessage = {
-      collection: "",
+      collection: "app.bsky.feed.post",
       did: "did:plc:bad",
       opType: "c",
       rkey: "",
@@ -53,11 +63,21 @@ describe("ReplyingToBotValidator", () => {
         $type: "",
         createdAt: "",
         subject: {} as Subject,
+        reply: {
+          root: {
+            cid: "cid",
+            uri: "at://did:plc:blah/app.bsky.feed.post/rkey",
+          },
+          parent: {
+            cid: "cid",
+            uri: "at://did:plc:blah/app.bsky.feed.post/rkey",
+          },
+        },
       },
     };
     const bskyAgent: BskyAgent = {
       session: {
-        did: "did:plc:hello",
+        did: "did:plc:bad",
       },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(

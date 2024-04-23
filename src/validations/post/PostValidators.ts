@@ -29,10 +29,16 @@ export class ReplyingToBotValidator extends AbstractValidator {
     // @ts-ignore
     // let postDetails = await getPostDetails(validatorInput.agentDetails.agent, validatorInput.op, validatorInput.repo)
 
-    const posterDID = message.did;
+    if (!handlerAgent.hasPostReply(message)) {
+      return false;
+    }
+    const replyingToDid = handlerAgent.getDIDFromUri(
+        // @ts-ignore
+      message.record.reply?.parent.uri,
+    );
 
     return (
-      handlerAgent.getDid === posterDID &&
+      handlerAgent.getDid === replyingToDid &&
       message.collection == "app.bsky.feed.post"
     );
   }
