@@ -1,71 +1,34 @@
 # Handlers
 
-## Post handlers
+## Abstract Message Handler
+The abstract message handler is the class that all other message handlers are built on.
+It accepts an array of `AbstractValidator`s and an array of `AbstractMessageAction`s, as well as the HandlerAgent to use.
 
-The `PostHandler` class extends the AbstractPayloadHandler and is used to handle a post event. It takes in an array of validators and actions to execute if the validators pass. Validators are run sequentially and if all pass, it will execute the actions.
+It's handle function is called in the Jetstream subscription when it gets a new message for it's type (post,like,repost,follow (c/d))
 
-The `PostHandler`'s `requireFollowing` parameter when set to `true`, makes the handler only respond to posts from users that follow the bot.
+handle will go through the Validators, and so long as every validator returns true, it will run the actions.
 
-Use the `setFollowers` method to provide a list of users the bot is following.
 
-```typescript //Import required classes import { PostHandler, InputStartsWithValidator, ReplyWithInputAction } from "bsky-event-handlers";
-//Create validators
-let validators = [new InputStartsWithValidator("Hello")];
-//Define the actions to be taken
-let actions = [new ReplyWithInputAction("Hello there!")];
-//Create a PostHandler instance with validators, actions and the requirement that posters must be followed by the bot
-let postHandler = new PostHandler(validators, actions, true);
-//Set the list of followers, replace 'did:user:123' with actual followers
-// (This step is handled with the HandlerController)
-postHandler.setFollowers(["did:user:123"]);
+## Message Handler
+Message handler is the basic one, it uses `JetstreamMessage` for validating and running actions, this can be used for post deletion and like/repost/follow creation and deletion for now
+### Example
+```typescript
+new MessageHandler(
+    [Validators],
+    [Actions],
+    handlerAgent
+)
 ```
+
+
+## CreateSkeetHandler
+The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended for use with only post creation messages, hence why when running validators and actions, it will cast the `JetstreamMessage` to a `CreateSkeetMessage` which has more well defined properties and attributes for post creation messages
 
 ### Example
-
-This is a simple handler that uses the predefined validators and actions.
-
-When a post Starts with "Hello world!", the bot will reply with "Hi!". The boolean at the end is to indicate that
-the bot will only reply to it's followers. When set to false, it will respond to anyone on the network.
-
 ```typescript
-import {
-  InputStartsWithValidator,
-  ReplyWithInputAction,
-  PostHandler,
-} from "bsky-event-handlers";
-
-export let TestHandler = new PostHandler(
-  [new InputStartsWithValidator("Hello world!")],
-  [new ReplyWithInputAction("Hi!")],
-  true,
-);
-```
-
-# Handler Controller
-
-The `HandlerController` class takes in an `AgentDetails` object, a list of handlers (which could be of any class that extends `AbstractPayloadHandler`), and a boolean to specify if the bot should only reply to users its following.
-
-The `HandlerController` is responsible for refreshing follower lists, and distributing operations to each handler. Refreshing followers, enables the `PostHandler` objects to know who the bot is currently following, ensuring the bot only reacts to posts from following users if specified.
-
-Here's an example of how to use it:
-
-```typescript
-// Import required classes
-import {
-  PostHandler,
-  InputStartsWithValidator,
-  ReplyWithInputAction,
-  AgentDetails,
-  HandlerController,
-} from "bsky-event-handlers";
-// Define Agent Details
-let agentDetails: AgentDetails = {}; // add the required agent details here
-// Create Validators
-let validators = [new InputStartsWithValidator("Hello!")];
-// Define Actions
-let actions = [new ReplyWithInputAction("Hi!")];
-// Create Handler
-let handler = new PostHandler(validators, actions, true);
-// Create Handler Controller
-let handlerController = new HandlerController(agentDetails, [handler]);
+new CreateSkeetHandler(
+    [Validators],
+    [Actions],
+    handlerAgent
+)
 ```

@@ -1,16 +1,16 @@
 import { IsBadBotValidator } from "../../validations/BotValidators";
 import { DebugLogAction } from "../../actions/LoggingActions";
 import { HandlerAgent } from "../../agent/HandlerAgent";
-import { CreateSkeetHandler } from "../record-handlers/skeet/CreateSkeetHandler";
+import { CreateSkeetHandler } from "../skeet/CreateSkeetHandler";
 import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
 import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 
 export class BadBotHandler extends CreateSkeetHandler {
-  constructor(public handlerAgent: HandlerAgent) {
+  constructor(public handlerAgent: HandlerAgent, public response: string = "I'm sorry 😓") {
     super(
       [new IsBadBotValidator()],
       [
-        new ReplyToSkeetAction("I'm sorry 😓"),
+        new ReplyToSkeetAction(response),
         new DebugLogAction("BAD BOT", `Told I'm bad :(`),
       ],
       handlerAgent,

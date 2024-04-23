@@ -1,11 +1,11 @@
-import { AbstractValidator } from "../../validations/AbstractValidator";
-import { HandlerAgent } from "../../agent/HandlerAgent";
+import { AbstractValidator } from "../validations/AbstractValidator";
+import { HandlerAgent } from "../agent/HandlerAgent";
 import {
   CreateSkeetMessage,
   JetstreamMessage,
-} from "../../types/JetstreamTypes";
-import { AbstractMessageAction } from "../../actions/AbstractMessageAction";
-import { DebugLog } from "../../utils/DebugLog";
+} from "../types/JetstreamTypes";
+import { AbstractMessageAction } from "../actions/AbstractMessageAction";
+import { DebugLog } from "../utils/DebugLog";
 
 export abstract class AbstractMessageHandler {
   constructor(

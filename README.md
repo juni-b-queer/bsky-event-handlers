@@ -28,146 +28,165 @@ Install the package
 
 Then, in your `index.ts` you'll need a few things
 
-Create your bsky agent
-
-### Todo - change the readme to reflect the new setup
+Create your bsky agent and prepare your jetstreamSubscription variable
 
 ```typescript
-let agentDetails: AgentDetails = {
-  name: "test-bot",
-  did: undefined,
-  handle: <string>Bun.env.TEST_BSKY_HANDLE,
-  password: <string>Bun.env.TEST_BSKY_PASSWORD,
-  sessionData: undefined,
-  agent: undefined,
-};
-// This function is required! It sets up your bluesky agent
-agentDetails = createAgent(agentDetails);
-```
-
-Create a simple Handler
-
-```typescript
-let handler = new PostHandler(
-  [new InputStartsWithValidator("Hello!")],
-  [new ReplyWithInputAction("Hi!")],
-  true,
+const testAgent = new HandlerAgent(
+        'test-bot',
+        <string>Bun.env.TEST_BSKY_HANDLE,
+        <string>Bun.env.TEST_BSKY_PASSWORD
 );
+
+let jetstreamSubscription: JetstreamSubscription;
 ```
 
-To set up your handler controllers
+Initialize your handlers
 
 ```typescript
-let handlerController: HandlerController;
+const handlers: JetstreamSubscriptionHandlers = {
+  post: {
+    c: [
+      new CreateSkeetHandler(
+              [new InputEqualsValidator("Hello")],
+              [new ReplyToSkeetAction("World!")],
+              testAgent
+      )
+    ],
+    d: []
+  },
+  like: {
+    c: [],
+    d: []
+  },
+  follow: {
+    c: [],
+    d: []
+  },
+  repost: {
+    c: [],
+    d: []
+  }
+}
 ```
 
-Then to initialize the agent and handlers
+If you're not acting on the creation/deletion of either of the four options, you can exclude them from this object
+
+for our example, we'll only be acting upon post creations, so our handlers will look like
+```typescript
+const handlers: JetstreamSubscriptionHandlers = {
+  post: {
+    c: [
+      new CreateSkeetHandler(
+              [new InputEqualsValidator("Hello")],
+              [new ReplyToSkeetAction("World!")],
+              testAgent
+      )
+    ],
+  }
+}
+```
+
+By excluding the others, the Jetstream subscription will automatically update it's subscription url to query for only post events.
+
+Then in out `initialize` function, we authenticate the agent, and create the JetstreamSubscription object
 
 ```typescript
 async function initialize() {
-  // This function is required! It authenticates your bluesky agent
-  agentDetails = await authenticateAgent(agentDetails);
-
-  handlerController = new HandlerController(
-    agentDetails,
-    [
-      // Handlers can also be created in other files and imported
-      handler,
-    ],
-    true,
-  );
-  debugLog("INIT", "Initialized!");
-}
-
-try {
-  await initialize();
-} catch (e) {
-  setTimeout(async function () {
-    await initialize();
-  }, 30000);
+    await testAgent.authenticate()
+    DebugLog.info("INIT", 'Initialized!')
+  
+    jetstreamSubscription = new JetstreamSubscription(
+        handlers,
+        <string>Bun.env.JETSTREAM_URL
+    );
 }
 ```
 
-Then to start your firehose connection
+Then finally, we call initialize, then start the subscription to listen for events
 
 ```typescript
-const firehoseSubscription = new FirehoseSubscription([handlerController], 150);
+initialize().then(() =>{
+    jetstreamSubscription.createSubscription()
+});
+
 ```
 
 All together, a simple bot index.ts would look like
 
 ```typescript
 import {
-  HandlerController,
-  AgentDetails,
-  PostDetails,
-  PostHandler,
-  replyToPost,
-  authenticateAgent,
-  createAgent,
-  debugLog,
-  FirehoseSubscription,
-  InputStartsWithValidator,
-  ReplyWithInputAction,
+  HandlerAgent,
+  JetstreamSubscriptionHandlers,
+  JetstreamSubscription,
+  CreateSkeetHandler,
+  InputEqualsValidator,
+  ReplyToSkeetAction,
+  DebugLog
 } from "bsky-event-handlers";
 
-// Agent details
-let agentDetails: AgentDetails = {
-  name: "test-bot",
-  did: undefined,
-  handle: <string>Bun.env.TEST_BSKY_HANDLE,
-  password: <string>Bun.env.TEST_BSKY_PASSWORD,
-  sessionData: undefined,
-  agent: undefined,
-};
-agentDetails = createAgent(agentDetails);
-
-let handler = new PostHandler(
-  [new InputStartsWithValidator("Hello!")],
-  [new ReplyWithInputAction("Hi!")],
-  true,
+const testAgent = new HandlerAgent(
+        'test-bot',
+        <string>Bun.env.TEST_BSKY_HANDLE,
+        <string>Bun.env.TEST_BSKY_PASSWORD
 );
 
-//Create Handler controller
-let handlerController: HandlerController;
+let jetstreamSubscription: JetstreamSubscription;
 
-// Initialize the agent and handler
+
+const handlers: JetstreamSubscriptionHandlers = {
+  post: {
+    c: [
+      new CreateSkeetHandler(
+              [new InputEqualsValidator("Hello")],
+              [new ReplyToSkeetAction("World!")],
+              testAgent
+      )
+    ],
+  }
+}
+
 async function initialize() {
-  agentDetails = await authenticateAgent(agentDetails);
+  await testAgent.authenticate()
+  DebugLog.info("INIT", 'Initialized!')
 
-  handlerController = new HandlerController(agentDetails, [handler], true);
-
-  debugLog("INIT", "Initialized!");
+  jetstreamSubscription = new JetstreamSubscription(
+          handlers,
+          <string>Bun.env.JETSTREAM_URL
+  );
 }
 
-try {
-  await initialize();
-} catch (e) {
-  setTimeout(async function () {
-    await initialize();
-  }, 30000);
-}
-
-/**
- * The firehose subscription
- */
-const firehoseSubscription = new FirehoseSubscription([handlerController], 150);
+initialize().then(() =>{
+  jetstreamSubscription.createSubscription()
+});
 ```
 
-For full example code, see my [Test firehose bot](https://github.com/juni-b-queer/test-firehose-bot)
+A simple hello world bot is only 44 lines of code, and that's including the import!
+
+For full example code with Jetstream setup and docker usage, see my [Test firehose bot](https://github.com/juni-b-queer/test-firehose-bot)
+
+### Env requirements
+Your .env should look something like this
+```.env
+TEST_BSKY_HANDLE=handle.bsky.social
+TEST_BSKY_PASSWORD=app-pass-word
+DEBUG_LOG_ACTIVE=true #This will enable DebugLog
+DEBUG_LOG_LEVEL=info # This sets the minimum log level that will be output
+JETSTREAM_URL='ws://localhost:6008/subscribe'
+```
+
 
 # Overview
 
 I wrote this package because I wanted a simple and quick way to get firehose bluesky bots up and running.
 Bluesky Event Handlers is a powerful, adaptable package developed for creating bots within the Bluesky ecosystem. The package offers a wide array of inbuilt validators and action handlers to facilitate the creation of event-driven bot actions- all of which contribute to smoother, faster, and more efficient bot development.
 
-The package internally uses the Bluesky Agent to interact with the Bluesky network. The flexibility provided by the AbstractValidator and AbstractTriggerAction base classes, paves the way for easy extension and creation of custom validators and actions to suit your specific requirements.
+The package internally uses the Bluesky Agent to interact with the Bluesky network. The flexibility provided by the AbstractValidator and AbstractMessageAction base classes, paves the way for easy extension and creation of custom validators and actions to suit your specific requirements.
 
 By leveraging the combination of Validators and Actions, you can create a unique sequence of automatic responses for your bot in response to defined triggers, enhancing your bot's interactivity, flexibility and efficiency.
 
 # Credits
 
-## Packages used
+## Packages/dependencies used
 
-- [atproto-firehose](https://www.npmjs.com/package/atproto-firehose)
 - [@atproto/api](https://www.npmjs.com/package/@atproto/api)
+- [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker container)

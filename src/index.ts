@@ -1,8 +1,8 @@
 /**
  * Handlers
  */
-export * from "./handlers/record-handlers/AbstractMessageHandler";
-export { CreateSkeetHandler } from "./handlers/record-handlers/skeet/CreateSkeetHandler";
+export * from "./handlers/AbstractMessageHandler";
+export { CreateSkeetHandler } from "./handlers/skeet/CreateSkeetHandler";
 
 /**
  * Premade Handlers
@@ -31,7 +31,6 @@ export * from "./validations/follow/FollowValidators";
 export * from "./actions/AbstractMessageAction";
 export * from "./actions/TestAction";
 export * from "./actions/FunctionAction";
-// export * from "./actions/ReplyActions";
 export * from "./actions/LoggingActions";
 export * from "./actions/post/SkeetActions";
 
@@ -43,13 +42,11 @@ export * from "./firehose/JetstreamSubscription";
 /**
  * Agent
  */
-
 export { HandlerAgent } from "./agent/HandlerAgent";
+
 /**
  * Types
  */
-// export { ValidatorInput } from "./types/ValidatorInput";
-
 export * from "./types/JetstreamTypes";
 
 /**

@@ -5,8 +5,8 @@ import {
   CreateSkeetMessage,
   DeleteMessage,
 } from "../types/JetstreamTypes";
-import { CreateSkeetHandler } from "../handlers/record-handlers/skeet/CreateSkeetHandler";
-import { MessageHandler } from "../handlers/record-handlers/AbstractMessageHandler";
+import { CreateSkeetHandler } from "../handlers/skeet/CreateSkeetHandler";
+import { MessageHandler } from "../handlers/AbstractMessageHandler";
 
 // TODO update jetstreamMessage to have cid!!!!!!
 //TODO DO THIS! SERIOUSLY! YOU'LL NEED IT WHEN YOU FIX THE REPLY ACTIONS

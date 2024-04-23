@@ -3,14 +3,14 @@ import { DebugLogAction } from "../../actions/LoggingActions";
 import { HandlerAgent } from "../../agent/HandlerAgent";
 import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
 import { CreateSkeetMessage } from "../../types/JetstreamTypes";
-import { CreateSkeetHandler } from "../record-handlers/skeet/CreateSkeetHandler";
+import { CreateSkeetHandler } from "../skeet/CreateSkeetHandler";
 
 export class GoodBotHandler extends CreateSkeetHandler {
-  constructor(public handlerAgent: HandlerAgent) {
+  constructor(public handlerAgent: HandlerAgent, public response: string = "Thank you 🥹") {
     super(
       [new IsGoodBotValidator()],
       [
-        new ReplyToSkeetAction("Thank you 🥹"),
+        new ReplyToSkeetAction(response),
         new DebugLogAction("GOOD BOT", `Told I'm good :)`),
       ],
       handlerAgent,
