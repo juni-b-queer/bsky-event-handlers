@@ -110,4 +110,24 @@ describe("IsBadBotValidator", () => {
       false,
     );
   });
+
+  it("shouldTrigger returns false for non reply", async () => {
+    const positiveMessage: CreateSkeetMessage = {
+      collection: "app.bsky.feed.like",
+      did: "",
+      opType: "c",
+      rkey: "",
+      seq: 0,
+      cid: "cid",
+      record: {
+        text: "good bot",
+        $type: "",
+        createdAt: "",
+        subject: {} as Subject,
+      },
+    };
+    expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        false,
+    );
+  });
 });
