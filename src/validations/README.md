@@ -111,7 +111,7 @@ It will also accept "thank you" (for full list of accepted inputs, see `isGoodBo
 
 ### IsBadBotValidator
 
-The `IsBadBotValidator` class checks if the input is replying to the bot and the text is "{negative word} bot" (ex. bad bot). 
+The `IsBadBotValidator` class checks if the input is replying to the bot and the text is "{negative word} bot" (ex. bad bot).
 
 (for full list of accepted inputs, see `isBadBotResponse` in `utils/text-utils`)
 
@@ -127,12 +127,14 @@ If no did is provided, it will default to the bot/handlerAgent did
 `new NewFollowerForUserValidator('did:plc:123');`
 
 ### UserFollowedValidator
+
 The `UserFollowedValidator` will return true if the follow action was the given user following someone
 If no did is provided, it will default to the bot/handlerAgent did
 
 `new UserFollowedValidator('did:plc:123');`
 
 ## Test Validator
+
 ### TestValidator
 
 The `TestValidator` class accepts a boolean in the constructor, and then returns that boolean when validated. Mostly used for testing

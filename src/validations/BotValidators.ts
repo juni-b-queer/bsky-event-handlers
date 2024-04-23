@@ -12,8 +12,9 @@ export class IsGoodBotValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    let isReplyToBot = handlerAgent.getDid === message.did
-        && message.collection == "app.bsky.feed.post";
+    let isReplyToBot =
+      handlerAgent.getDid === message.did &&
+      message.collection == "app.bsky.feed.post";
     return isGoodBotResponse(this.getTextFromPost(message)) && isReplyToBot;
   }
 }
@@ -27,8 +28,9 @@ export class IsBadBotValidator extends AbstractValidator {
     message: CreateSkeetMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    let isReplyToBot = handlerAgent.getDid === message.did
-        && message.collection == "app.bsky.feed.post";
+    let isReplyToBot =
+      handlerAgent.getDid === message.did &&
+      message.collection == "app.bsky.feed.post";
     return isBadBotResponse(this.getTextFromPost(message)) && isReplyToBot;
   }
 }

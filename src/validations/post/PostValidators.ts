@@ -31,8 +31,10 @@ export class ReplyingToBotValidator extends AbstractValidator {
 
     const posterDID = message.did;
 
-    return handlerAgent.getDid === posterDID
-        && message.collection == "app.bsky.feed.post";
+    return (
+      handlerAgent.getDid === posterDID &&
+      message.collection == "app.bsky.feed.post"
+    );
   }
 }
 
