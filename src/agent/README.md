@@ -22,3 +22,5 @@ const myBotHandlerAgent = new HandlerAgent(
   "AppPassword",
 );
 ```
+
+# More docs coming soon (maybe, idk, writing docs is hard, especially for a 400 line clas)
