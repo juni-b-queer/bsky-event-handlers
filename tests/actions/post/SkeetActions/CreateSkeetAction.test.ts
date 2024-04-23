@@ -1,5 +1,6 @@
 import {
-  CreateSkeetAction, CreateSkeetWithGeneratedTextAction,
+  CreateSkeetAction,
+  CreateSkeetWithGeneratedTextAction,
   HandlerAgent,
   JetstreamMessage,
 } from "../../../../src";
@@ -40,7 +41,7 @@ describe("Create Skeet from generated text Action", () => {
   let action: CreateSkeetWithGeneratedTextAction;
   let handlerAgent: HandlerAgent;
   let message: JetstreamMessage;
-  let mockGenerateText = jest.fn().mockReturnValue("hello")
+  const mockGenerateText = jest.fn().mockReturnValue("hello");
   const mockCreateSkeet = jest.fn();
   const skeetText: string = "Test Text";
 
@@ -65,7 +66,7 @@ describe("Create Skeet from generated text Action", () => {
 
   it("Should call CreateSkeet with text", async () => {
     await action.handle(message, handlerAgent);
-    expect(mockGenerateText).toHaveBeenCalledWith(message, handlerAgent)
+    expect(mockGenerateText).toHaveBeenCalledWith(message, handlerAgent);
     expect(mockCreateSkeet).toHaveBeenCalledWith("hello");
   });
 });

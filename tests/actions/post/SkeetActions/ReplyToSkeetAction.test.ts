@@ -3,7 +3,8 @@ import {
   CreateSkeetRecord,
   HandlerAgent,
   Reply,
-  ReplyToSkeetAction, ReplyToSkeetWithGeneratedTextAction,
+  ReplyToSkeetAction,
+  ReplyToSkeetWithGeneratedTextAction,
 } from "../../../../src";
 
 describe("Reply To Skeet Action", () => {
@@ -52,12 +53,11 @@ describe("Reply To Skeet Action", () => {
   });
 });
 
-
 describe("Reply To Skeet with generated text Action", () => {
   let action: ReplyToSkeetWithGeneratedTextAction;
   let handlerAgent: HandlerAgent;
   let message: CreateSkeetMessage;
-  let mockTextGenerator = jest.fn().mockReturnValue("hello")
+  const mockTextGenerator = jest.fn().mockReturnValue("hello");
   const mockCreateSkeet = jest.fn();
   const mockReply: Reply = {
     root: {
@@ -96,7 +96,7 @@ describe("Reply To Skeet with generated text Action", () => {
 
   it("Should call CreateSkeet with text", async () => {
     await action.handle(message, handlerAgent);
-    expect(mockTextGenerator).toHaveBeenCalledWith(message, handlerAgent)
+    expect(mockTextGenerator).toHaveBeenCalledWith(message, handlerAgent);
     expect(mockCreateSkeet).toHaveBeenCalledWith("hello", mockReply);
   });
 });

@@ -86,11 +86,11 @@ export class JetstreamSubscription {
     });
 
     this.wsClient.on("close", () => {
-      DebugLog.error("JETSTREAM", "Subscription Closed")
+      DebugLog.error("JETSTREAM", "Subscription Closed");
       this.wsClient.close();
       setTimeout(() => {
         this.createSubscription();
-      }, 5000)
+      }, 5000);
     });
   }
 

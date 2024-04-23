@@ -1,7 +1,6 @@
-
-import {CreateMessage, JetstreamMessage} from "../../types/JetstreamTypes";
-import {AbstractValidator} from "../AbstractValidator";
-import {HandlerAgent} from "../../agent/HandlerAgent";
+import { CreateMessage, JetstreamMessage } from "../../types/JetstreamTypes";
+import { AbstractValidator } from "../AbstractValidator";
+import { HandlerAgent } from "../../agent/HandlerAgent";
 
 export class NewFollowerForUserValidator extends AbstractValidator {
   constructor(private userDid: string | undefined) {
@@ -12,7 +11,7 @@ export class NewFollowerForUserValidator extends AbstractValidator {
     message: CreateMessage,
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    if (!this.userDid){
+    if (!this.userDid) {
       return handlerAgent.getDid === message.record.subject;
     }
     return this.userDid === message.record.subject;
@@ -25,10 +24,10 @@ export class UserFollowedValidator extends AbstractValidator {
   }
 
   async shouldTrigger(
-      message: CreateMessage,
-      handlerAgent: HandlerAgent,
+    message: CreateMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<boolean> {
-    if (!this.userDid){
+    if (!this.userDid) {
       return handlerAgent.getDid === message.did;
     }
     return this.userDid === message.did;
