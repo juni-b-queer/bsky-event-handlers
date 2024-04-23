@@ -1,5 +1,4 @@
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { ValidatorInput } from "../types/ValidatorInput";
 import { HandlerAgent } from "../agent/HandlerAgent";
 import { CreateSkeetMessage, JetstreamMessage } from "../types/JetstreamTypes";
 

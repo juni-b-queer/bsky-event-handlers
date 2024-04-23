@@ -10,11 +10,11 @@ An easy package to use for making bluesky bots with validators and handler actio
 - [Validators](./src/validations/README.md)
 - [Actions](./src/actions/README.md)
 - [Handlers](./src/handlers/README.md)
-  - [Handler Controller](./src/handlers/README.md)
+  - [Record Handlers](./src/handlers/README.md)
   - [Pre-made Handlers](./src/handlers/premade-handlers/README.md)
 - [Firehose Subscription](./src/firehose/README.md)
 - [Utility Functions](./src/util/README.md)
-- [Types](./src/types/README.md)
+- [Jetstream Types](./src/types/README.md)
 - [Credits](#credits)
 
 [npm Package](https://www.npmjs.com/package/bsky-event-handlers)

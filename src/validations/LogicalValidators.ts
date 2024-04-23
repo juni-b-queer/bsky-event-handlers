@@ -1,5 +1,4 @@
 import { AbstractValidator } from "./AbstractValidator";
-import { ValidatorInput } from "../types/ValidatorInput";
 import { HandlerAgent } from "../agent/HandlerAgent";
 import { JetstreamMessage } from "../types/JetstreamTypes";
 

@@ -35,7 +35,7 @@ Validators are used to determine whether or not an action should be triggered. W
 
 ### SimpleFunctionValidator
 
-The `SimpleFunctionValidator` class provides a way to create a validator by passing a single function that accepts the ValidatorInput object and returns a boolean indicating whether to trigger the action or not.
+The `SimpleFunctionValidator` class provides a way to create a validator by passing a single function that accepts the JetstreamMessage and HandlerAgent and returns a boolean indicating whether to trigger the action or not.
 
 `new SimpleFunctionValidator((message, handlerAgent) => { return true; }); // replace function with specific condition`
 

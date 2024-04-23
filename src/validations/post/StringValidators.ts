@@ -1,6 +1,5 @@
 import { flattenTextUpdated } from "../../utils/text-utils";
 import { AbstractValidator } from "../AbstractValidator";
-import { ValidatorInput } from "../../types/ValidatorInput";
 import { HandlerAgent } from "../../agent/HandlerAgent";
 import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 

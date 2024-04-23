@@ -6,7 +6,6 @@ import {
   RichText,
 } from "@atproto/api";
 import { debugLog } from "../utils/logging-utils";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { ProfileView } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 import {
   CreateSkeetMessage,
