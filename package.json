@@ -138,7 +138,51 @@
           }
         }
       ],
-      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "presetConfig": {
+            "types": [
+              {
+                "type": "docs",
+                "section": "Docs"
+              },
+              {
+                "type": "refactor",
+                "section": "Refactoring"
+              },
+              {
+                "type": "test",
+                "section": "Testing"
+              },
+              {
+                "type": "fix",
+                "section": "Fixes"
+              },
+              {
+                "type": "minor",
+                "section": "General Updates"
+              },
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "feature",
+                "section": "Features"
+              },
+              {
+                "type": "major",
+                "section": "Breaking Changes"
+              },
+              {
+                "type": "breaking",
+                "section": "Breaking Changes"
+              }
+            ]
+          }
+        }
+      ],
       [
         "@semantic-release/changelog",
         {
