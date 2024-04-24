@@ -75,7 +75,6 @@
         "name": "beta",
         "prerelease": "beta"
       }
-    ],
-    "extends": "@semantic-release/npm"
+    ]
   }
 }
