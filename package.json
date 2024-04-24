@@ -73,7 +73,7 @@
       },
       {
         "name": "beta",
-        "prerelease": false
+        "prerelease": "prerelease"
       }
     ]
   }
