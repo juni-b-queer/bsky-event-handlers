@@ -65,7 +65,7 @@
         "@semantic-release/github",
         {
           "assets": [
-            { "path": "dist", "label": "Distribution Files" },
+            ["dist/*"],
             { "path": "docs/CHANGELOG.md", "label": "Change log" }
           ]
         }
