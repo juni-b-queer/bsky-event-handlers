@@ -52,7 +52,36 @@
   },
   "release": {
     "plugins": [
-      "@semantic-release/commit-analyzer",
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            { "type": "docs", "release": "patch" },
+            { "type": "refactor", "release": "patch" },
+            { "type": "test", "release": "patch" },
+            { "type": "fix", "release": "patch" },
+            { "type": "minor", "release": "minor" },
+            { "type": "feat", "release": "minor" },
+            { "type": "feature", "release": "minor" },
+            { "type": "major", "release": "major" },
+            { "type": "breaking", "release": "major" }
+          ],
+          "presetConfig": {
+            "types": [
+              {"type": "docs", "section": "Docs"},
+              {"type": "refactor", "section": "Refactoring"},
+              {"type": "test", "section": "Testing"},
+              { "type": "fix", "section": "Fixes" },
+              { "type": "minor", "section": "General Updates" },
+              { "type": "feat", "section": "Features" },
+              { "type": "feature", "section": "Features" },
+              { "type": "major", "section": "Breaking Changes" },
+              { "type": "breaking", "section": "Breaking Changes" }
+            ]
+          }
+        }
+      ],
       "@semantic-release/release-notes-generator",
       [
         "@semantic-release/changelog",
@@ -74,10 +103,6 @@
             {
               "path": "dist.zip",
               "label": "Distribution Files"
-            },
-            {
-              "path": "docs/CHANGELOG.md",
-              "label": "Change log"
             }
           ]
         }
