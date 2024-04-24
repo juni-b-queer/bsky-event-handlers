@@ -65,7 +65,7 @@
         "@semantic-release/github",
         {
           "assets": [
-            { "path": "dist/*.{js,ts,mjs,mts", "label": "Distribution" },
+            { "path": "dist/*.{js,ts,mjs,mts}", "label": "Distribution" },
             { "path": "docs/CHANGELOG.md", "label": "Change log" }
           ]
         }
@@ -78,7 +78,7 @@
       },
       {
         "name": "beta",
-        "prerelease": "prerelease"
+        "prerelease": "beta"
       }
     ]
   }
