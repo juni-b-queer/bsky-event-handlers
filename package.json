@@ -31,7 +31,7 @@
   "homepage": "https://github.com/juni-b-queer/bsky-event-handlers#readme",
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/exec": "^6.0.3",
     "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
@@ -61,15 +61,24 @@
         }
       ],
       "@semantic-release/npm",
-      ["@semantic-release/exec", {
-        "publishCmd": "zip dist.zip ./dist/* -r"
-      }],
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "zip dist.zip ./dist/* -r"
+        }
+      ],
       [
         "@semantic-release/github",
         {
           "assets": [
-            { "path": "dist.zip", "label": "Distribution Files" },
-            { "path": "docs/CHANGELOG.md", "label": "Change log" }
+            {
+              "path": "dist.zip",
+              "label": "Distribution Files"
+            },
+            {
+              "path": "docs/CHANGELOG.md",
+              "label": "Change log"
+            }
           ]
         }
       ]
