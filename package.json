@@ -1,6 +1,6 @@
 {
   "name": "bsky-event-handlers",
-  "version": "0.4.62",
+  "version": "0.4.63-prerelease.1",
   "description": "Utilities to help handle bluesky events with validation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -31,10 +31,12 @@
   "homepage": "https://github.com/juni-b-queer/bsky-event-handlers#readme",
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/exec": "^6.0.3",
     "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "eslint": "^8.56.0",
     "jest": "^29.7.0",
     "jest-date-mock": "^1.0.8",
@@ -52,8 +54,136 @@
   },
   "release": {
     "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "refactor",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "minor",
+              "release": "minor"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "feature",
+              "release": "minor"
+            },
+            {
+              "type": "major",
+              "release": "major"
+            },
+            {
+              "type": "breaking",
+              "release": "major"
+            }
+          ],
+          "presetConfig": {
+            "types": [
+              {
+                "type": "docs",
+                "section": "Docs"
+              },
+              {
+                "type": "refactor",
+                "section": "Refactoring"
+              },
+              {
+                "type": "test",
+                "section": "Testing"
+              },
+              {
+                "type": "fix",
+                "section": "Fixes"
+              },
+              {
+                "type": "minor",
+                "section": "General Updates"
+              },
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "feature",
+                "section": "Features"
+              },
+              {
+                "type": "major",
+                "section": "Breaking Changes"
+              },
+              {
+                "type": "breaking",
+                "section": "Breaking Changes"
+              }
+            ]
+          }
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "docs",
+                "section": "Docs"
+              },
+              {
+                "type": "refactor",
+                "section": "Refactoring"
+              },
+              {
+                "type": "test",
+                "section": "Testing"
+              },
+              {
+                "type": "fix",
+                "section": "Fixes"
+              },
+              {
+                "type": "minor",
+                "section": "General Updates"
+              },
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "feature",
+                "section": "Features"
+              },
+              {
+                "type": "major",
+                "section": "Breaking Changes"
+              },
+              {
+                "type": "breaking",
+                "section": "Breaking Changes"
+              }
+            ]
+          }
+        }
+      ],
       [
         "@semantic-release/changelog",
         {
@@ -62,14 +192,20 @@
       ],
       "@semantic-release/npm",
       [
-        "@semantic-release/git",
+        "@semantic-release/exec",
+        {
+          "publishCmd": "zip dist.zip ./dist/* -r"
+        }
+      ],
+      [
+        "@semantic-release/github",
         {
           "assets": [
-            "dist/*.{js,ts,mjs,mts}",
-            "docs",
-            "package.json"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            {
+              "path": "dist.zip",
+              "label": "Distribution Files"
+            }
+          ]
         }
       ]
     ],
@@ -80,7 +216,7 @@
       },
       {
         "name": "beta",
-        "prerelease": false
+        "prerelease": "beta"
       }
     ]
   }
