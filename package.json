@@ -40,7 +40,7 @@
     "prettier": "3.2.4",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
-    "tsup": "^8.0.1",
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -49,8 +49,14 @@
   },
   "release": {
     "branches": [
-      { "name": "main", "prerelease": false },
-      { "name": "beta", "prerelease": "beta" }
+      {
+        "name": "main",
+        "prerelease": false
+      },
+      {
+        "name": "beta",
+        "prerelease": "beta"
+      }
     ],
     "extends": "@semantic-release/npm"
   }
