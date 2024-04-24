@@ -57,7 +57,7 @@
       [
         "@semantic-release/commit-analyzer",
         {
-          "preset": "angular",
+          "preset": "conventionalcommits",
           "releaseRules": [
             {
               "type": "docs",
@@ -141,6 +141,7 @@
       [
         "@semantic-release/release-notes-generator",
         {
+          "preset": "conventionalcommits",
           "presetConfig": {
             "types": [
               {
