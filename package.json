@@ -51,7 +51,13 @@
     "atproto-firehose": "^0.2.2"
   },
   "release": {
-    "plugins": ["@semantic-release/changelog", "@semantic-release/git"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/changelog"
+    ],
     "branches": [
       {
         "name": "main",
