@@ -1,0 +1,83 @@
+name: Semantic release versioning
+on:
+  push:
+    branches:
+      - main
+      - next
+      - beta
+jobs:
+  release:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Semantic Release
+#        uses: cycjimmy/semantic-release-action@v4
+#        with:
+#          semantic_version: 16
+#          branches: |
+#            [
+#              '+([0-9])?(.{+([0-9]),x}).x',
+#              'main',
+#              'next',
+#              'next-major',
+#              {
+#                name: 'beta',
+#                prerelease: true
+#              },
+#              {
+#                name: 'alpha',
+#                prerelease: true
+#              }
+#            ]
+#          extra_plugins: |
+#            @semantic-release/changelog
+#            @semantic-release/git
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.PAT }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#      - name: Zip artifact for release
+#        id: zip-dist
+#        run: zip dist.zip ./dist/* -r
+#
+#      - name: Create Release
+#        id: create_release
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+#        with:
+#          tag_name: ${{ github.ref_name }}
+#          release_name: Release ${{ github.ref_name }}
+#          body: Todo, get release notes!
+#          draft: false
+#          prerelease: false
+#
+#      - name: Upload Release Build
+#        id: upload-release-build
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+#          asset_path: ./dist.zip
+#          asset_name: dist.zip
+#          asset_content_type: application/zip
