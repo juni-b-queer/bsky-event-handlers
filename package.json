@@ -31,6 +31,7 @@
   "homepage": "https://github.com/juni-b-queer/bsky-event-handlers#readme",
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.1.0",
     "@semantic-release/exec": "^6.0.3",
     "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
@@ -57,27 +58,81 @@
         {
           "preset": "conventionalcommits",
           "releaseRules": [
-            { "type": "docs", "release": "patch" },
-            { "type": "refactor", "release": "patch" },
-            { "type": "test", "release": "patch" },
-            { "type": "fix", "release": "patch" },
-            { "type": "minor", "release": "minor" },
-            { "type": "feat", "release": "minor" },
-            { "type": "feature", "release": "minor" },
-            { "type": "major", "release": "major" },
-            { "type": "breaking", "release": "major" }
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "refactor",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "minor",
+              "release": "minor"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "feature",
+              "release": "minor"
+            },
+            {
+              "type": "major",
+              "release": "major"
+            },
+            {
+              "type": "breaking",
+              "release": "major"
+            }
           ],
           "presetConfig": {
             "types": [
-              {"type": "docs", "section": "Docs"},
-              {"type": "refactor", "section": "Refactoring"},
-              {"type": "test", "section": "Testing"},
-              { "type": "fix", "section": "Fixes" },
-              { "type": "minor", "section": "General Updates" },
-              { "type": "feat", "section": "Features" },
-              { "type": "feature", "section": "Features" },
-              { "type": "major", "section": "Breaking Changes" },
-              { "type": "breaking", "section": "Breaking Changes" }
+              {
+                "type": "docs",
+                "section": "Docs"
+              },
+              {
+                "type": "refactor",
+                "section": "Refactoring"
+              },
+              {
+                "type": "test",
+                "section": "Testing"
+              },
+              {
+                "type": "fix",
+                "section": "Fixes"
+              },
+              {
+                "type": "minor",
+                "section": "General Updates"
+              },
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "feature",
+                "section": "Features"
+              },
+              {
+                "type": "major",
+                "section": "Breaking Changes"
+              },
+              {
+                "type": "breaking",
+                "section": "Breaking Changes"
+              }
             ]
           }
         }
