@@ -6,5 +6,5 @@ export type AgentDetails = {
   password: string;
   did: string | undefined;
   sessionData: AtpSessionData | undefined;
-  agent: BskyAgent | undefined;
+  agent: BskyAgent | undefined | null;
 };
