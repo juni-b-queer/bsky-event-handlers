@@ -1,6 +1,6 @@
 {
   "name": "bsky-event-handlers",
-  "version": "0.4.59",
+  "version": "0.4.62",
   "description": "Utilities to help handle bluesky events with validation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -54,17 +54,24 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
       [
         "@semantic-release/changelog",
         {
           "changelogFile": "docs/CHANGELOG.md"
         }
       ],
-      ["@semantic-release/git", {
-        "assets": ["dist/*.{js,ts,mjs,mts}", "docs", "package.json"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }]
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "dist/*.{js,ts,mjs,mts}",
+            "docs",
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
     ],
     "branches": [
       {
@@ -73,9 +80,8 @@
       },
       {
         "name": "beta",
-        "prerelease": "beta"
+        "prerelease": false
       }
-    ],
-    "extends": "@semantic-release/npm"
+    ]
   }
 }
