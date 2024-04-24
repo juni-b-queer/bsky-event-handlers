@@ -1,46 +1,33 @@
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { AbstractTriggerAction } from "./AbstractTriggerAction";
-import { PostDetails } from "../types/PostDetails";
-import { AgentDetails } from "../types/AgentDetails";
-import { debugLog } from "../utils/logging-utils";
+import { HandlerAgent } from "../agent/HandlerAgent";
+import { JetstreamMessage } from "../types/JetstreamTypes";
+import { AbstractMessageAction } from "./AbstractMessageAction";
+import { DebugLog } from "../utils/DebugLog";
 
-export class LogPostDetailsAction extends AbstractTriggerAction {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    postDetails: PostDetails,
-  ): Promise<any> {
-    console.log(postDetails);
-  }
-}
-
-export class LogRepoOperationAction extends AbstractTriggerAction {
+export class LogMessageAction extends AbstractMessageAction {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    postDetails: PostDetails,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<any> {
-    console.log(op);
+    console.log(message);
   }
 }
 
-export class LogInputTextAction extends AbstractTriggerAction {
+export class LogInputTextAction extends AbstractMessageAction {
   constructor(private logText: string) {
     super();
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    postDetails: PostDetails,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<any> {
     console.log(this.logText);
   }
 }
 
-export class DebugLogAction extends AbstractTriggerAction {
+export class DebugLogAction extends AbstractMessageAction {
   constructor(
     private action: string,
     private message: string,
@@ -48,12 +35,12 @@ export class DebugLogAction extends AbstractTriggerAction {
   ) {
     super();
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
   async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    postDetails: PostDetails,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<any> {
-    debugLog(this.action, this.message, this.level);
+    DebugLog.log(this.action, this.message, this.level);
   }
 }

@@ -1,21 +1,23 @@
-import { PostHandler } from "../PostHandler";
-import { InputIsCommandValidator } from "../../validations/StringValidators";
-import { ReplyWithInputAction } from "../../actions/ReplyActions";
-import { AgentDetails } from "../../types/AgentDetails";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { InputIsCommandValidator } from "../../validations/post/StringValidators";
+import { HandlerAgent } from "../../agent/HandlerAgent";
+import { CreateSkeetHandler } from "../skeet/CreateSkeetHandler";
+import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
 
-export class OfflineHandler extends PostHandler {
+export class OfflineHandler extends CreateSkeetHandler {
   constructor(
+    public handlerAgent: HandlerAgent,
     private command: string,
     private response: string = "Bot functionality offline",
   ) {
     super(
       [new InputIsCommandValidator(command, false)],
-      [new ReplyWithInputAction(response)],
-      false,
+      [new ReplyToSkeetAction(response)],
+      handlerAgent,
     );
   }
-  handle(agentDetails: AgentDetails, op: RepoOp, repo: string): Promise<void> {
-    return super.handle(agentDetails, op, repo);
+
+  async handle(message: CreateSkeetMessage): Promise<void> {
+    return super.handle(message);
   }
 }

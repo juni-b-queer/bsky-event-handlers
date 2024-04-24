@@ -1,28 +1,26 @@
-import { PostHandler } from "../PostHandler";
 import { IsGoodBotValidator } from "../../validations/BotValidators";
-import { ReplyingToBotValidator } from "../../validations/PostValidators";
-import { ReplyWithInputAction } from "../../actions/ReplyActions";
 import { DebugLogAction } from "../../actions/LoggingActions";
-import { AgentDetails } from "../../types/AgentDetails";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
+import { HandlerAgent } from "../../agent/HandlerAgent";
+import { ReplyToSkeetAction } from "../../actions/post/SkeetActions";
+import { CreateSkeetMessage } from "../../types/JetstreamTypes";
+import { CreateSkeetHandler } from "../skeet/CreateSkeetHandler";
 
-export class GoodBotHandler extends PostHandler {
-  constructor() {
+export class GoodBotHandler extends CreateSkeetHandler {
+  constructor(
+    public handlerAgent: HandlerAgent,
+    public response: string = "Thank you 🥹",
+  ) {
     super(
-      [new IsGoodBotValidator(), new ReplyingToBotValidator()],
+      [new IsGoodBotValidator()],
       [
-        new ReplyWithInputAction("Thank you 🥹"),
+        new ReplyToSkeetAction(response),
         new DebugLogAction("GOOD BOT", `Told I'm good :)`),
       ],
-      false,
+      handlerAgent,
     );
   }
 
-  async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    repo: string,
-  ): Promise<void> {
-    return super.handle(agentDetails, op, repo);
+  async handle(message: CreateSkeetMessage): Promise<void> {
+    return super.handle(message);
   }
 }

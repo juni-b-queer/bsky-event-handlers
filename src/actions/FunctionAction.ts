@@ -1,24 +1,18 @@
-import { AbstractTriggerAction } from "./AbstractTriggerAction";
-import { PostDetails } from "../types/PostDetails";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { BskyAgent } from "@atproto/api";
-import { AgentDetails } from "../types/AgentDetails";
+import { HandlerAgent } from "../agent/HandlerAgent";
+import { AbstractMessageAction } from "./AbstractMessageAction";
+import { JetstreamMessage } from "../types/JetstreamTypes";
 
-export class FunctionAction extends AbstractTriggerAction {
+export class FunctionAction extends AbstractMessageAction {
   constructor(
-    private actionFunction: (
-      arg0: AgentDetails,
-      arg1: RepoOp,
-      arg2: PostDetails,
-    ) => any,
+    private actionFunction: (arg0: JetstreamMessage, arg1: HandlerAgent) => any,
   ) {
     super();
   }
+
   async handle(
-    agentDetails: AgentDetails,
-    op: RepoOp,
-    postDetails: PostDetails,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<any> {
-    await this.actionFunction(agentDetails, op, postDetails);
+    await this.actionFunction(message, handlerAgent);
   }
 }

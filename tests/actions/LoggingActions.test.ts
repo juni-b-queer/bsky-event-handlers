@@ -1,67 +1,30 @@
 import {
-  AgentDetails,
   DebugLogAction,
+  HandlerAgent,
+  JetstreamMessage,
   LogInputTextAction,
-  LogPostDetailsAction,
-  LogRepoOperationAction,
-  PostDetails,
+  LogMessageAction,
 } from "../../src";
-import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
 import { advanceTo } from "jest-date-mock";
 import mocked = jest.mocked;
 
-describe("LogPostDetailsAction", () => {
-  let action: LogPostDetailsAction;
-  let agentDetails: AgentDetails;
-  let op: RepoOp;
-  let postDetails: PostDetails;
+describe("LogMessageAction", () => {
+  let action: LogMessageAction;
+  let handlerAgent: HandlerAgent;
+  let message: JetstreamMessage;
   console.log = jest.fn();
 
   beforeEach(() => {
-    action = new LogPostDetailsAction();
-    agentDetails = {} as AgentDetails;
-    op = {
-      action: "create",
-      path: "test_path",
-      cid: null,
+    handlerAgent = {} as HandlerAgent;
+    message = {
+      collection: "",
+      did: "",
+      opType: "c",
+      rkey: "",
+      seq: 0,
+      cid: "cid",
     };
-    postDetails = {
-      uri: "test_uri",
-      cid: "test_cid",
-      value: {},
-    };
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("Calls console.log with correct arguments in handle method", async () => {
-    await action.handle(agentDetails, op, postDetails);
-    expect(console.log).toHaveBeenCalledWith(postDetails);
-  });
-});
-
-describe("LogRepoOperationAction", () => {
-  let action: LogRepoOperationAction;
-  let agentDetails: AgentDetails;
-  let op: RepoOp;
-  let postDetails: PostDetails;
-  console.log = jest.fn();
-
-  beforeEach(() => {
-    agentDetails = {} as AgentDetails;
-    op = {
-      action: "create",
-      path: "test_path",
-      cid: null,
-    };
-    postDetails = {
-      uri: "test_uri",
-      cid: "test_cid",
-      value: {},
-    };
-    action = new LogRepoOperationAction();
+    action = new LogMessageAction();
   });
 
   afterEach(() => {
@@ -69,35 +32,28 @@ describe("LogRepoOperationAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(agentDetails, op, postDetails);
-    expect(console.log).toHaveBeenCalledWith(op);
+    await action.handle(message, handlerAgent);
+    expect(console.log).toHaveBeenCalledWith(message);
   });
 });
 
 describe("LogInputTextAction", () => {
   let input: string;
   let action: LogInputTextAction;
-  let agentDetails: AgentDetails;
-  let op: RepoOp;
-  let postDetails: PostDetails;
+  let handlerAgent: HandlerAgent;
+  let message: JetstreamMessage;
   console.log = jest.fn();
 
   beforeEach(() => {
     input = "hello";
-    agentDetails = {} as AgentDetails;
-    op = {
-      action: "create",
-      path: "test_path",
-      cid: null,
-    };
-    postDetails = {
-      uri: "test_uri",
-      cid: "test_cid",
-      value: {
-        payload: {
-          text: input,
-        },
-      },
+    handlerAgent = {} as HandlerAgent;
+    message = {
+      collection: "",
+      did: "",
+      opType: "c",
+      rkey: "",
+      seq: 0,
+      cid: "cid",
     };
     action = new LogInputTextAction(input);
   });
@@ -107,16 +63,15 @@ describe("LogInputTextAction", () => {
   });
 
   it("Should log output of RepoOp object when handle() is called", async () => {
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(input);
   });
 });
 
 describe("LogInputTextAction", () => {
   let action: DebugLogAction;
-  const agentDetails: AgentDetails = {} as AgentDetails;
-  const op: RepoOp = {} as RepoOp;
-  const postDetails: PostDetails = {} as PostDetails;
+  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+  const message: JetstreamMessage = {} as JetstreamMessage;
   console.log = jest.fn();
 
   beforeEach(() => {
@@ -129,21 +84,39 @@ describe("LogInputTextAction", () => {
     jest.clearAllMocks();
   });
 
-  it("Should log output of RepoOp object when handle() is called", async () => {
+  it("Should log info when no level given", async () => {
+    const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
+
+    action = new DebugLogAction("TEST", "Hello");
+
+    await action.handle(message, handlerAgent);
+    expect(console.log).toHaveBeenCalledWith(expected);
+  });
+
+  it("Should log info", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | INFO | Hello";
 
     action = new DebugLogAction("TEST", "Hello", "info");
 
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 
-  it("Should log output of RepoOp object when handle() is called", async () => {
+  it("Should log warn", async () => {
+    const expected = "1/31/2023, 07:00 PM | TEST | WARN | Hello";
+
+    action = new DebugLogAction("TEST", "Hello", "warn");
+
+    await action.handle(message, handlerAgent);
+    expect(console.log).toHaveBeenCalledWith(expected);
+  });
+
+  it("Should log error", async () => {
     const expected = "1/31/2023, 07:00 PM | TEST | ERROR | Hello";
 
     action = new DebugLogAction("TEST", "Hello", "error");
 
-    await action.handle(agentDetails, op, postDetails);
+    await action.handle(message, handlerAgent);
     expect(console.log).toHaveBeenCalledWith(expected);
   });
 });
