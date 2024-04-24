@@ -13,7 +13,7 @@ An easy package to use for making bluesky bots with validators and handler actio
   - [Record Handlers](./src/handlers/README.md)
   - [Pre-made Handlers](./src/handlers/premade-handlers/README.md)
 - [Firehose Subscription](./src/firehose/README.md)
-- [Utility Functions](./src/util/README.md)
+- [Utility Functions](./src/utils/README.md)
 - [Jetstream Types](./src/types/README.md)
 - [Credits](#credits)
 
