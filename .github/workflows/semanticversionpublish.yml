@@ -27,33 +27,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Semantic Release
-#        uses: cycjimmy/semantic-release-action@v4
-#        with:
-#          semantic_version: 16
-#          branches: |
-#            [
-#              '+([0-9])?(.{+([0-9]),x}).x',
-#              'main',
-#              'next',
-#              'next-major',
-#              {
-#                name: 'beta',
-#                prerelease: true
-#              },
-#              {
-#                name: 'alpha',
-#                prerelease: true
-#              }
-#            ]
-#          extra_plugins: |
-#            @semantic-release/changelog
-#            @semantic-release/git
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.PAT }}
-#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 #      - name: Zip artifact for release
 #        id: zip-dist
