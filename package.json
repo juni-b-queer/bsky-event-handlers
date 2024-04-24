@@ -12,6 +12,7 @@
     "build": "tsup",
     "test": "jest",
     "coverage": "jest --coverage",
+    "prepublishOnly": "npm run build",
     "format": "npx prettier . --write",
     "lint": "eslint --ext=.ts src/ tests/ --fix"
   },
@@ -29,6 +30,8 @@
   },
   "homepage": "https://github.com/juni-b-queer/bsky-event-handlers#readme",
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
