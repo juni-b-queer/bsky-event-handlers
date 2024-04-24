@@ -61,11 +61,14 @@
         }
       ],
       "@semantic-release/npm",
+      ["@semantic-release/exec", {
+        "publishCmd": "zip dist.zip ./dist/* -r"
+      }],
       [
         "@semantic-release/github",
         {
           "assets": [
-            ["dist/*"],
+            { "path": "dist.zip", "label": "Distribution Files" },
             { "path": "docs/CHANGELOG.md", "label": "Change log" }
           ]
         }
