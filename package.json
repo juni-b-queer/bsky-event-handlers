@@ -9,10 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm install -g tsup && tsup",
+    "build": "tsup",
     "test": "jest",
     "coverage": "jest --coverage",
-    "prepublishOnly": "npm run build",
     "format": "npx prettier . --write",
     "lint": "eslint --ext=.ts src/ tests/ --fix"
   },
