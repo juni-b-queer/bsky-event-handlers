@@ -21,6 +21,15 @@ An easy package to use for making bluesky bots with validators and handler actio
 
 # Quickstart
 
+## Scaffold project with bunx
+Run `bunx create-bsky-bot {name}` to scaffold the project with jetstream and docker files all ready for you
+
+Enter the new directory
+
+Start building!
+
+## Getting it running on your own
+
 This guide is assuming you're using BunJS
 
 Install the package
