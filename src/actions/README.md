@@ -2,11 +2,7 @@
 
 Actions are the set of operations that are executed in response to certain validation or criteria fulfillment. This could range from sending reply posts, logging particular information, or executing any function, to more complex sequences of operations. You even have the ability to create custom actions based on your needs.
 
-## Create an Action
-
-Coming soon (also you can just look at the code of the existing ones for now, they're pretty simple)
-
-## Existing Actions
+## Provided Actions
 
 - [FunctionAction](#functionaction)
 - [Logging Actions](#logging-actions)
@@ -19,6 +15,37 @@ Coming soon (also you can just look at the code of the existing ones for now, th
     - [CreateSkeetWithGeneratedTextAction](#createskeetwithgeneratedtextaction)
     - [ReplyToSkeetAction](#replytoskeetaction)
     - [ReplyToSkeetWithGeneratedTextAction](#replytoskeetwithgeneratedtextaction)
+
+## Creating your own action
+Actions are fairly simple, it should extend `AbstractMessageAction` and have `constructor` and `handle` functions.
+
+The `handle` function is what's called if the validations pass.
+
+```typescript
+export class ExampleAction extends AbstractMessageAction {
+  constructor() {
+    super();
+  }
+
+  async handle(message: JetstreamMessage, handlerAgent: HandlerAgent): Promise<any> {
+    // Perform your actions here
+  }
+}
+```
+
+Any additional parameters you may need for the action can be passed into the constructor and used within the `handle` function as needed, like so
+```typescript
+export class ExampleAction extends AbstractMessageAction {
+  constructor(private userDid: string) {
+    super();
+  }
+
+  async handle(message: JetstreamMessage, handlerAgent: HandlerAgent): Promise<any> {
+    // use this.userDid to access the property
+    // Perform your actions here
+  }
+}
+```
 
 ## FunctionAction
 
