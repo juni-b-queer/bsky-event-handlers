@@ -2,7 +2,7 @@
 
 An easy package to use for making bluesky bots with validators and handler actions
 
-** There is a lot of work left to be done for likes, reskeets, and follows, but is mostly complete for handling new skeets **
+**There is a lot of work left to be done for likes, reskeets, and follows, but is mostly complete for handling new skeets**
 
 # Table of contents
 
