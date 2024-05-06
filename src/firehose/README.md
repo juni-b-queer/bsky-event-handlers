@@ -1,35 +1,57 @@
 # Firehose Subscription
 
-The `FirehoseSubscription` class sets up a subscription to the Bluesky event firehose. It allows the bot to receive real-time post updates pushed directly from the firehose.
+The `JetstreamSubscription` class sets up a subscription to a Jetstream bluesky relay instance
 
-The `FirehoseSubscription` takes in an array of `HandlerControllers`, which define how to process the received repository operations. It filters the received operations into two types: those that reply to posts and those that do not, and hands them off to the corresponding `HandlerControllers` accordingly.
-
-If the firehose stops sending updates for any reason, the `FirehoseSubscription` has a built-in mechanism to check for that and restart the subscription as needed.
-
-Here's an example of how to use it:
+The following example assumes you have a handler set up already:
 
 ```typescript
-// Import required classes
-import {
-  PostHandler,
-  InputStartsWithValidator,
-  ReplyWithInputAction,
-  AgentDetails,
-  HandlerController,
-  FirehoseSubscription,
-} from "bsky-event-handlers";
-// Define Agent Details
-let agentDetails: AgentDetails = {}; // add the required agent details here
-// Create Validators
-let validators = [new InputStartsWithValidator("Hello!")];
-// Define Actions
-let actions = [new ReplyWithInputAction("Hi!")];
-// Create Handler
-let handler = new PostHandler(validators, actions, true);
-// Create Handler Controller
-let handlerController = new HandlerController(agentDetails, [handler]);
-//Create Firehose Subscription
-let firehoseSubscription = new FirehoseSubscription([handlerController], 150);
+import { JetstreamSubscriptionHandlers, JetstreamSubscription } from "bsky-event-handlers";
+
+// Code for setting up agents goes here
+
+// Assume handlers are set up already
+const handlers: JetstreamSubscriptionHandlers = { /* Your handlers here */ };
+
+let jetstreamSubscription: JetstreamSubscription;
+
+async function initialize() {
+  // Code for authenticating agents goes here
+  
+  // Initialize the JetstreamSubscription with your handlers and WebSocket URL
+  jetstreamSubscription = new JetstreamSubscription(
+    handlers,
+    <string>Bun.env.JETSTREAM_URL,
+  );
+}
+
+initialize().then(() => {
+  // Create a subscription
+  jetstreamSubscription.createSubscription();
+});
 ```
 
-The code above will continuously listen for posts that start with "Hello!" and reply with "Hi!"
+The jetstream subscription accepts an object of type `JetstreamSubscriptionHandlers`
+This interface provides a blueprint for defining handlers for various events such as "post", "like", "repost", "follow". 
+For each event, you can specify create-and-delete handlers through the CreateAndDeleteHandlersInterface.
+```typescript
+const handlers: JetstreamSubscriptionHandlers = {
+  post: {
+    c: [],
+    d: [],
+  },
+  like:{
+    c: [],
+    d: [],
+  },
+  follow:{
+    c: [],
+    d: [],
+  },
+  repost:{
+    c: [],
+    d: [],
+  },
+}
+```
+
+This also allows the JetstreamSubscription to automatically subscribe to only events that it's handling.
