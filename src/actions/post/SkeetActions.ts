@@ -59,7 +59,7 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
 export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
   constructor(
     private textGenerator: (
-      arg0: JetstreamMessage,
+      arg0: CreateSkeetMessage,
       arg1: HandlerAgent,
     ) => string,
   ) {
