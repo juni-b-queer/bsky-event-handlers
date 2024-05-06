@@ -22,7 +22,7 @@ link:
 test:
 	npm run test
 
-coverage:
+test-coverage:
 	npm run coverage
 
 lint:
@@ -30,3 +30,6 @@ lint:
 
 format:
 	npm run format
+
+link:
+	bun link

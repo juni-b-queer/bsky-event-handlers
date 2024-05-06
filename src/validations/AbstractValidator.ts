@@ -1,16 +1,19 @@
 import { RepoOp } from "@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos";
-import { ValidatorInput } from "../types/ValidatorInput";
+import { HandlerAgent } from "../agent/HandlerAgent";
+import { CreateSkeetMessage, JetstreamMessage } from "../types/JetstreamTypes";
 
 export abstract class AbstractValidator {
   constructor() {}
 
-  getTextFromPost(op: RepoOp) {
-    // @ts-ignore
-    return op.payload.text;
+  getTextFromPost(message: JetstreamMessage): string {
+    const createSkeetMessage = message as CreateSkeetMessage;
+    const text = createSkeetMessage.record.text;
+    return <string>text;
   }
 
   // @ts-ignore
   abstract async shouldTrigger(
-    validatorInput: ValidatorInput,
+    message: JetstreamMessage,
+    handlerAgent: HandlerAgent,
   ): Promise<boolean>;
 }
