@@ -21,12 +21,16 @@ An easy package to use for making bluesky bots with validators and handler actio
 
 # Quickstart
 
-## Scaffold project with bunx
+## Scaffold project with [create-bsky-bot](https://github.com/juni-b-queer/create-bsky-bot)
 Run `bunx create-bsky-bot {name}` to scaffold the project with jetstream and docker files all ready for you
 
 Enter the new directory
 
+Copy the .env.example into a new .env and fill in the handle and password
+
 Start building!
+
+To run it, run `make up`. This will build your bot into a container and run it, along with a jetstream container.
 
 ## Getting it running on your own
 
