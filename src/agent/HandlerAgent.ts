@@ -268,6 +268,13 @@ export class HandlerAgent {
   /**
    *
    */
+  generateURIFromCreateMessage(message: CreateSkeetMessage){
+    return `at://${message.did}/app.bsky.feed.post/${message.rkey}`
+  }
+
+  /**
+   *
+   */
   generateReplyFromMessage(message: CreateSkeetMessage): Reply {
     let reply: Reply; //TODO Test
     const parentReply: Subject = {
