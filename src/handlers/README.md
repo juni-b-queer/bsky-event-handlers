@@ -28,3 +28,40 @@ The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended fo
 ```typescript
 new CreateSkeetHandler([Validators], [Actions], handlerAgent);
 ```
+
+
+## Creating a reusable handler
+
+A handler needs validators, actions, and an agent. Creating your own handler makes it easier to reuse them. The Good/Bad bot handlers are premade and ready to use.
+
+Your handler must extend AbstractMessageHandler or for handlers to only handle CreateSkeetMessages, extend CreateSkeetHandler.
+
+The below example simply takes in the handlerAgent, but has the validators and actions set automatically in the constructor
+```typescript
+export class ExampleHandler extends CreateSkeetHandler {
+  constructor(
+    public handlerAgent: HandlerAgent,
+  ) {
+    super(
+      [new InputEqualsValidator("Hello")],
+      [new ReplyToSkeetAction("World!")],
+      handlerAgent,
+    );
+  }
+
+  async handle(message: CreateSkeetMessage): Promise<void> {
+    return super.handle(message);
+  }
+}
+```
+
+To use this handler, you'll just use `new ExampleHandler(handlerAgent)` in your handlers object
+```typescript
+let handlers = {
+  post: {
+    c: [
+      new ExampleHandler(handlerAgent)
+    ]
+  }
+}
+```
