@@ -28,7 +28,7 @@ describe('Good and Bad Bot Handler', () => {
             did: 'did:plc:bot',
         },
     } as BskyAgent;
-    let handlerAgent: HandlerAgent = new HandlerAgent(
+    const handlerAgent: HandlerAgent = new HandlerAgent(
         'name',
         'handle',
         'password',

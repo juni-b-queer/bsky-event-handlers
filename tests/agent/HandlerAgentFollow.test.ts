@@ -146,7 +146,7 @@ describe('HandlerAgent', () => {
     });
 
     it('deleteFollow should return false when getFollows is undefined', async () => {
-        let followsRespMock = undefined;
+        const followsRespMock = undefined;
         getFollowsMock = jest.fn().mockReturnValue({
             data: {
                 follows: followsRespMock,
@@ -165,17 +165,17 @@ describe('HandlerAgent', () => {
             mockedAgent
         );
 
-        let mockGetRecordForDid = jest.fn().mockReturnValue({});
+        const mockGetRecordForDid = jest.fn().mockReturnValue({});
         handlerAgent.getRecordForDid = mockGetRecordForDid;
         const did = 'isFollowing';
-        let resp = await handlerAgent.unfollowUser(did);
+        const resp = await handlerAgent.unfollowUser(did);
         expect(mockGetRecordForDid).not.toHaveBeenCalled();
         expect(deleteFollowMock).not.toHaveBeenCalled();
         expect(resp).toBe(false);
     });
 
     it('deleteFollow should return false when getFollows is undefined', async () => {
-        let followsRespMock = [
+        const followsRespMock = [
             {
                 did: 'isFollowing',
                 viewer: {
@@ -202,10 +202,10 @@ describe('HandlerAgent', () => {
             mockedAgent
         );
 
-        let mockGetRecordForDid = jest.fn().mockReturnValue({});
+        const mockGetRecordForDid = jest.fn().mockReturnValue({});
         handlerAgent.getRecordForDid = mockGetRecordForDid;
         const did = 'isFollowing';
-        let resp = await handlerAgent.unfollowUser(did);
+        const resp = await handlerAgent.unfollowUser(did);
         expect(mockGetRecordForDid).toHaveBeenCalledWith(did, followsRespMock);
         expect(deleteFollowMock).not.toHaveBeenCalled();
         expect(resp).toBe(false);

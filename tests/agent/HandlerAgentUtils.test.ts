@@ -49,7 +49,7 @@ describe('HandlerAgent', () => {
 
     describe('postedByAgent', () => {
         it('should return true when message is same did as bot', () => {
-            let message = {
+            const message = {
                 did: 'did:plc:bot',
             } as unknown as JetstreamMessage;
             const result = handlerAgent.postedByAgent(message);
@@ -57,7 +57,7 @@ describe('HandlerAgent', () => {
         });
 
         it('should return false when message is not same did as bot', () => {
-            let message = {
+            const message = {
                 did: 'did:plc:other',
             } as unknown as JetstreamMessage;
             const result = handlerAgent.postedByAgent(message);
@@ -67,7 +67,7 @@ describe('HandlerAgent', () => {
 
     describe('getPostReply', () => {
         it('should return reply from message', () => {
-            let reply = {
+            const reply = {
                 parent: {
                     uri: 'uri',
                     cid: 'cid',
@@ -77,7 +77,7 @@ describe('HandlerAgent', () => {
                     cid: 'cid',
                 },
             };
-            let message = {
+            const message = {
                 did: 'did:plc:bot',
                 record: {
                     reply: reply,

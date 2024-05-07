@@ -110,7 +110,7 @@ export class HandlerAgent {
      *
      */
     async isFollowing(userDID: string): Promise<boolean> {
-        let getFollowsResponse = await this.getFollows();
+        const getFollowsResponse = await this.getFollows();
 
         if (Array.isArray(getFollowsResponse)) {
             const following = this.extractDIDsFromProfiles(getFollowsResponse);
@@ -123,7 +123,7 @@ export class HandlerAgent {
      *
      */
     async isFollowedBy(userDID: string): Promise<boolean> {
-        let getFollowerResponse = await this.getFollowers();
+        const getFollowerResponse = await this.getFollowers();
         if (Array.isArray(getFollowerResponse)) {
             const followers = this.extractDIDsFromProfiles(getFollowerResponse);
             return followers.includes(userDID);
@@ -143,7 +143,7 @@ export class HandlerAgent {
      *
      */
     async unfollowUser(did: string): Promise<boolean> {
-        let getFollowsResponse = await this.getFollows();
+        const getFollowsResponse = await this.getFollows();
 
         if (!Array.isArray(getFollowsResponse)) {
             return false;
