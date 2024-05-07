@@ -17,7 +17,7 @@ import {
 export class HandlerAgent {
     private did: string | undefined;
     private session: AtpSessionData | undefined;
-    private agent: BskyAgent;
+    private agent: BskyAgent | undefined;
 
     /**
      *
@@ -26,10 +26,10 @@ export class HandlerAgent {
         private agentName: string,
         private handle: string,
         private password: string,
-        agent: BskyAgent | null = null
+        agent: BskyAgent | undefined = undefined
     ) {
         if (!agent) {
-            this.agent = this.initializeBskyAgent(); // TODO TEST
+            this.agent = this.initializeBskyAgent();
         } else {
             this.agent = agent;
             this.setDid = agent.session?.did;
@@ -44,7 +44,6 @@ export class HandlerAgent {
      */
     initializeBskyAgent(): BskyAgent {
         return new BskyAgent({
-            // TODO Test
             service: 'https://bsky.social/',
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
@@ -58,7 +57,7 @@ export class HandlerAgent {
      */
     async authenticate() {
         if (!this.agent) {
-            this.agent = this.initializeBskyAgent(); // TODO Test
+            this.agent = this.initializeBskyAgent();
         }
         if (this.agent) {
             await this.agent.login({
@@ -66,7 +65,7 @@ export class HandlerAgent {
                 password: this.password,
             });
             if (!this.session) {
-                throw new Error( // TODO test
+                throw new Error(
                     'Could not retrieve bluesky session data for reply bot'
                 );
             } else {
@@ -76,7 +75,7 @@ export class HandlerAgent {
             await this.agent.resumeSession(this.session);
 
             if (!this.agent) {
-                throw new Error(`Could not get agent from ${this.agentName}`); // TODO test
+                throw new Error(`Could not get agent from ${this.agentName}`);
             }
             return this;
         }
@@ -92,8 +91,8 @@ export class HandlerAgent {
         if (userDID === undefined) {
             userDID = this.getDid;
         }
-        const resp = await this.agent.getFollows({ actor: userDID });
-        return resp.data.follows;
+        const resp = await this.agent?.getFollows({ actor: userDID });
+        return resp?.data.follows;
     }
 
     /**
@@ -103,33 +102,40 @@ export class HandlerAgent {
         if (userDID === undefined) {
             userDID = this.getDid;
         }
-        const resp = await this.agent.getFollowers({ actor: userDID });
-        return resp.data.followers;
+        const resp = await this.agent?.getFollowers({ actor: userDID });
+        return resp?.data.followers;
     }
 
     /**
      *
      */
     async isFollowing(userDID: string): Promise<boolean> {
-        const following = this.extractDIDsFromProfiles(await this.getFollows());
-        return following.includes(userDID);
+        let getFollowsResponse = await this.getFollows();
+
+        if (Array.isArray(getFollowsResponse)) {
+            const following = this.extractDIDsFromProfiles(getFollowsResponse);
+            return following.includes(userDID);
+        }
+        return false;
     }
 
     /**
      *
      */
     async isFollowedBy(userDID: string): Promise<boolean> {
-        const followers = this.extractDIDsFromProfiles(
-            await this.getFollowers()
-        );
-        return followers.includes(userDID);
+        let getFollowerResponse = await this.getFollowers();
+        if (Array.isArray(getFollowerResponse)) {
+            const followers = this.extractDIDsFromProfiles(getFollowerResponse);
+            return followers.includes(userDID);
+        }
+        return false;
     }
 
     /**
      *
      */
     async followUser(did: string): Promise<boolean> {
-        await this.agent.follow(did);
+        await this.agent?.follow(did);
         return true;
     }
 
@@ -137,13 +143,18 @@ export class HandlerAgent {
      *
      */
     async unfollowUser(did: string): Promise<boolean> {
-        const resp = this.getRecordForDid(did, await this.getFollows());
+        let getFollowsResponse = await this.getFollows();
+
+        if (!Array.isArray(getFollowsResponse)) {
+            return false;
+        }
+        const resp = this.getRecordForDid(did, getFollowsResponse);
         const followLink = resp?.viewer?.following;
         if (followLink) {
-            await this.agent.deleteFollow(followLink);
+            await this.agent?.deleteFollow(followLink);
             return true;
         }
-        return false; // TODO test
+        return false;
     }
 
     //endregion
@@ -177,7 +188,7 @@ export class HandlerAgent {
         details: Partial<AppBskyFeedPost.Record> &
             Omit<AppBskyFeedPost.Record, 'createdAt'>
     ) {
-        return await this.agent.post(details);
+        return await this?.agent?.post(details);
     }
 
     /**
@@ -193,11 +204,11 @@ export class HandlerAgent {
         });
         if (skeetReply == undefined) {
             // if it's not a reply
-            return await this.agent.post({
+            return await this.agent?.post({
                 text: replyText.text,
             });
         } else {
-            return await this.agent.post({
+            return await this.agent?.post({
                 // @ts-ignore
                 reply: skeetReply,
                 text: replyText.text,
@@ -209,7 +220,7 @@ export class HandlerAgent {
      *
      */
     async deleteSkeet(skeetURI: string) {
-        await this.agent.deletePost(skeetURI);
+        await this.agent?.deletePost(skeetURI);
         // TODO error handling
         return true;
     }
@@ -218,7 +229,7 @@ export class HandlerAgent {
      *
      */
     async likeSkeet(skeetURI: string, skeetCID: string) {
-        await this.agent.like(skeetURI, skeetCID);
+        await this.agent?.like(skeetURI, skeetCID);
         // TODO error handling
         return true;
     }
@@ -227,7 +238,7 @@ export class HandlerAgent {
      *
      */
     async unlikeSkeet(likeURI: string) {
-        await this.agent.deleteLike(likeURI);
+        await this.agent?.deleteLike(likeURI);
         // TODO error handling
         return true;
     }
@@ -236,7 +247,7 @@ export class HandlerAgent {
      *
      */
     async reskeetSkeet(skeetURI: string, skeetCID: string) {
-        await this.agent.repost(skeetURI, skeetCID);
+        await this.agent?.repost(skeetURI, skeetCID);
         // TODO add error handling
         return true;
     }
@@ -245,7 +256,7 @@ export class HandlerAgent {
      *
      */
     async unreskeetSkeet(reskeetURI: string) {
-        await this.agent.deleteRepost(reskeetURI);
+        await this.agent?.deleteRepost(reskeetURI);
         // TODO error handling
         return true;
     }
@@ -314,7 +325,7 @@ export class HandlerAgent {
      * Setter for agent.
      * @param agent
      */
-    public set setAgent(agent: BskyAgent) {
+    public set setAgent(agent: BskyAgent | undefined) {
         this.agent = agent;
     }
 
@@ -322,10 +333,7 @@ export class HandlerAgent {
      * Getter for agent.
      * @return {BskyAgent} The current value of agent.
      */
-    public get getAgent(): BskyAgent | boolean {
-        if (!this.agent) {
-            return false; //TODO Test
-        }
+    public get getAgent(): BskyAgent | undefined {
         return this.agent;
     }
 
@@ -341,10 +349,7 @@ export class HandlerAgent {
      * Getter for agentName.
      * @return {string} The current value of agentName.
      */
-    public get getAgentName(): string | boolean {
-        if (!this.agentName) {
-            return false; //TODO Test
-        }
+    public get getAgentName(): string {
         return this.agentName;
     }
 
@@ -360,10 +365,7 @@ export class HandlerAgent {
      * Getter for handle.
      * @return {string} The current value of handle.
      */
-    public get getHandle(): string | boolean {
-        if (!this.handle) {
-            return false; //TODO Test
-        }
+    public get getHandle(): string {
         return this.handle;
     }
 
@@ -372,7 +374,15 @@ export class HandlerAgent {
      * @param {string} value - The new value for password.
      */
     public set setPassword(value: string) {
-        this.password = value; //TODO Test
+        this.password = value;
+    }
+
+    /**
+     * Getter for password.
+     * @return {string} The current value of password.
+     */
+    public get getPassword(): string {
+        return this.password;
     }
 
     /**

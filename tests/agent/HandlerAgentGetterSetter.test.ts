@@ -8,10 +8,8 @@ jest.mock('@atproto/api', () => jest.genMockFromModule('@atproto/api'));
 
 describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
-    const testHandle: string | undefined =
-        process.env.TEST_HANDLE ?? 'testhandle';
-    const testPassword: string | undefined =
-        process.env.TEST_PASSWORD ?? 'testpassword';
+    const testHandle: string = 'testhandle';
+    const testPassword: string = 'testpassword';
     let mockedAgent: BskyAgent;
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
@@ -34,6 +32,13 @@ describe('HandlerAgent', () => {
         const mockAgent = new BskyAgent({ service: 'www' });
         handlerAgent.setAgent = mockAgent;
         expect(handlerAgent.getAgent).toBe(mockAgent);
+    });
+
+    it('#getPassword & setPassword should get correct agent value', () => {
+        expect(handlerAgent.getPassword).toBe(testPassword);
+        const otherPassword = 'other';
+        handlerAgent.setPassword = otherPassword;
+        expect(handlerAgent.getPassword).toBe(otherPassword);
     });
 
     it('#getAgentName & setAgentName should set correct agentName value', () => {
