@@ -91,6 +91,12 @@ The `OrValidator` class allows you to pass in multiple validators. If any of the
 
 `new OrValidator([validator1, validator2, validator3]); // replace with actual validator instances`
 
+### NotValidator
+
+The `NotValidator` class allows you to negate the original output from the given validator. The NotValidator will return the opposite of the validator passed into it
+
+`new NotValidator(validator1, validator2, validator3); // replace with actual validator instances`
+
 ## Generic Validators
 
 ### ActionTakenByUserValidator
