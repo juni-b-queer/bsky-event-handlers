@@ -32,7 +32,7 @@ export abstract class AbstractMessageHandler {
   }
 
   //@ts-ignore
-  abstract async handle(message: JetstreamMessage): Promise<void>;
+  abstract async handle(message: JetstreamMessage, handlerAgent: HandlerAgent|null): Promise<void>;
 }
 
 export class MessageHandler extends AbstractMessageHandler {
