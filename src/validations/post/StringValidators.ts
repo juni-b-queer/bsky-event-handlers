@@ -64,7 +64,7 @@ export class InputContainsValidator extends AbstractValidator {
   ): Promise<boolean> {
     const input = this.getTextFromPost(message);
     if (this.strict) {
-      return input.startsWith(this.triggerKey);
+      return input.includes(this.triggerKey);
     }
     const flatText = flattenTextUpdated(this.triggerKey, input);
     return flatText.includes(this.triggerKey);
