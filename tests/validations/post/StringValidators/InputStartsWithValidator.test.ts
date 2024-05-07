@@ -12,7 +12,7 @@ describe('InputStartsWithValidator', () => {
 
     test('shouldTrigger returns true if input starts with trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -31,7 +31,7 @@ describe('InputStartsWithValidator', () => {
 
     test('shouldTrigger returns false if input does not start with trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -52,7 +52,7 @@ describe('InputStartsWithValidator', () => {
 
     test('shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',

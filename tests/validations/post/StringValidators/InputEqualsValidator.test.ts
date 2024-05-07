@@ -16,7 +16,7 @@ describe('InputEqualsValidator', () => {
      */
     test('shouldTrigger returns true if input is trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -40,7 +40,7 @@ describe('InputEqualsValidator', () => {
      */
     test('shouldTrigger returns false if input does not equal trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',

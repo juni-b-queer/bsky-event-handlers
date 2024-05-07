@@ -11,7 +11,7 @@ describe('InputContainsValidator no strict parameter', () => {
 
     test('shouldTrigger returns true if input contains with trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -30,7 +30,7 @@ describe('InputContainsValidator no strict parameter', () => {
 
     test('shouldTrigger returns true if input contains trigger keyword in other words', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -49,7 +49,7 @@ describe('InputContainsValidator no strict parameter', () => {
 
     test('shouldTrigger returns false if input does not contain trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -75,7 +75,7 @@ describe('InputContainsValidator true strict parameter', () => {
 
     test('shouldTrigger returns true if input contains with trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -94,7 +94,7 @@ describe('InputContainsValidator true strict parameter', () => {
 
     test('shouldTrigger returns true if input contains trigger keyword in other words', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -113,7 +113,7 @@ describe('InputContainsValidator true strict parameter', () => {
 
     test('shouldTrigger returns false if input does not contain trigger keyword', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -134,7 +134,7 @@ describe('InputContainsValidator true strict parameter', () => {
 
     test('shouldTrigger returns false if input does not match case sensitivity', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',

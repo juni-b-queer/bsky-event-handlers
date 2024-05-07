@@ -9,7 +9,7 @@ describe('InputIsCommandValidator Class', () => {
     let inputIsCommandValidator: InputIsCommandValidator;
     // @ts-ignore
     const message: CreateSkeetMessage = {
-        collection: '',
+        collection: 'app.bsky.feed.post',
         did: '',
         opType: 'c',
         rkey: '',
@@ -85,7 +85,7 @@ describe('InputIsCommandValidator Not strict Class', () => {
     let inputIsCommandValidator: InputIsCommandValidator;
     // @ts-ignore
     const message: CreateSkeetMessage = {
-        collection: '',
+        collection: 'app.bsky.feed.post',
         did: '',
         opType: 'c',
         rkey: '',

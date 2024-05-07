@@ -22,7 +22,7 @@ describe('IsReplyValidator', () => {
 
     test('shouldTrigger returns true if op.payload.reply is not null', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
@@ -51,7 +51,7 @@ describe('IsReplyValidator', () => {
 
     test('shouldTrigger returns false if op.payload.reply is null', async () => {
         const message: CreateSkeetMessage = {
-            collection: '',
+            collection: 'app.bsky.feed.post',
             did: '',
             opType: 'c',
             rkey: '',
