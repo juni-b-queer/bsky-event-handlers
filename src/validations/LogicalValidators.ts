@@ -1,27 +1,27 @@
-import { AbstractValidator } from "./AbstractValidator";
-import { HandlerAgent } from "../agent/HandlerAgent";
-import { JetstreamMessage } from "../types/JetstreamTypes";
+import { AbstractValidator } from './AbstractValidator';
+import { HandlerAgent } from '../agent/HandlerAgent';
+import { JetstreamMessage } from '../types/JetstreamTypes';
 
 /**
  * A validator in which you pass a single function that takes in the post
  * text, and returns a boolean
  */
 export class SimpleFunctionValidator extends AbstractValidator {
-  constructor(
-    private triggerValidator: (
-      arg0: JetstreamMessage,
-      arg1: HandlerAgent,
-    ) => boolean | PromiseLike<boolean>,
-  ) {
-    super();
-  }
+    constructor(
+        private triggerValidator: (
+            arg0: JetstreamMessage,
+            arg1: HandlerAgent
+        ) => boolean | PromiseLike<boolean>
+    ) {
+        super();
+    }
 
-  async shouldTrigger(
-    message: JetstreamMessage,
-    handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    return await this.triggerValidator(message, handlerAgent);
-  }
+    async shouldTrigger(
+        message: JetstreamMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        return await this.triggerValidator(message, handlerAgent);
+    }
 }
 
 /**
@@ -29,26 +29,26 @@ export class SimpleFunctionValidator extends AbstractValidator {
  *  and if any of them should trigger, it will return true
  */
 export class OrValidator extends AbstractValidator {
-  constructor(private validators: Array<AbstractValidator>) {
-    super();
-  }
-
-  async shouldTrigger(
-    message: JetstreamMessage,
-    handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    let willTrigger = false;
-    for (const validator of this.validators) {
-      const currentValidatorWillTrigger = await validator.shouldTrigger(
-        message,
-        handlerAgent,
-      );
-      if (currentValidatorWillTrigger) {
-        willTrigger = true;
-      }
+    constructor(private validators: Array<AbstractValidator>) {
+        super();
     }
-    return willTrigger;
-  }
+
+    async shouldTrigger(
+        message: JetstreamMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        let willTrigger = false;
+        for (const validator of this.validators) {
+            const currentValidatorWillTrigger = await validator.shouldTrigger(
+                message,
+                handlerAgent
+            );
+            if (currentValidatorWillTrigger) {
+                willTrigger = true;
+            }
+        }
+        return willTrigger;
+    }
 }
 
 /**
@@ -57,18 +57,18 @@ export class OrValidator extends AbstractValidator {
  * @description A class that represents a validator that negates the result of another validator.
  */
 export class NotValidator extends AbstractValidator {
-  constructor(private validator: AbstractValidator) {
-    super();
-  }
+    constructor(private validator: AbstractValidator) {
+        super();
+    }
 
-  async shouldTrigger(
-    message: JetstreamMessage,
-    handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    const willTrigger = await this.validator.shouldTrigger(
-      message,
-      handlerAgent,
-    );
-    return !willTrigger;
-  }
+    async shouldTrigger(
+        message: JetstreamMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        const willTrigger = await this.validator.shouldTrigger(
+            message,
+            handlerAgent
+        );
+        return !willTrigger;
+    }
 }

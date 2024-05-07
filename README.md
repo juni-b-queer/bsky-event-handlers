@@ -6,24 +6,25 @@ An easy package to use for making bluesky bots with validators and handler actio
 
 # Table of contents
 
-- [Quickstart](#quickstart)
-- [Overview](#overview)
-- [Agent](./src/agent/README.md)
-- [Validators](./src/validations/README.md)
-- [Actions](./src/actions/README.md)
-- [Handlers](./src/handlers/README.md)
-  - [Record Handlers](./src/handlers/README.md)
-  - [Pre-made Handlers](./src/handlers/premade-handlers/README.md)
-- [Jetsteam Firehose Subscription](./src/firehose/README.md)
-- [Utility Functions](./src/utils/README.md)
-- [Jetstream Types](./src/types/README.md)
-- [Credits](#credits)
+-   [Quickstart](#quickstart)
+-   [Overview](#overview)
+-   [Agent](./src/agent/README.md)
+-   [Validators](./src/validations/README.md)
+-   [Actions](./src/actions/README.md)
+-   [Handlers](./src/handlers/README.md)
+    -   [Record Handlers](./src/handlers/README.md)
+    -   [Pre-made Handlers](./src/handlers/premade-handlers/README.md)
+-   [Jetsteam Firehose Subscription](./src/firehose/README.md)
+-   [Utility Functions](./src/utils/README.md)
+-   [Jetstream Types](./src/types/README.md)
+-   [Credits](#credits)
 
 [npm Package](https://www.npmjs.com/package/bsky-event-handlers)
 
 # Quickstart
 
 ## Scaffold project with [create-bsky-bot](https://github.com/juni-b-queer/create-bsky-bot)
+
 Run `bunx create-bsky-bot {name}` to scaffold the project with jetstream and docker files all ready for you
 
 Enter the new directory
@@ -47,9 +48,9 @@ Create your bsky agent and prepare your jetstreamSubscription variable
 
 ```typescript
 const testAgent = new HandlerAgent(
-  "test-bot",
-  <string>Bun.env.TEST_BSKY_HANDLE,
-  <string>Bun.env.TEST_BSKY_PASSWORD,
+    'test-bot',
+    <string>Bun.env.TEST_BSKY_HANDLE,
+    <string>Bun.env.TEST_BSKY_PASSWORD
 );
 
 let jetstreamSubscription: JetstreamSubscription;
@@ -59,28 +60,28 @@ Initialize your handlers
 
 ```typescript
 const handlers: JetstreamSubscriptionHandlers = {
-  post: {
-    c: [
-      new CreateSkeetHandler(
-        [new InputEqualsValidator("Hello")],
-        [new ReplyToSkeetAction("World!")],
-        testAgent,
-      ),
-    ],
-    d: [],
-  },
-  like: {
-    c: [],
-    d: [],
-  },
-  follow: {
-    c: [],
-    d: [],
-  },
-  repost: {
-    c: [],
-    d: [],
-  },
+    post: {
+        c: [
+            new CreateSkeetHandler(
+                [new InputEqualsValidator('Hello')],
+                [new ReplyToSkeetAction('World!')],
+                testAgent
+            ),
+        ],
+        d: [],
+    },
+    like: {
+        c: [],
+        d: [],
+    },
+    follow: {
+        c: [],
+        d: [],
+    },
+    repost: {
+        c: [],
+        d: [],
+    },
 };
 ```
 
@@ -90,15 +91,15 @@ for our example, we'll only be acting upon post creations, so our handlers will 
 
 ```typescript
 const handlers: JetstreamSubscriptionHandlers = {
-  post: {
-    c: [
-      new CreateSkeetHandler(
-        [new InputEqualsValidator("Hello")],
-        [new ReplyToSkeetAction("World!")],
-        testAgent,
-      ),
-    ],
-  },
+    post: {
+        c: [
+            new CreateSkeetHandler(
+                [new InputEqualsValidator('Hello')],
+                [new ReplyToSkeetAction('World!')],
+                testAgent
+            ),
+        ],
+    },
 };
 ```
 
@@ -108,13 +109,13 @@ Then in out `initialize` function, we authenticate the agent, and create the Jet
 
 ```typescript
 async function initialize() {
-  await testAgent.authenticate();
-  DebugLog.info("INIT", "Initialized!");
+    await testAgent.authenticate();
+    DebugLog.info('INIT', 'Initialized!');
 
-  jetstreamSubscription = new JetstreamSubscription(
-    handlers,
-    <string>Bun.env.JETSTREAM_URL,
-  );
+    jetstreamSubscription = new JetstreamSubscription(
+        handlers,
+        <string>Bun.env.JETSTREAM_URL
+    );
 }
 ```
 
@@ -122,7 +123,7 @@ Then finally, we call initialize, then start the subscription to listen for even
 
 ```typescript
 initialize().then(() => {
-  jetstreamSubscription.createSubscription();
+    jetstreamSubscription.createSubscription();
 });
 ```
 
@@ -130,47 +131,47 @@ All together, a simple bot index.ts would look like
 
 ```typescript
 import {
-  HandlerAgent,
-  JetstreamSubscriptionHandlers,
-  JetstreamSubscription,
-  CreateSkeetHandler,
-  InputEqualsValidator,
-  ReplyToSkeetAction,
-  DebugLog,
-} from "bsky-event-handlers";
+    HandlerAgent,
+    JetstreamSubscriptionHandlers,
+    JetstreamSubscription,
+    CreateSkeetHandler,
+    InputEqualsValidator,
+    ReplyToSkeetAction,
+    DebugLog,
+} from 'bsky-event-handlers';
 
 const testAgent = new HandlerAgent(
-  "test-bot",
-  <string>Bun.env.TEST_BSKY_HANDLE,
-  <string>Bun.env.TEST_BSKY_PASSWORD,
+    'test-bot',
+    <string>Bun.env.TEST_BSKY_HANDLE,
+    <string>Bun.env.TEST_BSKY_PASSWORD
 );
 
 let jetstreamSubscription: JetstreamSubscription;
 
 const handlers: JetstreamSubscriptionHandlers = {
-  post: {
-    c: [
-      new CreateSkeetHandler(
-        [new InputEqualsValidator("Hello")],
-        [new ReplyToSkeetAction("World!")],
-        testAgent,
-      ),
-    ],
-  },
+    post: {
+        c: [
+            new CreateSkeetHandler(
+                [new InputEqualsValidator('Hello')],
+                [new ReplyToSkeetAction('World!')],
+                testAgent
+            ),
+        ],
+    },
 };
 
 async function initialize() {
-  await testAgent.authenticate();
-  DebugLog.info("INIT", "Initialized!");
+    await testAgent.authenticate();
+    DebugLog.info('INIT', 'Initialized!');
 
-  jetstreamSubscription = new JetstreamSubscription(
-    handlers,
-    <string>Bun.env.JETSTREAM_URL,
-  );
+    jetstreamSubscription = new JetstreamSubscription(
+        handlers,
+        <string>Bun.env.JETSTREAM_URL
+    );
 }
 
 initialize().then(() => {
-  jetstreamSubscription.createSubscription();
+    jetstreamSubscription.createSubscription();
 });
 ```
 
@@ -203,5 +204,5 @@ By leveraging the combination of Validators and Actions, you can create a unique
 
 ## Packages/dependencies used
 
-- [@atproto/api](https://www.npmjs.com/package/@atproto/api)
-- [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker container)
+-   [@atproto/api](https://www.npmjs.com/package/@atproto/api)
+-   [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker container)
