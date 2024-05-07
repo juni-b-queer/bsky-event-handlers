@@ -67,7 +67,7 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'debug';
             const consoleSpy = jest.spyOn(console, 'log');
-            let functionAction = new FunctionAction(
+            const functionAction = new FunctionAction(
                 (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
                     DebugLog.log('TEST', 'log');
                 }
@@ -83,7 +83,7 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'debug';
             const consoleSpy = jest.spyOn(console, 'log');
-            let functionAction = new FunctionAction(
+            const functionAction = new FunctionAction(
                 (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
                     DebugLog.debug('TEST', 'log');
                 }
@@ -99,7 +99,7 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
-            let functionAction = new FunctionAction(
+            const functionAction = new FunctionAction(
                 (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
                     DebugLog.info('TEST', 'log');
                 }
@@ -115,7 +115,7 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
-            let functionAction = new FunctionAction(
+            const functionAction = new FunctionAction(
                 (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
                     DebugLog.warn('TEST', 'log');
                 }
@@ -131,7 +131,7 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
-            let functionAction = new FunctionAction(
+            const functionAction = new FunctionAction(
                 (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
                     DebugLog.error('TEST', 'log');
                 }

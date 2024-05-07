@@ -65,6 +65,10 @@
                     "preset": "conventionalcommits",
                     "releaseRules": [
                         {
+                            "type": "formatting",
+                            "release": "patch"
+                        },
+                        {
                             "type": "docs",
                             "release": "patch"
                         },
@@ -103,6 +107,10 @@
                     ],
                     "presetConfig": {
                         "types": [
+                            {
+                                "type": "formatting",
+                                "section": "Formatting"
+                            },
                             {
                                 "type": "docs",
                                 "section": "Docs"
@@ -149,6 +157,10 @@
                     "preset": "conventionalcommits",
                     "presetConfig": {
                         "types": [
+                            {
+                                "type": "formatting",
+                                "section": "Formatting"
+                            },
                             {
                                 "type": "docs",
                                 "section": "Docs"
