@@ -28,4 +28,4 @@ And the third is what the response will be if someone uses the command
 
 # Creating premade handlers
 
-Coming soon (but also look at the existing ones, they're pretty simple)
+See the Creating a reusable handler section in the [Handlers README](../README.md#creating-a-reusable-handler)
