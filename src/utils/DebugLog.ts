@@ -21,13 +21,13 @@ export class DebugLog {
         const debugLevel: string = process.env.DEBUG_LOG_LEVEL ?? 'error';
 
         const debugLevels: { [level: string]: string[] } = {
-            error: ['error', 'warn', 'info', 'debug'],
-            warn: ['warn', 'info', 'debug'],
-            info: ['info', 'debug'],
-            debug: ['debug'],
+            error: ['error'],
+            warn: ['error', 'warn'],
+            info: ['error', 'warn', 'info'],
+            debug: ['error', 'warn', 'info', 'debug'],
         };
 
-        if (debug && debugLevels[level].includes(debugLevel)) {
+        if (debug && debugLevels[debugLevel].includes(level)) {
             console.log(
                 `${nowDateTime()} | ${action} | ${level.toUpperCase()} | ${message}`
             );
