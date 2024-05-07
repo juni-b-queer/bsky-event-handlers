@@ -29,6 +29,29 @@ The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended fo
 new CreateSkeetHandler([Validators], [Actions], handlerAgent);
 ```
 
+## Handlers as actions
+Actions are called in the handler with the action's `handle` function, but handlers are run with their own `handle` function. This means that we can pass Handlers as actions to nest our actions. 
+
+### Simple example:
+This example handler first checks if the reply is to the bot agent, and not posted by the bot user.
+If so, it runs the next two handlers. The first will reply "down" if the reply text equals "up", and the second will reply "up" if the text is "down"
+```typescript
+new CreateSkeetHandler(
+  [new ReplyingToBotValidator(), new NotValidator(new PostedByUserValidator(handlerAgent.getDid))],
+  [
+    new CreateSkeetHandler(
+      [new InputEqualsValidator("up")],
+      [new ReplyToSkeetAction("down")]
+    ),
+    new CreateSkeetHandler(
+      [new InputEqualsValidator("down")],
+      [new ReplyToSkeetAction("up")]
+    )
+  ],
+  handlerAgent
+)
+```
+
 
 ## Creating a reusable handler
 
