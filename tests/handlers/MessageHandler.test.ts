@@ -2,11 +2,11 @@ import {
     AbstractMessageAction,
     AbstractValidator,
     CreateSkeetMessage,
+    DebugLog,
     HandlerAgent,
     JetstreamMessage,
     MessageHandler,
 } from '../../src';
-import { DebugLog } from '../../src/utils/DebugLog';
 
 describe('MessageHandler', () => {
     let messageHandler: MessageHandler;
