@@ -232,6 +232,10 @@
                 "prerelease": false
             },
             {
+                "name": "next",
+                "prerelease": "next"
+            },
+            {
                 "name": "beta",
                 "prerelease": "beta"
             }
