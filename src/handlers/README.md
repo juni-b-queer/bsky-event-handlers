@@ -30,28 +30,33 @@ new CreateSkeetHandler([Validators], [Actions], handlerAgent);
 ```
 
 ## Handlers as actions
-Actions are called in the handler with the action's `handle` function, but handlers are run with their own `handle` function. This means that we can pass Handlers as actions to nest our actions. 
+
+Actions are called in the handler with the action's `handle` function, but handlers are run with their own `handle` function. This means that we can pass Handlers as actions to nest our actions.
 
 ### Simple example:
+
 This example handler first checks if the reply is to the bot agent, and not posted by the bot user.
 If so, it runs the next two handlers. The first will reply "down" if the reply text equals "up", and the second will reply "up" if the text is "down"
+
 ```typescript
 new CreateSkeetHandler(
-  [new ReplyingToBotValidator(), new NotValidator(new PostedByUserValidator(handlerAgent.getDid))],
-  [
-    new CreateSkeetHandler(
-      [new InputEqualsValidator("up")],
-      [new ReplyToSkeetAction("down")]
-    ),
-    new CreateSkeetHandler(
-      [new InputEqualsValidator("down")],
-      [new ReplyToSkeetAction("up")]
-    )
-  ],
-  handlerAgent
-)
+    [
+        new ReplyingToBotValidator(),
+        new NotValidator(new PostedByUserValidator(handlerAgent.getDid)),
+    ],
+    [
+        new CreateSkeetHandler(
+            [new InputEqualsValidator('up')],
+            [new ReplyToSkeetAction('down')]
+        ),
+        new CreateSkeetHandler(
+            [new InputEqualsValidator('down')],
+            [new ReplyToSkeetAction('up')]
+        ),
+    ],
+    handlerAgent
+);
 ```
-
 
 ## Creating a reusable handler
 
@@ -60,31 +65,29 @@ A handler needs validators, actions, and an agent. Creating your own handler mak
 Your handler must extend AbstractMessageHandler or for handlers to only handle CreateSkeetMessages, extend CreateSkeetHandler.
 
 The below example simply takes in the handlerAgent, but has the validators and actions set automatically in the constructor
+
 ```typescript
 export class ExampleHandler extends CreateSkeetHandler {
-  constructor(
-    public handlerAgent: HandlerAgent,
-  ) {
-    super(
-      [new InputEqualsValidator("Hello")],
-      [new ReplyToSkeetAction("World!")],
-      handlerAgent,
-    );
-  }
+    constructor(public handlerAgent: HandlerAgent) {
+        super(
+            [new InputEqualsValidator('Hello')],
+            [new ReplyToSkeetAction('World!')],
+            handlerAgent
+        );
+    }
 
-  async handle(message: CreateSkeetMessage): Promise<void> {
-    return super.handle(message);
-  }
+    async handle(message: CreateSkeetMessage): Promise<void> {
+        return super.handle(message);
+    }
 }
 ```
 
 To use this handler, you'll just use `new ExampleHandler(handlerAgent)` in your handlers object
+
 ```typescript
 let handlers = {
-  post: {
-    c: [
-      new ExampleHandler(handlerAgent)
-    ]
-  }
-}
+    post: {
+        c: [new ExampleHandler(handlerAgent)],
+    },
+};
 ```

@@ -8,74 +8,74 @@ Coming soon (also you can just look at the code of the existing ones for now, th
 
 ## Existing Validators
 
-- [Logical Validator](#logical-validator)
-  - [SimpleFunctionValidator](#simplefunctionvalidator)
-  - [OrValidator](#orvalidator)
-- [Generic Validators](#generic-validators)
-  - [ActionTakenByUserValidator](#actiontakenbyuservalidator)
-- Posts
-  - [Post Validators](#post-validators)
-    - [PostedByUserValidator](#postedbyuservalidator)
-    - [ReplyingToBotValidator](#replyingtobotvalidator)
-    - [IsReplyValidator](#isreplyvalidator)
-  - [String Validators](#string-validators)
-    - [InputIsCommandValidator](#inputiscommandvalidator)
-    - [InputStartsWithValidator](#inputstartswithvalidator)
-    - [InputContainsValidator](#inputcontainsvalidator)
-    - [InputEqualsValidator](#inputequalsvalidator)
-  - [Bot Validators](#bot-validators)
-    - [IsGoodBotValidator](#isgoodbotvalidator)
-    - [IsBadBotValidator](#isbadbotvalidator)
-- Follow
-  - [Follow Validators](#follow-validators)
-    - [NewFollowerForUserValidator](#newfollowerforuservalidator)
-    - [UserFollowedValidator](#userfollowedvalidator)
-- Like
-  - Coming soon
-- Repost
-  - Coming soon
-- Testing
-  - [Test Validator](#test-validator)
+-   [Logical Validator](#logical-validator)
+    -   [SimpleFunctionValidator](#simplefunctionvalidator)
+    -   [OrValidator](#orvalidator)
+-   [Generic Validators](#generic-validators)
+    -   [ActionTakenByUserValidator](#actiontakenbyuservalidator)
+-   Posts
+    -   [Post Validators](#post-validators)
+        -   [PostedByUserValidator](#postedbyuservalidator)
+        -   [ReplyingToBotValidator](#replyingtobotvalidator)
+        -   [IsReplyValidator](#isreplyvalidator)
+    -   [String Validators](#string-validators)
+        -   [InputIsCommandValidator](#inputiscommandvalidator)
+        -   [InputStartsWithValidator](#inputstartswithvalidator)
+        -   [InputContainsValidator](#inputcontainsvalidator)
+        -   [InputEqualsValidator](#inputequalsvalidator)
+    -   [Bot Validators](#bot-validators)
+        -   [IsGoodBotValidator](#isgoodbotvalidator)
+        -   [IsBadBotValidator](#isbadbotvalidator)
+-   Follow
+    -   [Follow Validators](#follow-validators)
+        -   [NewFollowerForUserValidator](#newfollowerforuservalidator)
+        -   [UserFollowedValidator](#userfollowedvalidator)
+-   Like
+    -   Coming soon
+-   Repost
+    -   Coming soon
+-   Testing
+    -   [Test Validator](#test-validator)
 
 ## Creating a validator
+
 Validators are fairly simple, it should extend `AbstractValidator` and have `constructor` and `shouldTrigger` functions.
 
 The `shouldTrigger` function is what's called to check if it passes, and must return a boolean
 
 ```typescript
 export class ExampleValidator extends AbstractValidator {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  async shouldTrigger(
-          message: CreateSkeetMessage,
-          handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    // Perform validation
-    // must return a boolean
-  }
+    async shouldTrigger(
+        message: CreateSkeetMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        // Perform validation
+        // must return a boolean
+    }
 }
-
 ```
 
 Any additional parameters you may need for the action can be passed into the constructor and used within the `handle` function as needed, like so
+
 ```typescript
 export class ExampleValidator extends AbstractValidator {
-  constructor(private shouldPass: boolean) {
-    super();
-  }
+    constructor(private shouldPass: boolean) {
+        super();
+    }
 
-  async shouldTrigger(
-          message: CreateSkeetMessage,
-          handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    // This example takes in a boolean, and returns it from should trigger.
-    return this.shouldPass;
-  }
+    async shouldTrigger(
+        message: CreateSkeetMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        // This example takes in a boolean, and returns it from should trigger.
+        return this.shouldPass;
+    }
 }
 ```
-
 
 ## Logical validator
 

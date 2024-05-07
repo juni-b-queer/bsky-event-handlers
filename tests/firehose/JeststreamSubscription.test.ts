@@ -1,194 +1,194 @@
 import {
-  CreateMessage,
-  DeleteMessage,
-  JetstreamSubscription,
-  JetstreamSubscriptionHandlers,
-  MessageHandler,
-  Record,
-} from "../../src";
+    CreateMessage,
+    DeleteMessage,
+    JetstreamSubscription,
+    JetstreamSubscriptionHandlers,
+    MessageHandler,
+    Record,
+} from '../../src';
 
-describe("JetstreamSubscription", () => {
-  let jetSub: JetstreamSubscription;
-  const handlers: JetstreamSubscriptionHandlers = {
-    post: {
-      c: [],
-      d: [],
-    },
-    like: {
-      c: [],
-      d: [],
-    },
-    repost: {
-      c: [],
-      d: [],
-    },
-    follow: {
-      c: [],
-      d: [],
-    },
-  };
-  // A dummy message handler for testing
-  const dummyHandler: MessageHandler = {
-    handle: jest.fn(),
-  } as unknown as MessageHandler;
-
-  beforeEach(() => {
-    jetSub = new JetstreamSubscription(
-      handlers,
-      "ws://localhost:6008/subscribe",
-    );
-    (dummyHandler.handle as jest.Mock).mockClear();
-  });
-
-  test("set setWsURL", () => {
-    const newUrl = "ws://localhost:6009/subscribe";
-    jetSub.setWsURL = newUrl;
-    expect((jetSub as any).wsURL).toBe(newUrl);
-  });
-
-  test("generateWsURL", () => {
-    handlers.post = {
-      c: [dummyHandler],
-      d: [dummyHandler],
+describe('JetstreamSubscription', () => {
+    let jetSub: JetstreamSubscription;
+    const handlers: JetstreamSubscriptionHandlers = {
+        post: {
+            c: [],
+            d: [],
+        },
+        like: {
+            c: [],
+            d: [],
+        },
+        repost: {
+            c: [],
+            d: [],
+        },
+        follow: {
+            c: [],
+            d: [],
+        },
     };
-    jetSub.setWsURL = "ws://localhost:6010/subscribe";
-    jetSub.generateWsURL();
-    expect((jetSub as any).wsURL).toContain("post");
-  });
+    // A dummy message handler for testing
+    const dummyHandler: MessageHandler = {
+        handle: jest.fn(),
+    } as unknown as MessageHandler;
 
-  test("handleCreate post", () => {
-    // @ts-ignore
-    handlers.post.c = [dummyHandler];
+    beforeEach(() => {
+        jetSub = new JetstreamSubscription(
+            handlers,
+            'ws://localhost:6008/subscribe'
+        );
+        (dummyHandler.handle as jest.Mock).mockClear();
+    });
 
-    const msg: CreateMessage = {
-      collection: "app.bsky.feed.post",
-      did: "",
-      opType: "c",
-      record: {} as Record,
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleCreate(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('set setWsURL', () => {
+        const newUrl = 'ws://localhost:6009/subscribe';
+        jetSub.setWsURL = newUrl;
+        expect((jetSub as any).wsURL).toBe(newUrl);
+    });
 
-  test("handleCreate like", () => {
-    // @ts-ignore
-    handlers.like.c = [dummyHandler];
+    test('generateWsURL', () => {
+        handlers.post = {
+            c: [dummyHandler],
+            d: [dummyHandler],
+        };
+        jetSub.setWsURL = 'ws://localhost:6010/subscribe';
+        jetSub.generateWsURL();
+        expect((jetSub as any).wsURL).toContain('post');
+    });
 
-    const msg: CreateMessage = {
-      collection: "app.bsky.feed.like",
-      did: "",
-      opType: "c",
-      record: {} as Record,
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleCreate(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('handleCreate post', () => {
+        // @ts-ignore
+        handlers.post.c = [dummyHandler];
 
-  test("handleCreate repost", () => {
-    // @ts-ignore
-    handlers.repost.c = [dummyHandler];
+        const msg: CreateMessage = {
+            collection: 'app.bsky.feed.post',
+            did: '',
+            opType: 'c',
+            record: {} as Record,
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
 
-    const msg: CreateMessage = {
-      collection: "app.bsky.feed.repost",
-      did: "",
-      opType: "c",
-      record: {} as Record,
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleCreate(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('handleCreate like', () => {
+        // @ts-ignore
+        handlers.like.c = [dummyHandler];
 
-  test("handleCreate follow", () => {
-    // @ts-ignore
-    handlers.follow.c = [dummyHandler];
+        const msg: CreateMessage = {
+            collection: 'app.bsky.feed.like',
+            did: '',
+            opType: 'c',
+            record: {} as Record,
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
 
-    const msg: CreateMessage = {
-      collection: "app.bsky.graph.follow",
-      did: "",
-      opType: "c",
-      record: {} as Record,
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleCreate(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('handleCreate repost', () => {
+        // @ts-ignore
+        handlers.repost.c = [dummyHandler];
 
-  test("handleDelete post", () => {
-    // @ts-ignore
-    handlers.post.d = [dummyHandler];
-    const msg: DeleteMessage = {
-      collection: "app.bsky.feed.post",
-      did: "",
-      opType: "d",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleDelete(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+        const msg: CreateMessage = {
+            collection: 'app.bsky.feed.repost',
+            did: '',
+            opType: 'c',
+            record: {} as Record,
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
 
-  test("handleDelete like", () => {
-    // @ts-ignore
-    handlers.like.d = [dummyHandler];
-    const msg: DeleteMessage = {
-      collection: "app.bsky.feed.like",
-      did: "",
-      opType: "d",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleDelete(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('handleCreate follow', () => {
+        // @ts-ignore
+        handlers.follow.c = [dummyHandler];
 
-  test("handleDelete repost", () => {
-    // @ts-ignore
-    handlers.repost.d = [dummyHandler];
-    const msg: DeleteMessage = {
-      collection: "app.bsky.feed.repost",
-      did: "",
-      opType: "d",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleDelete(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+        const msg: CreateMessage = {
+            collection: 'app.bsky.graph.follow',
+            did: '',
+            opType: 'c',
+            record: {} as Record,
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
 
-  test("handleDelete follow", () => {
-    // @ts-ignore
-    handlers.follow.d = [dummyHandler];
-    const msg: DeleteMessage = {
-      collection: "app.bsky.graph.follow",
-      did: "",
-      opType: "d",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-    };
-    jetSub.handleDelete(msg);
-    expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-    expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
-  });
+    test('handleDelete post', () => {
+        // @ts-ignore
+        handlers.post.d = [dummyHandler];
+        const msg: DeleteMessage = {
+            collection: 'app.bsky.feed.post',
+            did: '',
+            opType: 'd',
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
+
+    test('handleDelete like', () => {
+        // @ts-ignore
+        handlers.like.d = [dummyHandler];
+        const msg: DeleteMessage = {
+            collection: 'app.bsky.feed.like',
+            did: '',
+            opType: 'd',
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
+
+    test('handleDelete repost', () => {
+        // @ts-ignore
+        handlers.repost.d = [dummyHandler];
+        const msg: DeleteMessage = {
+            collection: 'app.bsky.feed.repost',
+            did: '',
+            opType: 'd',
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
+
+    test('handleDelete follow', () => {
+        // @ts-ignore
+        handlers.follow.d = [dummyHandler];
+        const msg: DeleteMessage = {
+            collection: 'app.bsky.graph.follow',
+            did: '',
+            opType: 'd',
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+        };
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+    });
 });

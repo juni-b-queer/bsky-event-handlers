@@ -4,46 +4,54 @@ Actions are the set of operations that are executed in response to certain valid
 
 ## Provided Actions
 
-- [FunctionAction](#functionaction)
-- [Logging Actions](#logging-actions)
-  - [LogMessageAction](#logmessageaction)
-  - [LogInputTextAction](#loginputtextaction)
-  - [DebugLogAction](#debuglogaction)
-- Post
-  - [Skeet Actions](#skeet-actions)
-    - [CreateSkeetAction](#createskeetaction)
-    - [CreateSkeetWithGeneratedTextAction](#createskeetwithgeneratedtextaction)
-    - [ReplyToSkeetAction](#replytoskeetaction)
-    - [ReplyToSkeetWithGeneratedTextAction](#replytoskeetwithgeneratedtextaction)
+-   [FunctionAction](#functionaction)
+-   [Logging Actions](#logging-actions)
+    -   [LogMessageAction](#logmessageaction)
+    -   [LogInputTextAction](#loginputtextaction)
+    -   [DebugLogAction](#debuglogaction)
+-   Post
+    -   [Skeet Actions](#skeet-actions)
+        -   [CreateSkeetAction](#createskeetaction)
+        -   [CreateSkeetWithGeneratedTextAction](#createskeetwithgeneratedtextaction)
+        -   [ReplyToSkeetAction](#replytoskeetaction)
+        -   [ReplyToSkeetWithGeneratedTextAction](#replytoskeetwithgeneratedtextaction)
 
 ## Creating your own action
+
 Actions are fairly simple, it should extend `AbstractMessageAction` and have `constructor` and `handle` functions.
 
 The `handle` function is what's called if the validations pass.
 
 ```typescript
 export class ExampleAction extends AbstractMessageAction {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  async handle(message: JetstreamMessage, handlerAgent: HandlerAgent): Promise<any> {
-    // Perform your actions here
-  }
+    async handle(
+        message: JetstreamMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<any> {
+        // Perform your actions here
+    }
 }
 ```
 
 Any additional parameters you may need for the action can be passed into the constructor and used within the `handle` function as needed, like so
+
 ```typescript
 export class ExampleAction extends AbstractMessageAction {
-  constructor(private userDid: string) {
-    super();
-  }
+    constructor(private userDid: string) {
+        super();
+    }
 
-  async handle(message: JetstreamMessage, handlerAgent: HandlerAgent): Promise<any> {
-    // use this.userDid to access the property
-    // Perform your actions here
-  }
+    async handle(
+        message: JetstreamMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<any> {
+        // use this.userDid to access the property
+        // Perform your actions here
+    }
 }
 ```
 
