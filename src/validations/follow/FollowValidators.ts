@@ -3,7 +3,7 @@ import { AbstractValidator } from '../AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 
 export class NewFollowerForUserValidator extends AbstractValidator {
-    constructor(private userDid: string | undefined) {
+    constructor(private userDid: string | undefined = undefined) {
         super();
     }
 
@@ -18,8 +18,8 @@ export class NewFollowerForUserValidator extends AbstractValidator {
     }
 }
 
-export class UserFollowedValidator extends AbstractValidator {
-    constructor(private userDid: string | undefined) {
+export class NewFollowFromUserValidator extends AbstractValidator {
+    constructor(private userDid: string | undefined = undefined) {
         super();
     }
 
@@ -33,3 +33,8 @@ export class UserFollowedValidator extends AbstractValidator {
         return this.userDid === message.did;
     }
 }
+
+/**
+ * Deprecated name. NewFollowFromUserValidator is named better to go with the other Follow Validator
+ */
+export class UserFollowedValidator extends NewFollowFromUserValidator {}

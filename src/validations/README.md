@@ -178,12 +178,14 @@ If no did is provided, it will default to the bot/handlerAgent did
 
 `new NewFollowerForUserValidator('did:plc:123');`
 
-### UserFollowedValidator
+### NewFollowFromUserValidator
 
-The `UserFollowedValidator` will return true if the follow action was the given user following someone
+The `NewFollowFromUserValidator` will return true if the follow action was the given user following someone
 If no did is provided, it will default to the bot/handlerAgent did
 
-`new UserFollowedValidator('did:plc:123');`
+`new NewFollowFromUserValidator('did:plc:123');`
+
+**Was previously `UserFollowedValidator` (which still works for now) but has been renamed to fit with the other follow validators**
 
 ## Test Validator
 
