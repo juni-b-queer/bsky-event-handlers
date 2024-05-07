@@ -131,13 +131,13 @@ The `InputIsCommandValidator` class validates if the input is a command triggere
 
 The `InputStartsWithValidator` class checks if the input starts with a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputStartsWithValidator('myTriggerKey', true);`
+`new InputStartsWithValidator('myTriggerKey', false);`
 
 ### InputContainsValidator
 
 The `InputContainsValidator` class verifies if the input contains a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputContainsValidator('myTriggerKey', true);`
+`new InputContainsValidator('myTriggerKey', false);`
 
 ### InputEqualsValidator
 
