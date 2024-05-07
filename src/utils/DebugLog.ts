@@ -1,6 +1,10 @@
 import { nowDateTime } from "./time-utils";
 
 export class DebugLog {
+
+  static debug(action: string, message: string) {
+    DebugLog.log(action, message, "debug");
+  }
   static info(action: string, message: string) {
     DebugLog.log(action, message, "info");
   }
@@ -13,23 +17,19 @@ export class DebugLog {
     DebugLog.log(action, message, "error");
   }
 
-  static log(action: string, message: string, level: string = "info") {
+  static log(action: string, message: string, level: string = "debug") {
     const debug: boolean = process.env.DEBUG_LOG_ACTIVE === "true";
     const debugLevel: string = process.env.DEBUG_LOG_LEVEL ?? "error";
-    if (debug) {
-      if (level === "error") {
-        console.log(`${nowDateTime()} | ${action} | ERROR | ${message}`);
-      }
-      if (level === "warn") {
-        if (debugLevel === "warn" || debugLevel === "info") {
-          console.log(`${nowDateTime()} | ${action} | WARN | ${message}`);
-        }
-      }
-      if (level == "info") {
-        if (debugLevel === "info") {
-          console.log(`${nowDateTime()} | ${action} | INFO | ${message}`);
-        }
-      }
+
+    const debugLevels: { [level: string]: string[] } = {
+      error: [],
+      warn: ["warn", "info", "debug"],
+      info: ["info", "debug"],
+      debug: ["debug"]
+    };
+
+    if (debug && debugLevels[level].includes(debugLevel)) {
+      console.log(`${nowDateTime()} | ${action} | ${level.toUpperCase()} | ${message}`);
     }
   }
 }
