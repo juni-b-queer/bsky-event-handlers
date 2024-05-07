@@ -21,7 +21,7 @@ export class DebugLog {
         const debugLevel: string = process.env.DEBUG_LOG_LEVEL ?? 'error';
 
         const debugLevels: { [level: string]: string[] } = {
-            error: [],
+            error: ['error', 'warn', 'info', 'debug'],
             warn: ['warn', 'info', 'debug'],
             info: ['info', 'debug'],
             debug: ['debug'],
