@@ -12,7 +12,7 @@ import { DebugLog } from "../../utils/DebugLog";
 export class CreateSkeetHandler extends AbstractMessageHandler {
   constructor(
     validators: Array<AbstractValidator>,
-    actions: Array<AbstractMessageAction>,
+    actions: Array<AbstractMessageAction|CreateSkeetHandler>,
     handlerAgent: HandlerAgent,
   ) {
     super(validators, actions, handlerAgent);

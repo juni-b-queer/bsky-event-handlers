@@ -7,7 +7,7 @@ import { DebugLog } from "../utils/DebugLog";
 export abstract class AbstractMessageHandler {
   constructor(
     private validators: Array<AbstractValidator>,
-    private actions: Array<AbstractMessageAction>,
+    private actions: Array<AbstractMessageAction|AbstractMessageHandler>,
     public handlerAgent: HandlerAgent,
   ) {}
 
@@ -38,7 +38,7 @@ export abstract class AbstractMessageHandler {
 export class MessageHandler extends AbstractMessageHandler {
   constructor(
     validators: Array<AbstractValidator>,
-    actions: Array<AbstractMessageAction>,
+    actions: Array<AbstractMessageAction|MessageHandler>,
     handlerAgent: HandlerAgent,
   ) {
     super(validators, actions, handlerAgent);
