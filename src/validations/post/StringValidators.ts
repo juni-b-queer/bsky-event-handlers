@@ -54,7 +54,7 @@ export class InputStartsWithValidator extends AbstractValidator {
 }
 
 export class InputContainsValidator extends AbstractValidator {
-  constructor(private triggerKey: string) {
+  constructor(private triggerKey: string, private strict: boolean = false) {
     super();
   }
 
@@ -63,7 +63,9 @@ export class InputContainsValidator extends AbstractValidator {
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     const input = this.getTextFromPost(message);
-
+    if (this.strict) {
+      return input.startsWith(this.triggerKey);
+    }
     const flatText = flattenTextUpdated(this.triggerKey, input);
     return flatText.includes(this.triggerKey);
   }
@@ -79,8 +81,6 @@ export class InputEqualsValidator extends AbstractValidator {
     handlerAgent: HandlerAgent,
   ): Promise<boolean> {
     const input = this.getTextFromPost(message);
-    console.log(input === this.triggerKey);
-
     return input === this.triggerKey;
   }
 }

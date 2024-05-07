@@ -135,9 +135,9 @@ The `InputStartsWithValidator` class checks if the input starts with a specific 
 
 ### InputContainsValidator
 
-The `InputContainsValidator` class verifies if the input contains a specific key.
+The `InputContainsValidator` class verifies if the input contains a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputContainsValidator('myTriggerKey');`
+`new InputContainsValidator('myTriggerKey', true);`
 
 ### InputEqualsValidator
 
