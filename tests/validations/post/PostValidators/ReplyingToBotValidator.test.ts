@@ -9,7 +9,40 @@ import { BskyAgent } from '@atproto/api';
 describe('ReplyingToBotValidator', () => {
     const validator = new ReplyingToBotValidator();
 
-    test('shouldTrigger returns true if the did is the same as the agent', async () => {
+    it('shouldTrigger returns false if no reply', async () => {
+        const message: CreateSkeetMessage = {
+            collection: 'app.bsky.feed.post',
+            did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
+            opType: 'c',
+            rkey: '',
+            seq: 0,
+            cid: 'cid',
+            record: {
+                text: 'test',
+                $type: '',
+                createdAt: '',
+                subject: {} as Subject,
+            },
+        };
+
+        const bskyAgent: BskyAgent = {
+            session: {
+                did: 'did:plc:blah',
+            },
+        } as BskyAgent;
+        const handlerAgent: HandlerAgent = new HandlerAgent(
+            'name',
+            'handle',
+            'password',
+            bskyAgent
+        );
+
+        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+            false
+        );
+    });
+
+    it('shouldTrigger returns true if the did is the same as the agent', async () => {
         const message: CreateSkeetMessage = {
             collection: 'app.bsky.feed.post',
             did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
@@ -50,7 +83,7 @@ describe('ReplyingToBotValidator', () => {
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
     });
 
-    test('shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details', async () => {
+    it('shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details', async () => {
         const message: CreateSkeetMessage = {
             collection: 'app.bsky.feed.post',
             did: 'did:plc:bad',
