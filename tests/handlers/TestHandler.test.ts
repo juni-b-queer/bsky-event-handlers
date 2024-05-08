@@ -5,11 +5,11 @@ import {
     DebugLog,
     HandlerAgent,
     JetstreamMessage,
-    MessageHandler,
-} from '../../src';
+    TestHandler
+} from "../../src";
 
-describe('MessageHandler', () => {
-    let messageHandler: MessageHandler;
+describe('TestHandler', () => {
+    let testHandler: TestHandler;
     let mockedHandlerAgent: HandlerAgent;
     let mockedValidators: AbstractValidator[];
     let mockedActions: AbstractMessageAction[];
@@ -48,7 +48,7 @@ describe('MessageHandler', () => {
                 handle: mockActionHandle,
             } as unknown as AbstractMessageAction,
         ];
-        messageHandler = MessageHandler.make(
+        testHandler = new TestHandler(
             mockedValidators,
             mockedActions,
             mockedHandlerAgent
@@ -58,6 +58,10 @@ describe('MessageHandler', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
+
+    it("Should throw error when calling make", () =>{
+        expect(TestHandler.make).toThrow('Method Not Implemented! Use constructor.')
+    })
 
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
@@ -70,7 +74,7 @@ describe('MessageHandler', () => {
                 seq: 0,
                 cid: 'cid',
             };
-            await messageHandler.handle(message);
+            await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
@@ -88,7 +92,7 @@ describe('MessageHandler', () => {
                 seq: 0,
                 cid: 'cid',
             };
-            await messageHandler.handle(message);
+            await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).not.toHaveBeenCalled();
@@ -103,7 +107,7 @@ describe('MessageHandler', () => {
                 seq: 3,
                 cid: 'cid',
             };
-            await messageHandler.handle(message);
+            await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();

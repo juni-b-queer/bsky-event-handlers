@@ -48,7 +48,7 @@ describe('CreateSkeetHandler', () => {
                 handle: mockActionHandle,
             } as unknown as AbstractMessageAction,
         ];
-        createSkeetHandler = new CreateSkeetHandler(
+        createSkeetHandler = CreateSkeetHandler.make(
             mockedValidators,
             mockedActions,
             mockedHandlerAgent

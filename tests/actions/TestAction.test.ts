@@ -40,7 +40,9 @@ describe('TestAction', () => {
         );
     });
 
-    it("Should Throw Error when running make", () =>{
-        expect(TestAction.make).toThrow("Method not implemented! Use constructor!")
-    })
+    it('Should Throw Error when running make', () => {
+        expect(TestAction.make).toThrow(
+            'Method not implemented! Use constructor!'
+        );
+    });
 });
