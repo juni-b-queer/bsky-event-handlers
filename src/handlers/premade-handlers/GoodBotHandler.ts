@@ -5,6 +5,8 @@ import { ReplyToSkeetAction } from '../../actions/post/SkeetActions';
 import { CreateSkeetMessage } from '../../types/JetstreamTypes';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 
+// TODO see comment at top of BadBotHandler
+// @ts-ignore
 export class GoodBotHandler extends CreateSkeetHandler {
     constructor(
         public handlerAgent: HandlerAgent,
@@ -18,6 +20,10 @@ export class GoodBotHandler extends CreateSkeetHandler {
             ],
             handlerAgent
         );
+    }
+
+    static make(handlerAgent: HandlerAgent, response: string|undefined = undefined): GoodBotHandler{
+        return new GoodBotHandler(handlerAgent, response)
     }
 
     async handle(message: CreateSkeetMessage): Promise<void> {
