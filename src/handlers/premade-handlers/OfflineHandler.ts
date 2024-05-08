@@ -4,6 +4,7 @@ import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 import { ReplyToSkeetAction } from '../../actions/post/SkeetActions';
 import { CreateSkeetMessage } from '../../types/JetstreamTypes';
 
+// @ts-ignore
 export class OfflineHandler extends CreateSkeetHandler {
     constructor(
         public handlerAgent: HandlerAgent,
@@ -15,6 +16,10 @@ export class OfflineHandler extends CreateSkeetHandler {
             [new ReplyToSkeetAction(response)],
             handlerAgent
         );
+    }
+
+    static make(handlerAgent: HandlerAgent, command: string, response: string|undefined = undefined): OfflineHandler{
+        return new OfflineHandler(handlerAgent,command, response)
     }
 
     async handle(message: CreateSkeetMessage): Promise<void> {
