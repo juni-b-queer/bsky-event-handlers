@@ -49,7 +49,7 @@ export class ExampleValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -67,7 +67,7 @@ export class ExampleValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -83,19 +83,19 @@ export class ExampleValidator extends AbstractValidator {
 
 The `SimpleFunctionValidator` class provides a way to create a validator by passing a single function that accepts the JetstreamMessage and HandlerAgent and returns a boolean indicating whether to trigger the action or not.
 
-`new SimpleFunctionValidator((message, handlerAgent) => { return true; }); // replace function with specific condition`
+`SimpleFunctionValidator.make((message, handlerAgent) => { return true; }); // replace function with specific condition`
 
 ### OrValidator
 
 The `OrValidator` class allows you to pass in multiple validators. If any of these validators return `true`, it will trigger the action.
 
-`new OrValidator([validator1, validator2, validator3]); // replace with actual validator instances`
+`OrValidator.make([validator1, validator2, validator3]); // replace with actual validator instances`
 
 ### NotValidator
 
 The `NotValidator` class allows you to negate the original output from the given validator. The NotValidator will return the opposite of the validator passed into it
 
-`new NotValidator(validator1, validator2, validator3); // replace with actual validator instances`
+`NotValidator.make(validator1, validator2, validator3); // replace with actual validator instances`
 
 ## Generic Validators
 
@@ -103,7 +103,7 @@ The `NotValidator` class allows you to negate the original output from the given
 
 The `ActionTakenByUserValidator` class checks if the action (post, repost, like, follow) was done by a given user
 
-`new ActionTakenByUserValidator('did:plc:123');`
+`ActionTakenByUserValidator.make('did:plc:123');`
 
 ## Post validators
 
@@ -111,19 +111,19 @@ The `ActionTakenByUserValidator` class checks if the action (post, repost, like,
 
 The `PostedByUserValidator` class checks if the post was made by a specific user, identified by their DID (Decentralized Identifier).
 
-`new PostedByUserValidator('did:plc:123');`
+`PostedByUserValidator.make('did:plc:123');`
 
 ### ReplyingToBotValidator
 
 The `ReplyingToBotValidator` class verifies if the post is a reply to the bot/handlerAgent.
 
-`new ReplyingToBotValidator();`
+`ReplyingToBotValidator.make();`
 
 ### IsReplyValidator
 
 The `IsReplyValidator` class checks if the post is a reply to another post.
 
-`new IsReplyValidator();`
+`IsReplyValidator.make();`
 
 ## String Validators
 
@@ -131,25 +131,25 @@ The `IsReplyValidator` class checks if the post is a reply to another post.
 
 The `InputIsCommandValidator` class validates if the input is a command triggered by a specific key. The `strict` argument enforces case sensitivity when set to `true`.
 
-`new InputIsCommandValidator('myTriggerKey', true); // enabling strict mode`
+`InputIsCommandValidator.make('myTriggerKey', true); // enabling strict mode`
 
 ### InputStartsWithValidator
 
 The `InputStartsWithValidator` class checks if the input starts with a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputStartsWithValidator('myTriggerKey', false);`
+`InputStartsWithValidator.make('myTriggerKey', false);`
 
 ### InputContainsValidator
 
 The `InputContainsValidator` class verifies if the input contains a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputContainsValidator('myTriggerKey', false);`
+`InputContainsValidator.make('myTriggerKey', false);`
 
 ### InputEqualsValidator
 
 The `InputEqualsValidator` class checks if the input exactly matches a specific key.
 
-`new InputEqualsValidator('myTriggerKey');`
+`InputEqualsValidator.make('myTriggerKey');`
 
 ## Bot Validators
 
@@ -159,7 +159,7 @@ The `IsGoodBotValidator` class checks if the input is replying to the bot and th
 
 It will also accept "thank you" (for full list of accepted inputs, see `isGoodBotResponse` in `utils/text-utils`)
 
-`new IsGoodBotValidator();`
+`IsGoodBotValidator.make();`
 
 ### IsBadBotValidator
 
@@ -167,7 +167,7 @@ The `IsBadBotValidator` class checks if the input is replying to the bot and the
 
 (for full list of accepted inputs, see `isBadBotResponse` in `utils/text-utils`)
 
-`new IsBadBotValidator();`
+`IsBadBotValidator.make();`
 
 ## Follow Validators
 
@@ -176,14 +176,14 @@ The `IsBadBotValidator` class checks if the input is replying to the bot and the
 The `NewFollowerForUserValidator` will return true if the follow action was a new follower for the given user
 If no did is provided, it will default to the bot/handlerAgent did
 
-`new NewFollowerForUserValidator('did:plc:123');`
+`NewFollowerForUserValidator.make('did:plc:123');`
 
 ### NewFollowFromUserValidator
 
 The `NewFollowFromUserValidator` will return true if the follow action was the given user following someone
 If no did is provided, it will default to the bot/handlerAgent did
 
-`new NewFollowFromUserValidator('did:plc:123');`
+`NewFollowFromUserValidator.make('did:plc:123');`
 
 **Was previously `UserFollowedValidator` (which still works for now) but has been renamed to fit with the other follow validators**
 
@@ -193,4 +193,4 @@ If no did is provided, it will default to the bot/handlerAgent did
 
 The `TestValidator` class accepts a boolean in the constructor, and then returns that boolean when validated. Mostly used for testing
 
-`new TestValidator(true|false);`
+`TestValidator.make(true|false);`
