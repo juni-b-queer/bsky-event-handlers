@@ -41,17 +41,17 @@ If so, it runs the next two handlers. The first will reply "down" if the reply t
 ```typescript
 CreateSkeetHandler.make(
     [
-        new ReplyingToBotValidator(),
-        new NotValidator(new PostedByUserValidator(handlerAgent.getDid)),
+        ReplyingToBotValidator.make(),
+        PostedByUserValidator.make(handlerAgent.getDid).not(),
     ],
     [
         CreateSkeetHandler.make(
-            [new InputEqualsValidator('up')],
-            [new ReplyToSkeetAction('down')]
+            [InputEqualsValidator.make('up')],
+            [ReplyToSkeetAction.make('down')]
         ),
         CreateSkeetHandler.make(
-            [new InputEqualsValidator('down')],
-            [new ReplyToSkeetAction('up')]
+            [InputEqualsValidator.make('down')],
+            [ReplyToSkeetAction.make('up')]
         ),
     ],
     handlerAgent
@@ -70,8 +70,8 @@ The below example simply takes in the handlerAgent, but has the validators and a
 export class ExampleHandler extends CreateSkeetHandler {
     constructor(public handlerAgent: HandlerAgent) {
         super(
-            [new InputEqualsValidator('Hello')],
-            [new ReplyToSkeetAction('World!')],
+            [InputEqualsValidator.make('Hello')],
+            [ReplyToSkeetAction.make('World!')],
             handlerAgent
         );
     }
