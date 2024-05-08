@@ -18,7 +18,7 @@ const mockAgent: HandlerAgent = new HandlerAgent(
     bskyAgent
 );
 describe('IsBadBotValidator', () => {
-    const validator = new IsBadBotValidator();
+    const validator = IsBadBotValidator.make();
 
     it('shouldTrigger returns true for negative bot responses', async () => {
         const negativeMessage: CreateSkeetMessage = {

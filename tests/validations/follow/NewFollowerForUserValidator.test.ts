@@ -19,7 +19,7 @@ describe('New Follower For User Validator', () => {
     );
 
     it('shouldTrigger returns true if no did provided, and follow is by bot user', async () => {
-        const validator = new NewFollowerForUserValidator();
+        const validator = NewFollowerForUserValidator.make();
         const message: CreateMessage = {
             collection: 'app.bsky.graph.follow',
             did: 'did:plc:bot',
@@ -40,7 +40,7 @@ describe('New Follower For User Validator', () => {
     });
 
     it('shouldTrigger returns true if given did is same as message did', async () => {
-        const validator = new NewFollowerForUserValidator('did:plc:test');
+        const validator = NewFollowerForUserValidator.make('did:plc:test');
         const message: CreateMessage = {
             collection: 'app.bsky.graph.follow',
             did: 'did:plc:test',
@@ -61,7 +61,7 @@ describe('New Follower For User Validator', () => {
     });
 
     it('shouldTrigger returns false if given did is different from message did', async () => {
-        const validator = new NewFollowerForUserValidator('did:plc:test');
+        const validator = NewFollowerForUserValidator.make('did:plc:test');
         const message: CreateMessage = {
             collection: 'app.bsky.graph.follow',
             did: 'did:plc:example',
@@ -82,7 +82,7 @@ describe('New Follower For User Validator', () => {
     });
 
     it('shouldTrigger returns false if default bot did not get followed', async () => {
-        const validator = new NewFollowerForUserValidator();
+        const validator = NewFollowerForUserValidator.make();
         const message: CreateMessage = {
             collection: 'app.bsky.graph.follow',
             did: 'did:plc:example',

@@ -213,7 +213,7 @@ describe('Good and Bad Bot Handler', () => {
 
     describe('Bad Bot Handler', () => {
         it('BadBotHandler Does run actions with default when post is reply to bot and bad bot', async () => {
-            badBotHandler =  BadBotHandler.make(handlerAgent);
+            badBotHandler = BadBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',

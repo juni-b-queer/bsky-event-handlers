@@ -9,9 +9,9 @@ import {
 
 describe('OrValidator', () => {
     const key = 'test';
-    const startsWithKeyValidator = new InputStartsWithValidator('test');
-    const equalsKeyValidator = new InputEqualsValidator('test');
-    const orValidator = new OrValidator([
+    const startsWithKeyValidator = InputStartsWithValidator.make('test');
+    const equalsKeyValidator = InputEqualsValidator.make('test');
+    const orValidator = OrValidator.make([
         startsWithKeyValidator,
         equalsKeyValidator,
     ]);

@@ -7,9 +7,9 @@ import {
 import { TestValidator } from '../../src';
 
 const mockAgent: HandlerAgent = {} as HandlerAgent;
-describe('IsGoodBotValidator', () => {
+describe('TestValidator', () => {
     test('shouldTrigger returns true for true attribute', async () => {
-        const validator = new TestValidator(true);
+        const validator = TestValidator.make(true);
         const positiveMessage: CreateSkeetMessage = {
             collection: '',
             did: '',
@@ -30,7 +30,7 @@ describe('IsGoodBotValidator', () => {
     });
 
     test('shouldTrigger returns false for false attribute', async () => {
-        const validator = new TestValidator(false);
+        const validator = TestValidator.make(false);
         const positiveMessage: CreateSkeetMessage = {
             collection: '',
             did: '',

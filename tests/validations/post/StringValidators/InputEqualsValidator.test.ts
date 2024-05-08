@@ -6,7 +6,7 @@ import {
 } from '../../../../src';
 
 describe('InputEqualsValidator', () => {
-    const validator = new InputEqualsValidator('test');
+    const validator = InputEqualsValidator.make('test');
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     /**

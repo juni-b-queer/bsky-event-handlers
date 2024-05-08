@@ -8,7 +8,11 @@ export class IsGoodBotValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(): IsGoodBotValidator {
+        return new IsGoodBotValidator();
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -31,7 +35,11 @@ export class IsBadBotValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(): IsBadBotValidator {
+        return new IsBadBotValidator();
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {

@@ -6,7 +6,7 @@ import {
 } from '../../../src';
 
 describe('Action Taken By User', () => {
-    const validator = new ActionTakenByUserValidator(
+    const validator = ActionTakenByUserValidator.make(
         'did:plc:2bnsooklzchcu5ao7xdjosrs'
     );
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
