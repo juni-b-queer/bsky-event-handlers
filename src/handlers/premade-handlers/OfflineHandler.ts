@@ -18,8 +18,12 @@ export class OfflineHandler extends CreateSkeetHandler {
         );
     }
 
-    static make(handlerAgent: HandlerAgent, command: string, response: string|undefined = undefined): OfflineHandler{
-        return new OfflineHandler(handlerAgent,command, response)
+    static make(
+        handlerAgent: HandlerAgent,
+        command: string,
+        response: string | undefined = undefined
+    ): OfflineHandler {
+        return new OfflineHandler(handlerAgent, command, response);
     }
 
     async handle(message: CreateSkeetMessage): Promise<void> {

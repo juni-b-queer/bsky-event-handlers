@@ -7,7 +7,9 @@ export class NewFollowerForUserValidator extends AbstractValidator {
         super();
     }
 
-    static make(userDid: string | undefined = undefined): NewFollowerForUserValidator {
+    static make(
+        userDid: string | undefined = undefined
+    ): NewFollowerForUserValidator {
         return new NewFollowerForUserValidator(userDid);
     }
 
@@ -27,7 +29,9 @@ export class NewFollowFromUserValidator extends AbstractValidator {
         super();
     }
 
-    static make(userDid: string | undefined = undefined): NewFollowFromUserValidator {
+    static make(
+        userDid: string | undefined = undefined
+    ): NewFollowFromUserValidator {
         return new NewFollowFromUserValidator(userDid);
     }
     async handle(

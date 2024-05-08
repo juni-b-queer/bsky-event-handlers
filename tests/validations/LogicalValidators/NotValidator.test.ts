@@ -1,4 +1,9 @@
-import { AbstractValidator, HandlerAgent, JetstreamMessage, TestValidator } from "../../../src";
+import {
+    AbstractValidator,
+    HandlerAgent,
+    JetstreamMessage,
+    TestValidator,
+} from '../../../src';
 
 describe('Testing Negating', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
@@ -16,7 +21,7 @@ describe('Testing Negating', () => {
         const testValidator: AbstractValidator = TestValidator.make(true).not();
 
         expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
-          false
+            false
         );
     });
 });

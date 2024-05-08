@@ -11,7 +11,10 @@ export class InputIsCommandValidator extends AbstractValidator {
         super();
     }
 
-    static make(triggerKey: string, strict: boolean|undefined = undefined): InputIsCommandValidator {
+    static make(
+        triggerKey: string,
+        strict: boolean | undefined = undefined
+    ): InputIsCommandValidator {
         return new InputIsCommandValidator(triggerKey, strict);
     }
 
@@ -44,7 +47,10 @@ export class InputStartsWithValidator extends AbstractValidator {
         super();
     }
 
-    static make(triggerKey: string, strict: boolean|undefined = undefined): InputStartsWithValidator {
+    static make(
+        triggerKey: string,
+        strict: boolean | undefined = undefined
+    ): InputStartsWithValidator {
         return new InputStartsWithValidator(triggerKey, strict);
     }
 
@@ -69,7 +75,10 @@ export class InputContainsValidator extends AbstractValidator {
         super();
     }
 
-    static make(triggerKey: string, strict: boolean|undefined = undefined): InputContainsValidator {
+    static make(
+        triggerKey: string,
+        strict: boolean | undefined = undefined
+    ): InputContainsValidator {
         return new InputContainsValidator(triggerKey, strict);
     }
 

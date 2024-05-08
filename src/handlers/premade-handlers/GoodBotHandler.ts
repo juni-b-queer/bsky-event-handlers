@@ -22,8 +22,11 @@ export class GoodBotHandler extends CreateSkeetHandler {
         );
     }
 
-    static make(handlerAgent: HandlerAgent, response: string|undefined = undefined): GoodBotHandler{
-        return new GoodBotHandler(handlerAgent, response)
+    static make(
+        handlerAgent: HandlerAgent,
+        response: string | undefined = undefined
+    ): GoodBotHandler {
+        return new GoodBotHandler(handlerAgent, response);
     }
 
     async handle(message: CreateSkeetMessage): Promise<void> {

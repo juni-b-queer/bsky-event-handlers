@@ -5,8 +5,8 @@ import {
     DebugLog,
     HandlerAgent,
     JetstreamMessage,
-    TestHandler
-} from "../../src";
+    TestHandler,
+} from '../../src';
 
 describe('TestHandler', () => {
     let testHandler: TestHandler;
@@ -59,9 +59,11 @@ describe('TestHandler', () => {
         jest.clearAllMocks();
     });
 
-    it("Should throw error when calling make", () =>{
-        expect(TestHandler.make).toThrow('Method Not Implemented! Use constructor.')
-    })
+    it('Should throw error when calling make', () => {
+        expect(TestHandler.make).toThrow(
+            'Method Not Implemented! Use constructor.'
+        );
+    });
 
     describe('handle', () => {
         it('should run actions when opType is c', async () => {

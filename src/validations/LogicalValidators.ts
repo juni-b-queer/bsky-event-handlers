@@ -16,10 +16,12 @@ export class SimpleFunctionValidator extends AbstractValidator {
         super();
     }
 
-    static make(triggerValidator: (
-      arg0: JetstreamMessage,
-      arg1: HandlerAgent
-    ) => boolean | PromiseLike<boolean>): SimpleFunctionValidator {
+    static make(
+        triggerValidator: (
+            arg0: JetstreamMessage,
+            arg1: HandlerAgent
+        ) => boolean | PromiseLike<boolean>
+    ): SimpleFunctionValidator {
         return new SimpleFunctionValidator(triggerValidator);
     }
 

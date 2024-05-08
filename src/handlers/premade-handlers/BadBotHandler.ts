@@ -24,8 +24,11 @@ export class BadBotHandler extends CreateSkeetHandler {
         );
     }
 
-    static make(handlerAgent: HandlerAgent, response: string|undefined = undefined): BadBotHandler{
-        return new BadBotHandler(handlerAgent, response)
+    static make(
+        handlerAgent: HandlerAgent,
+        response: string | undefined = undefined
+    ): BadBotHandler {
+        return new BadBotHandler(handlerAgent, response);
     }
 
     async handle(message: CreateSkeetMessage): Promise<void> {
