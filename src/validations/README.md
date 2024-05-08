@@ -39,16 +39,19 @@ Validator factories enable you to instantiate factories quickly and easily
 All validators included here have a static `make` function
 
 ```typescript
-TestValidator.make(true) // Returns an instance of TestValidator that will return true
+TestValidator.make(true); // Returns an instance of TestValidator that will return true
 ```
+
 Is the same as
+
 ```typescript
-new TestValidator(true)
+new TestValidator(true);
 ```
+
 But with the factory, you're able to easily chain the `not` function to negate the output
 
 ```typescript
-TestValidator.make(true).not() // Returns an instance of TestValidator that will return false
+TestValidator.make(true).not(); // Returns an instance of TestValidator that will return false
 ```
 
 ## Creating a validator
