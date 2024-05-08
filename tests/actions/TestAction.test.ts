@@ -39,4 +39,8 @@ describe('TestAction', () => {
             '1/31/2023, 07:00 PM | Working | INFO | working'
         );
     });
+
+    it("Should Throw Error when running make", () =>{
+        expect(TestAction.make).toThrow("Method not implemented! Use constructor!")
+    })
 });

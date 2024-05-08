@@ -24,7 +24,7 @@ describe('LogMessageAction', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new LogMessageAction();
+        action = LogMessageAction.make();
     });
 
     afterEach(() => {
@@ -55,7 +55,7 @@ describe('LogInputTextAction', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new LogInputTextAction(input);
+        action = LogInputTextAction.make(input);
     });
 
     afterEach(() => {
@@ -87,7 +87,7 @@ describe('LogInputTextAction', () => {
     it('Should log info when no level given', async () => {
         const expected = '1/31/2023, 07:00 PM | TEST | INFO | Hello';
 
-        action = new DebugLogAction('TEST', 'Hello');
+        action = DebugLogAction.make('TEST', 'Hello');
 
         await action.handle(message, handlerAgent);
         expect(console.log).toHaveBeenCalledWith(expected);
@@ -96,7 +96,7 @@ describe('LogInputTextAction', () => {
     it('Should log info', async () => {
         const expected = '1/31/2023, 07:00 PM | TEST | INFO | Hello';
 
-        action = new DebugLogAction('TEST', 'Hello', 'info');
+        action = DebugLogAction.make('TEST', 'Hello', 'info');
 
         await action.handle(message, handlerAgent);
         expect(console.log).toHaveBeenCalledWith(expected);
@@ -105,7 +105,7 @@ describe('LogInputTextAction', () => {
     it('Should log warn', async () => {
         const expected = '1/31/2023, 07:00 PM | TEST | WARN | Hello';
 
-        action = new DebugLogAction('TEST', 'Hello', 'warn');
+        action = DebugLogAction.make('TEST', 'Hello', 'warn');
 
         await action.handle(message, handlerAgent);
         expect(console.log).toHaveBeenCalledWith(expected);
@@ -114,7 +114,7 @@ describe('LogInputTextAction', () => {
     it('Should log error', async () => {
         const expected = '1/31/2023, 07:00 PM | TEST | ERROR | Hello';
 
-        action = new DebugLogAction('TEST', 'Hello', 'error');
+        action = DebugLogAction.make('TEST', 'Hello', 'error');
 
         await action.handle(message, handlerAgent);
         expect(console.log).toHaveBeenCalledWith(expected);
