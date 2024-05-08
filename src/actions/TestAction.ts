@@ -4,6 +4,9 @@ import { DebugLog } from '../utils/DebugLog';
 import { AbstractMessageAction } from './AbstractMessageAction';
 
 export class TestAction extends AbstractMessageAction {
+    static make(): TestAction {
+        return new TestAction();
+    }
     async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent

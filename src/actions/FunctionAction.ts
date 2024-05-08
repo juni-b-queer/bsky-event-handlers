@@ -12,6 +12,12 @@ export class FunctionAction extends AbstractMessageAction {
         super();
     }
 
+    static make(
+        actionFunction: (arg0: JetstreamMessage, arg1: HandlerAgent) => any
+    ): FunctionAction {
+        return new FunctionAction(actionFunction);
+    }
+
     async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent

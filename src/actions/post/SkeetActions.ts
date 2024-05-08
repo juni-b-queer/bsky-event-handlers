@@ -13,6 +13,10 @@ export class CreateSkeetAction extends AbstractMessageAction {
         super();
     }
 
+    static make(skeetText: string): CreateSkeetAction {
+        return new CreateSkeetAction(skeetText);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         message: JetstreamMessage,
@@ -32,6 +36,12 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
         super();
     }
 
+    static make(
+        textGenerator: (arg0: JetstreamMessage, arg1: HandlerAgent) => string
+    ): CreateSkeetWithGeneratedTextAction {
+        return new CreateSkeetWithGeneratedTextAction(textGenerator);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         message: JetstreamMessage,
@@ -46,6 +56,10 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
 export class ReplyToSkeetAction extends AbstractMessageAction {
     constructor(private replyText: string) {
         super();
+    }
+
+    static make(replyText: string): ReplyToSkeetAction {
+        return new ReplyToSkeetAction(replyText);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -66,6 +80,12 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
         ) => string
     ) {
         super();
+    }
+
+    static make(
+        textGenerator: (arg0: CreateSkeetMessage, arg1: HandlerAgent) => string
+    ): ReplyToSkeetWithGeneratedTextAction {
+        return new ReplyToSkeetWithGeneratedTextAction(textGenerator);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
