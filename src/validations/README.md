@@ -1,10 +1,6 @@
 # Validators
 
-Validators are used to determine whether or not an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
-
-## Create a Validator
-
-Coming soon (also you can just look at the code of the existing ones for now, they're pretty simple)
+Validators are used to determine whether an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
 
 ## Existing Validators
 
@@ -37,11 +33,29 @@ Coming soon (also you can just look at the code of the existing ones for now, th
 -   Testing
     -   [Test Validator](#test-validator)
 
+## Validator factories
+
+Validator factories enable you to instantiate factories quickly and easily
+All validators included here have a static `make` function
+
+```typescript
+TestValidator.make(true) // Returns an instance of TestValidator that will return true
+```
+Is the same as
+```typescript
+new TestValidator(true)
+```
+But with the factory, you're able to easily chain the `not` function to negate the output
+
+```typescript
+TestValidator.make(true).not() // Returns an instance of TestValidator that will return false
+```
+
 ## Creating a validator
 
-Validators are fairly simple, it should extend `AbstractValidator` and have `constructor` and `shouldTrigger` functions.
+Validators are fairly simple, it should extend `AbstractValidator` and have `constructor` and `handle` functions. (optionally a `make` function)
 
-The `shouldTrigger` function is what's called to check if it passes, and must return a boolean
+The `handle` function is what's called to check if it passes, and must return a boolean
 
 ```typescript
 export class ExampleValidator extends AbstractValidator {
@@ -90,12 +104,6 @@ The `SimpleFunctionValidator` class provides a way to create a validator by pass
 The `OrValidator` class allows you to pass in multiple validators. If any of these validators return `true`, it will trigger the action.
 
 `OrValidator.make([validator1, validator2, validator3]); // replace with actual validator instances`
-
-### NotValidator
-
-The `NotValidator` class allows you to negate the original output from the given validator. The NotValidator will return the opposite of the validator passed into it
-
-`NotValidator.make(validator1, validator2, validator3); // replace with actual validator instances`
 
 ## Generic Validators
 
