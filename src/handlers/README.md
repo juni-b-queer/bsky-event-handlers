@@ -16,7 +16,7 @@ Message handler is the basic one, it uses `JetstreamMessage` for validating and 
 ### Example
 
 ```typescript
-new MessageHandler([Validators], [Actions], handlerAgent);
+MessageHandler.make([Validators], [Actions], handlerAgent);
 ```
 
 ## CreateSkeetHandler
@@ -26,7 +26,7 @@ The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended fo
 ### Example
 
 ```typescript
-new CreateSkeetHandler([Validators], [Actions], handlerAgent);
+CreateSkeetHandler.make([Validators], [Actions], handlerAgent);
 ```
 
 ## Handlers as actions
@@ -39,17 +39,17 @@ This example handler first checks if the reply is to the bot agent, and not post
 If so, it runs the next two handlers. The first will reply "down" if the reply text equals "up", and the second will reply "up" if the text is "down"
 
 ```typescript
-new CreateSkeetHandler(
+CreateSkeetHandler.make(
     [
         new ReplyingToBotValidator(),
         new NotValidator(new PostedByUserValidator(handlerAgent.getDid)),
     ],
     [
-        new CreateSkeetHandler(
+        CreateSkeetHandler.make(
             [new InputEqualsValidator('up')],
             [new ReplyToSkeetAction('down')]
         ),
-        new CreateSkeetHandler(
+        CreateSkeetHandler.make(
             [new InputEqualsValidator('down')],
             [new ReplyToSkeetAction('up')]
         ),
@@ -82,12 +82,12 @@ export class ExampleHandler extends CreateSkeetHandler {
 }
 ```
 
-To use this handler, you'll just use `new ExampleHandler(handlerAgent)` in your handlers object
+To use this handler, you'll just use `ExampleHandler.make(handlerAgent)` in your handlers object
 
 ```typescript
 let handlers = {
     post: {
-        c: [new ExampleHandler(handlerAgent)],
+        c: [ExampleHandler.make(handlerAgent)],
     },
 };
 ```
