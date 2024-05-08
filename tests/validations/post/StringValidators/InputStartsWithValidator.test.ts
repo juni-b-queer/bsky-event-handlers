@@ -6,8 +6,8 @@ import {
 } from '../../../../src';
 
 describe('InputStartsWithValidator', () => {
-    const validator = new InputStartsWithValidator('test');
-    const strictValidator = new InputStartsWithValidator('test', true);
+    const validator = InputStartsWithValidator.make('test');
+    const strictValidator = InputStartsWithValidator.make('test', true);
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if input starts with trigger keyword', async () => {

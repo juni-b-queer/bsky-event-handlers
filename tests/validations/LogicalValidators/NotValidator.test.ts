@@ -1,58 +1,22 @@
-import {
-    CreateSkeetMessage,
-    HandlerAgent,
-    InputEqualsValidator,
-    InputStartsWithValidator,
-    NotValidator,
-    OrValidator,
-    Subject,
-} from '../../../src';
+import { AbstractValidator, HandlerAgent, JetstreamMessage, TestValidator } from "../../../src";
 
-describe('NotValidator', () => {
-    const key = 'test';
-    const equalsKeyValidator = new InputEqualsValidator('test');
-    const notValidator = new NotValidator(equalsKeyValidator);
+describe('Testing Negating', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const message: JetstreamMessage = {} as JetstreamMessage;
 
     test('shouldTrigger returns false if given validator is true', async () => {
-        const message: CreateSkeetMessage = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
+        const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-        expect(await notValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );
     });
 
     test('shouldTrigger returns true if given validator is false', async () => {
-        const message: CreateSkeetMessage = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'blah',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
+        const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-        expect(await notValidator.shouldTrigger(message, handlerAgent)).toBe(
-            true
+        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
+          false
         );
     });
 });

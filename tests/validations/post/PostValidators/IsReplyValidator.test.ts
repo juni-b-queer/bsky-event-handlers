@@ -7,7 +7,7 @@ import {
 import { BskyAgent } from '@atproto/api';
 
 describe('IsReplyValidator', () => {
-    const validator = new IsReplyValidator();
+    const validator = IsReplyValidator.make();
     const bskyAgent: BskyAgent = {
         session: {
             did: 'did:plc:blah',

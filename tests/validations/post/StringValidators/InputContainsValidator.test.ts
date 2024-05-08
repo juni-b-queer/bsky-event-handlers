@@ -6,7 +6,7 @@ import {
 } from '../../../../src';
 
 describe('InputContainsValidator no strict parameter', () => {
-    const validator = new InputContainsValidator('test');
+    const validator = InputContainsValidator.make('test');
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if input contains with trigger keyword', async () => {
@@ -70,7 +70,7 @@ describe('InputContainsValidator no strict parameter', () => {
 });
 
 describe('InputContainsValidator true strict parameter', () => {
-    const validator = new InputContainsValidator('test', true);
+    const validator = InputContainsValidator.make('test', true);
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if input contains with trigger keyword', async () => {

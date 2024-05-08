@@ -25,7 +25,7 @@ describe('InputIsCommandValidator Class', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     beforeEach(() => {
-        inputIsCommandValidator = new InputIsCommandValidator('key');
+        inputIsCommandValidator = InputIsCommandValidator.make('key');
     });
 
     it('should test shouldTrigger function - Prefix case', async () => {
@@ -101,7 +101,7 @@ describe('InputIsCommandValidator Not strict Class', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     beforeEach(() => {
-        inputIsCommandValidator = new InputIsCommandValidator('key', false);
+        inputIsCommandValidator = InputIsCommandValidator.make('key', false);
     });
 
     it('should test shouldTrigger function - Prefix case', async () => {

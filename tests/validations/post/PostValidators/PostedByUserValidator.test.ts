@@ -7,7 +7,7 @@ import {
 } from '../../../../src';
 
 describe('Posted by user validator', () => {
-    const validator = new PostedByUserValidator(
+    const validator = PostedByUserValidator.make(
         'did:plc:2bnsooklzchcu5ao7xdjosrs'
     );
     const handlerAgent: HandlerAgent = {} as HandlerAgent;

@@ -7,7 +7,7 @@ import {
 import { BskyAgent } from '@atproto/api';
 
 describe('ReplyingToBotValidator', () => {
-    const validator = new ReplyingToBotValidator();
+    const validator = ReplyingToBotValidator.make();
 
     it('shouldTrigger returns false if no reply', async () => {
         const message: CreateSkeetMessage = {
