@@ -25,3 +25,12 @@ describe('Testing Negating', () => {
         );
     });
 });
+
+describe("Test AbstractValidatorError", () =>{
+    const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const message: JetstreamMessage = {} as JetstreamMessage;
+
+    test('make throws error on abstract', async () => {
+        expect(AbstractValidator.make).toThrow("Method Not Implemented! Use constructor.")
+    });
+})
