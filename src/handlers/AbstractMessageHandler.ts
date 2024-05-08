@@ -11,6 +11,10 @@ export abstract class AbstractMessageHandler {
         public handlerAgent: HandlerAgent
     ) {}
 
+    static make(...args: any): AbstractMessageHandler {
+        throw new Error('Method Not Implemented! Use constructor.');
+    }
+
     async shouldTrigger(message: JetstreamMessage): Promise<boolean> {
         const willTrigger = true;
         for (const validator of this.validators) {
@@ -46,6 +50,14 @@ export class MessageHandler extends AbstractMessageHandler {
     ) {
         super(validators, actions, handlerAgent);
         return this;
+    }
+
+    static make(
+        validators: Array<AbstractValidator>,
+        actions: Array<AbstractMessageAction | MessageHandler>,
+        handlerAgent: HandlerAgent
+    ): MessageHandler {
+        return new MessageHandler(validators, actions, handlerAgent);
     }
 
     async handle(message: JetstreamMessage): Promise<void> {

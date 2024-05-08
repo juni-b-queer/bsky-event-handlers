@@ -3,7 +3,7 @@
  */
 export * from './handlers/AbstractMessageHandler';
 export { CreateSkeetHandler } from './handlers/skeet/CreateSkeetHandler';
-
+export { TestHandler } from './handlers/TestHandler';
 /**
  * Premade Handlers
  */

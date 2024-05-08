@@ -45,7 +45,7 @@ describe('Good Bot Handler', () => {
     });
 
     it('OfflineHandler Does run actions with defaults when post is command', async () => {
-        offlineHandler = new OfflineHandler(handlerAgent, 'test');
+        offlineHandler = OfflineHandler.make(handlerAgent, 'test');
         message = {
             collection: 'app.bsky.feed.post',
             did: 'did:plc:notbot',
@@ -68,7 +68,7 @@ describe('Good Bot Handler', () => {
     });
 
     it('OfflineHandler Does run actions with input when post is command', async () => {
-        offlineHandler = new OfflineHandler(handlerAgent, 'test', 'output');
+        offlineHandler = OfflineHandler.make(handlerAgent, 'test', 'output');
         message = {
             collection: 'app.bsky.feed.post',
             did: 'did:plc:notbot',
@@ -91,7 +91,7 @@ describe('Good Bot Handler', () => {
     });
 
     it('OfflineHandler Does not run actions when post is not command', async () => {
-        offlineHandler = new OfflineHandler(handlerAgent, 'test');
+        offlineHandler = OfflineHandler.make(handlerAgent, 'test');
         message = {
             collection: 'app.bsky.feed.post',
             did: 'did:plc:notbot',

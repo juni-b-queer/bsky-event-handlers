@@ -47,7 +47,7 @@ describe('Good and Bad Bot Handler', () => {
 
     describe('Good Bot Handler', () => {
         it('GoodBotHandler Does run actions with default when post is reply to bot and good bot', async () => {
-            goodBotHandler = new GoodBotHandler(handlerAgent);
+            goodBotHandler = GoodBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -84,7 +84,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('GoodBotHandler Does run actions with input when post is reply to bot and good bot', async () => {
-            goodBotHandler = new GoodBotHandler(handlerAgent, 'test');
+            goodBotHandler = GoodBotHandler.make(handlerAgent, 'test');
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -121,7 +121,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('GoodBotHandler Does not run actions when post is reply to bot, but not good bot', async () => {
-            goodBotHandler = new GoodBotHandler(handlerAgent);
+            goodBotHandler = GoodBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -155,7 +155,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('GoodBotHandler Does not run actions when post is not reply to bot', async () => {
-            goodBotHandler = new GoodBotHandler(handlerAgent);
+            goodBotHandler = GoodBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -189,7 +189,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('GoodBotHandler Does not run actions when post is not reply', async () => {
-            goodBotHandler = new GoodBotHandler(handlerAgent);
+            goodBotHandler = GoodBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -213,7 +213,7 @@ describe('Good and Bad Bot Handler', () => {
 
     describe('Bad Bot Handler', () => {
         it('BadBotHandler Does run actions with default when post is reply to bot and bad bot', async () => {
-            badBotHandler = new BadBotHandler(handlerAgent);
+            badBotHandler =  BadBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -250,7 +250,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('BadBotHandler Does run actions with input when post is reply to bot and bad bot', async () => {
-            badBotHandler = new BadBotHandler(handlerAgent, 'test');
+            badBotHandler = BadBotHandler.make(handlerAgent, 'test');
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -287,7 +287,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('BadBotHandler Does not run actions when post is reply to bot, but not bad bot', async () => {
-            badBotHandler = new BadBotHandler(handlerAgent);
+            badBotHandler = BadBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -321,7 +321,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('BadBotHandler Does not run actions when post is not reply to bot', async () => {
-            badBotHandler = new BadBotHandler(handlerAgent);
+            badBotHandler = BadBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',
@@ -355,7 +355,7 @@ describe('Good and Bad Bot Handler', () => {
         });
 
         it('BadBotHandler Does not run actions when post is not reply', async () => {
-            badBotHandler = new BadBotHandler(handlerAgent);
+            badBotHandler = BadBotHandler.make(handlerAgent);
             message = {
                 collection: 'app.bsky.feed.post',
                 did: 'did:plc:notbot',

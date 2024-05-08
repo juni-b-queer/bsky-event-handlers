@@ -40,7 +40,7 @@ describe('Reply To Skeet Action', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new ReplyToSkeetAction(skeetText);
+        action = ReplyToSkeetAction.make(skeetText);
     });
 
     afterEach(() => {
@@ -87,7 +87,7 @@ describe('Reply To Skeet with generated text Action', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new ReplyToSkeetWithGeneratedTextAction(mockTextGenerator);
+        action = ReplyToSkeetWithGeneratedTextAction.make(mockTextGenerator);
     });
 
     afterEach(() => {

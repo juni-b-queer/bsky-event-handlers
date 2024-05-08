@@ -19,6 +19,14 @@ export class CreateSkeetHandler extends AbstractMessageHandler {
         return this;
     }
 
+    static make(
+        validators: Array<AbstractValidator>,
+        actions: Array<AbstractMessageAction | CreateSkeetHandler>,
+        handlerAgent: HandlerAgent
+    ): CreateSkeetHandler {
+        return new CreateSkeetHandler(validators, actions, handlerAgent);
+    }
+
     async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent | null = null

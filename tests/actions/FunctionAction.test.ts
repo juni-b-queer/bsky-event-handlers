@@ -25,7 +25,7 @@ describe('FunctionAction', () => {
     beforeEach(() => {
         mockActionFunction = jest.fn();
         jest.clearAllMocks(); // clearing mocks
-        functionAction = new FunctionAction(mockActionFunction);
+        functionAction = FunctionAction.make(mockActionFunction);
     });
 
     describe('handle', () => {

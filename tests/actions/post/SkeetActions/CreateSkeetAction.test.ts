@@ -24,7 +24,7 @@ describe('Create Skeet Action', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new CreateSkeetAction(skeetText);
+        action = CreateSkeetAction.make(skeetText);
     });
 
     afterEach(() => {
@@ -57,7 +57,7 @@ describe('Create Skeet from generated text Action', () => {
             seq: 0,
             cid: 'cid',
         };
-        action = new CreateSkeetWithGeneratedTextAction(mockGenerateText);
+        action = CreateSkeetWithGeneratedTextAction.make(mockGenerateText);
     });
 
     afterEach(() => {
