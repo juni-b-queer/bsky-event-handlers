@@ -7,7 +7,11 @@ export class PostedByUserValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(userDid: string): PostedByUserValidator {
+        return new PostedByUserValidator(userDid);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -23,7 +27,11 @@ export class ReplyingToBotValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(): ReplyingToBotValidator {
+        return new ReplyingToBotValidator();
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -47,7 +55,11 @@ export class IsReplyValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(): IsReplyValidator {
+        return new IsReplyValidator();
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {

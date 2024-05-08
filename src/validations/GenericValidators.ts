@@ -7,7 +7,11 @@ export class ActionTakenByUserValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(userDid: string): ActionTakenByUserValidator {
+        return new ActionTakenByUserValidator(userDid);
+    }
+
+    async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {

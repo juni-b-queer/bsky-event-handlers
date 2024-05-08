@@ -11,7 +11,11 @@ export class InputIsCommandValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(triggerKey: string, strict: boolean|undefined = undefined): InputIsCommandValidator {
+        return new InputIsCommandValidator(triggerKey, strict);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -40,7 +44,11 @@ export class InputStartsWithValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(triggerKey: string, strict: boolean|undefined = undefined): InputStartsWithValidator {
+        return new InputStartsWithValidator(triggerKey, strict);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -61,7 +69,11 @@ export class InputContainsValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(triggerKey: string, strict: boolean|undefined = undefined): InputContainsValidator {
+        return new InputContainsValidator(triggerKey, strict);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -79,7 +91,11 @@ export class InputEqualsValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(triggerKey: string): InputEqualsValidator {
+        return new InputEqualsValidator(triggerKey);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {

@@ -7,7 +7,11 @@ export class TestValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(shouldPass: boolean): TestValidator {
+        return new TestValidator(shouldPass);
+    }
+
+    async handle(
         message: CreateSkeetMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {

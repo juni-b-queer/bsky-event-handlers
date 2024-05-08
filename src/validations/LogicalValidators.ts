@@ -16,7 +16,14 @@ export class SimpleFunctionValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(triggerValidator: (
+      arg0: JetstreamMessage,
+      arg1: HandlerAgent
+    ) => boolean | PromiseLike<boolean>): SimpleFunctionValidator {
+        return new SimpleFunctionValidator(triggerValidator);
+    }
+
+    async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -33,7 +40,11 @@ export class OrValidator extends AbstractValidator {
         super();
     }
 
-    async shouldTrigger(
+    static make(validators: Array<AbstractValidator>): OrValidator {
+        return new OrValidator(validators);
+    }
+
+    async handle(
         message: JetstreamMessage,
         handlerAgent: HandlerAgent
     ): Promise<boolean> {
@@ -48,27 +59,5 @@ export class OrValidator extends AbstractValidator {
             }
         }
         return willTrigger;
-    }
-}
-
-/**
- * @class NotValidator
- * @extends AbstractValidator
- * @description A class that represents a validator that negates the result of another validator.
- */
-export class NotValidator extends AbstractValidator {
-    constructor(private validator: AbstractValidator) {
-        super();
-    }
-
-    async shouldTrigger(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
-    ): Promise<boolean> {
-        const willTrigger = await this.validator.shouldTrigger(
-            message,
-            handlerAgent
-        );
-        return !willTrigger;
     }
 }
