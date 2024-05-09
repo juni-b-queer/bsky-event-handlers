@@ -9,7 +9,7 @@ An easy package to use for making bluesky bots with validators and handler actio
 [![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
 
 [![github release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?logo=github&label=main)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
-[![github beta release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?include_prereleases&logo=github&label=beta)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
+[![github beta release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?include_prereleases&logo=github&label=beta)](https://github.com/juni-b-queer/bsky-event-handlers/releases)
 [![github stars](https://img.shields.io/github/stars/juni-b-queer/bsky-event-handlers)](https://github.com/juni-b-queer/bsky-event-handlers)
 
 Scaffold a new project with this package using: \
