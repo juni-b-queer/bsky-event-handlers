@@ -3,11 +3,12 @@
 
 An easy package to use for making bluesky bots with validators and handler actions
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/testandlint.yml?logo=github&label=Tests)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/semanticversionpublish.yml?logo=github&label=Publish)
-![Codecov](https://img.shields.io/codecov/c/github/juni-b-queer/bsky-event-handlers.svg?logo=codecov)
-![npm version](https://img.shields.io/npm/v/bsky-event-handlers?logo=npm)
-![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)
+[![GitHub Actions Test Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/testandlint.yml?logo=github&label=Tests)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/testandlint.yml?query=branch%3Amain)
+[![GitHub Actions Publish Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/semanticversionpublish.yml?logo=github&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/semanticversionpublish.yml?query=branch%3Amain)
+[![Codecov](https://img.shields.io/codecov/c/github/juni-b-queer/bsky-event-handlers.svg?logo=codecov)](https://app.codecov.io/gh/juni-b-queer/bsky-event-handlers)
+[![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
+[![npm version](https://img.shields.io/npm/v/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
+[![github release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?logo=github)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
 
 Scaffold a new project with this package using: \
 [![create-bsky-bot](https://img.shields.io/badge/create--bsky--bot-white.svg?logo=npm&color=blue)](https://www.npmjs.com/package/create-bsky-bot)
