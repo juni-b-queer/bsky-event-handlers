@@ -7,8 +7,9 @@ An easy package to use for making bluesky bots with validators and handler actio
 [![GitHub Actions Publish Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/semanticversionpublish.yml?logo=github&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/semanticversionpublish.yml?query=branch%3Amain)
 [![Codecov](https://img.shields.io/codecov/c/github/juni-b-queer/bsky-event-handlers.svg?logo=codecov)](https://app.codecov.io/gh/juni-b-queer/bsky-event-handlers)
 [![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
-[![npm version](https://img.shields.io/npm/v/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
-[![github release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?logo=github)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
+
+[![github release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?logo=github&label=main)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
+[![github beta release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?include_prereleases&logo=github&label=beta)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
 
 Scaffold a new project with this package using: \
 [![create-bsky-bot](https://img.shields.io/badge/create--bsky--bot-white.svg?logo=npm&color=blue)](https://www.npmjs.com/package/create-bsky-bot)
