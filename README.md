@@ -10,6 +10,7 @@ An easy package to use for making bluesky bots with validators and handler actio
 
 [![github release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?logo=github&label=main)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
 [![github beta release](https://img.shields.io/github/v/release/juni-b-queer/bsky-event-handlers?include_prereleases&logo=github&label=beta)](https://github.com/juni-b-queer/bsky-event-handlers/releases/latest)
+[![github stars](https://img.shields.io/github/stars/juni-b-queer/bsky-event-handlers)](https://github.com/juni-b-queer/bsky-event-handlers)
 
 Scaffold a new project with this package using: \
 [![create-bsky-bot](https://img.shields.io/badge/create--bsky--bot-white.svg?logo=npm&color=blue)](https://www.npmjs.com/package/create-bsky-bot)
@@ -221,13 +222,15 @@ your bot in response to defined triggers, enhancing your bot's interactivity, fl
 
 # Credits
 
-<a href="https://bsky.app/profile/did:plc:wpp4lklhvmopw6zcy6qb42ru">
-		<img src="https://img.shields.io/badge/Juni_on_Bluesky-white.svg?logo=bluesky">
-	</a>
-
 ## Packages/dependencies used
 
 - [@atproto/api](https://www.npmjs.com/package/@atproto/api)
 - [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use
   a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker
   container)
+
+
+## Contact me
+
+[![discord](https://img.shields.io/badge/junib33-7289da.svg?logo=discord)](#contact-me)
+[![bsky](https://img.shields.io/badge/Juni!_on_Bluesky-5BCEFA.svg?logo=bluesky)](https://bsky.app/profile/did:plc:wpp4lklhvmopw6zcy6qb42ru)
