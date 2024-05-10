@@ -4,7 +4,8 @@ import {
   CreateSkeetRecord,
   JetstreamMessage,
   Record,
-  Reply, Subject
+  Reply,
+  Subject
 } from "./JetstreamTypes";
 
 export abstract class AbstractTypeFactory {
@@ -183,9 +184,9 @@ export class ReplyFactory extends AbstractTypeFactory {
     return this;
   }
 
+  // I like the `replyTo` function and think it could be good to use on the skeet actions? lets see where that goes
   replyTo(did: string){
-    let replyParentUri = `at://${did}/app.bsky.feed.post/rkey`
-    this.reply.parent.uri = replyParentUri;
+    this.reply.parent.uri = `at://${did}/app.bsky.feed.post/rkey`;
     return this;
   }
 
