@@ -1,14 +1,16 @@
 import {
-    CreateSkeetMessage,
+    CreateMessageFactory,
+    CreateSkeetMessage, CreateSkeetRecordFactory,
     HandlerAgent,
-    IsGoodBotValidator,
-    Subject,
-} from '../../../src';
+    IsGoodBotValidator, ReplyFactory,
+    Subject
+} from "../../../src";
 import { BskyAgent } from '@atproto/api';
 
+const botDid = 'did:plc:blah'
 const bskyAgent: BskyAgent = {
     session: {
-        did: 'did:plc:blah',
+        did: botDid,
     },
 } as BskyAgent;
 const mockAgent: HandlerAgent = new HandlerAgent(
@@ -19,93 +21,27 @@ const mockAgent: HandlerAgent = new HandlerAgent(
 );
 describe('IsGoodBotValidator', () => {
     const validator = IsGoodBotValidator.make();
+    const botReply = ReplyFactory.factory().replyTo(botDid).create()
+    const skeetRecord = CreateSkeetRecordFactory.factory().text('great bot').reply(botReply).create()
 
     it('shouldTrigger returns true for positive bot responses', async () => {
-        const positiveMessage: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: 'rkey',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'great bot',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
+        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             true
         );
     });
 
     it('shouldTrigger returns true for thank you', async () => {
-        const positiveMessage: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'ok thank you',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
+        skeetRecord.text = 'ok thank you';
+        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             true
         );
     });
 
     it('shouldTrigger returns false for non-positive bot responses', async () => {
-        const negativeMessage: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'bad bot',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
-
+        skeetRecord.text = 'bad bot';
+        const negativeMessage = CreateMessageFactory.factory().record(skeetRecord).create()
         expect(await validator.shouldTrigger(negativeMessage, mockAgent)).toBe(
             false
         );
@@ -142,20 +78,8 @@ describe('IsGoodBotValidator', () => {
     });
 
     it('shouldTrigger returns false for non reply', async () => {
-        const positiveMessage: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.like',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'bad bot',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
+        skeetRecord.reply = undefined;
+        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             false
         );
