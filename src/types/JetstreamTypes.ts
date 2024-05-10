@@ -70,7 +70,7 @@ export interface JetstreamMessage {
     did: string;
     seq: number;
     opType: 'c' | 'd';
-    collection: "app.bsky.feed.post" | "app.bsky.feed.like" | "app.bsky.feed.repost" | "app.bsky.graph.follow";
+    collection: "app.bsky.feed.post" | "app.bsky.feed.like" | "app.bsky.feed.repost" | "app.bsky.graph.follow" | string;
     rkey: string;
     cid: string;
 }

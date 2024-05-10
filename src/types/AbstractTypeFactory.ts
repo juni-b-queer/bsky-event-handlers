@@ -1,6 +1,13 @@
-import { CreateMessage, JetstreamMessage, Record } from "./JetstreamTypes";
+import {
+  CreateMessage,
+  CreateSkeetMessage,
+  CreateSkeetRecord,
+  JetstreamMessage,
+  Record,
+  Reply, Subject
+} from "./JetstreamTypes";
 
-abstract class AbstractTypeFactory {
+export abstract class AbstractTypeFactory {
 
   constructor() {
   }
@@ -16,7 +23,7 @@ abstract class AbstractTypeFactory {
 
 }
 
-class JetstreamMessageFactory extends AbstractTypeFactory {
+export class JetstreamMessageFactory extends AbstractTypeFactory {
   public messageObject: JetstreamMessage;
 
   constructor() {
@@ -73,7 +80,7 @@ class JetstreamMessageFactory extends AbstractTypeFactory {
   }
 }
 
-class CreateMessageFactory extends JetstreamMessageFactory {
+export class CreateMessageFactory extends JetstreamMessageFactory {
   public messageObject: CreateMessage;
 
   constructor() {
@@ -99,5 +106,116 @@ class CreateMessageFactory extends JetstreamMessageFactory {
   record(record: Record) {
     this.messageObject.record = record;
     return this;
+  }
+
+  create() {
+    return this.messageObject as JetstreamMessage;
+  }
+}
+
+
+export class CreateSkeetRecordFactory extends AbstractTypeFactory {
+  public skeetRecordObject: CreateSkeetRecord
+  constructor() {
+    super();
+    this.skeetRecordObject = {
+      $type: "app.bsky.feed.post",
+      createdAt: Date.now().toString(),
+      embed: undefined,
+      facets: undefined,
+      langs: undefined,
+      reply: undefined,
+      text: ""
+    }
+  }
+
+  static factory(): CreateSkeetRecordFactory{
+    return new CreateSkeetRecordFactory();
+  }
+
+  create(): CreateSkeetRecord {
+    return this.skeetRecordObject as CreateSkeetRecord;
+  }
+
+  text(skeetText: string){
+    this.skeetRecordObject.text = skeetText;
+    return this;
+  }
+
+  reply(skeetReply: Reply){
+    this.skeetRecordObject.reply = skeetReply;
+    return this;
+  }
+}
+
+export class ReplyFactory extends AbstractTypeFactory {
+  public reply: Reply
+  constructor() {
+    super();
+    this.reply = {
+      root: {
+        uri: "",
+        cid: ""
+      },
+      parent: {
+        uri: "",
+        cid: ""
+      }
+    }
+  }
+
+  static factory(): ReplyFactory{
+    return new ReplyFactory();
+  }
+
+  create(): Reply {
+    return this.reply as Reply;
+  }
+
+  root(replyRoot: Subject){
+    this.reply.root = replyRoot;
+    return this;
+  }
+
+
+  parent(replyParent: Subject){
+    this.reply.parent = replyParent;
+    return this;
+  }
+
+  replyTo(did: string){
+    let replyParentUri = `at://${did}/app.bsky.feed.post/rkey`
+    this.reply.parent.uri = replyParentUri;
+    return this;
+  }
+
+}
+export class CreateSkeetMessageFactory extends CreateMessageFactory {
+  public messageObject: CreateSkeetMessage;
+
+  constructor() {
+    super();
+    this.messageObject = {
+      cid: "",
+      collection: "app.bsky.feed.post",
+      did: "",
+      opType: "c",
+      rkey: "",
+      seq: 0,
+      record: CreateSkeetRecordFactory.factory().create(),
+    };
+  }
+
+  static factory() {
+    return new CreateMessageFactory();
+  }
+
+  record(record: Record) {
+    this.messageObject.record = record;
+    return this;
+  }
+
+  create(): CreateSkeetMessage {
+    return this.messageObject as CreateSkeetMessage;
   }
 }
