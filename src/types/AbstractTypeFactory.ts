@@ -24,6 +24,9 @@ export abstract class AbstractTypeFactory {
 
 }
 
+export class TestFactory extends AbstractTypeFactory {};
+
+
 export class JetstreamMessageFactory extends AbstractTypeFactory {
   public messageObject: JetstreamMessage;
 
