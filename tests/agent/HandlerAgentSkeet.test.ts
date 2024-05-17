@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-import { HandlerAgent, Reply, Subject } from '../../src';
-import atprotoApiMock, { AtpSessionData, BskyAgent } from '@atproto/api';
+import dotenv from "dotenv";
+import { HandlerAgent, Reply, ReplyFactory, Subject, SubjectFactory } from "../../src";
+import { BskyAgent } from "@atproto/api";
 
 dotenv.config();
 
@@ -52,14 +52,8 @@ describe('HandlerAgent', () => {
         });
 
         it('createSkeet should call post with input text and reply if existingPostDetails is present', async () => {
-            const subject: Subject = {
-                cid: '',
-                uri: '',
-            };
-            const reply: Reply = {
-                parent: subject,
-                root: subject,
-            };
+            const subject: Subject = SubjectFactory.make();
+            const reply: Reply = ReplyFactory.factory().parent(subject).root(subject).create();
             await handlerAgent.createSkeet('Test post', reply);
             expect(postMock).toBeCalledWith({
                 text: 'Test post',

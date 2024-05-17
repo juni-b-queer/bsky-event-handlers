@@ -4,9 +4,9 @@ import {
     CreateSkeetMessage,
     DebugLog,
     HandlerAgent,
-    JetstreamMessage,
-    MessageHandler,
-} from '../../src';
+    JetstreamMessage, JetstreamMessageFactory,
+    MessageHandler
+} from "../../src";
 
 describe('MessageHandler', () => {
     let messageHandler: MessageHandler;
@@ -62,14 +62,7 @@ describe('MessageHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: JetstreamMessage = {
-                collection: '',
-                did: '',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: JetstreamMessage = JetstreamMessageFactory.make()
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -80,14 +73,7 @@ describe('MessageHandler', () => {
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: JetstreamMessage = {
-                collection: '',
-                did: '',
-                opType: 'd',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: JetstreamMessage = JetstreamMessageFactory.factory().isDeletion().create()
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -95,14 +81,7 @@ describe('MessageHandler', () => {
         });
 
         it('should debug log error when handle throws error', async () => {
-            const message: JetstreamMessage = {
-                collection: '',
-                did: '',
-                opType: 'c',
-                rkey: '',
-                seq: 3,
-                cid: 'cid',
-            };
+            const message: JetstreamMessage = JetstreamMessageFactory.factory().seq(3).create()
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();

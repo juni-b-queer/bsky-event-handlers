@@ -2,11 +2,11 @@ import {
     AbstractMessageAction,
     AbstractValidator,
     CreateSkeetHandler,
-    CreateSkeetMessage,
+    CreateSkeetMessage, CreateSkeetMessageFactory,
     CreateSkeetRecord,
     DebugLog,
-    HandlerAgent,
-} from '../../../src';
+    HandlerAgent
+} from "../../../src";
 
 describe('CreateSkeetHandler', () => {
     let createSkeetHandler: CreateSkeetHandler;
@@ -62,15 +62,7 @@ describe('CreateSkeetHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: CreateSkeetMessage = {
-                collection: '',
-                did: '',
-                opType: 'c',
-                record: {} as CreateSkeetRecord,
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: CreateSkeetMessage = CreateSkeetMessageFactory.make()
             await createSkeetHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -81,15 +73,7 @@ describe('CreateSkeetHandler', () => {
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: CreateSkeetMessage = {
-                collection: '',
-                did: '',
-                opType: 'd',
-                record: {} as CreateSkeetRecord,
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().isDeletion().create()
             await createSkeetHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -97,15 +81,7 @@ describe('CreateSkeetHandler', () => {
         });
 
         it('should not run validators when handle throws error', async () => {
-            const message: CreateSkeetMessage = {
-                collection: '',
-                did: '',
-                opType: 'c',
-                record: {} as CreateSkeetRecord,
-                rkey: '',
-                seq: 3,
-                cid: 'cid',
-            };
+            const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().seq(3).create()
             await createSkeetHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();

@@ -1,10 +1,10 @@
 import {
     BadBotHandler,
-    CreateSkeetMessage,
+    CreateSkeetMessage, CreateSkeetMessageFactory, CreateSkeetRecordFactory,
     GoodBotHandler,
     HandlerAgent,
-    OfflineHandler,
-} from '../../../src';
+    OfflineHandler, ReplyFactory
+} from "../../../src";
 import { BskyAgent } from '@atproto/api';
 
 describe('Good Bot Handler', () => {
@@ -46,20 +46,11 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does run actions with defaults when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:notbot',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                $type: 'app.bsky.feed.post',
-                createdAt: '2024-04-19T19:07:11.878Z',
-                langs: ['en'],
-                text: '!test',
-            },
-        };
+        message = CreateSkeetMessageFactory.factory().record(
+          CreateSkeetRecordFactory.factory()
+            .text('!test')
+            .create()
+        ).create()
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'Bot functionality offline',
@@ -69,20 +60,11 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does run actions with input when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test', 'output');
-        message = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:notbot',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                $type: 'app.bsky.feed.post',
-                createdAt: '2024-04-19T19:07:11.878Z',
-                langs: ['en'],
-                text: '!test',
-            },
-        };
+        message = CreateSkeetMessageFactory.factory().record(
+          CreateSkeetRecordFactory.factory()
+            .text('test!')
+            .create()
+        ).create()
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'output',
@@ -92,20 +74,11 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does not run actions when post is not command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:notbot',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                $type: 'app.bsky.feed.post',
-                createdAt: '2024-04-19T19:07:11.878Z',
-                langs: ['en'],
-                text: 'blah',
-            },
-        };
+        message = CreateSkeetMessageFactory.factory().record(
+          CreateSkeetRecordFactory.factory()
+            .text('blah')
+            .create()
+        ).create()
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).not.toHaveBeenCalled();
     });

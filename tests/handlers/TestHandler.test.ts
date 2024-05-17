@@ -4,9 +4,9 @@ import {
     CreateSkeetMessage,
     DebugLog,
     HandlerAgent,
-    JetstreamMessage,
-    TestHandler,
-} from '../../src';
+    JetstreamMessage, JetstreamMessageFactory,
+    TestHandler
+} from "../../src";
 
 describe('TestHandler', () => {
     let testHandler: TestHandler;
@@ -68,14 +68,7 @@ describe('TestHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: JetstreamMessage = {
-                collection: '',
-                did: '',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: JetstreamMessage = JetstreamMessageFactory.make()
             await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -86,14 +79,7 @@ describe('TestHandler', () => {
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: JetstreamMessage = {
-                collection: '',
-                did: '',
-                opType: 'd',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-            };
+            const message: JetstreamMessage = JetstreamMessageFactory.factory().isDeletion().create()
             await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();

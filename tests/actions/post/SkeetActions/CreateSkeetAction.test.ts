@@ -2,8 +2,8 @@ import {
     CreateSkeetAction,
     CreateSkeetWithGeneratedTextAction,
     HandlerAgent,
-    JetstreamMessage,
-} from '../../../../src';
+    JetstreamMessage, JetstreamMessageFactory
+} from "../../../../src";
 
 describe('Create Skeet Action', () => {
     let action: CreateSkeetAction;
@@ -16,14 +16,7 @@ describe('Create Skeet Action', () => {
         handlerAgent = {
             createSkeet: mockCreateSkeet,
         } as unknown as HandlerAgent;
-        message = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-        };
+        message = JetstreamMessageFactory.factory().create();
         action = CreateSkeetAction.make(skeetText);
     });
 
@@ -49,14 +42,7 @@ describe('Create Skeet from generated text Action', () => {
         handlerAgent = {
             createSkeet: mockCreateSkeet,
         } as unknown as HandlerAgent;
-        message = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-        };
+        message = JetstreamMessageFactory.factory().create();
         action = CreateSkeetWithGeneratedTextAction.make(mockGenerateText);
     });
 
