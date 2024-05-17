@@ -57,4 +57,3 @@ CreateSkeetHandler.make(
     handlerAgent
 );
 ```
-
