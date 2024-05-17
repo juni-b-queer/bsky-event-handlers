@@ -34,6 +34,10 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
         return new CreateSkeetRecordFactory();
     }
 
+    static make(): CreateSkeetRecord{
+        return CreateSkeetRecordFactory.factory().create()
+    }
+
     /**
      * Creates a new {CreateSkeetRecord} object from the factoru data.
      *
@@ -66,6 +70,40 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
     }
 }
 
+
+export class SubjectFactory extends AbstractTypeFactory {
+    public subject: Subject;
+    constructor() {
+        super();
+        this.subject = {
+            cid: "",
+            uri: ""
+        }
+    }
+
+    static factory(): SubjectFactory{
+        return new SubjectFactory()
+    }
+
+    static make(): Subject{
+        return SubjectFactory.factory().create();
+    }
+
+    create(): Subject{
+        return this.subject as Subject;
+    }
+
+    cid(inputCid: string){
+        this.subject.cid = inputCid;
+        return this;
+    }
+
+    uri(inputUri: string){
+        this.subject.uri = inputUri;
+        return this;
+    }
+}
+
 /**
  * A factory class for creating Reply objects.
  * @extends AbstractTypeFactory
@@ -88,6 +126,11 @@ export class ReplyFactory extends AbstractTypeFactory {
 
     static factory(): ReplyFactory {
         return new ReplyFactory();
+    }
+
+
+    static make(): Reply{
+        return ReplyFactory.factory().create()
     }
 
     create(): Reply {

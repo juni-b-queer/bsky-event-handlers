@@ -1,4 +1,5 @@
 import {
+    CollectionType,
     CreateMessage,
     CreateSkeetMessage,
     CreateSkeetRecord,
@@ -42,13 +43,17 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
         return new JetstreamMessageFactory();
     }
 
+    static make(): JetstreamMessage{
+        return JetstreamMessageFactory.factory().create()
+    }
+
     /**
      * Returns the message object as a JetstreamMessage.
      *
      * @return {JetstreamMessage} The message object as a JetstreamMessage.
      */
     create(): JetstreamMessage {
-        return this.messageObject as JetstreamMessage;
+        return this.messageObject;
     }
 
     /**
@@ -59,12 +64,8 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @return {JetstreamMessageFactory} - The modified collection object.
      */
     collection(
-        messageType:
-            | 'app.bsky.feed.post'
-            | 'app.bsky.feed.like'
-            | 'app.bsky.feed.repost'
-            | 'app.bsky.graph.follow'
-    ): JetstreamMessageFactory {
+        messageType: CollectionType
+    ) {
         this.messageObject.collection = messageType;
         return this;
     }
@@ -75,7 +76,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @param {string} opType - The operation type. Must be either "c" or "d".
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    opType(opType: 'c' | 'd'): JetstreamMessageFactory {
+    opType(opType: 'c' | 'd') {
         this.messageObject.opType = opType;
         return this;
     }
@@ -85,7 +86,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      *
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    isCreation(): JetstreamMessageFactory {
+    isCreation() {
         this.messageObject.opType = 'c';
         return this;
     }
@@ -95,7 +96,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      *
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    isDeletion(): JetstreamMessageFactory {
+    isDeletion() {
         this.messageObject.opType = 'd';
         return this;
     }
@@ -106,7 +107,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @param {string} did - The value to set as the 'did' property.
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    fromDid(did: string): JetstreamMessageFactory {
+    fromDid(did: string) {
         this.messageObject.did = did;
         return this;
     }
@@ -117,7 +118,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @param {string} rkey - The rkey value to set.
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    rkey(rkey: string): JetstreamMessageFactory {
+    rkey(rkey: string) {
         this.messageObject.rkey = rkey;
         return this;
     }
@@ -128,7 +129,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @param {string} cid - The custom identifier for the message.
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    cid(cid: string): JetstreamMessageFactory {
+    cid(cid: string) {
         this.messageObject.cid = cid;
         return this;
     }
@@ -139,7 +140,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      * @param {number} seq - The value to set as the seq property.
      * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
      */
-    seq(seq: number): JetstreamMessageFactory {
+    seq(seq: number) {
         this.messageObject.seq = seq;
         return this;
     }
@@ -182,6 +183,10 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
         return new CreateMessageFactory();
     }
 
+    static make(): CreateMessage{
+        return CreateMessageFactory.factory().create()
+    }
+
     /**
      * Creates a Jetstream message object.
      *
@@ -205,7 +210,7 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
 
 // TODO what was I going to add here? Probably functions for setting text
 //  and adding embeds and stuff
-export class CreateSkeetMessageFactory extends JetstreamMessageFactory {
+export class CreateSkeetMessageFactory extends CreateMessageFactory {
     public messageObject: CreateSkeetMessage;
 
     constructor() {
@@ -225,6 +230,9 @@ export class CreateSkeetMessageFactory extends JetstreamMessageFactory {
         return new CreateSkeetMessageFactory();
     }
 
+    static make(): CreateSkeetMessage{
+        return CreateSkeetMessageFactory.factory().create();
+    }
     create(): CreateSkeetMessage {
         return this.messageObject as CreateSkeetMessage;
     }
