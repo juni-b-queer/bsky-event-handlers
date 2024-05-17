@@ -48,7 +48,9 @@ export { HandlerAgent } from './agent/HandlerAgent';
  * Types
  */
 export * from './types/JetstreamTypes';
-export * from './types/AbstractTypeFactory'
+export * from './types/factories/AbstractTypeFactory'
+export * from './types/factories/MessageFactories'
+export * from './types/factories/RecordFactories'
 
 /**
  * utils
