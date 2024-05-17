@@ -1,9 +1,10 @@
 import {
     CreateMessage,
     CreateSkeetMessage,
+    CreateSkeetRecord,
     JetstreamMessage,
-    Record,
-} from '../JetstreamTypes';
+    Record
+} from "../JetstreamTypes";
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 import { CreateSkeetRecordFactory } from './RecordFactories';
 
@@ -169,7 +170,7 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
                 $type: '',
                 createdAt: '',
             },
-        };
+        } as CreateMessage;
     }
 
     /**
@@ -204,7 +205,7 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
 
 // TODO what was I going to add here? Probably functions for setting text
 //  and adding embeds and stuff
-export class CreateSkeetMessageFactory extends CreateMessageFactory {
+export class CreateSkeetMessageFactory extends JetstreamMessageFactory {
     public messageObject: CreateSkeetMessage;
 
     constructor() {
@@ -217,7 +218,7 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
             rkey: '',
             seq: 0,
             record: CreateSkeetRecordFactory.factory().create(),
-        };
+        } as CreateSkeetMessage;
     }
 
     static factory(): CreateSkeetMessageFactory {
@@ -228,7 +229,7 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
         return this.messageObject as CreateSkeetMessage;
     }
 
-    record(record: Record): CreateSkeetMessageFactory {
+    record(record: CreateSkeetRecord): CreateSkeetMessageFactory {
         this.messageObject.record = record;
         return this;
     }
