@@ -1,13 +1,15 @@
 import {
     CreateMessageFactory,
-    CreateSkeetMessage, CreateSkeetRecordFactory,
+    CreateSkeetMessage,
+    CreateSkeetRecordFactory,
     HandlerAgent,
-    IsGoodBotValidator, ReplyFactory,
-    Subject
-} from "../../../src";
+    IsGoodBotValidator,
+    ReplyFactory,
+    Subject,
+} from '../../../src';
 import { BskyAgent } from '@atproto/api';
 
-const botDid = 'did:plc:blah'
+const botDid = 'did:plc:blah';
 const bskyAgent: BskyAgent = {
     session: {
         did: botDid,
@@ -21,11 +23,16 @@ const mockAgent: HandlerAgent = new HandlerAgent(
 );
 describe('IsGoodBotValidator', () => {
     const validator = IsGoodBotValidator.make();
-    const botReply = ReplyFactory.factory().replyTo(botDid).create()
-    const skeetRecord = CreateSkeetRecordFactory.factory().text('great bot').reply(botReply).create()
+    const botReply = ReplyFactory.factory().replyTo(botDid).create();
+    const skeetRecord = CreateSkeetRecordFactory.factory()
+        .text('great bot')
+        .reply(botReply)
+        .create();
 
     it('shouldTrigger returns true for positive bot responses', async () => {
-        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
+        const positiveMessage = CreateMessageFactory.factory()
+            .record(skeetRecord)
+            .create();
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             true
         );
@@ -33,7 +40,9 @@ describe('IsGoodBotValidator', () => {
 
     it('shouldTrigger returns true for thank you', async () => {
         skeetRecord.text = 'ok thank you';
-        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
+        const positiveMessage = CreateMessageFactory.factory()
+            .record(skeetRecord)
+            .create();
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             true
         );
@@ -41,7 +50,9 @@ describe('IsGoodBotValidator', () => {
 
     it('shouldTrigger returns false for non-positive bot responses', async () => {
         skeetRecord.text = 'bad bot';
-        const negativeMessage = CreateMessageFactory.factory().record(skeetRecord).create()
+        const negativeMessage = CreateMessageFactory.factory()
+            .record(skeetRecord)
+            .create();
         expect(await validator.shouldTrigger(negativeMessage, mockAgent)).toBe(
             false
         );
@@ -79,7 +90,9 @@ describe('IsGoodBotValidator', () => {
 
     it('shouldTrigger returns false for non reply', async () => {
         skeetRecord.reply = undefined;
-        const positiveMessage = CreateMessageFactory.factory().record(skeetRecord).create()
+        const positiveMessage = CreateMessageFactory.factory()
+            .record(skeetRecord)
+            .create();
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             false
         );

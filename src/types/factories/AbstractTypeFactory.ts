@@ -1,18 +1,13 @@
 export abstract class AbstractTypeFactory {
+    constructor() {}
 
-  constructor() {
-  }
+    static factory() {
+        throw new Error('Method Not Implemented! Use constructor.');
+    }
 
-  static factory() {
-    throw new Error("Method Not Implemented! Use constructor.");
-  }
-
-  create() {
-    throw new Error("Method Not Implemented! Use constructor.");
-  }
-
-
+    create() {
+        throw new Error('Method Not Implemented! Use constructor.');
+    }
 }
 
-export class TestFactory extends AbstractTypeFactory {};
-
+export class TestFactory extends AbstractTypeFactory {}

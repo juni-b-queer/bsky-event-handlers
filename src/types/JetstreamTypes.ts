@@ -66,11 +66,18 @@ export interface CreateSkeetRecord extends Record {
     reply?: Reply;
 }
 
+export type CollectionType =
+    | 'app.bsky.feed.post'
+    | 'app.bsky.feed.like'
+    | 'app.bsky.feed.repost'
+    | 'app.bsky.graph.follow';
+
+export type OperationType = 'c' | 'd';
 export interface JetstreamMessage {
     did: string;
     seq: number;
-    opType: 'c' | 'd';
-    collection: "app.bsky.feed.post" | "app.bsky.feed.like" | "app.bsky.feed.repost" | "app.bsky.graph.follow" | string;
+    opType: OperationType;
+    collection: CollectionType | string;
     rkey: string;
     cid: string;
 }

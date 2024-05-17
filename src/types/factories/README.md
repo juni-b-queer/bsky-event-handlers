@@ -1,6 +1,7 @@
 # Type Factories
 
 ## Factories overview
+
 Factories in this project make creating type objects more easily.
 
 Each factory class offers a static `factory` method that allows for the creation of new factory instances. Additionally,
@@ -10,14 +11,14 @@ Each factory contains its own additional functions based on the type it produces
 
 ## Contents
 
-- [AbstractTypeFactory](#abstracttypefactory)
-- [MessageFactories](#messagefactories)
-  - [JetstreamMessageFactory](#jetstreammessagefactory)
-  - [CreateMessageFactory](#createmessagefactory)
-  - [CreateSkeetMessageFactory](#createskeetmessagefactory)
-- [RecordFactories](#recordfactories)
-  - [CreateSkeetRecordFactory](#createskeetrecordfactory)
-  - [ReplyFactory](#replyfactory)
+-   [AbstractTypeFactory](#abstracttypefactory)
+-   [MessageFactories](#messagefactories)
+    -   [JetstreamMessageFactory](#jetstreammessagefactory)
+    -   [CreateMessageFactory](#createmessagefactory)
+    -   [CreateSkeetMessageFactory](#createskeetmessagefactory)
+-   [RecordFactories](#recordfactories)
+    -   [CreateSkeetRecordFactory](#createskeetrecordfactory)
+    -   [ReplyFactory](#replyfactory)
 
 ## AbstractTypeFactory
 
