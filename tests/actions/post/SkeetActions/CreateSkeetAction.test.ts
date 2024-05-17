@@ -2,8 +2,9 @@ import {
     CreateSkeetAction,
     CreateSkeetWithGeneratedTextAction,
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory
-} from "../../../../src";
+    JetstreamMessage,
+    JetstreamMessageFactory,
+} from '../../../../src';
 
 describe('Create Skeet Action', () => {
     let action: CreateSkeetAction;

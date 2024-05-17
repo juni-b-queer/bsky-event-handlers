@@ -1,10 +1,11 @@
 import {
     DebugLogAction,
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory,
+    JetstreamMessage,
+    JetstreamMessageFactory,
     LogInputTextAction,
-    LogMessageAction
-} from "../../src";
+    LogMessageAction,
+} from '../../src';
 import { advanceTo } from 'jest-date-mock';
 import mocked = jest.mocked;
 
@@ -57,7 +58,8 @@ describe('LogInputTextAction', () => {
 describe('LogInputTextAction', () => {
     let action: DebugLogAction;
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage = JetstreamMessageFactory.factory().create();
+    const message: JetstreamMessage =
+        JetstreamMessageFactory.factory().create();
     console.log = jest.fn();
 
     beforeEach(() => {

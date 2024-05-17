@@ -1,9 +1,10 @@
 import {
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory,
+    JetstreamMessage,
+    JetstreamMessageFactory,
     LogMessageAction,
-    TestAction
-} from "../../src";
+    TestAction,
+} from '../../src';
 import mocked = jest.mocked;
 import { advanceTo } from 'jest-date-mock';
 

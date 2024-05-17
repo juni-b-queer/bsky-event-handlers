@@ -4,8 +4,8 @@ import {
     CreateSkeetMessage,
     CreateSkeetRecord,
     JetstreamMessage,
-    Record
-} from "../JetstreamTypes";
+    Record,
+} from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 import { CreateSkeetRecordFactory } from './RecordFactories';
 
@@ -43,8 +43,8 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
         return new JetstreamMessageFactory();
     }
 
-    static make(): JetstreamMessage{
-        return JetstreamMessageFactory.factory().create()
+    static make(): JetstreamMessage {
+        return JetstreamMessageFactory.factory().create();
     }
 
     /**
@@ -63,9 +63,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      *
      * @return {JetstreamMessageFactory} - The modified collection object.
      */
-    collection(
-        messageType: CollectionType
-    ) {
+    collection(messageType: CollectionType) {
         this.messageObject.collection = messageType;
         return this;
     }
@@ -183,8 +181,8 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
         return new CreateMessageFactory();
     }
 
-    static make(): CreateMessage{
-        return CreateMessageFactory.factory().create()
+    static make(): CreateMessage {
+        return CreateMessageFactory.factory().create();
     }
 
     /**
@@ -230,7 +228,7 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
         return new CreateSkeetMessageFactory();
     }
 
-    static make(): CreateSkeetMessage{
+    static make(): CreateSkeetMessage {
         return CreateSkeetMessageFactory.factory().create();
     }
     create(): CreateSkeetMessage {

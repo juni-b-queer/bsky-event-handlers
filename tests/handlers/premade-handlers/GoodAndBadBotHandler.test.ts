@@ -1,9 +1,12 @@
 import {
     BadBotHandler,
-    CreateSkeetMessage, CreateSkeetMessageFactory, CreateSkeetRecordFactory,
+    CreateSkeetMessage,
+    CreateSkeetMessageFactory,
+    CreateSkeetRecordFactory,
     GoodBotHandler,
-    HandlerAgent, ReplyFactory
-} from "../../../src";
+    HandlerAgent,
+    ReplyFactory,
+} from '../../../src';
 import { BskyAgent } from '@atproto/api';
 
 describe('Good and Bad Bot Handler', () => {
@@ -23,7 +26,7 @@ describe('Good and Bad Bot Handler', () => {
         return (uri.match(/did:[^/]*/) || [])[0];
     });
 
-    const botDid: string = "did:plc:bot"
+    const botDid: string = 'did:plc:bot';
     const bskyAgent: BskyAgent = {
         session: {
             did: botDid,
@@ -49,13 +52,14 @@ describe('Good and Bad Bot Handler', () => {
     describe('Good Bot Handler', () => {
         it('GoodBotHandler Does run actions with default when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('good bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -69,13 +73,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does run actions with input when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent, 'test');
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('good bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -89,13 +94,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is reply to bot, but not good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('test')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('test')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -106,13 +112,18 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is not reply to bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo('did:plc:other').create()
-              )
-                .text('good bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(
+                            ReplyFactory.factory()
+                                .replyTo('did:plc:other')
+                                .create()
+                        )
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -123,11 +134,11 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is not reply', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory()
-                .text('good bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory().text('good bot').create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
@@ -138,13 +149,14 @@ describe('Good and Bad Bot Handler', () => {
     describe('Bad Bot Handler', () => {
         it('BadBotHandler Does run actions with default when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('bad bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -158,13 +170,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does run actions with input when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent, 'test');
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('bad bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -178,13 +191,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is reply to bot, but not bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo(botDid).create()
-              )
-                .text('good bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -195,13 +209,18 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is not reply to bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory().reply(
-                ReplyFactory.factory().replyTo('did:plc:other').create()
-              )
-                .text('bad bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(
+                            ReplyFactory.factory()
+                                .replyTo('did:plc:other')
+                                .create()
+                        )
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -212,11 +231,11 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is not reply', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory().record(
-              CreateSkeetRecordFactory.factory()
-                .text('bad bot')
-                .create()
-            ).create()
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory().text('bad bot').create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();

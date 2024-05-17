@@ -1,10 +1,12 @@
 import {
     CreateSkeetMessage,
-    CreateSkeetMessageFactory, CreateSkeetRecordFactory,
+    CreateSkeetMessageFactory,
+    CreateSkeetRecordFactory,
     HandlerAgent,
     JetstreamMessage,
-    JetstreamMessageFactory, ReplyFactory
-} from "../../src";
+    JetstreamMessageFactory,
+    ReplyFactory,
+} from '../../src';
 import { AtpSessionData, BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 
@@ -33,35 +35,30 @@ describe('HandlerAgent', () => {
     });
 
     it('generateURIFromCreateMessage creates expected uri', () => {
-        const did = 'did:plc:12345'
-        const rkey = 'rkeytest'
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory
-          .factory()
-          .fromDid(did)
-          .rkey(rkey)
-          .create()
+        const did = 'did:plc:12345';
+        const rkey = 'rkeytest';
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .fromDid(did)
+            .rkey(rkey)
+            .create();
         const result = handlerAgent.generateURIFromCreateMessage(message);
 
-        expect(result).toEqual(
-            `at://${did}/app.bsky.feed.post/${rkey}`
-        );
+        expect(result).toEqual(`at://${did}/app.bsky.feed.post/${rkey}`);
     });
 
     describe('postedByAgent', () => {
         it('should return true when message is same did as bot', () => {
-            const message: JetstreamMessage = JetstreamMessageFactory
-              .factory()
-              .fromDid(botDid)
-              .create()
+            const message: JetstreamMessage = JetstreamMessageFactory.factory()
+                .fromDid(botDid)
+                .create();
             const result = handlerAgent.postedByAgent(message);
             expect(result).toBe(true);
         });
 
         it('should return false when message is not same did as bot', () => {
-            const message: JetstreamMessage = JetstreamMessageFactory
-              .factory()
-              .fromDid('did:plc:other')
-              .create()
+            const message: JetstreamMessage = JetstreamMessageFactory.factory()
+                .fromDid('did:plc:other')
+                .create();
 
             const result = handlerAgent.postedByAgent(message);
             expect(result).toBe(false);
@@ -71,15 +68,13 @@ describe('HandlerAgent', () => {
     describe('getPostReply', () => {
         it('should return reply from message', () => {
             const reply = ReplyFactory.factory().create();
-            const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-              .fromDid(botDid)
-              .record(
-                CreateSkeetRecordFactory
-                  .factory()
-                  .reply(reply)
-                  .create()
-              )
-              .create()
+            const message: CreateSkeetMessage =
+                CreateSkeetMessageFactory.factory()
+                    .fromDid(botDid)
+                    .record(
+                        CreateSkeetRecordFactory.factory().reply(reply).create()
+                    )
+                    .create();
             const result = handlerAgent.getPostReply(message);
             expect(result).toBe(reply);
         });

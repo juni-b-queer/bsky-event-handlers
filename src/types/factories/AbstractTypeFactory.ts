@@ -5,15 +5,13 @@ export abstract class AbstractTypeFactory {
         throw new Error('Method Not Implemented! Use constructor.');
     }
 
-    static make(){
+    static make() {
         throw new Error('Method Not Implemented! Use constructor.');
     }
 
     create() {
         throw new Error('Method Not Implemented! Use constructor.');
     }
-
-
 }
 
 export class TestFactory extends AbstractTypeFactory {}

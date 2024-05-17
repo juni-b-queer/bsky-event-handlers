@@ -34,8 +34,8 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
         return new CreateSkeetRecordFactory();
     }
 
-    static make(): CreateSkeetRecord{
-        return CreateSkeetRecordFactory.factory().create()
+    static make(): CreateSkeetRecord {
+        return CreateSkeetRecordFactory.factory().create();
     }
 
     /**
@@ -70,35 +70,34 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
     }
 }
 
-
 export class SubjectFactory extends AbstractTypeFactory {
     public subject: Subject;
     constructor() {
         super();
         this.subject = {
-            cid: "",
-            uri: ""
-        }
+            cid: '',
+            uri: '',
+        };
     }
 
-    static factory(): SubjectFactory{
-        return new SubjectFactory()
+    static factory(): SubjectFactory {
+        return new SubjectFactory();
     }
 
-    static make(): Subject{
+    static make(): Subject {
         return SubjectFactory.factory().create();
     }
 
-    create(): Subject{
+    create(): Subject {
         return this.subject as Subject;
     }
 
-    cid(inputCid: string){
+    cid(inputCid: string) {
         this.subject.cid = inputCid;
         return this;
     }
 
-    uri(inputUri: string){
+    uri(inputUri: string) {
         this.subject.uri = inputUri;
         return this;
     }
@@ -128,9 +127,8 @@ export class ReplyFactory extends AbstractTypeFactory {
         return new ReplyFactory();
     }
 
-
-    static make(): Reply{
-        return ReplyFactory.factory().create()
+    static make(): Reply {
+        return ReplyFactory.factory().create();
     }
 
     create(): Reply {

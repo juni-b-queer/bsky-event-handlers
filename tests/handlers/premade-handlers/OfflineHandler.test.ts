@@ -1,10 +1,13 @@
 import {
     BadBotHandler,
-    CreateSkeetMessage, CreateSkeetMessageFactory, CreateSkeetRecordFactory,
+    CreateSkeetMessage,
+    CreateSkeetMessageFactory,
+    CreateSkeetRecordFactory,
     GoodBotHandler,
     HandlerAgent,
-    OfflineHandler, ReplyFactory
-} from "../../../src";
+    OfflineHandler,
+    ReplyFactory,
+} from '../../../src';
 import { BskyAgent } from '@atproto/api';
 
 describe('Good Bot Handler', () => {
@@ -46,11 +49,9 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does run actions with defaults when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = CreateSkeetMessageFactory.factory().record(
-          CreateSkeetRecordFactory.factory()
-            .text('!test')
-            .create()
-        ).create()
+        message = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('!test').create())
+            .create();
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'Bot functionality offline',
@@ -60,11 +61,9 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does run actions with input when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test', 'output');
-        message = CreateSkeetMessageFactory.factory().record(
-          CreateSkeetRecordFactory.factory()
-            .text('test!')
-            .create()
-        ).create()
+        message = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('test!').create())
+            .create();
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'output',
@@ -74,11 +73,9 @@ describe('Good Bot Handler', () => {
 
     it('OfflineHandler Does not run actions when post is not command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = CreateSkeetMessageFactory.factory().record(
-          CreateSkeetRecordFactory.factory()
-            .text('blah')
-            .create()
-        ).create()
+        message = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('blah').create())
+            .create();
         await offlineHandler.handle(message);
         expect(mockCreateSkeet).not.toHaveBeenCalled();
     });

@@ -4,9 +4,10 @@ import {
     CreateSkeetMessage,
     DebugLog,
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory,
-    MessageHandler
-} from "../../src";
+    JetstreamMessage,
+    JetstreamMessageFactory,
+    MessageHandler,
+} from '../../src';
 
 describe('MessageHandler', () => {
     let messageHandler: MessageHandler;
@@ -62,7 +63,7 @@ describe('MessageHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: JetstreamMessage = JetstreamMessageFactory.make()
+            const message: JetstreamMessage = JetstreamMessageFactory.make();
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -73,7 +74,9 @@ describe('MessageHandler', () => {
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: JetstreamMessage = JetstreamMessageFactory.factory().isDeletion().create()
+            const message: JetstreamMessage = JetstreamMessageFactory.factory()
+                .isDeletion()
+                .create();
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -81,7 +84,9 @@ describe('MessageHandler', () => {
         });
 
         it('should debug log error when handle throws error', async () => {
-            const message: JetstreamMessage = JetstreamMessageFactory.factory().seq(3).create()
+            const message: JetstreamMessage = JetstreamMessageFactory.factory()
+                .seq(3)
+                .create();
             await messageHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();

@@ -1,11 +1,13 @@
 import {
-    CreateMessage, CreateMessageFactory,
-    DeleteMessage, JetstreamMessageFactory,
+    CreateMessage,
+    CreateMessageFactory,
+    DeleteMessage,
+    JetstreamMessageFactory,
     JetstreamSubscription,
     JetstreamSubscriptionHandlers,
     MessageHandler,
-    Record
-} from "../../src";
+    Record,
+} from '../../src';
 
 describe('JetstreamSubscription', () => {
     let jetSub: JetstreamSubscription;
@@ -70,7 +72,9 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.like.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory().collection('app.bsky.feed.like').create();
+        const msg: CreateMessage = CreateMessageFactory.factory()
+            .collection('app.bsky.feed.like')
+            .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -80,7 +84,9 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.repost.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory().collection('app.bsky.feed.repost').create();
+        const msg: CreateMessage = CreateMessageFactory.factory()
+            .collection('app.bsky.feed.repost')
+            .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -90,7 +96,9 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.follow.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory().collection('app.bsky.graph.follow').create();
+        const msg: CreateMessage = CreateMessageFactory.factory()
+            .collection('app.bsky.graph.follow')
+            .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -99,11 +107,10 @@ describe('JetstreamSubscription', () => {
     test('handleDelete post', () => {
         // @ts-ignore
         handlers.post.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory
-          .factory()
-          .collection('app.bsky.feed.post')
-          .isDeletion()
-          .create();
+        const msg: DeleteMessage = JetstreamMessageFactory.factory()
+            .collection('app.bsky.feed.post')
+            .isDeletion()
+            .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -112,11 +119,10 @@ describe('JetstreamSubscription', () => {
     test('handleDelete like', () => {
         // @ts-ignore
         handlers.like.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory
-          .factory()
-          .collection('app.bsky.feed.like')
-          .isDeletion()
-          .create();
+        const msg: DeleteMessage = JetstreamMessageFactory.factory()
+            .collection('app.bsky.feed.like')
+            .isDeletion()
+            .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -125,11 +131,10 @@ describe('JetstreamSubscription', () => {
     test('handleDelete repost', () => {
         // @ts-ignore
         handlers.repost.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory
-          .factory()
-          .collection('app.bsky.feed.repost')
-          .isDeletion()
-          .create();
+        const msg: DeleteMessage = JetstreamMessageFactory.factory()
+            .collection('app.bsky.feed.repost')
+            .isDeletion()
+            .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
@@ -138,11 +143,10 @@ describe('JetstreamSubscription', () => {
     test('handleDelete follow', () => {
         // @ts-ignore
         handlers.follow.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory
-          .factory()
-          .collection('app.bsky.graph.follow')
-          .isDeletion()
-          .create();
+        const msg: DeleteMessage = JetstreamMessageFactory.factory()
+            .collection('app.bsky.graph.follow')
+            .isDeletion()
+            .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(msg);

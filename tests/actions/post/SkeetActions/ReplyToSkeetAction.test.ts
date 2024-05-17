@@ -5,8 +5,8 @@ import {
     Reply,
     ReplyFactory,
     ReplyToSkeetAction,
-    ReplyToSkeetWithGeneratedTextAction
-} from "../../../../src";
+    ReplyToSkeetWithGeneratedTextAction,
+} from '../../../../src';
 
 describe('Reply To Skeet Action', () => {
     let action: ReplyToSkeetAction;
@@ -17,7 +17,7 @@ describe('Reply To Skeet Action', () => {
     const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
 
     const skeetText: string = 'Test Text';
-    const did: string = 'did:plc:did'
+    const did: string = 'did:plc:did';
 
     beforeEach(() => {
         handlerAgent = {
@@ -48,16 +48,14 @@ describe('Reply To Skeet with generated text Action', () => {
     const mockReply: Reply = ReplyFactory.factory().create();
     const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
 
-
-    const did: string = 'did:plc:did'
-
+    const did: string = 'did:plc:did';
 
     beforeEach(() => {
         handlerAgent = {
             createSkeet: mockCreateSkeet,
             generateReplyFromMessage: mockGenerateReplyFromMessage,
         } as unknown as HandlerAgent;
-        message = CreateSkeetMessageFactory.factory().fromDid(did).create()
+        message = CreateSkeetMessageFactory.factory().fromDid(did).create();
         action = ReplyToSkeetWithGeneratedTextAction.make(mockTextGenerator);
     });
 

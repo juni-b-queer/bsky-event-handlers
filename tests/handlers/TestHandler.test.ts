@@ -4,9 +4,10 @@ import {
     CreateSkeetMessage,
     DebugLog,
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory,
-    TestHandler
-} from "../../src";
+    JetstreamMessage,
+    JetstreamMessageFactory,
+    TestHandler,
+} from '../../src';
 
 describe('TestHandler', () => {
     let testHandler: TestHandler;
@@ -68,7 +69,7 @@ describe('TestHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: JetstreamMessage = JetstreamMessageFactory.make()
+            const message: JetstreamMessage = JetstreamMessageFactory.make();
             await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
@@ -79,7 +80,9 @@ describe('TestHandler', () => {
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: JetstreamMessage = JetstreamMessageFactory.factory().isDeletion().create()
+            const message: JetstreamMessage = JetstreamMessageFactory.factory()
+                .isDeletion()
+                .create();
             await testHandler.handle(message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();

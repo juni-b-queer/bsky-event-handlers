@@ -2,15 +2,17 @@ import {
     DebugLog,
     FunctionAction,
     HandlerAgent,
-    JetstreamMessage, JetstreamMessageFactory,
-    nowDateTime
-} from "../../src";
+    JetstreamMessage,
+    JetstreamMessageFactory,
+    nowDateTime,
+} from '../../src';
 import mocked = jest.mocked;
 
 describe('FunctionAction', () => {
     const mockHandlerAgent = {} as HandlerAgent;
 
-    const mockMessage: JetstreamMessage = JetstreamMessageFactory.factory().create();
+    const mockMessage: JetstreamMessage =
+        JetstreamMessageFactory.factory().create();
 
     let mockActionFunction = jest.fn();
     let functionAction: FunctionAction;
@@ -39,7 +41,8 @@ describe('FunctionAction With DebugLog', () => {
     }));
     const mockHandlerAgent = {} as HandlerAgent;
 
-    const mockMessage: JetstreamMessage = JetstreamMessageFactory.factory().create()
+    const mockMessage: JetstreamMessage =
+        JetstreamMessageFactory.factory().create();
 
     beforeEach(() => {
         jest.clearAllMocks(); // clearing mocks
