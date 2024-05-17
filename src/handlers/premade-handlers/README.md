@@ -26,6 +26,36 @@ And the third is what the response will be if someone uses the command
 
 `OfflineHandler.make(handlerAgent, "command", "response")`
 
-# Creating premade handlers
+## Creating a reusable handler
 
-See the Creating a reusable handler section in the [Handlers README](../README.md#creating-a-reusable-handler)
+A handler needs validators, actions, and an agent. Creating your own handler makes it easier to reuse them. The Good/Bad bot handlers are premade and ready to use.
+
+Your handler must extend AbstractMessageHandler or for handlers to only handle CreateSkeetMessages, extend CreateSkeetHandler.
+
+The below example simply takes in the handlerAgent, but has the validators and actions set automatically in the constructor
+
+```typescript
+export class ExampleHandler extends CreateSkeetHandler {
+    constructor(public handlerAgent: HandlerAgent) {
+        super(
+            [InputEqualsValidator.make('Hello')],
+            [ReplyToSkeetAction.make('World!')],
+            handlerAgent
+        );
+    }
+
+    async handle(message: CreateSkeetMessage): Promise<void> {
+        return super.handle(message);
+    }
+}
+```
+
+To use this handler, you'll just use `ExampleHandler.make(handlerAgent)` in your handlers object
+
+```typescript
+let handlers = {
+    post: {
+        c: [ExampleHandler.make(handlerAgent)],
+    },
+};
+```
