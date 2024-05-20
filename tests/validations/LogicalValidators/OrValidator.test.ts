@@ -1,10 +1,11 @@
 import {
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
+    CreateSkeetRecordFactory,
     HandlerAgent,
     InputEqualsValidator,
     InputStartsWithValidator,
     OrValidator,
-    Subject,
 } from '../../../src';
 
 describe('OrValidator', () => {
@@ -18,63 +19,29 @@ describe('OrValidator', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if both validators pass', async () => {
-        const message: CreateSkeetMessage = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('test').create())
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns true if one validator passes', async () => {
-        const message: CreateSkeetMessage = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test message',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(
+                CreateSkeetRecordFactory.factory().text('test message').create()
+            )
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns false if no validators pass', async () => {
-        const message: CreateSkeetMessage = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'random',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('random').create())
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );

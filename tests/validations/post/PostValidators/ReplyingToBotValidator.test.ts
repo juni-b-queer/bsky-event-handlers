@@ -1,33 +1,23 @@
 import {
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
     HandlerAgent,
+    ReplyFactory,
     ReplyingToBotValidator,
-    Subject,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
 
 describe('ReplyingToBotValidator', () => {
     const validator = ReplyingToBotValidator.make();
+    const botDid = 'did:plc:bot';
 
     it('shouldTrigger returns false if no reply', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
+        const message: CreateSkeetMessage =
+            CreateSkeetMessageFactory.factory().create();
 
         const bskyAgent: BskyAgent = {
             session: {
-                did: 'did:plc:blah',
+                did: botDid,
             },
         } as BskyAgent;
         const handlerAgent: HandlerAgent = new HandlerAgent(
@@ -43,34 +33,13 @@ describe('ReplyingToBotValidator', () => {
     });
 
     it('shouldTrigger returns true if the did is the same as the agent', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .withReply(ReplyFactory.factory().replyTo(botDid).create())
+            .create();
 
         const bskyAgent: BskyAgent = {
             session: {
-                did: 'did:plc:blah',
+                did: botDid,
             },
         } as BskyAgent;
         const handlerAgent: HandlerAgent = new HandlerAgent(
@@ -84,33 +53,12 @@ describe('ReplyingToBotValidator', () => {
     });
 
     it('shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: 'did:plc:bad',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .withReply(ReplyFactory.factory().replyTo('did:plc:bad').create())
+            .create();
         const bskyAgent: BskyAgent = {
             session: {
-                did: 'did:plc:bad',
+                did: botDid,
             },
         } as BskyAgent;
         const handlerAgent: HandlerAgent = new HandlerAgent(

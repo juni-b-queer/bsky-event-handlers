@@ -1,8 +1,11 @@
 import {
     BadBotHandler,
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
+    CreateSkeetRecordFactory,
     GoodBotHandler,
     HandlerAgent,
+    ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
 
@@ -23,9 +26,10 @@ describe('Good and Bad Bot Handler', () => {
         return (uri.match(/did:[^/]*/) || [])[0];
     });
 
+    const botDid: string = 'did:plc:bot';
     const bskyAgent: BskyAgent = {
         session: {
-            did: 'did:plc:bot',
+            did: botDid,
         },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
@@ -48,30 +52,14 @@ describe('Good and Bad Bot Handler', () => {
     describe('Good Bot Handler', () => {
         it('GoodBotHandler Does run actions with default when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        root: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                        parent: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                    },
-                    text: 'good bot',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -85,30 +73,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does run actions with input when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent, 'test');
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        root: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                        parent: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                    },
-                    text: 'good bot',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -122,30 +94,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is reply to bot, but not good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        parent: {
-                            cid: 'cidRandom',
-                            uri: 'at:/did:plc:bot/app.bsky.feed.post/blah',
-                        },
-                        root: {
-                            cid: 'otherCIDrandom',
-                            uri: 'at:/did:plc:random/app.bsky.feed.post/asdas',
-                        },
-                    },
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('test')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -156,30 +112,18 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is not reply to bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        parent: {
-                            cid: 'cidRandom',
-                            uri: 'at:/did:plc:notbot/app.bsky.feed.post/blah',
-                        },
-                        root: {
-                            cid: 'otherCIDrandom',
-                            uri: 'at:/did:plc:random/app.bsky.feed.post/asdas',
-                        },
-                    },
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(
+                            ReplyFactory.factory()
+                                .replyTo('did:plc:other')
+                                .create()
+                        )
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -190,20 +134,11 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is not reply', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory().text('good bot').create()
+                )
+                .create();
             await goodBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
@@ -214,30 +149,14 @@ describe('Good and Bad Bot Handler', () => {
     describe('Bad Bot Handler', () => {
         it('BadBotHandler Does run actions with default when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        root: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                        parent: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                    },
-                    text: 'bad bot',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -251,30 +170,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does run actions with input when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent, 'test');
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        root: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                        parent: {
-                            cid: 'cid',
-                            uri: 'at://did:plc:bot/app.bsky.feed.post/rkey',
-                        },
-                    },
-                    text: 'bad bot',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -288,30 +191,14 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is reply to bot, but not bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        parent: {
-                            cid: 'cidRandom',
-                            uri: 'at:/did:plc:bot/app.bsky.feed.post/blah',
-                        },
-                        root: {
-                            cid: 'otherCIDrandom',
-                            uri: 'at:/did:plc:random/app.bsky.feed.post/asdas',
-                        },
-                    },
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(ReplyFactory.factory().replyTo(botDid).create())
+                        .text('good bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -322,30 +209,18 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is not reply to bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    reply: {
-                        parent: {
-                            cid: 'cidRandom',
-                            uri: 'at:/did:plc:notbot/app.bsky.feed.post/blah',
-                        },
-                        root: {
-                            cid: 'otherCIDrandom',
-                            uri: 'at:/did:plc:random/app.bsky.feed.post/asdas',
-                        },
-                    },
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory()
+                        .reply(
+                            ReplyFactory.factory()
+                                .replyTo('did:plc:other')
+                                .create()
+                        )
+                        .text('bad bot')
+                        .create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
@@ -356,20 +231,11 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is not reply', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = {
-                collection: 'app.bsky.feed.post',
-                did: 'did:plc:notbot',
-                opType: 'c',
-                rkey: '',
-                seq: 0,
-                cid: 'cid',
-                record: {
-                    $type: 'app.bsky.feed.post',
-                    createdAt: '2024-04-19T19:07:11.878Z',
-                    langs: ['en'],
-                    text: 'test',
-                },
-            };
+            message = CreateSkeetMessageFactory.factory()
+                .record(
+                    CreateSkeetRecordFactory.factory().text('bad bot').create()
+                )
+                .create();
             await badBotHandler.handle(message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();

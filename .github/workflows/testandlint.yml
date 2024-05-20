@@ -1,8 +1,8 @@
 name: Test and Lint code
 on:
-  push:
-    branches:
-      - '*'
+    push:
+        branches:
+            - '*'
 jobs:
     test:
         name: Run Tests

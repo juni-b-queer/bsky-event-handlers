@@ -1,8 +1,8 @@
 import {
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
     HandlerAgent,
     InputEqualsValidator,
-    Subject,
 } from '../../../../src';
 
 describe('InputEqualsValidator', () => {
@@ -15,21 +15,9 @@ describe('InputEqualsValidator', () => {
      * matches the trigger keyword.
      */
     test('shouldTrigger returns true if input is trigger keyword', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .withText('test')
+            .create();
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
     });
 
@@ -39,21 +27,9 @@ describe('InputEqualsValidator', () => {
      * does not match the trigger keyword.
      */
     test('shouldTrigger returns false if input does not equal trigger keyword', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'message test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .withText('message test')
+            .create();
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );

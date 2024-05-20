@@ -2,6 +2,7 @@ import {
     DebugLogAction,
     HandlerAgent,
     JetstreamMessage,
+    JetstreamMessageFactory,
     LogInputTextAction,
     LogMessageAction,
 } from '../../src';
@@ -16,14 +17,7 @@ describe('LogMessageAction', () => {
 
     beforeEach(() => {
         handlerAgent = {} as HandlerAgent;
-        message = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-        };
+        message = JetstreamMessageFactory.factory().create();
         action = LogMessageAction.make();
     });
 
@@ -47,14 +41,7 @@ describe('LogInputTextAction', () => {
     beforeEach(() => {
         input = 'hello';
         handlerAgent = {} as HandlerAgent;
-        message = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-        };
+        message = JetstreamMessageFactory.factory().create();
         action = LogInputTextAction.make(input);
     });
 
@@ -71,7 +58,8 @@ describe('LogInputTextAction', () => {
 describe('LogInputTextAction', () => {
     let action: DebugLogAction;
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage = {} as JetstreamMessage;
+    const message: JetstreamMessage =
+        JetstreamMessageFactory.factory().create();
     console.log = jest.fn();
 
     beforeEach(() => {

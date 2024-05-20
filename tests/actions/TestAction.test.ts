@@ -1,6 +1,7 @@
 import {
     HandlerAgent,
     JetstreamMessage,
+    JetstreamMessageFactory,
     LogMessageAction,
     TestAction,
 } from '../../src';
@@ -15,14 +16,7 @@ describe('TestAction', () => {
 
     beforeEach(() => {
         handlerAgent = {} as HandlerAgent;
-        message = {
-            collection: '',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-        };
+        message = JetstreamMessageFactory.factory().create();
         action = new TestAction();
         advanceTo(new Date(Date.UTC(2023, 1, 1, 1, 0, 0)));
         mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';

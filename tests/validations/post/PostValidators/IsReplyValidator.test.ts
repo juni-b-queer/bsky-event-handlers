@@ -1,16 +1,17 @@
 import {
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
     HandlerAgent,
     IsReplyValidator,
-    Subject,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
 
 describe('IsReplyValidator', () => {
     const validator = IsReplyValidator.make();
+    const botDid = 'did:plc:bot';
     const bskyAgent: BskyAgent = {
         session: {
-            did: 'did:plc:blah',
+            did: botDid,
         },
     } as BskyAgent;
     const handlerAgent: HandlerAgent = new HandlerAgent(
@@ -21,50 +22,16 @@ describe('IsReplyValidator', () => {
     );
 
     test('shouldTrigger returns true if op.payload.reply is not null', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    parent: {
-                        cid: 'test',
-                        uri: 'test',
-                    },
-                    root: {
-                        cid: 'test',
-                        uri: 'test',
-                    },
-                },
-            },
-        };
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .withReply()
+            .create();
 
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
     });
 
     test('shouldTrigger returns false if op.payload.reply is null', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage =
+            CreateSkeetMessageFactory.factory().create();
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );
