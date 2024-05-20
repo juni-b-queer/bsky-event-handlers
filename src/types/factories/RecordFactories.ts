@@ -1,5 +1,57 @@
-import { CreateSkeetRecord, Reply, Subject } from '../JetstreamTypes';
+import { CreateSkeetRecord, Reply, Subject, Record, CollectionType } from "../JetstreamTypes";
 import { AbstractTypeFactory } from './AbstractTypeFactory';
+
+export class RecordFactory extends AbstractTypeFactory {
+    public record: Record;
+    constructor() {
+        super();
+        this.record = {
+            $type: "app.bsky.feed.like",
+            createdAt: "",
+            subject: undefined
+        }
+    }
+
+    static factory(): RecordFactory {
+        return new RecordFactory();
+    }
+
+    static make(): Record {
+        return RecordFactory.factory().create()
+    }
+
+    create(): Record{
+        return this.record as Record;
+    }
+
+    type(inputType: CollectionType){
+        this.record.$type = inputType;
+        return this;
+    }
+
+    isLike(){
+        this.record.$type = "app.bsky.feed.like"
+        return this;
+    }
+
+    isRepost(){
+        this.record.$type = "app.bsky.feed.repost"
+        return this;
+    }
+
+    isFollow(followedDid: string|undefined = undefined){
+        this.record.$type = "app.bsky.graph.follow"
+        if(followedDid !== undefined){
+            this.record.subject = followedDid
+        }
+        return this;
+    }
+
+    subject(inputSubject: Subject|string){
+        this.record.subject = inputSubject;
+        return this;
+    }
+}
 
 /**
  * Represents a factory class for creating a skeet record object.

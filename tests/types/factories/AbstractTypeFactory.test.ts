@@ -13,4 +13,10 @@ describe('Abstract class throws errors', () => {
             'Method Not Implemented! Use constructor.'
         );
     });
+
+    it('make throws error', () => {
+        expect(TestFactory.make).toThrow(
+          'Method Not Implemented! Use constructor.'
+        );
+    });
 });

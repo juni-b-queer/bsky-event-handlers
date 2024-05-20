@@ -53,7 +53,7 @@ export interface Reply {
 }
 
 export interface Record {
-    $type: string;
+    $type: CollectionType;
     createdAt: string;
     subject?: Subject | string;
 }

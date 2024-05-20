@@ -8,8 +8,8 @@ import {
     JetstreamMessage,
     JetstreamMessageFactory,
     OperationType,
-    Record,
-} from '../../../src';
+    Record, RecordFactory
+} from "../../../src";
 describe('JetstreamMessageFactory', () => {
     let factory: JetstreamMessageFactory;
 
@@ -99,7 +99,7 @@ describe('CreateMessageFactory', () => {
             rkey: '',
             seq: 0,
             record: {
-                $type: '',
+                $type: 'app.bsky.feed.post',
                 createdAt: '',
             },
         };
@@ -111,11 +111,7 @@ describe('CreateMessageFactory', () => {
     });
     //record
     it('Updates the createMessage with a given record', () => {
-        const record: Record = {
-            $type: 'test',
-            createdAt: '',
-            subject: 'uri',
-        };
+        const record: Record = RecordFactory.make()
         factory.record(record);
         defaultCreateMessage.record = record;
         expect(factory.create()).toEqual(defaultCreateMessage);

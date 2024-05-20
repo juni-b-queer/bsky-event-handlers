@@ -2,12 +2,13 @@ import {
     AbstractValidator,
     HandlerAgent,
     JetstreamMessage,
-    TestValidator,
-} from '../../../src';
+    JetstreamMessageFactory,
+    TestValidator
+} from "../../../src";
 
 describe('Testing Negating', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage = {} as JetstreamMessage;
+    const message: JetstreamMessage = JetstreamMessageFactory.make();
 
     test('shouldTrigger returns false if given validator is true', async () => {
         const testValidator: AbstractValidator = TestValidator.make(true).not();
@@ -28,7 +29,7 @@ describe('Testing Negating', () => {
 
 describe('Test AbstractValidatorError', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage = {} as JetstreamMessage;
+    const message: JetstreamMessage = JetstreamMessageFactory.make();
 
     test('make throws error on abstract', async () => {
         expect(AbstractValidator.make).toThrow(

@@ -1,9 +1,4 @@
-import {
-    CreateSkeetMessage,
-    HandlerAgent,
-    InputStartsWithValidator,
-    Subject,
-} from '../../../../src';
+import { CreateSkeetMessage, CreateSkeetMessageFactory, HandlerAgent, InputStartsWithValidator } from "../../../../src";
 
 describe('InputStartsWithValidator', () => {
     const validator = InputStartsWithValidator.make('test');
@@ -11,61 +6,19 @@ describe('InputStartsWithValidator', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if input starts with trigger keyword', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'test message',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().withText('test message').create()
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
     });
 
     test('shouldTrigger returns false if input does not start with trigger keyword', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'message test',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().withText('message test').create()
         expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );
     });
 
     test('shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword', async () => {
-        const message: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'Test message',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-            },
-        };
-
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().withText('Test message').create()
         expect(await strictValidator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );

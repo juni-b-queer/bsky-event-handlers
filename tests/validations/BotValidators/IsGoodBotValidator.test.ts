@@ -1,15 +1,15 @@
 import {
     CreateMessageFactory,
     CreateSkeetMessage,
+    CreateSkeetMessageFactory,
     CreateSkeetRecordFactory,
     HandlerAgent,
     IsGoodBotValidator,
-    ReplyFactory,
-    Subject,
-} from '../../../src';
-import { BskyAgent } from '@atproto/api';
+    ReplyFactory
+} from "../../../src";
+import { BskyAgent } from "@atproto/api";
 
-const botDid = 'did:plc:blah';
+const botDid = 'did:plc:bot';
 const bskyAgent: BskyAgent = {
     session: {
         did: botDid,
@@ -59,30 +59,14 @@ describe('IsGoodBotValidator', () => {
     });
 
     it('shouldTrigger returns false for non post collection', async () => {
-        const positiveMessage: CreateSkeetMessage = {
-            collection: 'app.bsky.feed.like',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            cid: 'cid',
-            record: {
-                text: 'bad bot',
-                $type: '',
-                createdAt: '',
-                subject: {} as Subject,
-                reply: {
-                    root: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                    parent: {
-                        cid: 'cid',
-                        uri: 'at://did:plc:blah/app.bsky.feed.post/rkey',
-                    },
-                },
-            },
-        };
+        const positiveMessage: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+          .record(
+            CreateSkeetRecordFactory.factory()
+              .text('bad bot')
+              .create()
+          )
+          .collection('app.bsky.feed.like')
+          .create();
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             false
         );

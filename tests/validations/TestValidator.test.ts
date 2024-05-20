@@ -17,20 +17,6 @@ describe('TestValidator', () => {
                 CreateSkeetRecordFactory.factory().text('great bot').create()
             )
             .create();
-        // const positiveMessage: CreateSkeetMessage = {
-        //     collection: '',
-        //     did: '',
-        //     opType: 'c',
-        //     rkey: '',
-        //     seq: 0,
-        //     cid: 'cid',
-        //     record: {
-        //         text: 'great bot',
-        //         $type: '',
-        //         createdAt: '',
-        //         subject: {} as Subject,
-        //     },
-        // };
         expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
             true
         );

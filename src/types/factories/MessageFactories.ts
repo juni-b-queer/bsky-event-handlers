@@ -4,10 +4,10 @@ import {
     CreateSkeetMessage,
     CreateSkeetRecord,
     JetstreamMessage,
-    Record,
-} from '../JetstreamTypes';
+    Record, Reply
+} from "../JetstreamTypes";
 import { AbstractTypeFactory } from './AbstractTypeFactory';
-import { CreateSkeetRecordFactory } from './RecordFactories';
+import { CreateSkeetRecordFactory, ReplyFactory } from "./RecordFactories";
 
 /**
  * JetstreamMessageFactory
@@ -166,7 +166,7 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
             rkey: '',
             seq: 0,
             record: {
-                $type: '',
+                $type: 'app.bsky.feed.post',
                 createdAt: '',
             },
         } as CreateMessage;
@@ -237,6 +237,20 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
 
     record(record: CreateSkeetRecord): CreateSkeetMessageFactory {
         this.messageObject.record = record;
+        return this;
+    }
+
+    withReply(reply: Reply|undefined = undefined){
+        if(reply === undefined){
+            this.messageObject.record.reply = ReplyFactory.make()
+        }else{
+            this.messageObject.record.reply = reply
+        }
+        return this;
+    }
+
+    withText(text: string){
+        this.messageObject.record.text = text
         return this;
     }
 }
