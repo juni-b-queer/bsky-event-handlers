@@ -1,4 +1,10 @@
-import { CreateSkeetRecord, Reply, Subject, Record, CollectionType } from "../JetstreamTypes";
+import {
+    CreateSkeetRecord,
+    Reply,
+    Subject,
+    Record,
+    CollectionType,
+} from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 
 export class RecordFactory extends AbstractTypeFactory {
@@ -6,10 +12,10 @@ export class RecordFactory extends AbstractTypeFactory {
     constructor() {
         super();
         this.record = {
-            $type: "app.bsky.feed.like",
-            createdAt: "",
-            subject: undefined
-        }
+            $type: 'app.bsky.feed.like',
+            createdAt: '',
+            subject: undefined,
+        };
     }
 
     static factory(): RecordFactory {
@@ -17,37 +23,37 @@ export class RecordFactory extends AbstractTypeFactory {
     }
 
     static make(): Record {
-        return RecordFactory.factory().create()
+        return RecordFactory.factory().create();
     }
 
-    create(): Record{
+    create(): Record {
         return this.record as Record;
     }
 
-    type(inputType: CollectionType){
+    type(inputType: CollectionType) {
         this.record.$type = inputType;
         return this;
     }
 
-    isLike(){
-        this.record.$type = "app.bsky.feed.like"
+    isLike() {
+        this.record.$type = 'app.bsky.feed.like';
         return this;
     }
 
-    isRepost(){
-        this.record.$type = "app.bsky.feed.repost"
+    isRepost() {
+        this.record.$type = 'app.bsky.feed.repost';
         return this;
     }
 
-    isFollow(followedDid: string|undefined = undefined){
-        this.record.$type = "app.bsky.graph.follow"
-        if(followedDid !== undefined){
-            this.record.subject = followedDid
+    isFollow(followedDid: string | undefined = undefined) {
+        this.record.$type = 'app.bsky.graph.follow';
+        if (followedDid !== undefined) {
+            this.record.subject = followedDid;
         }
         return this;
     }
 
-    subject(inputSubject: Subject|string){
+    subject(inputSubject: Subject | string) {
         this.record.subject = inputSubject;
         return this;
     }

@@ -1,9 +1,14 @@
-import { HandlerAgent, JetstreamMessage, JetstreamMessageFactory, SimpleFunctionValidator } from "../../../src";
+import {
+    HandlerAgent,
+    JetstreamMessage,
+    JetstreamMessageFactory,
+    SimpleFunctionValidator,
+} from '../../../src';
 
 describe('FunctionAction', () => {
     const mockHandlerAgent = {} as HandlerAgent;
 
-    const mockMessage: JetstreamMessage = JetstreamMessageFactory.make()
+    const mockMessage: JetstreamMessage = JetstreamMessageFactory.make();
 
     let mockvalidatorFunction = jest.fn();
     let functionValidator: SimpleFunctionValidator;

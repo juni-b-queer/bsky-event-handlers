@@ -13,7 +13,7 @@
         "test": "jest",
         "coverage": "jest --coverage",
         "prepublishOnly": "npm run build",
-        "format": "npx prettier . --write",
+        "format": "npx prettier '{src,tests}/**/*.{ts,js}' --write",
         "lint": "eslint --ext=.ts src/ tests/ --fix"
     },
     "repository": {

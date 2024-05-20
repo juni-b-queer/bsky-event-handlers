@@ -1,4 +1,9 @@
-import { CreateSkeetMessage, CreateSkeetMessageFactory, HandlerAgent, InputIsCommandValidator } from "../../../../src";
+import {
+    CreateSkeetMessage,
+    CreateSkeetMessageFactory,
+    HandlerAgent,
+    InputIsCommandValidator,
+} from '../../../../src';
 
 describe('InputIsCommandValidator Class', () => {
     let inputIsCommandValidator: InputIsCommandValidator;
@@ -7,7 +12,9 @@ describe('InputIsCommandValidator Class', () => {
 
     beforeEach(() => {
         inputIsCommandValidator = InputIsCommandValidator.make('key');
-        message = CreateSkeetMessageFactory.factory().withText('key! someCommand').create()
+        message = CreateSkeetMessageFactory.factory()
+            .withText('key! someCommand')
+            .create();
     });
 
     it('should test shouldTrigger function - Prefix case', async () => {
@@ -62,7 +69,7 @@ describe('InputIsCommandValidator Not strict Class', () => {
 
     beforeEach(() => {
         inputIsCommandValidator = InputIsCommandValidator.make('key', false);
-        message = CreateSkeetMessageFactory.factory().withText('test').create()
+        message = CreateSkeetMessageFactory.factory().withText('test').create();
     });
 
     it('should test shouldTrigger function - Prefix case', async () => {

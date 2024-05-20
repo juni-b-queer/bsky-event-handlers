@@ -1,11 +1,14 @@
 import {
     CreateSkeetRecord,
-    CreateSkeetRecordFactory, Record, RecordFactory,
+    CreateSkeetRecordFactory,
+    Record,
+    RecordFactory,
     Reply,
     ReplyFactory,
-    Subject, SubjectFactory
-} from "../../../src";
-import { factory } from "ts-jest/dist/transformers/hoist-jest";
+    Subject,
+    SubjectFactory,
+} from '../../../src';
+import { factory } from 'ts-jest/dist/transformers/hoist-jest';
 
 describe('RecordFactory', () => {
     let factory: RecordFactory;
@@ -16,54 +19,54 @@ describe('RecordFactory', () => {
         defaultRecord = {
             $type: 'app.bsky.feed.like',
             createdAt: '',
-            subject: undefined
+            subject: undefined,
         };
-    })
+    });
 
-    it("Type", () => {
+    it('Type', () => {
         const record = factory.type('app.bsky.feed.like').create();
         expect(record).toEqual(defaultRecord);
-    })
+    });
 
-    it("subject", () => {
-        const subject: Subject = SubjectFactory.make()
+    it('subject', () => {
+        const subject: Subject = SubjectFactory.make();
         const record = factory.subject(subject).create();
-        defaultRecord.subject = subject
+        defaultRecord.subject = subject;
         expect(record).toEqual(defaultRecord);
-    })
+    });
 
-    it("Is Like", () => {
+    it('Is Like', () => {
         const record = factory.isLike().create();
         expect(record).toEqual(defaultRecord);
-    })
+    });
 
-    it("Is repost", () => {
+    it('Is repost', () => {
         const record = factory.isRepost().create();
-        defaultRecord.$type = "app.bsky.feed.repost"
+        defaultRecord.$type = 'app.bsky.feed.repost';
         expect(record).toEqual(defaultRecord);
-    })
+    });
 
-    it("Is follow with no did", () => {
+    it('Is follow with no did', () => {
         const record = factory.isFollow().create();
-        defaultRecord.$type = "app.bsky.graph.follow"
+        defaultRecord.$type = 'app.bsky.graph.follow';
         expect(record).toEqual(defaultRecord);
-    })
+    });
 
-    it("Is follow with did", () => {
-        const did = "did:plc:test";
+    it('Is follow with did', () => {
+        const did = 'did:plc:test';
         const record = factory.isFollow(did).create();
-        defaultRecord.$type = "app.bsky.graph.follow"
-        defaultRecord.subject = did
+        defaultRecord.$type = 'app.bsky.graph.follow';
+        defaultRecord.subject = did;
         expect(record).toEqual(defaultRecord);
-    })
-})
+    });
+});
 describe('CreateSkeetRecordFactory', () => {
     let factory: CreateSkeetRecordFactory;
 
     let defaultCreateSkeetRecord: CreateSkeetRecord;
     beforeEach(() => {
         factory = CreateSkeetRecordFactory.factory();
-        defaultCreateSkeetRecord = CreateSkeetRecordFactory.make()
+        defaultCreateSkeetRecord = CreateSkeetRecordFactory.make();
     });
 
     it('creates a new CreateSkeetRecordFactory with Factory, and a default CreateSkeetRecord with create', () => {
@@ -95,7 +98,7 @@ describe('SubjectFactory', () => {
 
     beforeEach(() => {
         factory = SubjectFactory.factory();
-        defaultSubject = SubjectFactory.make()
+        defaultSubject = SubjectFactory.make();
     });
 
     it('creates a new Subject with factory, and a default subject with create', () => {
@@ -104,14 +107,14 @@ describe('SubjectFactory', () => {
     });
 
     it('CID', () => {
-        const cid = "testCid";
+        const cid = 'testCid';
         const message = factory.cid(cid).create();
-        defaultSubject.cid = cid
+        defaultSubject.cid = cid;
         expect(message).toEqual(defaultSubject);
     });
 
     it('URI', () => {
-        const uri = "testuri";
+        const uri = 'testuri';
         const message = factory.uri(uri).create();
         defaultSubject.uri = uri;
         expect(message).toEqual(defaultSubject);
@@ -123,7 +126,7 @@ describe('ReplyFactory', () => {
 
     beforeEach(() => {
         factory = ReplyFactory.factory();
-        defaultReply = ReplyFactory.make()
+        defaultReply = ReplyFactory.make();
     });
 
     it('creates a new ReplyFactory with factory, and a default Reply with create', () => {

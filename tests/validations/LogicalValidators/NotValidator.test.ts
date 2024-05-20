@@ -3,8 +3,8 @@ import {
     HandlerAgent,
     JetstreamMessage,
     JetstreamMessageFactory,
-    TestValidator
-} from "../../../src";
+    TestValidator,
+} from '../../../src';
 
 describe('Testing Negating', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;

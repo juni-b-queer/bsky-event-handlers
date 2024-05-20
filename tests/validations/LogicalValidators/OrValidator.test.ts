@@ -5,8 +5,8 @@ import {
     HandlerAgent,
     InputEqualsValidator,
     InputStartsWithValidator,
-    OrValidator
-} from "../../../src";
+    OrValidator,
+} from '../../../src';
 
 describe('OrValidator', () => {
     const key = 'test';
@@ -19,21 +19,29 @@ describe('OrValidator', () => {
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     test('shouldTrigger returns true if both validators pass', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().record(CreateSkeetRecordFactory.factory().text('test').create()).create()
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('test').create())
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns true if one validator passes', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().record(CreateSkeetRecordFactory.factory().text('test message').create()).create()
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(
+                CreateSkeetRecordFactory.factory().text('test message').create()
+            )
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns false if no validators pass', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory().record(CreateSkeetRecordFactory.factory().text('random').create()).create()
+        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
+            .record(CreateSkeetRecordFactory.factory().text('random').create())
+            .create();
         expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
             false
         );

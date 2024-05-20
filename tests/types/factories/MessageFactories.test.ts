@@ -8,8 +8,9 @@ import {
     JetstreamMessage,
     JetstreamMessageFactory,
     OperationType,
-    Record, RecordFactory
-} from "../../../src";
+    Record,
+    RecordFactory,
+} from '../../../src';
 describe('JetstreamMessageFactory', () => {
     let factory: JetstreamMessageFactory;
 
@@ -111,7 +112,7 @@ describe('CreateMessageFactory', () => {
     });
     //record
     it('Updates the createMessage with a given record', () => {
-        const record: Record = RecordFactory.make()
+        const record: Record = RecordFactory.make();
         factory.record(record);
         defaultCreateMessage.record = record;
         expect(factory.create()).toEqual(defaultCreateMessage);
