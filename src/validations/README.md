@@ -1,81 +1,98 @@
 # Validators
 
-Validators are used to determine whether or not an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
-
-## Create a Validator
-
-Coming soon (also you can just look at the code of the existing ones for now, they're pretty simple)
+Validators are used to determine whether an action should be triggered. We provide a variety of preset validators, such as checking if the post starts with, contains or matches a certain string, or was posted by a specific user. Moreover, the package allows for the creation of custom validators per your requirement.
 
 ## Existing Validators
 
-- [Logical Validator](#logical-validator)
-  - [SimpleFunctionValidator](#simplefunctionvalidator)
-  - [OrValidator](#orvalidator)
-- [Generic Validators](#generic-validators)
-  - [ActionTakenByUserValidator](#actiontakenbyuservalidator)
-- Posts
-  - [Post Validators](#post-validators)
-    - [PostedByUserValidator](#postedbyuservalidator)
-    - [ReplyingToBotValidator](#replyingtobotvalidator)
-    - [IsReplyValidator](#isreplyvalidator)
-  - [String Validators](#string-validators)
-    - [InputIsCommandValidator](#inputiscommandvalidator)
-    - [InputStartsWithValidator](#inputstartswithvalidator)
-    - [InputContainsValidator](#inputcontainsvalidator)
-    - [InputEqualsValidator](#inputequalsvalidator)
-  - [Bot Validators](#bot-validators)
-    - [IsGoodBotValidator](#isgoodbotvalidator)
-    - [IsBadBotValidator](#isbadbotvalidator)
-- Follow
-  - [Follow Validators](#follow-validators)
-    - [NewFollowerForUserValidator](#newfollowerforuservalidator)
-    - [UserFollowedValidator](#userfollowedvalidator)
-- Like
-  - Coming soon
-- Repost
-  - Coming soon
-- Testing
-  - [Test Validator](#test-validator)
+-   [Logical Validator](#logical-validator)
+    -   [SimpleFunctionValidator](#simplefunctionvalidator)
+    -   [OrValidator](#orvalidator)
+-   [Generic Validators](#generic-validators)
+    -   [ActionTakenByUserValidator](#actiontakenbyuservalidator)
+-   Posts
+    -   [Post Validators](#post-validators)
+        -   [PostedByUserValidator](#postedbyuservalidator)
+        -   [ReplyingToBotValidator](#replyingtobotvalidator)
+        -   [IsReplyValidator](#isreplyvalidator)
+    -   [String Validators](#string-validators)
+        -   [InputIsCommandValidator](#inputiscommandvalidator)
+        -   [InputStartsWithValidator](#inputstartswithvalidator)
+        -   [InputContainsValidator](#inputcontainsvalidator)
+        -   [InputEqualsValidator](#inputequalsvalidator)
+    -   [Bot Validators](#bot-validators)
+        -   [IsGoodBotValidator](#isgoodbotvalidator)
+        -   [IsBadBotValidator](#isbadbotvalidator)
+-   Follow
+    -   [Follow Validators](#follow-validators)
+        -   [NewFollowerForUserValidator](#newfollowerforuservalidator)
+        -   [UserFollowedValidator](#userfollowedvalidator)
+-   Like
+    -   Coming soon
+-   Repost
+    -   Coming soon
+-   Testing
+    -   [Test Validator](#test-validator)
+
+## Validator factories
+
+Validator factories enable you to instantiate factories quickly and easily
+All validators included here have a static `make` function
+
+```typescript
+TestValidator.make(true); // Returns an instance of TestValidator that will return true
+```
+
+Is the same as
+
+```typescript
+new TestValidator(true);
+```
+
+But with the factory, you're able to easily chain the `not` function to negate the output
+
+```typescript
+TestValidator.make(true).not(); // Returns an instance of TestValidator that will return false
+```
 
 ## Creating a validator
-Validators are fairly simple, it should extend `AbstractValidator` and have `constructor` and `shouldTrigger` functions.
 
-The `shouldTrigger` function is what's called to check if it passes, and must return a boolean
+Validators are fairly simple, it should extend `AbstractValidator` and have `constructor` and `handle` functions. (optionally a `make` function)
+
+The `handle` function is what's called to check if it passes, and must return a boolean
 
 ```typescript
 export class ExampleValidator extends AbstractValidator {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  async shouldTrigger(
-          message: CreateSkeetMessage,
-          handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    // Perform validation
-    // must return a boolean
-  }
+    async handle(
+        message: CreateSkeetMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        // Perform validation
+        // must return a boolean
+    }
 }
-
 ```
 
 Any additional parameters you may need for the action can be passed into the constructor and used within the `handle` function as needed, like so
+
 ```typescript
 export class ExampleValidator extends AbstractValidator {
-  constructor(private shouldPass: boolean) {
-    super();
-  }
+    constructor(private shouldPass: boolean) {
+        super();
+    }
 
-  async shouldTrigger(
-          message: CreateSkeetMessage,
-          handlerAgent: HandlerAgent,
-  ): Promise<boolean> {
-    // This example takes in a boolean, and returns it from should trigger.
-    return this.shouldPass;
-  }
+    async handle(
+        message: CreateSkeetMessage,
+        handlerAgent: HandlerAgent
+    ): Promise<boolean> {
+        // This example takes in a boolean, and returns it from should trigger.
+        return this.shouldPass;
+    }
 }
 ```
-
 
 ## Logical validator
 
@@ -83,13 +100,13 @@ export class ExampleValidator extends AbstractValidator {
 
 The `SimpleFunctionValidator` class provides a way to create a validator by passing a single function that accepts the JetstreamMessage and HandlerAgent and returns a boolean indicating whether to trigger the action or not.
 
-`new SimpleFunctionValidator((message, handlerAgent) => { return true; }); // replace function with specific condition`
+`SimpleFunctionValidator.make((message, handlerAgent) => { return true; }); // replace function with specific condition`
 
 ### OrValidator
 
 The `OrValidator` class allows you to pass in multiple validators. If any of these validators return `true`, it will trigger the action.
 
-`new OrValidator([validator1, validator2, validator3]); // replace with actual validator instances`
+`OrValidator.make([validator1, validator2, validator3]); // replace with actual validator instances`
 
 ## Generic Validators
 
@@ -97,7 +114,7 @@ The `OrValidator` class allows you to pass in multiple validators. If any of the
 
 The `ActionTakenByUserValidator` class checks if the action (post, repost, like, follow) was done by a given user
 
-`new ActionTakenByUserValidator('did:plc:123');`
+`ActionTakenByUserValidator.make('did:plc:123');`
 
 ## Post validators
 
@@ -105,19 +122,19 @@ The `ActionTakenByUserValidator` class checks if the action (post, repost, like,
 
 The `PostedByUserValidator` class checks if the post was made by a specific user, identified by their DID (Decentralized Identifier).
 
-`new PostedByUserValidator('did:plc:123');`
+`PostedByUserValidator.make('did:plc:123');`
 
 ### ReplyingToBotValidator
 
 The `ReplyingToBotValidator` class verifies if the post is a reply to the bot/handlerAgent.
 
-`new ReplyingToBotValidator();`
+`ReplyingToBotValidator.make();`
 
 ### IsReplyValidator
 
 The `IsReplyValidator` class checks if the post is a reply to another post.
 
-`new IsReplyValidator();`
+`IsReplyValidator.make();`
 
 ## String Validators
 
@@ -125,25 +142,25 @@ The `IsReplyValidator` class checks if the post is a reply to another post.
 
 The `InputIsCommandValidator` class validates if the input is a command triggered by a specific key. The `strict` argument enforces case sensitivity when set to `true`.
 
-`new InputIsCommandValidator('myTriggerKey', true); // enabling strict mode`
+`InputIsCommandValidator.make('myTriggerKey', true); // enabling strict mode`
 
 ### InputStartsWithValidator
 
 The `InputStartsWithValidator` class checks if the input starts with a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputStartsWithValidator('myTriggerKey', true);`
+`InputStartsWithValidator.make('myTriggerKey', false);`
 
 ### InputContainsValidator
 
-The `InputContainsValidator` class verifies if the input contains a specific key.
+The `InputContainsValidator` class verifies if the input contains a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
 
-`new InputContainsValidator('myTriggerKey');`
+`InputContainsValidator.make('myTriggerKey', false);`
 
 ### InputEqualsValidator
 
 The `InputEqualsValidator` class checks if the input exactly matches a specific key.
 
-`new InputEqualsValidator('myTriggerKey');`
+`InputEqualsValidator.make('myTriggerKey');`
 
 ## Bot Validators
 
@@ -153,7 +170,7 @@ The `IsGoodBotValidator` class checks if the input is replying to the bot and th
 
 It will also accept "thank you" (for full list of accepted inputs, see `isGoodBotResponse` in `utils/text-utils`)
 
-`new IsGoodBotValidator();`
+`IsGoodBotValidator.make();`
 
 ### IsBadBotValidator
 
@@ -161,7 +178,7 @@ The `IsBadBotValidator` class checks if the input is replying to the bot and the
 
 (for full list of accepted inputs, see `isBadBotResponse` in `utils/text-utils`)
 
-`new IsBadBotValidator();`
+`IsBadBotValidator.make();`
 
 ## Follow Validators
 
@@ -170,14 +187,16 @@ The `IsBadBotValidator` class checks if the input is replying to the bot and the
 The `NewFollowerForUserValidator` will return true if the follow action was a new follower for the given user
 If no did is provided, it will default to the bot/handlerAgent did
 
-`new NewFollowerForUserValidator('did:plc:123');`
+`NewFollowerForUserValidator.make('did:plc:123');`
 
-### UserFollowedValidator
+### NewFollowFromUserValidator
 
-The `UserFollowedValidator` will return true if the follow action was the given user following someone
+The `NewFollowFromUserValidator` will return true if the follow action was the given user following someone
 If no did is provided, it will default to the bot/handlerAgent did
 
-`new UserFollowedValidator('did:plc:123');`
+`NewFollowFromUserValidator.make('did:plc:123');`
+
+**Was previously `UserFollowedValidator` (which still works for now) but has been renamed to fit with the other follow validators**
 
 ## Test Validator
 
@@ -185,4 +204,4 @@ If no did is provided, it will default to the bot/handlerAgent did
 
 The `TestValidator` class accepts a boolean in the constructor, and then returns that boolean when validated. Mostly used for testing
 
-`new TestValidator(true|false);`
+`TestValidator.make(true|false);`

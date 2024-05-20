@@ -16,7 +16,7 @@ Message handler is the basic one, it uses `JetstreamMessage` for validating and 
 ### Example
 
 ```typescript
-new MessageHandler([Validators], [Actions], handlerAgent);
+MessageHandler.make([Validators], [Actions], handlerAgent);
 ```
 
 ## CreateSkeetHandler
@@ -26,42 +26,34 @@ The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended fo
 ### Example
 
 ```typescript
-new CreateSkeetHandler([Validators], [Actions], handlerAgent);
+CreateSkeetHandler.make([Validators], [Actions], handlerAgent);
 ```
 
+## Handlers as actions
 
-## Creating a reusable handler
+Actions are called in the handler with the action's `handle` function, but handlers are run with their own `handle` function. This means that we can pass Handlers as actions to nest our actions.
 
-A handler needs validators, actions, and an agent. Creating your own handler makes it easier to reuse them. The Good/Bad bot handlers are premade and ready to use.
+### Simple example:
 
-Your handler must extend AbstractMessageHandler or for handlers to only handle CreateSkeetMessages, extend CreateSkeetHandler.
+This example handler first checks if the reply is to the bot agent, and not posted by the bot user.
+If so, it runs the next two handlers. The first will reply "down" if the reply text equals "up", and the second will reply "up" if the text is "down"
 
-The below example simply takes in the handlerAgent, but has the validators and actions set automatically in the constructor
 ```typescript
-export class ExampleHandler extends CreateSkeetHandler {
-  constructor(
-    public handlerAgent: HandlerAgent,
-  ) {
-    super(
-      [new InputEqualsValidator("Hello")],
-      [new ReplyToSkeetAction("World!")],
-      handlerAgent,
-    );
-  }
-
-  async handle(message: CreateSkeetMessage): Promise<void> {
-    return super.handle(message);
-  }
-}
-```
-
-To use this handler, you'll just use `new ExampleHandler(handlerAgent)` in your handlers object
-```typescript
-let handlers = {
-  post: {
-    c: [
-      new ExampleHandler(handlerAgent)
-    ]
-  }
-}
+CreateSkeetHandler.make(
+    [
+        ReplyingToBotValidator.make(),
+        PostedByUserValidator.make(handlerAgent.getDid).not(),
+    ],
+    [
+        CreateSkeetHandler.make(
+            [InputEqualsValidator.make('up')],
+            [ReplyToSkeetAction.make('down')]
+        ),
+        CreateSkeetHandler.make(
+            [InputEqualsValidator.make('down')],
+            [ReplyToSkeetAction.make('up')]
+        ),
+    ],
+    handlerAgent
+);
 ```

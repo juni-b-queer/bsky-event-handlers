@@ -1,54 +1,39 @@
 import {
-  CreateSkeetMessage,
-  HandlerAgent,
-  InputEqualsValidator,
-  InputStartsWithValidator,
-  NotValidator,
-  OrValidator,
-  Subject,
-} from "../../../src";
+    AbstractValidator,
+    HandlerAgent,
+    JetstreamMessage,
+    JetstreamMessageFactory,
+    TestValidator,
+} from '../../../src';
 
-describe("NotValidator", () => {
-  const key = "test";
-  const equalsKeyValidator = new InputEqualsValidator("test");
-  const notValidator = new NotValidator(equalsKeyValidator);
-  const handlerAgent: HandlerAgent = {} as HandlerAgent;
+describe('Testing Negating', () => {
+    const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const message: JetstreamMessage = JetstreamMessageFactory.make();
 
-  test("shouldTrigger returns false if given validator is true", async () => {
-    const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
-      opType: "c",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-      record: {
-        text: "test",
-        $type: "",
-        createdAt: "",
-        subject: {} as Subject,
-      },
-    };
+    test('shouldTrigger returns false if given validator is true', async () => {
+        const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-    expect(await notValidator.shouldTrigger(message, handlerAgent)).toBe(false);
-  });
+        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
+            false
+        );
+    });
 
-  test("shouldTrigger returns true if given validator is false", async () => {
-    const message: CreateSkeetMessage = {
-      collection: "",
-      did: "",
-      opType: "c",
-      rkey: "",
-      seq: 0,
-      cid: "cid",
-      record: {
-        text: "blah",
-        $type: "",
-        createdAt: "",
-        subject: {} as Subject,
-      },
-    };
+    test('shouldTrigger returns true if given validator is false', async () => {
+        const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-    expect(await notValidator.shouldTrigger(message, handlerAgent)).toBe(true);
-  });
+        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
+            false
+        );
+    });
+});
+
+describe('Test AbstractValidatorError', () => {
+    const handlerAgent: HandlerAgent = {} as HandlerAgent;
+    const message: JetstreamMessage = JetstreamMessageFactory.make();
+
+    test('make throws error on abstract', async () => {
+        expect(AbstractValidator.make).toThrow(
+            'Method Not Implemented! Use constructor.'
+        );
+    });
 });

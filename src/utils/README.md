@@ -9,7 +9,7 @@ Other functions that can be used are `DebugLog.info(event, message)`, `DebugLog.
 ### Example
 
 ```typescript
-DebugLog.info("GOOD BOT", "Told I'm good :)");
+DebugLog.info('GOOD BOT', "Told I'm good :)");
 ```
 
 will output
