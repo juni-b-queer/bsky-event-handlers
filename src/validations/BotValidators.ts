@@ -13,7 +13,7 @@ export class IsGoodBotValidator extends AbstractValidator {
     }
 
     async handle(
-      handlerAgent: HandlerAgent,
+        handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {

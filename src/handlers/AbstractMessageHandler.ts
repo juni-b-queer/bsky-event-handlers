@@ -19,8 +19,8 @@ export abstract class AbstractMessageHandler {
         const willTrigger = true;
         for (const validator of this.validators) {
             const response = await validator.shouldTrigger(
-              this.handlerAgent,
-              message,
+                this.handlerAgent,
+                message
             );
             if (!response) {
                 return false;
@@ -38,7 +38,7 @@ export abstract class AbstractMessageHandler {
     //@ts-ignore
     abstract async handle(
         handlerAgent: HandlerAgent | undefined,
-        message: JetstreamMessage,
+        message: JetstreamMessage
     ): Promise<void>;
 }
 
@@ -64,7 +64,10 @@ export class MessageHandler extends AbstractMessageHandler {
     // I'm ignoring the handler agent here, this is so that when a root handler
     //  calls handler on a sub handler, the subhandler will use it's own assigned
     //  agent. This allows us to use separate agents in subhandlers
-    async handle(handlerAgent: HandlerAgent | undefined, message: JetstreamMessage): Promise<void> {
+    async handle(
+        handlerAgent: HandlerAgent | undefined,
+        message: JetstreamMessage
+    ): Promise<void> {
         const shouldTrigger = await this.shouldTrigger(message);
         if (shouldTrigger) {
             try {

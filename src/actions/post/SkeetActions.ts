@@ -19,7 +19,7 @@ export class CreateSkeetAction extends AbstractMessageAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-      handlerAgent: HandlerAgent,
+        handlerAgent: HandlerAgent,
         message: JetstreamMessage
     ): Promise<any> {
         await handlerAgent.createSkeet(this.skeetText);
@@ -48,7 +48,7 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
         message: JetstreamMessage
     ): Promise<any> {
         await handlerAgent.createSkeet(
-            this.textGenerator(handlerAgent,message)
+            this.textGenerator(handlerAgent, message)
         );
     }
 }
@@ -64,7 +64,7 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-      handlerAgent: HandlerAgent,
+        handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<any> {
         const reply: Reply = handlerAgent.generateReplyFromMessage(message);

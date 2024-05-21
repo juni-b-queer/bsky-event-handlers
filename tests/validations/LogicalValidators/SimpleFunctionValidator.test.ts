@@ -25,11 +25,11 @@ describe('FunctionAction', () => {
             );
             await functionValidator.shouldTrigger(
                 mockHandlerAgent,
-              mockMessage
+                mockMessage
             );
             expect(mockvalidatorFunction).toHaveBeenCalledWith(
-              mockHandlerAgent,
-              mockMessage
+                mockHandlerAgent,
+                mockMessage
             );
         });
     });

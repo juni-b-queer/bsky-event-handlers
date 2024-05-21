@@ -29,7 +29,10 @@ export class GoodBotHandler extends CreateSkeetHandler {
         return new GoodBotHandler(handlerAgent, response);
     }
 
-    async handle(handlerAgent:HandlerAgent | undefined, message:CreateSkeetMessage): Promise<void> {
+    async handle(
+        handlerAgent: HandlerAgent | undefined,
+        message: CreateSkeetMessage
+    ): Promise<void> {
         return super.handle(this.handlerAgent, message);
     }
 }

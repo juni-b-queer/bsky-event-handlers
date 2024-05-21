@@ -31,7 +31,10 @@ export class BadBotHandler extends CreateSkeetHandler {
         return new BadBotHandler(handlerAgent, response);
     }
 
-    async handle(handlerAgent: HandlerAgent | undefined, message: CreateSkeetMessage): Promise<void> {
+    async handle(
+        handlerAgent: HandlerAgent | undefined,
+        message: CreateSkeetMessage
+    ): Promise<void> {
         return super.handle(this.handlerAgent, message);
     }
 }

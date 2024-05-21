@@ -27,8 +27,8 @@ export class LogInputTextAction extends AbstractMessageAction {
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
     async handle(
-      handlerAgent: HandlerAgent,
-        message: JetstreamMessage,
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
         console.log(this.logText);
     }

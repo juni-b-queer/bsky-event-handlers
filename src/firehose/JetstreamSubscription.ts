@@ -95,9 +95,12 @@ export class JetstreamSubscription {
         switch (createMessage.collection) {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.c?.forEach(
-                  // @ts-ignore
+                    // @ts-ignore
                     (handler: CreateSkeetHandler) => {
-                        handler.handle(undefined, createMessage as CreateSkeetMessage);
+                        handler.handle(
+                            undefined,
+                            createMessage as CreateSkeetMessage
+                        );
                     }
                 );
                 break;

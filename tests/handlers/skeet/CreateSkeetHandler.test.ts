@@ -5,9 +5,11 @@ import {
     CreateSkeetMessage,
     CreateSkeetMessageFactory,
     CreateSkeetRecord,
-    DebugLog, FunctionAction,
-    HandlerAgent, SimpleFunctionValidator
-} from "../../../src";
+    DebugLog,
+    FunctionAction,
+    HandlerAgent,
+    SimpleFunctionValidator,
+} from '../../../src';
 
 describe('CreateSkeetHandler', () => {
     let createSkeetHandler: CreateSkeetHandler;
@@ -42,9 +44,7 @@ describe('CreateSkeetHandler', () => {
         mockedValidators = [
             SimpleFunctionValidator.make(mockValidatorShouldTrigger),
         ];
-        mockedActions = [
-            FunctionAction.make(mockActionHandle),
-        ];
+        mockedActions = [FunctionAction.make(mockActionHandle)];
         createSkeetHandler = CreateSkeetHandler.make(
             mockedValidators,
             mockedActions,
@@ -66,7 +66,7 @@ describe('CreateSkeetHandler', () => {
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
                 mockedHandlerAgent,
-              message
+                message
             );
         });
 

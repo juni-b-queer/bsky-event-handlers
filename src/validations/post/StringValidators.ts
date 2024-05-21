@@ -19,7 +19,7 @@ export class InputIsCommandValidator extends AbstractValidator {
     }
 
     async handle(
-      handlerAgent: HandlerAgent,
+        handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<boolean> {
         if (this.strict) {

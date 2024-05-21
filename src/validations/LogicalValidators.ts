@@ -53,7 +53,8 @@ export class OrValidator extends AbstractValidator {
         let willTrigger = false;
         for (const validator of this.validators) {
             const currentValidatorWillTrigger = await validator.shouldTrigger(
-                handlerAgent, message
+                handlerAgent,
+                message
             );
             if (currentValidatorWillTrigger) {
                 willTrigger = true;

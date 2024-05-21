@@ -68,8 +68,8 @@ describe('MessageHandler', () => {
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
-              mockedHandlerAgent,
-              message
+                mockedHandlerAgent,
+                message
             );
         });
 
