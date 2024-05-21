@@ -9,8 +9,8 @@ import { JetstreamMessage } from '../types/JetstreamTypes';
 export class SimpleFunctionValidator extends AbstractValidator {
     constructor(
         private triggerValidator: (
-            arg0: JetstreamMessage,
-            arg1: HandlerAgent
+            arg0: HandlerAgent | undefined,
+            arg1: JetstreamMessage
         ) => boolean | PromiseLike<boolean>
     ) {
         super();
@@ -18,18 +18,18 @@ export class SimpleFunctionValidator extends AbstractValidator {
 
     static make(
         triggerValidator: (
-            arg0: JetstreamMessage,
-            arg1: HandlerAgent
+            arg0: HandlerAgent | undefined,
+            arg1: JetstreamMessage
         ) => boolean | PromiseLike<boolean>
     ): SimpleFunctionValidator {
         return new SimpleFunctionValidator(triggerValidator);
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent | undefined,
+        message: JetstreamMessage
     ): Promise<boolean> {
-        return await this.triggerValidator(message, handlerAgent);
+        return await this.triggerValidator(handlerAgent, message);
     }
 }
 
@@ -47,14 +47,13 @@ export class OrValidator extends AbstractValidator {
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<boolean> {
         let willTrigger = false;
         for (const validator of this.validators) {
             const currentValidatorWillTrigger = await validator.shouldTrigger(
-                message,
-                handlerAgent
+                handlerAgent, message
             );
             if (currentValidatorWillTrigger) {
                 willTrigger = true;

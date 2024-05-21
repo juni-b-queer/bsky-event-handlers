@@ -23,16 +23,16 @@ export abstract class AbstractValidator {
 
     // @ts-ignore
     abstract async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<boolean>;
 
     // @ts-ignore
     async shouldTrigger(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<boolean> {
-        const valid: boolean = await this.handle(message, handlerAgent);
+        const valid: boolean = await this.handle(handlerAgent, message);
         return this.negate ? !valid : valid;
     }
 }

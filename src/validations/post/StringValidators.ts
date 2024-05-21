@@ -19,8 +19,8 @@ export class InputIsCommandValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (this.strict) {
             const input = this.getTextFromPost(message);
@@ -55,8 +55,8 @@ export class InputStartsWithValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -83,8 +83,8 @@ export class InputContainsValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -105,8 +105,8 @@ export class InputEqualsValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         return input === this.triggerKey;
