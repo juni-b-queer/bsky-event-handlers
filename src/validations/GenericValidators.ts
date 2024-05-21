@@ -12,8 +12,8 @@ export class ActionTakenByUserValidator extends AbstractValidator {
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<boolean> {
         return this.userDid === message.did;
     }

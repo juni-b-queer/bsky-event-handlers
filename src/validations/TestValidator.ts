@@ -12,8 +12,8 @@ export class TestValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         return this.shouldPass;
     }

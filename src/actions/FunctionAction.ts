@@ -5,23 +5,23 @@ import { JetstreamMessage } from '../types/JetstreamTypes';
 export class FunctionAction extends AbstractMessageAction {
     constructor(
         private actionFunction: (
-            arg0: JetstreamMessage,
-            arg1: HandlerAgent
+            arg0: HandlerAgent,
+            arg1: JetstreamMessage
         ) => any
     ) {
         super();
     }
 
     static make(
-        actionFunction: (arg0: JetstreamMessage, arg1: HandlerAgent) => any
+        actionFunction: (arg0: HandlerAgent, arg1: JetstreamMessage) => any
     ): FunctionAction {
         return new FunctionAction(actionFunction);
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
-        await this.actionFunction(message, handlerAgent);
+        await this.actionFunction(handlerAgent, message);
     }
 }

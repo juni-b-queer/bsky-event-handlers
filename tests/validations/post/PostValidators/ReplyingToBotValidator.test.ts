@@ -27,7 +27,7 @@ describe('ReplyingToBotValidator', () => {
             bskyAgent
         );
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -49,7 +49,7 @@ describe('ReplyingToBotValidator', () => {
             bskyAgent
         );
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     it('shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details', async () => {
@@ -68,7 +68,7 @@ describe('ReplyingToBotValidator', () => {
             bskyAgent
         );
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

@@ -24,14 +24,14 @@ describe('TestHandler', () => {
         mockValidatorShouldTrigger = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
+                (agent: HandlerAgent, message: CreateSkeetMessage) => {
                     return message.opType === 'c';
                 }
             );
         mockActionHandle = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
+                (agent: HandlerAgent, message: CreateSkeetMessage) => {
                     if (message.seq === 3) {
                         throw new Error('error');
                     }
@@ -70,12 +70,12 @@ describe('TestHandler', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
             const message: JetstreamMessage = JetstreamMessageFactory.make();
-            await testHandler.handle(message);
+            await testHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
-                message,
-                mockedHandlerAgent
+                mockedHandlerAgent,
+                message
             );
         });
 
@@ -83,7 +83,7 @@ describe('TestHandler', () => {
             const message: JetstreamMessage = JetstreamMessageFactory.factory()
                 .isDeletion()
                 .create();
-            await testHandler.handle(message);
+            await testHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).not.toHaveBeenCalled();
@@ -98,7 +98,7 @@ describe('TestHandler', () => {
                 seq: 3,
                 cid: 'cid',
             };
-            await testHandler.handle(message);
+            await testHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();

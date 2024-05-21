@@ -30,7 +30,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
         );
     });
@@ -42,7 +42,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
         );
     });
@@ -54,7 +54,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
         );
     });
@@ -66,7 +66,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
         );
     });
@@ -78,7 +78,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
         );
     });
@@ -90,7 +90,7 @@ describe('New Follow From User Validator', () => {
             .record(RecordFactory.factory().isFollow().create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
         );
     });

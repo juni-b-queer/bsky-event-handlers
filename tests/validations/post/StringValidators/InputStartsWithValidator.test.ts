@@ -14,14 +14,14 @@ describe('InputStartsWithValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('test message')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns false if input does not start with trigger keyword', async () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('message test')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -30,7 +30,7 @@ describe('InputStartsWithValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('Test message')
             .create();
-        expect(await strictValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await strictValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

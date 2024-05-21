@@ -67,8 +67,8 @@ export class ExampleValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         // Perform validation
         // must return a boolean
@@ -85,8 +85,8 @@ export class ExampleValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         // This example takes in a boolean, and returns it from should trigger.
         return this.shouldPass;

@@ -29,8 +29,8 @@ export class ExampleAction extends AbstractMessageAction {
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
         // Perform your actions here
     }
@@ -46,8 +46,8 @@ export class ExampleAction extends AbstractMessageAction {
     }
 
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
         // use this.userDid to access the property
         // Perform your actions here
@@ -59,7 +59,7 @@ export class ExampleAction extends AbstractMessageAction {
 
 The `FunctionAction` class takes a function as an argument. This function gets executed when the handle method is called and it should accept `JeststreamMessage` and `HandlerAgent` as arguments.
 
-`FunctionAction.make((message, handlerAgent) => { // Function implementation goes here });`
+`FunctionAction.make((handlerAgent, message) => { // Function implementation goes here });`
 
 ## Logging Actions
 
@@ -94,7 +94,7 @@ Pass in a string, and when the validations pass, it will create a new skeet from
 The `CreateSkeetWithGeneratedTextAction` accepts a function with 2 arguments, `JetstreamMessage` and `HandlerAgent`. This function should return a string
 When the validations pass, it will call the function to generate the response text
 
-`CreateSkeetWithGeneratedTextAction.make((message: JetstreamMessage, handlerAgent) => { // Function implementation goes here });`
+`CreateSkeetWithGeneratedTextAction.make((handlerAgent, message: JetstreamMessage) => { // Function implementation goes here });`
 
 ### ReplyToSkeetAction
 
@@ -109,4 +109,4 @@ The `ReplyToSkeetWithGeneratedTextAction` only works on post creation messages f
 Similar to the CreateSkeetWithGeneratedTextAction, it accepts a function with 2 arguments, but the first is a `CreateSkeetMessage` and the second is the same, being a `HandlerAgent`. This function should return a string
 When the validations pass, it will call the function to generate the response text
 
-`ReplyToSkeetWithGeneratedTextAction.make((message: CreateSkeetMessage, handlerAgent) => { // Function implementation goes here });`
+`ReplyToSkeetWithGeneratedTextAction.make((handlerAgent, message: CreateSkeetMessage) => { // Function implementation goes here });`

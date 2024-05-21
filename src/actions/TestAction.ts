@@ -5,8 +5,8 @@ import { AbstractMessageAction } from './AbstractMessageAction';
 
 export class TestAction extends AbstractMessageAction {
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any | void> {
         DebugLog.info('Working', 'working');
     }

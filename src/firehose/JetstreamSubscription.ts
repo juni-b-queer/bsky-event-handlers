@@ -95,29 +95,33 @@ export class JetstreamSubscription {
         switch (createMessage.collection) {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.c?.forEach(
+                    // @ts-ignore
                     (handler: CreateSkeetHandler) => {
-                        handler.handle(createMessage as CreateSkeetMessage);
+                        handler.handle(
+                            undefined,
+                            createMessage as CreateSkeetMessage
+                        );
                     }
                 );
                 break;
             case 'app.bsky.feed.like':
                 this.handlerControllers.like?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(createMessage);
+                        handler.handle(undefined, createMessage);
                     }
                 );
                 break;
             case 'app.bsky.feed.repost':
                 this.handlerControllers.repost?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(createMessage);
+                        handler.handle(undefined, createMessage);
                     }
                 );
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(createMessage);
+                        handler.handle(undefined, createMessage);
                     }
                 );
                 break;
@@ -129,28 +133,28 @@ export class JetstreamSubscription {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(deleteMessage);
+                        handler.handle(undefined, deleteMessage);
                     }
                 );
                 break;
             case 'app.bsky.feed.like':
                 this.handlerControllers.like?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(deleteMessage);
+                        handler.handle(undefined, deleteMessage);
                     }
                 );
                 break;
             case 'app.bsky.feed.repost':
                 this.handlerControllers.repost?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(deleteMessage);
+                        handler.handle(undefined, deleteMessage);
                     }
                 );
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(deleteMessage);
+                        handler.handle(undefined, deleteMessage);
                     }
                 );
                 break;

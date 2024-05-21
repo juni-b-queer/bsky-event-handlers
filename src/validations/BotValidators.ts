@@ -13,8 +13,8 @@ export class IsGoodBotValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -40,8 +40,8 @@ export class IsBadBotValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
