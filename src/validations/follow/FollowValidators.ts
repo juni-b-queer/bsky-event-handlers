@@ -14,8 +14,8 @@ export class NewFollowerForUserValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateMessage
     ): Promise<boolean> {
         if (!this.userDid) {
             return handlerAgent.getDid === message.record.subject;
@@ -35,8 +35,8 @@ export class NewFollowFromUserValidator extends AbstractValidator {
         return new NewFollowFromUserValidator(userDid);
     }
     async handle(
-        message: CreateMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateMessage
     ): Promise<boolean> {
         if (!this.userDid) {
             return handlerAgent.getDid === message.did;

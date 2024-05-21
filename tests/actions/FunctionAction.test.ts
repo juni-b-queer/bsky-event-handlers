@@ -25,11 +25,11 @@ describe('FunctionAction', () => {
 
     describe('handle', () => {
         it('runs provided function with proper arguments', async () => {
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(mockActionFunction).toHaveBeenCalledWith(
-                mockMessage,
-                mockHandlerAgent
+                mockHandlerAgent,
+                mockMessage
             );
         });
     });
@@ -57,11 +57,14 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'debug';
             const consoleSpy = jest.spyOn(console, 'log');
             const functionAction = new FunctionAction(
-                (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
+                (
+                    handlerAgent: HandlerAgent | undefined,
+                    message: JetstreamMessage
+                ) => {
                     DebugLog.log('TEST', 'log');
                 }
             );
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 `${nowDateTime()} | TEST | DEBUG | log`
@@ -73,11 +76,14 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'debug';
             const consoleSpy = jest.spyOn(console, 'log');
             const functionAction = new FunctionAction(
-                (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
+                (
+                    handlerAgent: HandlerAgent | undefined,
+                    message: JetstreamMessage
+                ) => {
                     DebugLog.debug('TEST', 'log');
                 }
             );
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 `${nowDateTime()} | TEST | DEBUG | log`
@@ -89,11 +95,14 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
             const functionAction = new FunctionAction(
-                (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
+                (
+                    handlerAgent: HandlerAgent | undefined,
+                    message: JetstreamMessage
+                ) => {
                     DebugLog.info('TEST', 'log');
                 }
             );
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 `${nowDateTime()} | TEST | INFO | log`
@@ -105,11 +114,14 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
             const functionAction = new FunctionAction(
-                (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
+                (
+                    handlerAgent: HandlerAgent | undefined,
+                    message: JetstreamMessage
+                ) => {
                     DebugLog.warn('TEST', 'log');
                 }
             );
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 `${nowDateTime()} | TEST | WARN | log`
@@ -121,11 +133,14 @@ describe('FunctionAction With DebugLog', () => {
             mocked(process.env, { shallow: true }).DEBUG_LOG_LEVEL = 'info';
             const consoleSpy = jest.spyOn(console, 'log');
             const functionAction = new FunctionAction(
-                (message: JetstreamMessage, handlerAgent: HandlerAgent) => {
+                (
+                    handlerAgent: HandlerAgent | undefined,
+                    message: JetstreamMessage
+                ) => {
                     DebugLog.error('TEST', 'log');
                 }
             );
-            await functionAction.handle(mockMessage, mockHandlerAgent);
+            await functionAction.handle(mockHandlerAgent, mockMessage);
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 `${nowDateTime()} | TEST | ERROR | log`

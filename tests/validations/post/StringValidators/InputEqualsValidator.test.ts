@@ -18,7 +18,7 @@ describe('InputEqualsValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('test')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     /**
@@ -30,7 +30,7 @@ describe('InputEqualsValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('message test')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

@@ -24,12 +24,12 @@ describe('FunctionAction', () => {
                 mockvalidatorFunction
             );
             await functionValidator.shouldTrigger(
-                mockMessage,
-                mockHandlerAgent
+                mockHandlerAgent,
+                mockMessage
             );
             expect(mockvalidatorFunction).toHaveBeenCalledWith(
-                mockMessage,
-                mockHandlerAgent
+                mockHandlerAgent,
+                mockMessage
             );
         });
     });

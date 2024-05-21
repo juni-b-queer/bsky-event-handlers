@@ -13,7 +13,7 @@ describe('Testing Negating', () => {
     test('shouldTrigger returns false if given validator is true', async () => {
         const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await testValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -21,7 +21,7 @@ describe('Testing Negating', () => {
     test('shouldTrigger returns true if given validator is false', async () => {
         const testValidator: AbstractValidator = TestValidator.make(true).not();
 
-        expect(await testValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await testValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
