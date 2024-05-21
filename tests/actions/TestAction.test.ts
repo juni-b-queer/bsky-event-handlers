@@ -28,7 +28,7 @@ describe('TestAction', () => {
     });
 
     it('Should log Working', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(
             '1/31/2023, 07:00 PM | Working | INFO | working'
         );

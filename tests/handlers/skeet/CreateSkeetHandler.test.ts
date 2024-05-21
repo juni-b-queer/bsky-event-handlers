@@ -5,9 +5,9 @@ import {
     CreateSkeetMessage,
     CreateSkeetMessageFactory,
     CreateSkeetRecord,
-    DebugLog,
-    HandlerAgent,
-} from '../../../src';
+    DebugLog, FunctionAction,
+    HandlerAgent, SimpleFunctionValidator
+} from "../../../src";
 
 describe('CreateSkeetHandler', () => {
     let createSkeetHandler: CreateSkeetHandler;
@@ -24,14 +24,14 @@ describe('CreateSkeetHandler', () => {
         mockValidatorShouldTrigger = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
+                (agent: HandlerAgent, message: CreateSkeetMessage) => {
                     return message.opType === 'c';
                 }
             );
         mockActionHandle = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
+                (agent: HandlerAgent, message: CreateSkeetMessage) => {
                     if (message.seq === 3) {
                         throw new Error('error');
                     }
@@ -40,14 +40,10 @@ describe('CreateSkeetHandler', () => {
             );
         mockedHandlerAgent = {} as HandlerAgent;
         mockedValidators = [
-            {
-                shouldTrigger: mockValidatorShouldTrigger,
-            } as unknown as AbstractValidator,
+            SimpleFunctionValidator.make(mockValidatorShouldTrigger),
         ];
         mockedActions = [
-            {
-                handle: mockActionHandle,
-            } as unknown as AbstractMessageAction,
+            FunctionAction.make(mockActionHandle),
         ];
         createSkeetHandler = CreateSkeetHandler.make(
             mockedValidators,
@@ -65,19 +61,19 @@ describe('CreateSkeetHandler', () => {
             //make CreateSkeetMessage
             const message: CreateSkeetMessage =
                 CreateSkeetMessageFactory.make();
-            await createSkeetHandler.handle(message);
+            await createSkeetHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
-                message,
-                mockedHandlerAgent
+                mockedHandlerAgent,
+              message
             );
         });
 
         it('should run not actions when opType is d', async () => {
             const message: CreateSkeetMessage =
                 CreateSkeetMessageFactory.factory().isDeletion().create();
-            await createSkeetHandler.handle(message);
+            await createSkeetHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).not.toHaveBeenCalled();
@@ -86,7 +82,8 @@ describe('CreateSkeetHandler', () => {
         it('should not run validators when handle throws error', async () => {
             const message: CreateSkeetMessage =
                 CreateSkeetMessageFactory.factory().seq(3).create();
-            await createSkeetHandler.handle(message);
+            console.log(message);
+            await createSkeetHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();

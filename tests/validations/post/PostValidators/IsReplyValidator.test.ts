@@ -26,13 +26,13 @@ describe('IsReplyValidator', () => {
             .withReply()
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns false if op.payload.reply is null', async () => {
         const message: CreateSkeetMessage =
             CreateSkeetMessageFactory.factory().create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

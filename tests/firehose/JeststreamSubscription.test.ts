@@ -65,7 +65,7 @@ describe('JetstreamSubscription', () => {
         const msg: CreateMessage = CreateMessageFactory.make();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate like', () => {
@@ -77,7 +77,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate repost', () => {
@@ -89,7 +89,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate follow', () => {
@@ -101,7 +101,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete post', () => {
@@ -113,7 +113,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete like', () => {
@@ -125,7 +125,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete repost', () => {
@@ -137,7 +137,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete follow', () => {
@@ -149,6 +149,6 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 });

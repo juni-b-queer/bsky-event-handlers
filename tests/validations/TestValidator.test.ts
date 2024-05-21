@@ -17,7 +17,7 @@ describe('TestValidator', () => {
                 CreateSkeetRecordFactory.factory().text('great bot').create()
             )
             .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             true
         );
     });
@@ -29,7 +29,7 @@ describe('TestValidator', () => {
                 CreateSkeetRecordFactory.factory().text('great bot').create()
             )
             .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             false
         );
     });
