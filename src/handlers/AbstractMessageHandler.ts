@@ -19,8 +19,8 @@ export abstract class AbstractMessageHandler {
         const willTrigger = true;
         for (const validator of this.validators) {
             const response = await validator.shouldTrigger(
-                message,
-                this.handlerAgent
+              this.handlerAgent,
+              message,
             );
             if (!response) {
                 return false;
@@ -31,22 +31,23 @@ export abstract class AbstractMessageHandler {
 
     async runActions(message: JetstreamMessage) {
         for (const action of this.actions) {
-            await action.handle(message, this.handlerAgent);
+            await action.handle(this.handlerAgent, message);
         }
     }
 
     //@ts-ignore
     abstract async handle(
+        handlerAgent: HandlerAgent | undefined,
         message: JetstreamMessage,
-        handlerAgent: HandlerAgent | null
     ): Promise<void>;
 }
 
+// @ts-ignore
 export class MessageHandler extends AbstractMessageHandler {
     constructor(
-        validators: Array<AbstractValidator>,
-        actions: Array<AbstractMessageAction | MessageHandler>,
-        handlerAgent: HandlerAgent
+        private validators: Array<AbstractValidator>,
+        private actions: Array<AbstractMessageAction | MessageHandler>,
+        public handlerAgent: HandlerAgent
     ) {
         super(validators, actions, handlerAgent);
         return this;
@@ -60,7 +61,10 @@ export class MessageHandler extends AbstractMessageHandler {
         return new MessageHandler(validators, actions, handlerAgent);
     }
 
-    async handle(message: JetstreamMessage): Promise<void> {
+    // I'm ignoring the handler agent here, this is so that when a root handler
+    //  calls handler on a sub handler, the subhandler will use it's own assigned
+    //  agent. This allows us to use separate agents in subhandlers
+    async handle(handlerAgent: HandlerAgent | undefined, message: JetstreamMessage): Promise<void> {
         const shouldTrigger = await this.shouldTrigger(message);
         if (shouldTrigger) {
             try {

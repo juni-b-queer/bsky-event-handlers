@@ -26,7 +26,7 @@ export class OfflineHandler extends CreateSkeetHandler {
         return new OfflineHandler(handlerAgent, command, response);
     }
 
-    async handle(message: CreateSkeetMessage): Promise<void> {
-        return super.handle(message);
+    async handle(handlerAgent:HandlerAgent | undefined, message: CreateSkeetMessage): Promise<void> {
+        return super.handle(this.handlerAgent, message);
     }
 }

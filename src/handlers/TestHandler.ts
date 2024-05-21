@@ -18,7 +18,7 @@ export class TestHandler extends AbstractMessageHandler {
         return this;
     }
 
-    async handle(message: JetstreamMessage): Promise<void> {
+    async handle(handlerAgent:HandlerAgent | undefined, message:JetstreamMessage): Promise<void> {
         const shouldTrigger = await this.shouldTrigger(message);
         if (shouldTrigger) {
             try {
