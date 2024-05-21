@@ -19,8 +19,8 @@ export class CreateSkeetAction extends AbstractMessageAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
         await handlerAgent.createSkeet(this.skeetText);
     }
@@ -29,26 +29,26 @@ export class CreateSkeetAction extends AbstractMessageAction {
 export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
     constructor(
         private textGenerator: (
-            arg0: JetstreamMessage,
-            arg1: HandlerAgent
+            arg0: HandlerAgent,
+            arg1: JetstreamMessage
         ) => string
     ) {
         super();
     }
 
     static make(
-        textGenerator: (arg0: JetstreamMessage, arg1: HandlerAgent) => string
+        textGenerator: (arg0: HandlerAgent, arg1: JetstreamMessage) => string
     ): CreateSkeetWithGeneratedTextAction {
         return new CreateSkeetWithGeneratedTextAction(textGenerator);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: JetstreamMessage
     ): Promise<any> {
         await handlerAgent.createSkeet(
-            this.textGenerator(message, handlerAgent)
+            this.textGenerator(handlerAgent,message)
         );
     }
 }
@@ -64,8 +64,8 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+      handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<any> {
         const reply: Reply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(this.replyText, reply);
@@ -75,27 +75,27 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
 export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
     constructor(
         private textGenerator: (
-            arg0: CreateSkeetMessage,
-            arg1: HandlerAgent
+            arg0: HandlerAgent,
+            arg1: CreateSkeetMessage
         ) => string
     ) {
         super();
     }
 
     static make(
-        textGenerator: (arg0: CreateSkeetMessage, arg1: HandlerAgent) => string
+        textGenerator: (arg0: HandlerAgent, arg1: CreateSkeetMessage) => string
     ): ReplyToSkeetWithGeneratedTextAction {
         return new ReplyToSkeetWithGeneratedTextAction(textGenerator);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<any> {
         const reply: Reply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(
-            this.textGenerator(message, handlerAgent),
+            this.textGenerator(handlerAgent, message),
             reply
         );
     }
