@@ -1,6 +1,6 @@
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { AbstractValidator } from '../../AbstractValidator';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 
 export class PostedByUserValidator extends AbstractValidator {
     constructor(private userDid: string) {

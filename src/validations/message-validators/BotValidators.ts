@@ -1,7 +1,7 @@
-import { isBadBotResponse, isGoodBotResponse } from '../utils/text-utils';
-import { AbstractValidator } from './AbstractValidator';
-import { HandlerAgent } from '../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../types/JetstreamTypes';
+import { isBadBotResponse, isGoodBotResponse } from '../../utils/text-utils';
+import { AbstractValidator } from '../AbstractValidator';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../types/JetstreamTypes';
 
 export class IsGoodBotValidator extends AbstractValidator {
     constructor() {

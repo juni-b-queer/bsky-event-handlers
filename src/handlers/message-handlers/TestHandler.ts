@@ -1,8 +1,8 @@
-import { AbstractValidator } from '../validations/AbstractValidator';
-import { AbstractMessageAction } from '../actions/AbstractMessageAction';
-import { HandlerAgent } from '../agent/HandlerAgent';
-import { JetstreamMessage } from '../types/JetstreamTypes';
-import { DebugLog } from '../utils/DebugLog';
+import { AbstractValidator } from '../../validations/AbstractValidator';
+import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
+import { DebugLog } from '../../utils/DebugLog';
 import {
     AbstractMessageHandler,
     MessageHandler,

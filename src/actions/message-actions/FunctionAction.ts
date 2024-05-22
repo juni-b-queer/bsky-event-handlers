@@ -1,6 +1,6 @@
-import { HandlerAgent } from '../agent/HandlerAgent';
+import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageAction } from './AbstractMessageAction';
-import { JetstreamMessage } from '../types/JetstreamTypes';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
 
 export class FunctionAction extends AbstractMessageAction {
     constructor(

@@ -4,8 +4,8 @@ import {
     JetstreamMessage,
     Reply,
     Subject,
-} from '../../types/JetstreamTypes';
-import { HandlerAgent } from '../../agent/HandlerAgent';
+} from '../../../types/JetstreamTypes';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
 import * as repl from 'repl';
 
 export class CreateSkeetAction extends AbstractMessageAction {

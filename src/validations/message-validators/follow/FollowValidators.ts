@@ -1,6 +1,6 @@
-import { CreateMessage, JetstreamMessage } from '../../types/JetstreamTypes';
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
+import { CreateMessage, JetstreamMessage } from '../../../types/JetstreamTypes';
+import { AbstractValidator } from '../../AbstractValidator';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
 
 export class NewFollowerForUserValidator extends AbstractValidator {
     constructor(private userDid: string | undefined) {

@@ -5,8 +5,8 @@ import {
     CreateSkeetMessage,
     DeleteMessage,
 } from '../types/JetstreamTypes';
-import { CreateSkeetHandler } from '../handlers/skeet/CreateSkeetHandler';
-import { MessageHandler } from '../handlers/AbstractMessageHandler';
+import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
+import { MessageHandler } from '../handlers/message-handlers/AbstractMessageHandler';
 
 export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];

@@ -1,16 +1,16 @@
 /**
  * Handlers
  */
-export * from './handlers/AbstractMessageHandler';
-export { CreateSkeetHandler } from './handlers/skeet/CreateSkeetHandler';
-export { TestHandler } from './handlers/TestHandler';
+export * from './handlers/message-handlers/AbstractMessageHandler';
+export { CreateSkeetHandler } from './handlers/message-handlers/skeet/CreateSkeetHandler';
+export { TestHandler } from './handlers/message-handlers/TestHandler';
 /**
  * Premade Handlers
  */
 
-export { GoodBotHandler } from './handlers/premade-handlers/GoodBotHandler';
-export { BadBotHandler } from './handlers/premade-handlers/BadBotHandler';
-export { OfflineHandler } from './handlers/premade-handlers/OfflineHandler';
+export { GoodBotHandler } from './handlers/message-handlers/premade-handlers/GoodBotHandler';
+export { BadBotHandler } from './handlers/message-handlers/premade-handlers/BadBotHandler';
+export { OfflineHandler } from './handlers/message-handlers/premade-handlers/OfflineHandler';
 
 /**
  * Validators
@@ -18,21 +18,21 @@ export { OfflineHandler } from './handlers/premade-handlers/OfflineHandler';
 export { AbstractValidator } from './validations/AbstractValidator';
 export * from './validations/TestValidator';
 export * from './validations/LogicalValidators';
-export * from './validations/BotValidators';
+export * from './validations/message-validators/BotValidators';
 export * from './validations/GenericValidators';
 
-export * from './validations/post/StringValidators';
-export * from './validations/post/PostValidators';
-export * from './validations/follow/FollowValidators';
+export * from './validations/message-validators/post/StringValidators';
+export * from './validations/message-validators/post/PostValidators';
+export * from './validations/message-validators/follow/FollowValidators';
 
 /**
  * Actions
  */
-export * from './actions/AbstractMessageAction';
-export * from './actions/TestAction';
-export * from './actions/FunctionAction';
-export * from './actions/LoggingActions';
-export * from './actions/post/SkeetActions';
+export * from './actions/message-actions/AbstractMessageAction';
+export * from './actions/message-actions/TestAction';
+export * from './actions/message-actions/FunctionAction';
+export * from './actions/message-actions/LoggingActions';
+export * from './actions/message-actions/post/SkeetActions';
 
 /**
  * Firehose
