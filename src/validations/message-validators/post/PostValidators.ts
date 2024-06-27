@@ -1,8 +1,8 @@
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
-export class PostedByUserValidator extends AbstractValidator {
+export class PostedByUserValidator extends AbstractMessageValidator {
     constructor(private userDid: string) {
         super();
     }
@@ -12,8 +12,8 @@ export class PostedByUserValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         return (
             this.userDid === message.did &&
@@ -22,7 +22,7 @@ export class PostedByUserValidator extends AbstractValidator {
     }
 }
 
-export class ReplyingToBotValidator extends AbstractValidator {
+export class ReplyingToBotValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }
@@ -32,8 +32,8 @@ export class ReplyingToBotValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -50,7 +50,7 @@ export class ReplyingToBotValidator extends AbstractValidator {
     }
 }
 
-export class IsReplyValidator extends AbstractValidator {
+export class IsReplyValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }
@@ -60,8 +60,8 @@ export class IsReplyValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         return handlerAgent.hasPostReply(message);
     }

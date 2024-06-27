@@ -33,7 +33,7 @@ describe('Reply To Skeet Action', () => {
     });
 
     it('Should call CreateSkeet with text', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, mockReply);
     });
 });
@@ -64,8 +64,8 @@ describe('Reply To Skeet with generated text Action', () => {
     });
 
     it('Should call CreateSkeet with text', async () => {
-        await action.handle(message, handlerAgent);
-        expect(mockTextGenerator).toHaveBeenCalledWith(message, handlerAgent);
+        await action.handle(handlerAgent, message);
+        expect(mockTextGenerator).toHaveBeenCalledWith(handlerAgent, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, mockReply);
     });
 });

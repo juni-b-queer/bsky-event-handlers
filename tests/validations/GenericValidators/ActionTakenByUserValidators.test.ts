@@ -17,13 +17,13 @@ describe('Action Taken By User', () => {
             .fromDid(validDid)
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     it('shouldTrigger returns false not posted by same user', async () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.make();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -34,6 +34,6 @@ describe('Action Taken By User', () => {
             .collection('app.bsky.feed.like')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 });

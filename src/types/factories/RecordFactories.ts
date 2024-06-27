@@ -1,9 +1,9 @@
 import {
+    CollectionType,
     CreateSkeetRecord,
+    Record,
     Reply,
     Subject,
-    Record,
-    CollectionType,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 
