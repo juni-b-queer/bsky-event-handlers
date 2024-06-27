@@ -1,9 +1,6 @@
 import { AbstractValidator } from '../../validations/AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    CreateSkeetMessage,
-    JetstreamMessage,
-} from '../../types/JetstreamTypes';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { DebugLog } from '../../utils/DebugLog';
 

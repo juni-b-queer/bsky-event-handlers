@@ -15,11 +15,11 @@ export { OfflineHandler } from './handlers/message-handlers/premade-handlers/Off
 /**
  * Validators
  */
-export { AbstractValidator } from './validations/AbstractValidator';
+export * from './validations/AbstractValidator';
 export * from './validations/TestValidator';
 export * from './validations/LogicalValidators';
 export * from './validations/message-validators/BotValidators';
-export * from './validations/GenericValidators';
+export * from './validations/message-validators/GenericValidators';
 
 export * from './validations/message-validators/post/StringValidators';
 export * from './validations/message-validators/post/PostValidators';
@@ -28,6 +28,7 @@ export * from './validations/message-validators/follow/FollowValidators';
 /**
  * Actions
  */
+export * from './actions/AbstractAction';
 export * from './actions/message-actions/AbstractMessageAction';
 export * from './actions/message-actions/TestAction';
 export * from './actions/message-actions/FunctionAction';

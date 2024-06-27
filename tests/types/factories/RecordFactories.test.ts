@@ -8,7 +8,6 @@ import {
     Subject,
     SubjectFactory,
 } from '../../../src';
-import { factory } from 'ts-jest/dist/transformers/hoist-jest';
 
 describe('RecordFactory', () => {
     let factory: RecordFactory;

@@ -3,7 +3,7 @@ import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { DebugLog } from '../../utils/DebugLog';
 import { AbstractMessageAction } from './AbstractMessageAction';
 
-export class TestAction extends AbstractMessageAction {
+export class TestMessageAction extends AbstractMessageAction {
     async handle(
         handlerAgent: HandlerAgent,
         message: JetstreamMessage

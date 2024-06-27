@@ -6,7 +6,6 @@ import {
     JetstreamSubscription,
     JetstreamSubscriptionHandlers,
     MessageHandler,
-    Record,
 } from '../../src';
 
 describe('JetstreamSubscription', () => {
