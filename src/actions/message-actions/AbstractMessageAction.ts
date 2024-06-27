@@ -1,10 +1,11 @@
-import { RepoOp } from '@atproto/api/dist/client/types/com/atproto/sync/subscribeRepos';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { JetstreamMessage } from '../../types/JetstreamTypes';
-import { DebugLog } from '../../utils/DebugLog';
+import { AbstractAction } from '../AbstractAction';
 
-export abstract class AbstractMessageAction {
-    constructor() {}
+export abstract class AbstractMessageAction extends AbstractAction {
+    constructor() {
+        super();
+    }
 
     static make(...args: any): AbstractMessageAction {
         throw new Error('Method not implemented! Use constructor!');
