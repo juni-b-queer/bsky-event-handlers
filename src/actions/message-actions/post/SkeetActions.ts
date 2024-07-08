@@ -5,14 +5,15 @@ import {
     Reply,
 } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { CreateSkeetAction } from '../../standard-bsky-actions/CreateSkeetAction';
 
-export class CreateSkeetAction extends AbstractMessageAction {
+export class CreateSkeetMessageAction extends AbstractMessageAction {
     constructor(private skeetText: string) {
         super();
     }
 
-    static make(skeetText: string): CreateSkeetAction {
-        return new CreateSkeetAction(skeetText);
+    static make(skeetText: string): CreateSkeetMessageAction {
+        return new CreateSkeetMessageAction(skeetText);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +21,7 @@ export class CreateSkeetAction extends AbstractMessageAction {
         handlerAgent: HandlerAgent,
         message: JetstreamMessage
     ): Promise<any> {
-        await handlerAgent.createSkeet(this.skeetText);
+        await CreateSkeetAction.make(this.skeetText).handle(handlerAgent);
     }
 }
 

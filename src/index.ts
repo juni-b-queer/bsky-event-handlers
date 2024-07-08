@@ -31,6 +31,7 @@ export * from './validations/message-validators/follow/FollowValidators';
  * Actions
  */
 export * from './actions/AbstractAction';
+export * from './actions/standard-bsky-actions/CreateSkeetAction';
 export * from './actions/message-actions/AbstractMessageAction';
 export * from './actions/message-actions/TestAction';
 export * from './actions/message-actions/FunctionAction';
