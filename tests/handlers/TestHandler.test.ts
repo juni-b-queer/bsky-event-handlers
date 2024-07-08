@@ -31,7 +31,6 @@ describe('TestHandler', () => {
         mockActionHandle = jest
             .fn()
             .mockImplementation((agent: HandlerAgent, ...args: any) => {
-                console.log(args);
                 if (args[1] === 1) {
                     throw new Error('error');
                 }
@@ -46,9 +45,9 @@ describe('TestHandler', () => {
         mockedActions = [
             {
                 handle: mockActionHandle,
-            } as unknown as AbstractMessageAction,
+            } as unknown as AbstractAction,
         ];
-        testHandler = new TestMessageHandler(
+        testHandler = new TestHandler(
             mockedValidators,
             mockedActions,
             mockedHandlerAgent
@@ -83,14 +82,17 @@ describe('TestHandler', () => {
             expect(mockActionHandle).not.toHaveBeenCalled();
         });
 
-        // it('should debug log error when handle throws error', async () => {
-        //     // TODO Why isn't the spread and rest ops working here???
-        //     await testHandler.handle(undefined, ...[1, 1]);
-        //
-        //     expect(mockValidatorShouldTrigger).toHaveBeenCalled();
-        //     expect(mockActionHandle).toHaveBeenCalled();
-        //     expect(mockDebugError).toHaveBeenCalled();
-        // });
+        it('should debug log error when handle throws error', async () => {
+            await testHandler.handle(undefined, 1, 1);
+
+            expect(mockValidatorShouldTrigger).toHaveBeenCalled();
+            expect(mockActionHandle).toHaveBeenCalled();
+            expect(mockDebugError).toHaveBeenCalled();
+        });
+
+        it('should make throws aerror', async () => {
+            expect(TestHandler.make).toThrow(Error);
+        });
     });
 });
 
