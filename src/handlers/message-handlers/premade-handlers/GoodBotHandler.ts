@@ -1,9 +1,9 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
 import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
 import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
 
 // TODO see comment at top of BadBotHandler
 // @ts-ignore

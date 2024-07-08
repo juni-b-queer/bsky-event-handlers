@@ -5,7 +5,7 @@ import {
     Reply,
 } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetAction } from '../../standard-bsky-actions/CreateSkeetAction';
+import { CreateSkeetAction } from '../../standard-bsky-actions/SkeetActions';
 
 export class CreateSkeetMessageAction extends AbstractMessageAction {
     constructor(private skeetText: string) {

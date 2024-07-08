@@ -2,7 +2,7 @@ import { IsBadBotValidator } from '../../../validations/message-validators/BotVa
 import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
-import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
 import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 
 // TODO I want to have .make() available on the premade handlers, but
