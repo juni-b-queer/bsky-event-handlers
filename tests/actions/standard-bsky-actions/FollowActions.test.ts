@@ -1,5 +1,8 @@
 import { CreateFollowAction, DeleteFollowAction } from '../../../src';
-import { runTestSuiteSingleParam, TestCaseSingleParam } from './StandardTestSuite';
+import {
+    runTestSuiteSingleParam,
+    TestCaseSingleParam,
+} from './StandardTestSuite';
 
 const testCases: TestCaseSingleParam[] = [
     {
