@@ -4,7 +4,6 @@ import {
     CreateSkeetHandler,
     CreateSkeetMessage,
     CreateSkeetMessageFactory,
-    CreateSkeetRecord,
     DebugLog,
     FunctionAction,
     HandlerAgent,

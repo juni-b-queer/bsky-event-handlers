@@ -1,7 +1,7 @@
-import { HandlerAgent } from '../agent/HandlerAgent';
-import { JetstreamMessage } from '../types/JetstreamTypes';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { AbstractMessageAction } from './AbstractMessageAction';
-import { DebugLog } from '../utils/DebugLog';
+import { DebugLog } from '../../utils/DebugLog';
 
 export class LogMessageAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any

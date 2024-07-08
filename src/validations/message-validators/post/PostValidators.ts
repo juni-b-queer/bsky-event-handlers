@@ -1,8 +1,8 @@
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
-export class PostedByUserValidator extends AbstractValidator {
+export class PostedByUserValidator extends AbstractMessageValidator {
     constructor(private userDid: string) {
         super();
     }
@@ -22,7 +22,7 @@ export class PostedByUserValidator extends AbstractValidator {
     }
 }
 
-export class ReplyingToBotValidator extends AbstractValidator {
+export class ReplyingToBotValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }
@@ -50,7 +50,7 @@ export class ReplyingToBotValidator extends AbstractValidator {
     }
 }
 
-export class IsReplyValidator extends AbstractValidator {
+export class IsReplyValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }

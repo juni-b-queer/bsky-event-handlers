@@ -1,12 +1,12 @@
 import { AbstractMessageHandler } from '../AbstractMessageHandler';
-import { AbstractMessageAction } from '../../actions/AbstractMessageAction';
+import { AbstractMessageAction } from '../../../actions/message-actions/AbstractMessageAction';
 import {
     CreateSkeetMessage,
     JetstreamMessage,
-} from '../../types/JetstreamTypes';
-import { AbstractValidator } from '../../validations/AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { DebugLog } from '../../utils/DebugLog';
+} from '../../../types/JetstreamTypes';
+import { AbstractValidator } from '../../../validations/AbstractValidator';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { DebugLog } from '../../../utils/DebugLog';
 
 // @ts-ignore
 export class CreateSkeetHandler extends AbstractMessageHandler {

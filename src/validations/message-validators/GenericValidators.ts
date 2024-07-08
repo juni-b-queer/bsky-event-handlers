@@ -1,8 +1,8 @@
-import { AbstractValidator } from './AbstractValidator';
-import { JetstreamMessage } from '../types/JetstreamTypes';
-import { HandlerAgent } from '../agent/HandlerAgent';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { AbstractMessageValidator } from './AbstractMessageValidator';
 
-export class ActionTakenByUserValidator extends AbstractValidator {
+export class ActionTakenByUserValidator extends AbstractMessageValidator {
     constructor(private userDid: string) {
         super();
     }

@@ -1,8 +1,8 @@
-import { CreateMessage, JetstreamMessage } from '../../types/JetstreamTypes';
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
+import { CreateMessage } from '../../../types/JetstreamTypes';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
-export class NewFollowerForUserValidator extends AbstractValidator {
+export class NewFollowerForUserValidator extends AbstractMessageValidator {
     constructor(private userDid: string | undefined) {
         super();
     }
@@ -24,7 +24,7 @@ export class NewFollowerForUserValidator extends AbstractValidator {
     }
 }
 
-export class NewFollowFromUserValidator extends AbstractValidator {
+export class NewFollowFromUserValidator extends AbstractMessageValidator {
     constructor(private userDid: string | undefined) {
         super();
     }

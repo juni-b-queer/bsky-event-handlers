@@ -1,9 +1,9 @@
-import { IsBadBotValidator } from '../../validations/BotValidators';
-import { DebugLogAction } from '../../actions/LoggingActions';
-import { HandlerAgent } from '../../agent/HandlerAgent';
+import { IsBadBotValidator } from '../../../validations/message-validators/BotValidators';
+import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
-import { ReplyToSkeetAction } from '../../actions/post/SkeetActions';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 
 // TODO I want to have .make() available on the premade handlers, but
 //  the parameters don't match with the CreateSkeetHandler .make(), so i need a ts-ignore

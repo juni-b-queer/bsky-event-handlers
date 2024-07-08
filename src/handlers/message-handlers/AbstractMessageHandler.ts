@@ -1,45 +1,34 @@
-import { AbstractValidator } from '../validations/AbstractValidator';
-import { HandlerAgent } from '../agent/HandlerAgent';
-import { CreateSkeetMessage, JetstreamMessage } from '../types/JetstreamTypes';
-import { AbstractMessageAction } from '../actions/AbstractMessageAction';
-import { DebugLog } from '../utils/DebugLog';
+import { AbstractValidator } from '../../validations/AbstractValidator';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { JetstreamMessage } from '../../types/JetstreamTypes';
+import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
+import { DebugLog } from '../../utils/DebugLog';
+import { AbstractHandler } from '../AbstractHandler';
 
-export abstract class AbstractMessageHandler {
+export abstract class AbstractMessageHandler extends AbstractHandler {
     constructor(
-        private validators: Array<AbstractValidator>,
-        private actions: Array<AbstractMessageAction | AbstractMessageHandler>,
-        public handlerAgent: HandlerAgent
-    ) {}
+        validators: Array<AbstractValidator>,
+        actions: Array<AbstractMessageAction | AbstractMessageHandler>,
+        handlerAgent: HandlerAgent
+    ) {
+        super(validators, actions, handlerAgent);
+    }
 
     static make(...args: any): AbstractMessageHandler {
         throw new Error('Method Not Implemented! Use constructor.');
     }
 
-    async shouldTrigger(message: JetstreamMessage): Promise<boolean> {
-        const willTrigger = true;
-        for (const validator of this.validators) {
-            const response = await validator.shouldTrigger(
-                this.handlerAgent,
-                message
-            );
-            if (!response) {
-                return false;
-            }
-        }
-        return willTrigger;
-    }
-
-    async runActions(message: JetstreamMessage) {
-        for (const action of this.actions) {
-            await action.handle(this.handlerAgent, message);
-        }
-    }
-
-    //@ts-ignore
-    abstract async handle(
-        handlerAgent: HandlerAgent | undefined,
-        message: JetstreamMessage
-    ): Promise<void>;
+    // async runActions(message: JetstreamMessage) {
+    //     for (const action of this.actions) {
+    //         await action.handle(this.handlerAgent, message);
+    //     }
+    // }
+    //
+    // //@ts-ignore
+    // abstract async handle(
+    //     handlerAgent: HandlerAgent | undefined,
+    //     message: JetstreamMessage
+    // ): Promise<void>;
 }
 
 // @ts-ignore
