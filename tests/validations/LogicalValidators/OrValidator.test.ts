@@ -22,7 +22,7 @@ describe('OrValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .record(CreateSkeetRecordFactory.factory().text('test').create())
             .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             true
         );
     });
@@ -33,7 +33,7 @@ describe('OrValidator', () => {
                 CreateSkeetRecordFactory.factory().text('test message').create()
             )
             .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             true
         );
     });
@@ -42,7 +42,7 @@ describe('OrValidator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .record(CreateSkeetRecordFactory.factory().text('random').create())
             .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

@@ -26,7 +26,7 @@ describe('LogMessageAction', () => {
     });
 
     it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(message);
     });
 });
@@ -50,7 +50,7 @@ describe('LogInputTextAction', () => {
     });
 
     it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(input);
     });
 });
@@ -77,7 +77,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -86,7 +86,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'info');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -95,7 +95,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'warn');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -104,7 +104,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'error');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 });

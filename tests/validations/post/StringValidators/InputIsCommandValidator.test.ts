@@ -20,44 +20,44 @@ describe('InputIsCommandValidator Class', () => {
     it('should test shouldTrigger function - Prefix case', async () => {
         message.record.text = '!key someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = '!key';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'someCommand !key';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
 
         message.record.text = 'someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
     });
 
     it('should test shouldTrigger function - Suffix case', async () => {
         message.record.text = 'key! someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'key!';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'someCommand key!';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
 
         message.record.text = 'someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
     });
 });
@@ -75,44 +75,44 @@ describe('InputIsCommandValidator Not strict Class', () => {
     it('should test shouldTrigger function - Prefix case', async () => {
         message.record.text = '!Key someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = '!keY';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'someCommand !key';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
 
         message.record.text = 'someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
     });
 
     it('should test shouldTrigger function - Suffix case', async () => {
         message.record.text = 'keY! someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'Key!';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(true);
 
         message.record.text = 'someCommand key!';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
 
         message.record.text = 'someCommand';
         expect(
-            await inputIsCommandValidator.shouldTrigger(message, handlerAgent)
+            await inputIsCommandValidator.shouldTrigger(handlerAgent, message)
         ).toBe(false);
     });
 });

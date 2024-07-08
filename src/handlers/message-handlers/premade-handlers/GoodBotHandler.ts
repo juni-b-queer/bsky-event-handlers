@@ -1,8 +1,8 @@
-import { IsGoodBotValidator } from '../../validations/BotValidators';
-import { DebugLogAction } from '../../actions/LoggingActions';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { ReplyToSkeetAction } from '../../actions/post/SkeetActions';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
+import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 
 // TODO see comment at top of BadBotHandler
@@ -29,7 +29,10 @@ export class GoodBotHandler extends CreateSkeetHandler {
         return new GoodBotHandler(handlerAgent, response);
     }
 
-    async handle(message: CreateSkeetMessage): Promise<void> {
-        return super.handle(message);
+    async handle(
+        handlerAgent: HandlerAgent | undefined,
+        message: CreateSkeetMessage
+    ): Promise<void> {
+        return super.handle(this.handlerAgent, message);
     }
 }

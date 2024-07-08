@@ -14,7 +14,7 @@ describe('Posted by user validator', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .fromDid(userDid)
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     it('shouldTrigger returns false not posted by same user', async () => {
@@ -22,7 +22,7 @@ describe('Posted by user validator', () => {
             .fromDid('did:plc:other')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -32,7 +32,7 @@ describe('Posted by user validator', () => {
             .collection('app.bsky.feed.like')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

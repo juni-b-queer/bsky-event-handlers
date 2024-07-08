@@ -1,9 +1,9 @@
-import { isBadBotResponse, isGoodBotResponse } from '../utils/text-utils';
-import { AbstractValidator } from './AbstractValidator';
-import { HandlerAgent } from '../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../types/JetstreamTypes';
+import { isBadBotResponse, isGoodBotResponse } from '../../utils/text-utils';
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { AbstractMessageValidator } from './AbstractMessageValidator';
 
-export class IsGoodBotValidator extends AbstractValidator {
+export class IsGoodBotValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }
@@ -13,8 +13,8 @@ export class IsGoodBotValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -30,7 +30,7 @@ export class IsGoodBotValidator extends AbstractValidator {
     }
 }
 
-export class IsBadBotValidator extends AbstractValidator {
+export class IsBadBotValidator extends AbstractMessageValidator {
     constructor() {
         super();
     }
@@ -40,8 +40,8 @@ export class IsBadBotValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;

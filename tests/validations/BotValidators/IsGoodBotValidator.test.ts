@@ -33,7 +33,7 @@ describe('IsGoodBotValidator', () => {
         const positiveMessage = CreateMessageFactory.factory()
             .record(skeetRecord)
             .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             true
         );
     });
@@ -43,7 +43,7 @@ describe('IsGoodBotValidator', () => {
         const positiveMessage = CreateMessageFactory.factory()
             .record(skeetRecord)
             .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             true
         );
     });
@@ -53,7 +53,7 @@ describe('IsGoodBotValidator', () => {
         const negativeMessage = CreateMessageFactory.factory()
             .record(skeetRecord)
             .create();
-        expect(await validator.shouldTrigger(negativeMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, negativeMessage)).toBe(
             false
         );
     });
@@ -66,7 +66,7 @@ describe('IsGoodBotValidator', () => {
                 )
                 .collection('app.bsky.feed.like')
                 .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             false
         );
     });
@@ -76,7 +76,7 @@ describe('IsGoodBotValidator', () => {
         const positiveMessage = CreateMessageFactory.factory()
             .record(skeetRecord)
             .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             false
         );
     });

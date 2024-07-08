@@ -1,8 +1,8 @@
-import { InputIsCommandValidator } from '../../validations/post/StringValidators';
-import { HandlerAgent } from '../../agent/HandlerAgent';
+import { InputIsCommandValidator } from '../../../validations/message-validators/post/StringValidators';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
-import { ReplyToSkeetAction } from '../../actions/post/SkeetActions';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 
 // @ts-ignore
 export class OfflineHandler extends CreateSkeetHandler {
@@ -26,7 +26,10 @@ export class OfflineHandler extends CreateSkeetHandler {
         return new OfflineHandler(handlerAgent, command, response);
     }
 
-    async handle(message: CreateSkeetMessage): Promise<void> {
-        return super.handle(message);
+    async handle(
+        handlerAgent: HandlerAgent | undefined,
+        message: CreateSkeetMessage
+    ): Promise<void> {
+        return super.handle(this.handlerAgent, message);
     }
 }

@@ -1,9 +1,9 @@
-import { flattenTextUpdated } from '../../utils/text-utils';
-import { AbstractValidator } from '../AbstractValidator';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { flattenTextUpdated } from '../../../utils/text-utils';
+import { HandlerAgent } from '../../../agent/HandlerAgent';
+import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
-export class InputIsCommandValidator extends AbstractValidator {
+export class InputIsCommandValidator extends AbstractMessageValidator {
     constructor(
         private triggerKey: string,
         private strict: boolean = true
@@ -19,8 +19,8 @@ export class InputIsCommandValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         if (this.strict) {
             const input = this.getTextFromPost(message);
@@ -39,7 +39,7 @@ export class InputIsCommandValidator extends AbstractValidator {
     }
 }
 
-export class InputStartsWithValidator extends AbstractValidator {
+export class InputStartsWithValidator extends AbstractMessageValidator {
     constructor(
         private triggerKey: string,
         private strict: boolean = false
@@ -55,8 +55,8 @@ export class InputStartsWithValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -67,7 +67,7 @@ export class InputStartsWithValidator extends AbstractValidator {
     }
 }
 
-export class InputContainsValidator extends AbstractValidator {
+export class InputContainsValidator extends AbstractMessageValidator {
     constructor(
         private triggerKey: string,
         private strict: boolean = false
@@ -83,8 +83,8 @@ export class InputContainsValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -95,7 +95,7 @@ export class InputContainsValidator extends AbstractValidator {
     }
 }
 
-export class InputEqualsValidator extends AbstractValidator {
+export class InputEqualsValidator extends AbstractMessageValidator {
     constructor(private triggerKey: string) {
         super();
     }
@@ -105,8 +105,8 @@ export class InputEqualsValidator extends AbstractValidator {
     }
 
     async handle(
-        message: CreateSkeetMessage,
-        handlerAgent: HandlerAgent
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         return input === this.triggerKey;

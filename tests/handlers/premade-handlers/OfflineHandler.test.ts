@@ -1,12 +1,9 @@
 import {
-    BadBotHandler,
     CreateSkeetMessage,
     CreateSkeetMessageFactory,
     CreateSkeetRecordFactory,
-    GoodBotHandler,
     HandlerAgent,
     OfflineHandler,
-    ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
 
@@ -52,7 +49,7 @@ describe('Good Bot Handler', () => {
         message = CreateSkeetMessageFactory.factory()
             .record(CreateSkeetRecordFactory.factory().text('!test').create())
             .create();
-        await offlineHandler.handle(message);
+        await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'Bot functionality offline',
             handlerAgent.generateReplyFromMessage(message)
@@ -64,7 +61,7 @@ describe('Good Bot Handler', () => {
         message = CreateSkeetMessageFactory.factory()
             .record(CreateSkeetRecordFactory.factory().text('test!').create())
             .create();
-        await offlineHandler.handle(message);
+        await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'output',
             handlerAgent.generateReplyFromMessage(message)
@@ -76,7 +73,7 @@ describe('Good Bot Handler', () => {
         message = CreateSkeetMessageFactory.factory()
             .record(CreateSkeetRecordFactory.factory().text('blah').create())
             .create();
-        await offlineHandler.handle(message);
+        await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).not.toHaveBeenCalled();
     });
 });

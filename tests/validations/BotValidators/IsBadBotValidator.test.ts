@@ -34,7 +34,7 @@ describe('IsBadBotValidator', () => {
                         .create()
                 )
                 .create();
-        expect(await validator.shouldTrigger(negativeMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, negativeMessage)).toBe(
             true
         );
     });
@@ -49,7 +49,7 @@ describe('IsBadBotValidator', () => {
                         .create()
                 )
                 .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             false
         );
     });
@@ -65,7 +65,7 @@ describe('IsBadBotValidator', () => {
                 )
                 .collection('app.bsky.feed.like')
                 .create();
-        expect(await validator.shouldTrigger(positiveMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             false
         );
     });
@@ -77,7 +77,7 @@ describe('IsBadBotValidator', () => {
                     CreateSkeetRecordFactory.factory().text('bad bot').create()
                 )
                 .create();
-        expect(await validator.shouldTrigger(negativeMessage, mockAgent)).toBe(
+        expect(await validator.shouldTrigger(mockAgent, negativeMessage)).toBe(
             false
         );
     });
