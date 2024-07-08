@@ -85,6 +85,10 @@
                             "release": "minor"
                         },
                         {
+                            "type": "patch",
+                            "release": "patch"
+                        },
+                        {
                             "type": "fix",
                             "release": "patch"
                         },
@@ -126,6 +130,10 @@
                             {
                                 "type": "minor",
                                 "section": "General Updates"
+                            },
+                            {
+                                "type": "patch",
+                                "section": "Patches"
                             },
                             {
                                 "type": "fix",
@@ -176,6 +184,10 @@
                             {
                                 "type": "minor",
                                 "section": "General Updates"
+                            },
+                            {
+                                "type": "patch",
+                                "section": "Patches"
                             },
                             {
                                 "type": "fix",
