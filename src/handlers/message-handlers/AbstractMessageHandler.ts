@@ -3,7 +3,7 @@ import { HandlerAgent } from '../../agent/HandlerAgent';
 import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { DebugLog } from '../../utils/DebugLog';
-import { AbstractHandler } from './AbstractHandler';
+import { AbstractHandler } from '../AbstractHandler';
 
 export abstract class AbstractMessageHandler extends AbstractHandler {
     constructor(

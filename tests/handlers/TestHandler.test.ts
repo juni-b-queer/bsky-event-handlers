@@ -8,8 +8,8 @@ import {
     JetstreamMessage,
     JetstreamMessageFactory,
     TestHandler,
+    TestMessageHandler,
 } from '../../src';
-import { TestMessageHandler } from '../../src/handlers/message-handlers/TestHandler';
 
 describe('TestHandler', () => {
     let testHandler: TestHandler;
@@ -59,7 +59,7 @@ describe('TestHandler', () => {
     });
 
     it('Should throw error when calling make', () => {
-        expect(TestMessageHandler.make).toThrow(
+        expect(TestHandler.make).toThrow(
             'Method Not Implemented! Use constructor.'
         );
     });
@@ -88,10 +88,6 @@ describe('TestHandler', () => {
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();
             expect(mockDebugError).toHaveBeenCalled();
-        });
-
-        it('should make throws aerror', async () => {
-            expect(TestHandler.make).toThrow(Error);
         });
     });
 });

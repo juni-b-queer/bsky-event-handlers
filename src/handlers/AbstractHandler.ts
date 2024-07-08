@@ -1,8 +1,8 @@
-import { AbstractValidator } from '../../validations/AbstractValidator';
-import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { JetstreamMessage } from '../../types/JetstreamTypes';
-import { AbstractAction } from '../../actions/AbstractAction';
+import { AbstractValidator } from '../validations/AbstractValidator';
+import { AbstractMessageAction } from '../actions/message-actions/AbstractMessageAction';
+import { HandlerAgent } from '../agent/HandlerAgent';
+import { JetstreamMessage } from '../types/JetstreamTypes';
+import { AbstractAction } from '../actions/AbstractAction';
 
 export abstract class AbstractHandler {
     constructor(
