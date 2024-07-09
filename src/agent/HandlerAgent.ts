@@ -238,6 +238,8 @@ export class HandlerAgent {
      *
      */
     async unlikeSkeet(likeURI: string) {
+        // TODO add logic for finding likeURI given a skeetUri
+
         await this.agent?.deleteLike(likeURI);
         // TODO error handling
         return true;
@@ -256,6 +258,8 @@ export class HandlerAgent {
      *
      */
     async unreskeetSkeet(reskeetURI: string) {
+        // TODO add logic for finding reskeetURI given a skeetUri
+
         await this.agent?.deleteRepost(reskeetURI);
         // TODO error handling
         return true;

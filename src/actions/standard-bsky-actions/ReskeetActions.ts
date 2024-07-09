@@ -42,9 +42,9 @@ export class DeleteReskeetAction extends AbstractAction {
     }
 
     static make(
-        likeUri: string | ((arg0: HandlerAgent, ...args: any) => string)
+        reskeetUri: string | ((arg0: HandlerAgent, ...args: any) => string)
     ): DeleteReskeetAction {
-        return new DeleteReskeetAction(likeUri);
+        return new DeleteReskeetAction(reskeetUri);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
