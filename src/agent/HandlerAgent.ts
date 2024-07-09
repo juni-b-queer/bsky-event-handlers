@@ -239,6 +239,13 @@ export class HandlerAgent {
      */
     async unlikeSkeet(likeURI: string) {
         // TODO add logic for finding likeURI given a skeetUri
+        // const getLikesResponse = await this.agent?.getLikes({uri: skeetUri});
+        //
+        // if (!Array.isArray(getLikesResponse)) {
+        //     return false;
+        // }
+        // const resp = this.getRecordForDid(this.getDid, getLikesResponse);
+        // Will this work? Who's to say?
 
         await this.agent?.deleteLike(likeURI);
         // TODO error handling
@@ -259,6 +266,13 @@ export class HandlerAgent {
      */
     async unreskeetSkeet(reskeetURI: string) {
         // TODO add logic for finding reskeetURI given a skeetUri
+        // const getReskeetResponse = await this.agent?.getRepostedBy({uri: skeetUri});
+        //
+        // if (!Array.isArray(getReskeetResponse)) {
+        //     return false;
+        // }
+        // const resp = this.getRecordForDid(this.getDid, getReskeetResponse);
+        // Will this work? Who's to say?
 
         await this.agent?.deleteRepost(reskeetURI);
         // TODO error handling
