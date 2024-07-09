@@ -34,7 +34,7 @@ export class CreateLikeAction extends AbstractAction {
 
 export class DeleteLikeAction extends AbstractAction {
     constructor(
-        protected likeUri:
+        protected skeetUri:
             | string
             | ((arg0: HandlerAgent, ...args: any) => string)
     ) {
@@ -42,16 +42,16 @@ export class DeleteLikeAction extends AbstractAction {
     }
 
     static make(
-        likeUri: string | ((arg0: HandlerAgent, ...args: any) => string)
+        skeetUri: string | ((arg0: HandlerAgent, ...args: any) => string)
     ): DeleteLikeAction {
-        return new DeleteLikeAction(likeUri);
+        return new DeleteLikeAction(skeetUri);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.likeUri == 'function') {
-            this.likeUri = this.likeUri(handlerAgent, ...args);
+        if (typeof this.skeetUri == 'function') {
+            this.skeetUri = this.skeetUri(handlerAgent, ...args);
         }
-        await handlerAgent.unlikeSkeet(this.likeUri);
+        await handlerAgent.unlikeSkeet(this.skeetUri);
     }
 }

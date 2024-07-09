@@ -34,7 +34,7 @@ export class CreateReskeetAction extends AbstractAction {
 
 export class DeleteReskeetAction extends AbstractAction {
     constructor(
-        protected reskeetUri:
+        protected skeetUri:
             | string
             | ((arg0: HandlerAgent, ...args: any) => string)
     ) {
@@ -42,16 +42,16 @@ export class DeleteReskeetAction extends AbstractAction {
     }
 
     static make(
-        reskeetUri: string | ((arg0: HandlerAgent, ...args: any) => string)
+        skeetUri: string | ((arg0: HandlerAgent, ...args: any) => string)
     ): DeleteReskeetAction {
-        return new DeleteReskeetAction(reskeetUri);
+        return new DeleteReskeetAction(skeetUri);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.reskeetUri == 'function') {
-            this.reskeetUri = this.reskeetUri(handlerAgent, ...args);
+        if (typeof this.skeetUri == 'function') {
+            this.skeetUri = this.skeetUri(handlerAgent, ...args);
         }
-        await handlerAgent.unreskeetSkeet(this.reskeetUri);
+        await handlerAgent.unreskeetSkeet(this.skeetUri);
     }
 }

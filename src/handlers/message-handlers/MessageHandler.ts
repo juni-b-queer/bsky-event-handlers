@@ -6,6 +6,8 @@ import { CreateSkeetMessage } from '../../types/JetstreamTypes';
 
 // @ts-ignore
 export class MessageHandler extends AbstractHandler {
+    protected HANDLER_NAME: string = 'Message Handler';
+
     constructor(
         protected validators: Array<AbstractValidator>,
         protected actions: Array<AbstractMessageAction | MessageHandler>,
