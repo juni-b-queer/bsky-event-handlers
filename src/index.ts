@@ -19,6 +19,7 @@ export { OfflineHandler } from './handlers/message-handlers/premade-handlers/Off
 export * from './validations/AbstractValidator';
 export * from './validations/TestValidator';
 export * from './validations/LogicalValidators';
+export * from './validations/interval-validators/IsFourTwentyValidator';
 export * from './validations/message-validators/BotValidators';
 export * from './validations/message-validators/GenericValidators';
 
