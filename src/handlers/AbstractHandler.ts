@@ -1,10 +1,11 @@
 import { AbstractValidator } from '../validations/AbstractValidator';
-import { AbstractMessageAction } from '../actions/message-actions/AbstractMessageAction';
 import { HandlerAgent } from '../agent/HandlerAgent';
-import { JetstreamMessage } from '../types/JetstreamTypes';
 import { AbstractAction } from '../actions/AbstractAction';
+import { DebugLog } from '../utils/DebugLog';
 
 export abstract class AbstractHandler {
+    protected HANDLER_NAME: string = 'Abstract Handler';
+
     constructor(
         protected validators: Array<AbstractValidator>,
         protected actions: Array<AbstractAction | AbstractHandler>,
@@ -36,8 +37,17 @@ export abstract class AbstractHandler {
     }
 
     //@ts-ignore
-    abstract async handle(
+    async handle(
         handlerAgent: HandlerAgent | undefined,
         ...args: any
-    ): Promise<void>;
+    ): Promise<void> {
+        const shouldTrigger = await this.shouldTrigger(...args);
+        if (shouldTrigger) {
+            try {
+                await this.runActions(...args);
+            } catch (exception) {
+                DebugLog.error(this.HANDLER_NAME, exception as string);
+            }
+        }
+    }
 }

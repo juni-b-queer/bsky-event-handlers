@@ -13,6 +13,7 @@ import {
     Reply,
     Subject,
 } from '../types/JetstreamTypes';
+import { DebugLog } from '../utils/DebugLog';
 
 export class HandlerAgent {
     private did: string | undefined;
@@ -70,7 +71,6 @@ export class HandlerAgent {
                 );
             } else {
                 debugLog('AGENT', `${this.agentName} is authenticated!`);
-                // console.log()
             }
             await this.agent.resumeSession(this.session);
 
@@ -237,9 +237,12 @@ export class HandlerAgent {
     /**
      *
      */
-    async unlikeSkeet(likeURI: string) {
-        await this.agent?.deleteLike(likeURI);
-        // TODO error handling
+    async unlikeSkeet(skeetUri: string) {
+        const likeUri: string = await this.findLikeRecord(skeetUri);
+        if (likeUri == '') {
+            return false;
+        }
+        await this.agent?.deleteLike(likeUri);
         return true;
     }
 
@@ -248,22 +251,133 @@ export class HandlerAgent {
      */
     async reskeetSkeet(skeetURI: string, skeetCID: string) {
         await this.agent?.repost(skeetURI, skeetCID);
-        // TODO add error handling
         return true;
     }
 
     /**
      *
      */
-    async unreskeetSkeet(reskeetURI: string) {
-        await this.agent?.deleteRepost(reskeetURI);
-        // TODO error handling
+    async unreskeetSkeet(skeetUri: string) {
+        const reskeetUri: string = await this.findRepostRecord(skeetUri);
+        if (reskeetUri == '') {
+            return false;
+        }
+        await this.agent?.deleteRepost(reskeetUri);
         return true;
     }
 
     //endregion
 
     //region Post Helpers
+
+    /**
+     * Finds a record that is similar to a given skeet URI.
+     *
+     * @param {string} skeetUri - The skeet URI to find a similar record for.
+     * @param {string} [cursor=undefined] - The optional cursor to paginate results.
+     * @param {number} [attempt=1] - The number of attempts made to find the record.
+     * @returns {Promise<string>} A promise that resolves to the ID of the found record.
+     */
+    async findLikeRecord(
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        return this.findSpecificRecord(
+            'app.bsky.feed.like',
+            'like',
+            skeetUri,
+            cursor,
+            attempt
+        );
+    }
+
+    /**
+     * Finds a repost record based on the given parameters.
+     * @param {string} skeetUri - The skeet URI to search for.
+     * @param {string | undefined} cursor - Optional cursor for pagination.
+     * @param {number} attempt - The attempt number for the search.
+     * @return {Promise<string>} - A Promise that resolves to the found repost record.
+     */
+    async findRepostRecord(
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        return this.findSpecificRecord(
+            'app.bsky.feed.repost',
+            'repost',
+            skeetUri,
+            cursor,
+            attempt
+        );
+    }
+
+    /**
+     * Finds a specific record in a collection.
+     *
+     * @param {string} collectionType - The type of collection to search in.
+     * @param {string} errorName - The name of the error associated with the record.
+     * @param {string} skeetUri - The URI of the record to find.
+     * @param {string[]} cursor - The cursor used for pagination (optional).
+     * @param {number} attempt - The attempt number (optional).
+     *
+     * @return {Promise<string>} - A promise that resolves to the URI of the found record.
+     */
+    async findSpecificRecord(
+        collectionType: string,
+        errorName: string,
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        const params = {
+            repo: this.getDid,
+            collection: collectionType,
+            limit: 100,
+        };
+
+        if (cursor !== undefined) {
+            // @ts-ignore
+            params['cursor'] = cursor;
+        }
+        const recordsResponse =
+            await this.agent?.api.com.atproto.repo.listRecords(params, {});
+        if (recordsResponse == undefined) {
+            DebugLog.error(
+                'Handler Agent',
+                `Failed to retrieve ${errorName} records`
+            );
+            return '';
+        }
+        const records = recordsResponse.data.records;
+        cursor = recordsResponse.data.cursor;
+        const record = records.find(
+            // @ts-ignore
+            (record) => record.value.subject.uri === skeetUri
+        );
+
+        if (record == null) {
+            DebugLog.info('Handler Agent', `Attempt ${attempt} to find record`);
+            if (attempt >= 25) {
+                DebugLog.error(
+                    'Handler Agent',
+                    `Failed to retrieve ${errorName} record`
+                );
+                return '';
+            }
+            return await this.findSpecificRecord(
+                collectionType,
+                errorName,
+                skeetUri,
+                cursor,
+                attempt + 1
+            );
+        }
+
+        return record.uri;
+    }
+
     /**
      *
      */

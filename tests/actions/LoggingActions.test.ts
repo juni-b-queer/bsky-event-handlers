@@ -81,6 +81,15 @@ describe('LogInputTextAction', () => {
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
+    it('Should log info when no level given without make', async () => {
+        const expected = '1/31/2023, 07:00 PM | TEST | INFO | Hello';
+
+        action = new DebugLogAction('TEST', 'Hello');
+
+        await action.handle(handlerAgent, message);
+        expect(console.log).toHaveBeenCalledWith(expected);
+    });
+
     it('Should log info', async () => {
         const expected = '1/31/2023, 07:00 PM | TEST | INFO | Hello';
 

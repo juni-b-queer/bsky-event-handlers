@@ -1,11 +1,12 @@
 import { InputIsCommandValidator } from '../../../validations/message-validators/post/StringValidators';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
-import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetActions';
+// import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
+import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
 import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { MessageHandler } from '../MessageHandler';
 
 // @ts-ignore
-export class OfflineHandler extends CreateSkeetHandler {
+export class OfflineHandler extends MessageHandler {
     constructor(
         public handlerAgent: HandlerAgent,
         private command: string,

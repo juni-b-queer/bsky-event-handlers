@@ -1,5 +1,5 @@
 import {
-    CreateSkeetAction,
+    CreateSkeetMessageAction,
     CreateSkeetWithGeneratedTextAction,
     HandlerAgent,
     JetstreamMessage,
@@ -7,7 +7,7 @@ import {
 } from '../../../../src';
 
 describe('Create Skeet Action', () => {
-    let action: CreateSkeetAction;
+    let action: CreateSkeetMessageAction;
     let handlerAgent: HandlerAgent;
     let message: JetstreamMessage;
     const mockCreateSkeet = jest.fn();
@@ -18,7 +18,7 @@ describe('Create Skeet Action', () => {
             createSkeet: mockCreateSkeet,
         } as unknown as HandlerAgent;
         message = JetstreamMessageFactory.factory().create();
-        action = CreateSkeetAction.make(skeetText);
+        action = CreateSkeetMessageAction.make(skeetText);
     });
 
     afterEach(() => {

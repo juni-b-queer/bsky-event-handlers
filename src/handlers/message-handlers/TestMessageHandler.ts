@@ -1,14 +1,11 @@
-import {
-    AbstractMessageHandler,
-    MessageHandler,
-} from './AbstractMessageHandler';
+import { MessageHandler } from './MessageHandler';
 import { AbstractValidator } from '../../validations/AbstractValidator';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { DebugLog } from '../../utils/DebugLog';
 
-export class TestMessageHandler extends AbstractMessageHandler {
+export class TestMessageHandler extends MessageHandler {
     constructor(
         validators: Array<AbstractValidator>,
         actions: Array<AbstractMessageAction | MessageHandler>,
