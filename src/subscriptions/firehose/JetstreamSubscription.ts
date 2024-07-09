@@ -5,8 +5,8 @@ import {
     CreateSkeetMessage,
     DeleteMessage,
 } from '../../types/JetstreamTypes';
-// import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
 import { MessageHandler } from '../../handlers/message-handlers/MessageHandler';
+import { AbstractSubscription } from '../AbstractSubscription';
 
 export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];
@@ -19,7 +19,7 @@ export interface JetstreamSubscriptionHandlers {
     follow?: CreateAndDeleteHandlersInterface;
 }
 
-export class JetstreamSubscription {
+export class JetstreamSubscription extends AbstractSubscription {
     //@ts-ignore
     private wsClient: WebSocket;
     public lastMessageTime: number | undefined;
@@ -31,9 +31,10 @@ export class JetstreamSubscription {
      * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
      */
     constructor(
-        private handlerControllers: JetstreamSubscriptionHandlers,
-        private wsURL: string = 'ws://localhost:6008/subscribe'
+        protected handlerControllers: JetstreamSubscriptionHandlers,
+        protected wsURL: string = 'ws://localhost:6008/subscribe'
     ) {
+        super(handlerControllers);
         this.generateWsURL();
         DebugLog.info('FIREHOSE', `Websocket URL: ${this.wsURL}`);
     }
@@ -57,7 +58,7 @@ export class JetstreamSubscription {
     /**
      *
      */
-    public createSubscription() {
+    public createSubscription(): this {
         DebugLog.warn('FIREHOSE', `Initializing`);
 
         this.wsClient = new WebSocket(this.wsURL);
@@ -88,6 +89,13 @@ export class JetstreamSubscription {
                 this.createSubscription();
             }, 5000);
         });
+
+        return this;
+    }
+
+    public stopSubscription(): this {
+        this.wsClient.close();
+        return this;
     }
 
     // TODO There has got to be a better way to do this, I'm just to high to do it now

@@ -41,8 +41,10 @@ export * from './actions/message-actions/LoggingActions';
 export * from './actions/message-actions/post/SkeetMessageActions';
 
 /**
- * Firehose
+ * Subscriptions
  */
+export * from './subscriptions/AbstractSubscription';
+export * from './subscriptions/IntervalSubscription';
 export * from './subscriptions/firehose/JetstreamSubscription';
 
 /**
