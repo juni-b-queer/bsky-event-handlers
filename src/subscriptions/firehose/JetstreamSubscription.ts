@@ -63,34 +63,40 @@ export class JetstreamSubscription extends AbstractSubscription {
 
         this.wsClient = new WebSocket(this.wsURL);
 
-        this.wsClient.on('open', () => {
-            DebugLog.info('FIREHOSE', `Connection Opened`);
-        });
+        this.wsClient.on('open', this.handleOpen);
 
-        this.wsClient.on('message', (data, isBinary) => {
-            const message = !isBinary ? data : data.toString();
-            if (typeof message === 'string') {
-                const data = JSON.parse(message);
-                switch (data.opType) {
-                    case 'c':
-                        this.handleCreate(data as CreateMessage);
-                        break;
-                    case 'd':
-                        this.handleDelete(data as DeleteMessage);
-                        break;
-                }
-            }
-        });
+        this.wsClient.on('message', this.handleMessage);
 
-        this.wsClient.on('close', () => {
-            DebugLog.error('JETSTREAM', 'Subscription Closed');
-            this.wsClient.close();
-            setTimeout(() => {
-                this.createSubscription();
-            }, 5000);
-        });
+        this.wsClient.on('close', this.handleClose);
 
         return this;
+    }
+
+    public handleMessage(data: WebSocket.RawData, isBinary: boolean) {
+        const message = !isBinary ? data : data.toString();
+        if (typeof message === 'string') {
+            const data = JSON.parse(message);
+            switch (data.opType) {
+                case 'c':
+                    this.handleCreate(data as CreateMessage);
+                    break;
+                case 'd':
+                    this.handleDelete(data as DeleteMessage);
+                    break;
+            }
+        }
+    }
+
+    public handleOpen() {
+        DebugLog.info('FIREHOSE', `Connection Opened`);
+    }
+
+    public handleClose() {
+        DebugLog.error('JETSTREAM', 'Subscription Closed');
+        this.wsClient.close();
+        setTimeout(() => {
+            this.createSubscription();
+        }, 5000);
     }
 
     public stopSubscription(): this {
