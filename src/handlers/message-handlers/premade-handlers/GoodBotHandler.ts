@@ -1,22 +1,31 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
 import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
-import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
+import {
+    CreateSkeetMessage,
+    JetstreamMessage,
+} from '../../../types/JetstreamTypes';
+// import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
+import { MessageHandler } from '../MessageHandler';
+import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
 
 // TODO see comment at top of BadBotHandler
 // @ts-ignore
-export class GoodBotHandler extends CreateSkeetHandler {
+export class GoodBotHandler extends MessageHandler {
     constructor(
         public handlerAgent: HandlerAgent,
         public response: string = 'Thank you 🥹'
     ) {
         super(
-            [new IsGoodBotValidator()],
+            [IsGoodBotValidator.make()],
             [
-                new ReplyToSkeetAction(response),
-                new DebugLogAction('GOOD BOT', `Told I'm good :)`),
+                ReplyToSkeetAction.make(response),
+                CreateLikeAction.make(
+                    MessageHandler.getUriFromMessage,
+                    MessageHandler.getCidFromMessage
+                ),
+                DebugLogAction.make('GOOD BOT', `Told I'm good :)`),
             ],
             handlerAgent
         );

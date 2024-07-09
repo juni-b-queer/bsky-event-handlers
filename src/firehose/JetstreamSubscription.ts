@@ -5,8 +5,8 @@ import {
     CreateSkeetMessage,
     DeleteMessage,
 } from '../types/JetstreamTypes';
-import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
-import { MessageHandler } from '../handlers/message-handlers/AbstractMessageHandler';
+// import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
+import { MessageHandler } from '../handlers/message-handlers/MessageHandler';
 
 export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];
@@ -96,7 +96,7 @@ export class JetstreamSubscription {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.c?.forEach(
                     // @ts-ignore
-                    (handler: CreateSkeetHandler) => {
+                    (handler: MessageHandler) => {
                         handler.handle(
                             undefined,
                             createMessage as CreateSkeetMessage
