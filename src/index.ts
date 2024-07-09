@@ -1,9 +1,8 @@
 /**
  * Handlers
  */
-export * from './handlers/AbstractHandler';
-export * from './handlers/message-handlers/AbstractMessageHandler';
-export { CreateSkeetHandler } from './handlers/message-handlers/skeet/CreateSkeetHandler';
+export { AbstractHandler } from './handlers/AbstractHandler';
+export { MessageHandler } from './handlers/message-handlers/MessageHandler';
 export { TestHandler } from './handlers/TestHandler';
 export { TestMessageHandler } from './handlers/message-handlers/TestMessageHandler';
 /**
