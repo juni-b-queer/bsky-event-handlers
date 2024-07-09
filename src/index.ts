@@ -43,7 +43,7 @@ export * from './actions/message-actions/post/SkeetMessageActions';
 /**
  * Firehose
  */
-export * from './firehose/JetstreamSubscription';
+export * from './subscriptions/firehose/JetstreamSubscription';
 
 /**
  * Agent

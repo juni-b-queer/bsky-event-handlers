@@ -105,6 +105,10 @@
                             "release": "patch"
                         },
                         {
+                            "type": "reorganize",
+                            "release": "patch"
+                        },
+                        {
                             "type": "test",
                             "release": "patch"
                         }
@@ -150,6 +154,10 @@
                             {
                                 "type": "refactor",
                                 "section": "Refactoring"
+                            },
+                            {
+                                "type": "reorganize",
+                                "section": "Reorganizing"
                             },
                             {
                                 "type": "test",
@@ -204,6 +212,10 @@
                             {
                                 "type": "refactor",
                                 "section": "Refactoring"
+                            },
+                            {
+                                "type": "reorganize",
+                                "section": "Reorganizing"
                             },
                             {
                                 "type": "test",

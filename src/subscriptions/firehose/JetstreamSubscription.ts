@@ -1,12 +1,12 @@
 import WebSocket from 'ws';
-import { DebugLog } from '../utils/DebugLog';
+import { DebugLog } from '../../utils/DebugLog';
 import {
     CreateMessage,
     CreateSkeetMessage,
     DeleteMessage,
-} from '../types/JetstreamTypes';
+} from '../../types/JetstreamTypes';
 // import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
-import { MessageHandler } from '../handlers/message-handlers/MessageHandler';
+import { MessageHandler } from '../../handlers/message-handlers/MessageHandler';
 
 export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];
