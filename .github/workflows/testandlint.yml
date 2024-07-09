@@ -7,6 +7,8 @@ jobs:
     test:
         name: Run Tests
         runs-on: ubuntu-latest
+        env:
+          TZ: "America/Chicago"
         steps:
             - name: checkout
               uses: actions/checkout@v4
