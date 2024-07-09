@@ -7,6 +7,7 @@ import {
     JetstreamSubscriptionHandlers,
     MessageHandler,
 } from '../../src';
+import WebSocket from 'ws';
 
 describe('JetstreamSubscription', () => {
     let jetSub: JetstreamSubscription;
@@ -149,5 +150,48 @@ describe('JetstreamSubscription', () => {
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+});
+
+describe('JetstreamSubscription', () => {
+    let jetSub: JetstreamSubscription;
+    const handlers: JetstreamSubscriptionHandlers = {
+        post: {
+            c: [],
+            d: [],
+        },
+        like: {
+            c: [],
+            d: [],
+        },
+        repost: {
+            c: [],
+            d: [],
+        },
+        follow: {
+            c: [],
+            d: [],
+        },
+    };
+    // A dummy message handler for testing
+    const dummyHandler: MessageHandler = {
+        handle: jest.fn(),
+    } as unknown as MessageHandler;
+
+    const closeMock = jest.fn();
+
+    beforeEach(() => {
+        jetSub = new JetstreamSubscription(
+            handlers,
+            'ws://localhost:6008/subscribe'
+        );
+
+        jetSub.wsClient = { close: closeMock } as unknown as WebSocket;
+        (dummyHandler.handle as jest.Mock).mockClear();
+    });
+
+    test('close sub closes it', () => {
+        jetSub.stopSubscription();
+        expect(closeMock).toHaveBeenCalled();
     });
 });

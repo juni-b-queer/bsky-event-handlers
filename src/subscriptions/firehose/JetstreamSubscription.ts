@@ -21,7 +21,7 @@ export interface JetstreamSubscriptionHandlers {
 
 export class JetstreamSubscription extends AbstractSubscription {
     //@ts-ignore
-    private wsClient: WebSocket;
+    public wsClient: WebSocket;
     public lastMessageTime: number | undefined;
 
     /**
