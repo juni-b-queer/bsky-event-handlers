@@ -34,7 +34,23 @@ describe('IsFourTwentyValidator getTimezonesWhereItIsFourTwenty', () => {
         advanceTo(new Date('2024-01-16T16:20:00'));
         const timezones =
             IsFourTwentyValidator.getTimezonesWhereItIsFourTwenty();
-        // console.log(timezones);
+        console.log(timezones);
         expect(timezones.totalTimezones).toBe(47);
+    });
+
+    test('shouldTrigger returns true if it is 4:20 AM/PM somewhere', async () => {
+        advanceTo(new Date('2024-01-16T15:20:00'));
+        const timezones =
+            IsFourTwentyValidator.getTimezonesWhereItIsFourTwenty();
+        console.log(timezones);
+        expect(timezones.totalTimezones).toBe(63);
+    });
+
+    test('shouldTrigger returns true if it is 4:20 AM/PM somewhere', async () => {
+        advanceTo(new Date('2024-01-16T14:20:00'));
+        const timezones =
+            IsFourTwentyValidator.getTimezonesWhereItIsFourTwenty();
+        console.log(timezones);
+        expect(timezones.totalTimezones).toBe(68);
     });
 });
