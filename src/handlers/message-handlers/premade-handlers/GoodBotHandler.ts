@@ -1,5 +1,5 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
-import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
+import { DebugLogAction } from '../../../actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import {
     CreateSkeetMessage,

@@ -1,5 +1,5 @@
 import { IsBadBotValidator } from '../../../validations/message-validators/BotValidators';
-import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
+import { DebugLogAction } from '../../../actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 // import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
