@@ -1,5 +1,9 @@
 import { AbstractValidator } from '../AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
+import {
+    getTimezonesWhereItIsAGivenTime,
+    isTimeInHHMMFormat,
+} from '../../utils/time-utils';
 import moment from 'moment-timezone';
 
 export class IsFourTwentyValidator extends AbstractValidator {
@@ -22,30 +26,12 @@ export class IsFourTwentyValidator extends AbstractValidator {
     }
 
     static getTimezonesWhereItIsFourTwenty() {
-        const timezonesAM: string[] =
-            IsFourTwentyValidator.getTimezonesWhereItIsAGivenTime('04:20');
-        const timezonesPM: string[] =
-            IsFourTwentyValidator.getTimezonesWhereItIsAGivenTime('16:20');
+        const timezonesAM: string[] = getTimezonesWhereItIsAGivenTime('04:20');
+        const timezonesPM: string[] = getTimezonesWhereItIsAGivenTime('16:20');
         return {
             timezonesAM: timezonesAM,
             timezonesPM: timezonesPM,
             totalTimezones: timezonesAM.length + timezonesPM.length,
         };
-    }
-
-    static getTimezonesWhereItIsAGivenTime(timeToCheck: string): string[] {
-        const format = 'HH:mm';
-
-        const allTimezones = moment.tz.names();
-        const tz: string[] = [];
-
-        allTimezones.forEach((timezone) => {
-            const currentTimeInTimezone = moment.tz(timezone).format(format);
-            if (currentTimeInTimezone === timeToCheck) {
-                tz.push(timezone);
-            }
-        });
-
-        return tz;
     }
 }
