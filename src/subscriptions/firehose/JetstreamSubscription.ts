@@ -12,6 +12,7 @@ export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];
     d?: MessageHandler[];
 }
+
 export interface JetstreamSubscriptionHandlers {
     post?: CreateAndDeleteHandlersInterface;
     like?: CreateAndDeleteHandlersInterface;
@@ -24,6 +25,7 @@ export class JetstreamSubscription extends AbstractSubscription {
     public wsClient: WebSocket;
     public lastMessageTime: number | undefined;
     public restart: boolean = false;
+    public restartDelay: number = 5; // seconds
 
     /**
      * Creates a new instance of the Firehose Subscription.
@@ -68,55 +70,87 @@ export class JetstreamSubscription extends AbstractSubscription {
 
         this.wsClient.on('open', this.handleOpen);
 
-        this.wsClient.on('message', this.handleMessage);
+        this.wsClient.on(
+            'message',
+            (data: WebSocket.RawData, isBinary: boolean) => {
+                const message = !isBinary ? data : data.toString();
+                if (typeof message === 'string') {
+                    const data = JSON.parse(message);
+                    switch (data.opType) {
+                        case 'c':
+                            this.handleCreate(data as CreateMessage);
+                            break;
+                        case 'd':
+                            this.handleDelete(data as DeleteMessage);
+                            break;
+                    }
+                }
+            }
+        );
 
-        this.wsClient.on('close', this.handleClose);
+        this.wsClient.on('close', () => {
+            DebugLog.error('JETSTREAM', 'Subscription Closed');
+            this.wsClient?.close();
+            if (this.restart) {
+                DebugLog.warn(
+                    'JETSTREAM',
+                    'Subscription restarting in 5 seconds'
+                );
+                setTimeout(() => {
+                    this.createSubscription();
+                    this.restart = false;
+                }, this.restartDelay * 1000);
+            }
+        });
 
-        this.wsClient.on('error', this.handleError);
+        this.wsClient.on('error', (err) => {
+            DebugLog.error('FIREHOSE', `Error: ${err}`);
+            this.restart = true;
+        });
 
         return this;
     }
 
-    public handleMessage(data: WebSocket.RawData, isBinary: boolean) {
-        const message = !isBinary ? data : data.toString();
-        if (typeof message === 'string') {
-            const data = JSON.parse(message);
-            switch (data.opType) {
-                case 'c':
-                    this.handleCreate(data as CreateMessage);
-                    break;
-                case 'd':
-                    this.handleDelete(data as DeleteMessage);
-                    break;
-            }
-        }
-    }
+    // public handleMessage(data: WebSocket.RawData, isBinary: boolean) {
+    //     const message = !isBinary ? data : data.toString();
+    //     if (typeof message === 'string') {
+    //         const data = JSON.parse(message);
+    //         switch (data.opType) {
+    //             case 'c':
+    //                 this.handleCreate(data as CreateMessage);
+    //                 break;
+    //             case 'd':
+    //                 this.handleDelete(data as DeleteMessage);
+    //                 break;
+    //         }
+    //     }
+    // }
 
     public handleOpen() {
         DebugLog.info('FIREHOSE', `Connection Opened`);
     }
 
-    public handleClose() {
-        DebugLog.error('JETSTREAM', 'Subscription Closed');
-        this.wsClient?.close();
-        if (this.restart) {
-            DebugLog.warn('JETSTREAM', 'Subscription restarting in 5 seconds');
-            setTimeout(() => {
-                this.createSubscription();
-                this.restart = false;
-            }, 5000);
-        }
-    }
+    // public handleClose() {
+    //     DebugLog.error('JETSTREAM', 'Subscription Closed');
+    //     this.wsClient?.close();
+    //     if (this.restart) {
+    //         DebugLog.warn('JETSTREAM', 'Subscription restarting in 5 seconds');
+    //         setTimeout(() => {
+    //             this.createSubscription();
+    //             this.restart = false;
+    //         }, 5000);
+    //     }
+    // }
+    //
+    // // @ts-ignore
+    // public handleError(err) {
+    //     DebugLog.error('FIREHOSE', `Error: ${err}`);
+    //     this.restart = true;
+    // }
 
-    // @ts-ignore
-    public handleError(err) {
-        DebugLog.error('FIREHOSE', `Error: ${err}`);
-        this.restart = true;
-    }
-
-    public stopSubscription(): this {
+    public stopSubscription(restart: boolean = false): this {
         this.wsClient.close();
-        this.restart = false;
+        this.restart = restart;
         return this;
     }
 

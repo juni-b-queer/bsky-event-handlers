@@ -6,28 +6,30 @@ import {
 } from '../../src'; // import this if you have it installed
 
 describe('JetstreamSubscription createSubscription', () => {
-    let server: ws.Server;
+    let server: ws.Server | null;
     let jetstreamSub: JetstreamSubscription;
     const wsURL = 'ws://localhost:1234';
     const handlers: JetstreamSubscriptionHandlers = {}; // fill in handlers required for testing
     const warnMock = jest.fn();
+    const errorMock = jest.fn();
     const openSubMock = jest.fn();
-    const closeSubMock = jest.fn();
-    const messageSubMock = jest.fn();
-    const errorSubMock = jest.fn();
+    const handleCreateMock = jest.fn();
+    const handleDeleteMock = jest.fn();
 
     beforeEach(() => {
         server = new ws.Server({ port: 1234 });
         jetstreamSub = new JetstreamSubscription(handlers, wsURL);
         jetstreamSub.handleOpen = openSubMock;
-        jetstreamSub.handleClose = closeSubMock;
-        jetstreamSub.handleMessage = messageSubMock;
-        jetstreamSub.handleError = errorSubMock;
+        jetstreamSub.handleCreate = handleCreateMock;
+        jetstreamSub.handleDelete = handleDeleteMock;
 
         DebugLog.warn = warnMock;
+        DebugLog.error = errorMock;
     });
     afterEach(() => {
-        server.close();
+        server?.close();
+        server = null;
+        jest.clearAllMocks();
     });
 
     it(
@@ -38,10 +40,10 @@ describe('JetstreamSubscription createSubscription', () => {
             expect(typeof returnedSub).toBe('object');
             await new Promise((resolve) => setTimeout(resolve, 1000));
             // Expect the handleError not to have been called
-            expect(errorSubMock).not.toHaveBeenCalled();
+            expect(errorMock).not.toHaveBeenCalled();
             expect(openSubMock).toHaveBeenCalled();
 
-            server.clients.forEach((client) => {
+            server?.clients.forEach((client) => {
                 // @ts-ignore
                 if (client !== ws && client.readyState === ws.OPEN) {
                     client.send(Buffer.from(JSON.stringify({ opType: 'c' })), {
@@ -51,10 +53,85 @@ describe('JetstreamSubscription createSubscription', () => {
             });
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            expect(messageSubMock).toHaveBeenCalled();
+            expect(handleCreateMock).toHaveBeenCalled();
 
-            jetstreamSub.stopSubscription();
+            server?.clients.forEach((client) => {
+                // @ts-ignore
+                if (client !== ws && client.readyState === ws.OPEN) {
+                    client.send(Buffer.from(JSON.stringify({ opType: 'd' })), {
+                        binary: true,
+                    });
+                }
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            expect(handleDeleteMock).toHaveBeenCalled();
+
+            const createSubscriptionMock = jest.fn();
+            jetstreamSub.createSubscription = createSubscriptionMock;
+            jetstreamSub.restartDelay = 1;
+            jetstreamSub.stopSubscription(true);
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            expect(errorMock).toHaveBeenCalled();
+            expect(warnMock).toHaveBeenCalled();
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            expect(createSubscriptionMock).toHaveBeenCalled();
         },
         1000 * 10
     );
+
+    // it(
+    //     'Should run handle create',
+    //     async () => {
+    //         jetstreamSub.createSubscription();
+    //         await new Promise((resolve) => setTimeout(resolve, 1000));
+    //         // Expect the handleError not to have been called
+    //         expect(errorMock).not.toHaveBeenCalled();
+    //         expect(openSubMock).toHaveBeenCalled();
+    //         server?.clients.forEach((client) => {
+    //             // @ts-ignore
+    //             if (client !== ws && client.readyState === ws.OPEN) {
+    //                 client.send(Buffer.from(JSON.stringify({ opType: 'c' })), {
+    //                     binary: true,
+    //                 });
+    //             }
+    //         });
+    //         await new Promise((resolve) => setTimeout(resolve, 1000));
+    //
+    //         expect(handleCreateMock).toHaveBeenCalled();
+    //
+    //         jetstreamSub.stopSubscription();
+    //     },
+    //     1000 * 10
+    // );
+    //
+    // it(
+    //     'Should run handle delete',
+    //     async () => {
+    //         jetstreamSub.createSubscription();
+    //         await new Promise((resolve) => setTimeout(resolve, 1000));
+    //         // Expect the handleError not to have been called
+    //         expect(errorMock).not.toHaveBeenCalled();
+    //         expect(openSubMock).toHaveBeenCalled();
+    //
+    //         server?.clients.forEach((client) => {
+    //             // @ts-ignore
+    //             if (client !== ws && client.readyState === ws.OPEN) {
+    //                 client.send(Buffer.from(JSON.stringify({ opType: 'd' })), {
+    //                     binary: true,
+    //                 });
+    //             }
+    //         });
+    //         await new Promise((resolve) => setTimeout(resolve, 1000));
+    //
+    //         expect(handleDeleteMock).toHaveBeenCalled();
+    //
+    //         jetstreamSub.stopSubscription();
+    //     },
+    //     1000 * 10
+    // );
 });
