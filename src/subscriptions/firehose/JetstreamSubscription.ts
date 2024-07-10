@@ -23,6 +23,7 @@ export class JetstreamSubscription extends AbstractSubscription {
     //@ts-ignore
     public wsClient: WebSocket;
     public lastMessageTime: number | undefined;
+    public restart: boolean = false;
 
     /**
      * Creates a new instance of the Firehose Subscription.
@@ -52,7 +53,9 @@ export class JetstreamSubscription extends AbstractSubscription {
                 const prefix = property === 'follow' ? 'graph' : 'feed';
                 return `wantedCollections=app.bsky.${prefix}.${property}`;
             });
-        this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        if (queryParams.length > 0) {
+            this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        }
     }
 
     /**
@@ -68,6 +71,8 @@ export class JetstreamSubscription extends AbstractSubscription {
         this.wsClient.on('message', this.handleMessage);
 
         this.wsClient.on('close', this.handleClose);
+
+        this.wsClient.on('error', this.handleError);
 
         return this;
     }
@@ -93,14 +98,25 @@ export class JetstreamSubscription extends AbstractSubscription {
 
     public handleClose() {
         DebugLog.error('JETSTREAM', 'Subscription Closed');
-        this.wsClient.close();
-        setTimeout(() => {
-            this.createSubscription();
-        }, 5000);
+        this.wsClient?.close();
+        if (this.restart) {
+            DebugLog.warn('JETSTREAM', 'Subscription restarting in 5 seconds');
+            setTimeout(() => {
+                this.createSubscription();
+                this.restart = false;
+            }, 5000);
+        }
+    }
+
+    // @ts-ignore
+    public handleError(err) {
+        DebugLog.error('FIREHOSE', `Error: ${err}`);
+        this.restart = true;
     }
 
     public stopSubscription(): this {
         this.wsClient.close();
+        this.restart = false;
         return this;
     }
 

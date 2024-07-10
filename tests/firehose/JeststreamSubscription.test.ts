@@ -35,10 +35,7 @@ describe('JetstreamSubscription', () => {
     } as unknown as MessageHandler;
 
     beforeEach(() => {
-        jetSub = new JetstreamSubscription(
-            handlers,
-            'ws://localhost:6008/subscribe'
-        );
+        jetSub = new JetstreamSubscription(handlers);
         (dummyHandler.handle as jest.Mock).mockClear();
     });
 

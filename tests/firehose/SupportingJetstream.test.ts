@@ -144,4 +144,32 @@ describe('JetstreamSubscription', () => {
         );
         expect(closeMock).toHaveBeenCalled();
     });
+
+    it('calls debug when closed with restart', async () => {
+        const closeMock = jest.fn();
+        subscription.wsClient = {
+            close: closeMock,
+        } as unknown as WebSocket;
+
+        const createSubscriptionMock = jest.fn();
+        subscription.createSubscription = createSubscriptionMock;
+
+        subscription.restart = true;
+        subscription.handleClose();
+        expect(closeMock).toHaveBeenCalled();
+
+        expect(mockDebugError).toHaveBeenNthCalledWith(
+            1,
+            'JETSTREAM',
+            'Subscription Closed'
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        expect(createSubscriptionMock).toHaveBeenCalled();
+    }, 10000);
+
+    it('calls debug when error', () => {
+        subscription.handleError('err');
+        expect(mockDebugError).toHaveBeenCalledWith('FIREHOSE', 'Error: err');
+    });
 });
