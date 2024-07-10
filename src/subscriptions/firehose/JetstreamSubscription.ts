@@ -111,42 +111,9 @@ export class JetstreamSubscription extends AbstractSubscription {
         return this;
     }
 
-    // public handleMessage(data: WebSocket.RawData, isBinary: boolean) {
-    //     const message = !isBinary ? data : data.toString();
-    //     if (typeof message === 'string') {
-    //         const data = JSON.parse(message);
-    //         switch (data.opType) {
-    //             case 'c':
-    //                 this.handleCreate(data as CreateMessage);
-    //                 break;
-    //             case 'd':
-    //                 this.handleDelete(data as DeleteMessage);
-    //                 break;
-    //         }
-    //     }
-    // }
-
     public handleOpen() {
         DebugLog.info('FIREHOSE', `Connection Opened`);
     }
-
-    // public handleClose() {
-    //     DebugLog.error('JETSTREAM', 'Subscription Closed');
-    //     this.wsClient?.close();
-    //     if (this.restart) {
-    //         DebugLog.warn('JETSTREAM', 'Subscription restarting in 5 seconds');
-    //         setTimeout(() => {
-    //             this.createSubscription();
-    //             this.restart = false;
-    //         }, 5000);
-    //     }
-    // }
-    //
-    // // @ts-ignore
-    // public handleError(err) {
-    //     DebugLog.error('FIREHOSE', `Error: ${err}`);
-    //     this.restart = true;
-    // }
 
     public stopSubscription(restart: boolean = false): this {
         this.wsClient.close();
