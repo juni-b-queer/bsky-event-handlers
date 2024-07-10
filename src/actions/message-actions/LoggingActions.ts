@@ -2,6 +2,7 @@ import { HandlerAgent } from '../../agent/HandlerAgent';
 import { JetstreamMessage } from '../../types/JetstreamTypes';
 import { AbstractMessageAction } from './AbstractMessageAction';
 import { DebugLog } from '../../utils/DebugLog';
+import { AbstractAction } from '../AbstractAction';
 
 export class LogMessageAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
@@ -17,7 +18,7 @@ export class LogMessageAction extends AbstractMessageAction {
     }
 }
 
-export class LogInputTextAction extends AbstractMessageAction {
+export class LogInputTextAction extends AbstractAction {
     constructor(private logText: string) {
         super();
     }
@@ -26,10 +27,7 @@ export class LogInputTextAction extends AbstractMessageAction {
         return new LogInputTextAction(logText);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-    async handle(
-        handlerAgent: HandlerAgent,
-        message: JetstreamMessage
-    ): Promise<any> {
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
         console.log(this.logText);
     }
 }

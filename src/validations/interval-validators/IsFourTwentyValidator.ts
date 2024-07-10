@@ -23,9 +23,9 @@ export class IsFourTwentyValidator extends AbstractValidator {
 
     static getTimezonesWhereItIsFourTwenty() {
         const timezonesAM: string[] =
-            this.getTimezonesWhereItIsAGivenTime('04:20');
+            IsFourTwentyValidator.getTimezonesWhereItIsAGivenTime('04:20');
         const timezonesPM: string[] =
-            this.getTimezonesWhereItIsAGivenTime('16:20');
+            IsFourTwentyValidator.getTimezonesWhereItIsAGivenTime('16:20');
         return {
             timezonesAM: timezonesAM,
             timezonesPM: timezonesPM,
