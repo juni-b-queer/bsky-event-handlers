@@ -1,5 +1,6 @@
 import { advanceTo, clear } from 'jest-date-mock';
 import { HandlerAgent, IsFourTwentyValidator } from '../../../src';
+
 const mockAgent: HandlerAgent = {} as HandlerAgent;
 
 describe('IsFourTwentyValidator', () => {
