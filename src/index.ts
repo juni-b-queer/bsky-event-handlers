@@ -19,6 +19,7 @@ export { OfflineHandler } from './handlers/message-handlers/premade-handlers/Off
 export * from './validations/AbstractValidator';
 export * from './validations/TestValidator';
 export * from './validations/LogicalValidators';
+export * from './validations/interval-validators/IsFourTwentyValidator';
 export * from './validations/message-validators/BotValidators';
 export * from './validations/message-validators/GenericValidators';
 
@@ -41,9 +42,11 @@ export * from './actions/message-actions/LoggingActions';
 export * from './actions/message-actions/post/SkeetMessageActions';
 
 /**
- * Firehose
+ * Subscriptions
  */
-export * from './firehose/JetstreamSubscription';
+export * from './subscriptions/AbstractSubscription';
+export * from './subscriptions/IntervalSubscription';
+export * from './subscriptions/firehose/JetstreamSubscription';
 
 /**
  * Agent

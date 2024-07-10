@@ -1,17 +1,18 @@
 import WebSocket from 'ws';
-import { DebugLog } from '../utils/DebugLog';
+import { DebugLog } from '../../utils/DebugLog';
 import {
     CreateMessage,
     CreateSkeetMessage,
     DeleteMessage,
-} from '../types/JetstreamTypes';
-// import { CreateSkeetHandler } from '../handlers/message-handlers/skeet/CreateSkeetHandler';
-import { MessageHandler } from '../handlers/message-handlers/MessageHandler';
+} from '../../types/JetstreamTypes';
+import { MessageHandler } from '../../handlers/message-handlers/MessageHandler';
+import { AbstractSubscription } from '../AbstractSubscription';
 
 export interface CreateAndDeleteHandlersInterface {
     c?: MessageHandler[];
     d?: MessageHandler[];
 }
+
 export interface JetstreamSubscriptionHandlers {
     post?: CreateAndDeleteHandlersInterface;
     like?: CreateAndDeleteHandlersInterface;
@@ -19,10 +20,12 @@ export interface JetstreamSubscriptionHandlers {
     follow?: CreateAndDeleteHandlersInterface;
 }
 
-export class JetstreamSubscription {
+export class JetstreamSubscription extends AbstractSubscription {
     //@ts-ignore
-    private wsClient: WebSocket;
+    public wsClient: WebSocket;
     public lastMessageTime: number | undefined;
+    public restart: boolean = false;
+    public restartDelay: number = 5; // seconds
 
     /**
      * Creates a new instance of the Firehose Subscription.
@@ -31,9 +34,10 @@ export class JetstreamSubscription {
      * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
      */
     constructor(
-        private handlerControllers: JetstreamSubscriptionHandlers,
-        private wsURL: string = 'ws://localhost:6008/subscribe'
+        protected handlerControllers: JetstreamSubscriptionHandlers,
+        protected wsURL: string = 'ws://localhost:6008/subscribe'
     ) {
+        super(handlerControllers);
         this.generateWsURL();
         DebugLog.info('FIREHOSE', `Websocket URL: ${this.wsURL}`);
     }
@@ -51,43 +55,70 @@ export class JetstreamSubscription {
                 const prefix = property === 'follow' ? 'graph' : 'feed';
                 return `wantedCollections=app.bsky.${prefix}.${property}`;
             });
-        this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        if (queryParams.length > 0) {
+            this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        }
     }
 
     /**
      *
      */
-    public createSubscription() {
+    public createSubscription(): this {
         DebugLog.warn('FIREHOSE', `Initializing`);
 
         this.wsClient = new WebSocket(this.wsURL);
 
-        this.wsClient.on('open', () => {
-            DebugLog.info('FIREHOSE', `Connection Opened`);
-        });
+        this.wsClient.on('open', this.handleOpen);
 
-        this.wsClient.on('message', (data, isBinary) => {
-            const message = !isBinary ? data : data.toString();
-            if (typeof message === 'string') {
-                const data = JSON.parse(message);
-                switch (data.opType) {
-                    case 'c':
-                        this.handleCreate(data as CreateMessage);
-                        break;
-                    case 'd':
-                        this.handleDelete(data as DeleteMessage);
-                        break;
+        this.wsClient.on(
+            'message',
+            (data: WebSocket.RawData, isBinary: boolean) => {
+                const message = !isBinary ? data : data.toString();
+                if (typeof message === 'string') {
+                    const data = JSON.parse(message);
+                    switch (data.opType) {
+                        case 'c':
+                            this.handleCreate(data as CreateMessage);
+                            break;
+                        case 'd':
+                            this.handleDelete(data as DeleteMessage);
+                            break;
+                    }
                 }
             }
-        });
+        );
 
         this.wsClient.on('close', () => {
             DebugLog.error('JETSTREAM', 'Subscription Closed');
-            this.wsClient.close();
-            setTimeout(() => {
-                this.createSubscription();
-            }, 5000);
+            this.wsClient?.close();
+            if (this.restart) {
+                DebugLog.warn(
+                    'JETSTREAM',
+                    'Subscription restarting in 5 seconds'
+                );
+                setTimeout(() => {
+                    this.createSubscription();
+                    this.restart = false;
+                }, this.restartDelay * 1000);
+            }
         });
+
+        this.wsClient.on('error', (err) => {
+            DebugLog.error('FIREHOSE', `Error: ${err}`);
+            this.restart = true;
+        });
+
+        return this;
+    }
+
+    public handleOpen() {
+        DebugLog.info('FIREHOSE', `Connection Opened`);
+    }
+
+    public stopSubscription(restart: boolean = false): this {
+        this.wsClient.close();
+        this.restart = restart;
+        return this;
     }
 
     // TODO There has got to be a better way to do this, I'm just to high to do it now

@@ -1,13 +1,4 @@
-import {
-    CreateFollowAction,
-    CreateLikeAction,
-    CreateReskeetAction,
-    CreateSkeetAction,
-    DeleteFollowAction,
-    DeleteLikeAction,
-    DeleteReskeetAction,
-    DeleteSkeetAction,
-} from '../../../src';
+import { CreateReskeetAction, DeleteReskeetAction } from '../../../src';
 import {
     runTestSuiteDualParam,
     runTestSuiteSingleParam,

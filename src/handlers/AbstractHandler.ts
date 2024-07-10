@@ -3,7 +3,7 @@ import { HandlerAgent } from '../agent/HandlerAgent';
 import { AbstractAction } from '../actions/AbstractAction';
 import { DebugLog } from '../utils/DebugLog';
 
-export abstract class AbstractHandler {
+export class AbstractHandler {
     protected HANDLER_NAME: string = 'Abstract Handler';
 
     constructor(

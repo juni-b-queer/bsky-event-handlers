@@ -1,9 +1,4 @@
-import {
-    CreateFollowAction,
-    CreateLikeAction,
-    DeleteFollowAction,
-    DeleteLikeAction,
-} from '../../../src';
+import { CreateLikeAction, DeleteLikeAction } from '../../../src';
 import {
     runTestSuiteDualParam,
     runTestSuiteSingleParam,
