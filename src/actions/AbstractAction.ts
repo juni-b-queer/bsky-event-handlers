@@ -8,6 +8,20 @@ export abstract class AbstractAction {
         throw new Error('Method not implemented! Use constructor!');
     }
 
+    static getStringOrFunctionReturn(
+        stringOrFunction:
+            | string
+            | ((arg0: HandlerAgent, ...args: any) => string),
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): string {
+        if (typeof stringOrFunction == 'function') {
+            return stringOrFunction(handlerAgent, ...args);
+        } else {
+            return stringOrFunction;
+        }
+    }
+
     // @ts-ignore
     abstract async handle(
         handlerAgent: HandlerAgent,

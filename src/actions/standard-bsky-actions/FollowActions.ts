@@ -18,10 +18,13 @@ export class CreateFollowAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.userDid == 'function') {
-            this.userDid = this.userDid(handlerAgent, ...args);
-        }
-        await handlerAgent.followUser(this.userDid);
+        const did: string = AbstractAction.getStringOrFunctionReturn(
+            this.userDid,
+            handlerAgent,
+            ...args
+        );
+
+        await handlerAgent.followUser(did);
     }
 }
 
@@ -42,9 +45,12 @@ export class DeleteFollowAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.userDid == 'function') {
-            this.userDid = this.userDid(handlerAgent, ...args);
-        }
-        await handlerAgent.unfollowUser(this.userDid);
+        const did: string = AbstractAction.getStringOrFunctionReturn(
+            this.userDid,
+            handlerAgent,
+            ...args
+        );
+
+        await handlerAgent.unfollowUser(did);
     }
 }

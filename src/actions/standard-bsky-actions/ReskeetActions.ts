@@ -1,5 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
+import { DebugLog } from '../../utils/DebugLog';
 
 export class CreateReskeetAction extends AbstractAction {
     constructor(
@@ -22,13 +23,18 @@ export class CreateReskeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.skeetUri == 'function') {
-            this.skeetUri = this.skeetUri(handlerAgent, ...args);
-        }
-        if (typeof this.skeetCid == 'function') {
-            this.skeetCid = this.skeetCid(handlerAgent, ...args);
-        }
-        await handlerAgent.reskeetSkeet(this.skeetUri, this.skeetCid);
+        const uri: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetUri,
+            handlerAgent,
+            ...args
+        );
+        const cid: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetCid,
+            handlerAgent,
+            ...args
+        );
+
+        await handlerAgent.reskeetSkeet(uri, cid);
     }
 }
 
@@ -49,9 +55,12 @@ export class DeleteReskeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.skeetUri == 'function') {
-            this.skeetUri = this.skeetUri(handlerAgent, ...args);
-        }
-        await handlerAgent.unreskeetSkeet(this.skeetUri);
+        const uri: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetUri,
+            handlerAgent,
+            ...args
+        );
+
+        await handlerAgent.unreskeetSkeet(uri);
     }
 }
