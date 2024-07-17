@@ -1,10 +1,10 @@
 name: Semantic release versioning
-on:
-    push:
-        branches:
-            - main
-            - next
-            - beta
+#on:
+#    push:
+#        branches:
+#            - main
+#            - next
+#            - beta
 jobs:
     release:
         permissions: write-all
