@@ -1,8 +1,4 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
-import {
-    DebugLogAction,
-    LogMessageAction,
-} from '../../../actions/message-actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import {
     CreateSkeetMessage,
@@ -12,6 +8,7 @@ import {
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
+import { DebugLogAction } from '../../../actions/LoggingActions';
 
 // TODO see comment at top of BadBotHandler
 // @ts-ignore
@@ -29,7 +26,6 @@ export class GoodBotHandler extends MessageHandler {
                     MessageHandler.getCidFromMessage
                 ),
                 DebugLogAction.make('GOOD BOT', `Told I'm good :)`),
-                LogMessageAction.make(),
             ],
             handlerAgent
         );
