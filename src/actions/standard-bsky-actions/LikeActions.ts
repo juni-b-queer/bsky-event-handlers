@@ -23,14 +23,19 @@ export class CreateLikeAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.skeetUri == 'function') {
-            this.skeetUri = this.skeetUri(handlerAgent, ...args);
-        }
-        if (typeof this.skeetCid == 'function') {
-            this.skeetCid = this.skeetCid(handlerAgent, ...args);
-        }
-        DebugLog.warn('LIKE', `uri: ${this.skeetUri}, cid: ${this.skeetCid}`);
-        await handlerAgent.likeSkeet(this.skeetUri, this.skeetCid);
+        const uri: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetUri,
+            handlerAgent,
+            ...args
+        );
+        const cid: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetCid,
+            handlerAgent,
+            ...args
+        );
+
+        DebugLog.warn('LIKE', `uri: ${uri}, cid: ${cid}`);
+        await handlerAgent.likeSkeet(uri, cid);
     }
 }
 
@@ -51,9 +56,11 @@ export class DeleteLikeAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        if (typeof this.skeetUri == 'function') {
-            this.skeetUri = this.skeetUri(handlerAgent, ...args);
-        }
-        await handlerAgent.unlikeSkeet(this.skeetUri);
+        const uri: string = AbstractAction.getStringOrFunctionReturn(
+            this.skeetUri,
+            handlerAgent,
+            ...args
+        );
+        await handlerAgent.unlikeSkeet(uri);
     }
 }
