@@ -1,5 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
+import { DebugLog } from '../../utils/DebugLog';
 
 export class CreateLikeAction extends AbstractAction {
     constructor(
@@ -28,6 +29,7 @@ export class CreateLikeAction extends AbstractAction {
         if (typeof this.skeetCid == 'function') {
             this.skeetCid = this.skeetCid(handlerAgent, ...args);
         }
+        DebugLog.warn('LIKE', `uri: ${this.skeetUri}, cid: ${this.skeetCid}`);
         await handlerAgent.likeSkeet(this.skeetUri, this.skeetCid);
     }
 }

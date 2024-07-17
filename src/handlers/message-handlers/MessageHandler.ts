@@ -3,6 +3,7 @@ import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { AbstractHandler } from '../AbstractHandler';
 import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { DebugLog } from '../../utils/DebugLog';
 
 // @ts-ignore
 export class MessageHandler extends AbstractHandler {
@@ -21,7 +22,9 @@ export class MessageHandler extends AbstractHandler {
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): string {
-        return handlerAgent.generateURIFromCreateMessage(message);
+        const uri = handlerAgent.generateURIFromCreateMessage(message);
+        DebugLog.warn('debug', `geturi: ${uri}`);
+        return uri;
     }
 
     static getCidFromMessage(

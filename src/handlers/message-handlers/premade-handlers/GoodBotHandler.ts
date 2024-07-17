@@ -1,5 +1,8 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
-import { DebugLogAction } from '../../../actions/message-actions/LoggingActions';
+import {
+    DebugLogAction,
+    LogMessageAction,
+} from '../../../actions/message-actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import {
     CreateSkeetMessage,
@@ -26,6 +29,7 @@ export class GoodBotHandler extends MessageHandler {
                     MessageHandler.getCidFromMessage
                 ),
                 DebugLogAction.make('GOOD BOT', `Told I'm good :)`),
+                LogMessageAction.make(),
             ],
             handlerAgent
         );
