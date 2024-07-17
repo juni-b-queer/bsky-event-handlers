@@ -136,7 +136,11 @@ jobs:
   # Release
   ##
   release:
-    if: contains(fromJSON('["refs/heads/main", "refs/heads/beta", "refs/heads/next"]'), github.ref)
+    if: contains('
+      refs/heads/main
+      refs/heads/beta
+      refs/heads/next
+      ', github.ref)
     needs: [test, lint, analyze]
     permissions: write-all
     runs-on: ubuntu-latest
