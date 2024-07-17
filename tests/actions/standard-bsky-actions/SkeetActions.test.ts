@@ -1,19 +1,17 @@
-import { CreateSkeetAction, DeleteSkeetAction } from '../../../src';
 import {
+    CreateLikeAction,
+    CreateSkeetAction,
+    DeleteSkeetAction,
+    ReplyFactory,
+} from '../../../src';
+import {
+    runTestSuiteDualParam,
     runTestSuiteSingleParam,
+    TestCaseDualParam,
     TestCaseSingleParam,
 } from './StandardTestSuite';
 
 const testCases: TestCaseSingleParam[] = [
-    {
-        description: 'Create Skeet Action',
-        mockHandler: 'createSkeet',
-        actionFactory: CreateSkeetAction.make,
-        staticValue: 'Test Text',
-        staticExpectation: 'Test Text',
-        dynamicGenerator: jest.fn().mockReturnValue('Generated Text'),
-        dynamicExpectation: 'Generated Text',
-    },
     {
         description: 'Delete Skeet Action',
         mockHandler: 'deleteSkeet',
@@ -25,4 +23,24 @@ const testCases: TestCaseSingleParam[] = [
     },
 ];
 
+// @ts-ignore
+const testCasesDualParam: TestCaseDualParam[] = [
+    {
+        description: 'Create Skeet Action',
+        mockHandler: 'createSkeet',
+        actionFactory: CreateSkeetAction.make,
+        staticValues: ['Test Text', ReplyFactory.factory().create()],
+        staticExpectations: ['Test Text', ReplyFactory.factory().create()],
+        dynamicGenerators: [
+            jest.fn().mockReturnValue('Generated Text'),
+            jest.fn().mockReturnValue(ReplyFactory.factory().create()),
+        ],
+        dynamicExpectations: [
+            'Generated Text',
+            ReplyFactory.factory().create(),
+        ],
+    },
+];
+
 runTestSuiteSingleParam(testCases);
+runTestSuiteDualParam(testCasesDualParam);

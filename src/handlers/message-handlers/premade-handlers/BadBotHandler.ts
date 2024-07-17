@@ -5,6 +5,7 @@ import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetM
 import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
+import { CreateSkeetAction } from '../../../actions/standard-bsky-actions/SkeetActions';
 
 // TODO I want to have .make() available on the premade handlers, but
 //  the parameters don't match with the CreateSkeetHandler .make(), so i need a ts-ignore
@@ -18,7 +19,10 @@ export class BadBotHandler extends MessageHandler {
         super(
             [IsBadBotValidator.make()],
             [
-                ReplyToSkeetAction.make(response),
+                CreateSkeetAction.make(
+                    response,
+                    MessageHandler.generateReplyFromMessage
+                ),
                 CreateLikeAction.make(
                     MessageHandler.getUriFromMessage,
                     MessageHandler.getCidFromMessage

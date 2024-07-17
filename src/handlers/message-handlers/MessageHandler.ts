@@ -2,7 +2,7 @@ import { AbstractValidator } from '../../validations/AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { AbstractHandler } from '../AbstractHandler';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { CreateSkeetMessage, Reply } from '../../types/JetstreamTypes';
 import { DebugLog } from '../../utils/DebugLog';
 
 // @ts-ignore
@@ -30,6 +30,13 @@ export class MessageHandler extends AbstractHandler {
         message: CreateSkeetMessage
     ): string {
         return message.cid;
+    }
+
+    static generateReplyFromMessage(
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
+    ): Reply {
+        return handlerAgent.generateReplyFromMessage(message);
     }
 
     static make(

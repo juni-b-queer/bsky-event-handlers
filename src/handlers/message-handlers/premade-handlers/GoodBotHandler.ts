@@ -9,6 +9,7 @@ import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetM
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
 import { DebugLogAction } from '../../../actions/LoggingActions';
+import { CreateSkeetAction } from '../../../actions/standard-bsky-actions/SkeetActions';
 
 // TODO see comment at top of BadBotHandler
 // @ts-ignore
@@ -20,7 +21,10 @@ export class GoodBotHandler extends MessageHandler {
         super(
             [IsGoodBotValidator.make()],
             [
-                ReplyToSkeetAction.make(response),
+                CreateSkeetAction.make(
+                    response,
+                    MessageHandler.generateReplyFromMessage
+                ),
                 CreateLikeAction.make(
                     MessageHandler.getUriFromMessage,
                     MessageHandler.getCidFromMessage
