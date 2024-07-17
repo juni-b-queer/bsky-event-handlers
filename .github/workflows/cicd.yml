@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - beta
+      - next
 
 jobs:
   ##
@@ -135,7 +136,7 @@ jobs:
   # Release
   ##
   release:
-    if: contains(fromJSON('["refs/heads/main", "refs/heads/beta"]'), github.ref)
+    if: contains(fromJSON('["refs/heads/main", "refs/heads/beta", "refs/heads/next"]'), github.ref)
     needs: [test, lint, analyze]
     permissions: write-all
     runs-on: ubuntu-latest
