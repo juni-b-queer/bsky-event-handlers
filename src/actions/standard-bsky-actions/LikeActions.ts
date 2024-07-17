@@ -34,7 +34,6 @@ export class CreateLikeAction extends AbstractAction {
             ...args
         );
 
-        DebugLog.warn('LIKE', `uri: ${uri}, cid: ${cid}`);
         await handlerAgent.likeSkeet(uri, cid);
     }
 }

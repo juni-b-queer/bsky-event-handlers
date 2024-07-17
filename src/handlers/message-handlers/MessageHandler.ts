@@ -22,9 +22,7 @@ export class MessageHandler extends AbstractHandler {
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): string {
-        const uri = handlerAgent.generateURIFromCreateMessage(message);
-        DebugLog.warn('debug', `geturi: ${uri}`);
-        return uri;
+        return handlerAgent.generateURIFromCreateMessage(message);
     }
 
     static getCidFromMessage(
