@@ -1,22 +1,8 @@
-import { HandlerAgent } from '../../agent/HandlerAgent';
-import { JetstreamMessage } from '../../types/JetstreamTypes';
-import { AbstractMessageAction } from './AbstractMessageAction';
-import { DebugLog } from '../../utils/DebugLog';
-import { AbstractAction } from '../AbstractAction';
-
-export class LogMessageAction extends AbstractMessageAction {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-
-    static make(): LogMessageAction {
-        return new LogMessageAction();
-    }
-    async handle(
-        handlerAgent: HandlerAgent,
-        message: JetstreamMessage
-    ): Promise<any> {
-        console.log(message);
-    }
-}
+import { HandlerAgent } from '../agent/HandlerAgent';
+import { JetstreamMessage } from '../types/JetstreamTypes';
+import { AbstractMessageAction } from './message-actions/AbstractMessageAction';
+import { DebugLog } from '../utils/DebugLog';
+import { AbstractAction } from './AbstractAction';
 
 export class LogInputTextAction extends AbstractAction {
     constructor(private logText: string) {
@@ -32,7 +18,7 @@ export class LogInputTextAction extends AbstractAction {
     }
 }
 
-export class DebugLogAction extends AbstractMessageAction {
+export class DebugLogAction extends AbstractAction {
     constructor(
         private action: string,
         private message: string,
@@ -41,6 +27,7 @@ export class DebugLogAction extends AbstractMessageAction {
         super();
     }
 
+    // TODO add a stringOrCallable interface, and function to return string or called function
     static make(
         action: string,
         message: string,
@@ -50,10 +37,7 @@ export class DebugLogAction extends AbstractMessageAction {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-    async handle(
-        handlerAgent: HandlerAgent,
-        message: JetstreamMessage
-    ): Promise<any> {
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
         DebugLog.log(this.action, this.message, this.level);
     }
 }

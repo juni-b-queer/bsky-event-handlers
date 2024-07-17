@@ -27,7 +27,7 @@ describe('Create Skeet Action', () => {
 
     it('Should call CreateSkeet with text', async () => {
         await action.handle(handlerAgent, message);
-        expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText);
+        expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, undefined);
     });
 });
 
