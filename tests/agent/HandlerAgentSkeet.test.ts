@@ -150,3 +150,119 @@ describe('HandlerAgent', () => {
         });
     });
 });
+
+describe('HandlerAgent', () => {
+    let handlerAgent: HandlerAgent;
+    const testHandle: string | undefined =
+        process.env.TEST_HANDLE ?? 'testhandle';
+    const testPassword: string | undefined =
+        process.env.TEST_PASSWORD ?? 'testpassword';
+    const postMock = jest.fn();
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        if (testHandle !== undefined && testPassword !== undefined) {
+            // Require mocked module and define class' methods
+            handlerAgent = new HandlerAgent(
+                'agentName',
+                testHandle,
+                testPassword,
+                undefined
+            );
+        }
+
+        // @ts-ignore
+        handlerAgent.getAgent.post = postMock;
+    });
+
+    it('post should call post with input', async () => {
+        const input = {
+            text: 'Test post',
+            reply: undefined,
+        };
+        await handlerAgent.post(input);
+        expect(postMock).toHaveBeenCalledWith(input);
+    });
+
+    describe('CreateSkeet', () => {
+        it('createSkeet should call post with input text and did facets', async () => {
+            await handlerAgent.createSkeet('Test post @bsky.app');
+            const facets = [
+                {
+                    $type: 'app.bsky.richtext.facet',
+                    features: [
+                        {
+                            $type: 'app.bsky.richtext.facet#mention',
+                            did: 'did:plc:z72i7hdynmk6r22z27h6tvur',
+                        },
+                    ],
+                    index: {
+                        byteEnd: 19,
+                        byteStart: 10,
+                    },
+                },
+            ];
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post @bsky.app',
+                facets: facets,
+            });
+        });
+
+        it('createSkeet should call post with input text and url facets', async () => {
+            await handlerAgent.createSkeet('Test post bsky.app');
+            const facets = [
+                {
+                    features: [
+                        {
+                            $type: 'app.bsky.richtext.facet#link',
+                            uri: 'https://bsky.app',
+                        },
+                    ],
+                    index: {
+                        byteEnd: 18,
+                        byteStart: 10,
+                    },
+                },
+            ];
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post bsky.app',
+                facets: facets,
+            });
+        });
+
+        it('createSkeet should call post with input text and both facets', async () => {
+            await handlerAgent.createSkeet('Test post bsky.app @bsky.app');
+            const facets = [
+                {
+                    features: [
+                        {
+                            $type: 'app.bsky.richtext.facet#link',
+                            uri: 'https://bsky.app',
+                        },
+                    ],
+                    index: {
+                        byteEnd: 18,
+                        byteStart: 10,
+                    },
+                },
+                {
+                    $type: 'app.bsky.richtext.facet',
+                    features: [
+                        {
+                            $type: 'app.bsky.richtext.facet#mention',
+                            did: 'did:plc:z72i7hdynmk6r22z27h6tvur',
+                        },
+                    ],
+                    index: {
+                        byteEnd: 28,
+                        byteStart: 19,
+                    },
+                },
+            ];
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post bsky.app @bsky.app',
+                facets: facets,
+            });
+        });
+    });
+});

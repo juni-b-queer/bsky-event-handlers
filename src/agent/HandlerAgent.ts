@@ -10,10 +10,12 @@ import { ProfileView } from '@atproto/api/dist/client/types/app/bsky/actor/defs'
 import {
     CreateSkeetMessage,
     JetstreamMessage,
+    NewSkeetRecord,
     Reply,
     Subject,
 } from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
+import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 
 export class HandlerAgent {
     private did: string | undefined;
@@ -202,18 +204,23 @@ export class HandlerAgent {
         const replyText = new RichText({
             text: newPostDetails,
         });
-        if (skeetReply == undefined) {
-            // if it's not a reply
-            return await this.agent?.post({
-                text: replyText.text,
-            });
-        } else {
-            return await this.agent?.post({
-                // @ts-ignore
-                reply: skeetReply,
-                text: replyText.text,
-            });
+        if (this.getAgent !== undefined) {
+            await replyText.detectFacets(this.getAgent);
         }
+        // @ts-ignore
+        const record: NewSkeetRecord = {
+            text: replyText.text,
+        };
+        if (skeetReply !== undefined) {
+            // @ts-ignore
+            record.reply = skeetReply;
+        }
+        if (replyText.facets !== undefined) {
+            // @ts-ignore
+            record.facets = replyText.facets;
+        }
+
+        return await this.agent?.post(record as any);
     }
 
     /**

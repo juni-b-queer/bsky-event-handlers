@@ -32,6 +32,7 @@ export * from './validations/message-validators/follow/FollowValidators';
  * Actions
  */
 export * from './actions/AbstractAction';
+export * from './actions/FunctionAction';
 export * from './actions/LoggingActions';
 export * from './actions/standard-bsky-actions/SkeetActions';
 export * from './actions/standard-bsky-actions/LikeActions';
@@ -39,7 +40,6 @@ export * from './actions/standard-bsky-actions/ReskeetActions';
 export * from './actions/standard-bsky-actions/FollowActions';
 export * from './actions/message-actions/AbstractMessageAction';
 export * from './actions/message-actions/TestAction';
-export * from './actions/message-actions/FunctionAction';
 export * from './actions/message-actions/MessageLoggingActions';
 export * from './actions/message-actions/post/SkeetMessageActions';
 
