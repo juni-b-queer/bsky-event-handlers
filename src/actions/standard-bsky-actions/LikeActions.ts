@@ -47,6 +47,7 @@ export class DeleteLikeAction extends AbstractAction {
         super();
     }
 
+
     static make(
         skeetUri: string | ((arg0: HandlerAgent, ...args: any) => string)
     ): DeleteLikeAction {

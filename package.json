@@ -53,7 +53,7 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@atproto/api": "^0.12.22",
+        "@atproto/api": "^0.12.24",
         "atproto-firehose": "^0.2.2",
         "moment-timezone": "^0.5.45",
         "save-dev": "^0.0.1-security",
