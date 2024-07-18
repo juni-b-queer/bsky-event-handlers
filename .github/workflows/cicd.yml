@@ -1,11 +1,8 @@
 name: Package CICD
 on:
-  pull_request:
   push:
     branches:
-      - main
-      - beta
-      - next
+      - '*'
 
 jobs:
   ##
