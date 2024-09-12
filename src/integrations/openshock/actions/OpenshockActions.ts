@@ -11,6 +11,7 @@ export type OpenshockControlSchema = {
     exclusive: boolean;
 };
 
+// TODO Write tests
 export class OpenshockControlDeviceAction extends AbstractAction {
     constructor(
         protected client: OpenshockClient,
@@ -23,13 +24,13 @@ export class OpenshockControlDeviceAction extends AbstractAction {
         protected duration:
             | number
             | ((arg0: HandlerAgent, ...args: any) => number) = 300,
+        protected exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true,
         protected controlType:
             | ((arg0: HandlerAgent, ...args: any) => 'Shock' | 'Vibrate')
             | 'Shock'
-            | 'Vibrate' = 'Shock',
-        protected exclusive:
-            | boolean
-            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+            | 'Vibrate' = 'Shock'
     ) {
         if (typeof duration === 'number') {
             if (duration <= 300) {
@@ -50,32 +51,87 @@ export class OpenshockControlDeviceAction extends AbstractAction {
         shockerIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
         intensity: number | ((arg0: HandlerAgent, ...args: any) => number),
         duration: number | ((arg0: HandlerAgent, ...args: any) => number),
+        exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true,
         controlType:
             | ((arg0: HandlerAgent, ...args: any) => 'Shock' | 'Vibrate')
             | 'Shock'
-            | 'Vibrate' = 'Shock',
-        exclusive:
-            | boolean
-            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+            | 'Vibrate' = 'Shock'
     ): OpenshockControlDeviceAction {
         return new OpenshockControlDeviceAction(
             client,
             shockerIDs,
             intensity,
             duration,
-            controlType,
-            exclusive
+            exclusive,
+            controlType
         );
+    }
+
+    generateValueFromFunction(
+        func: ((arg0: HandlerAgent, ...args: any) => any) | any,
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): any {
+        if (typeof func === 'function') {
+            return func(handlerAgent, ...args);
+        }
+        return func;
+    }
+    generateBooleanFromFunction(
+        func: ((arg0: HandlerAgent, ...args: any) => boolean) | boolean,
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): boolean {
+        if (typeof func === 'function') {
+            return func(handlerAgent, ...args);
+        }
+        return func;
+    }
+
+    generateNumberFromFunction(
+        func: ((arg0: HandlerAgent, ...args: any) => number) | number,
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): number {
+        if (typeof func === 'function') {
+            return func(handlerAgent, ...args);
+        }
+        return func;
+    }
+
+    generateStringFromFunction(
+        func: ((arg0: HandlerAgent, ...args: any) => string) | string,
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): string {
+        if (typeof func === 'function') {
+            return func(handlerAgent, ...args);
+        }
+        return func;
+    }
+
+    generateStringArrayFromFunction(
+        func: ((arg0: HandlerAgent, ...args: any) => string[]) | string[],
+        handlerAgent: HandlerAgent,
+        ...args: any
+    ): string[] {
+        if (typeof func === 'function') {
+            return func(handlerAgent, ...args);
+        }
+        return func;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        DebugLog.warn('OPENSHOCK', 'HANDLE');
+        console.log(this.shockerIDs);
         const shocks = this.generateShocks(handlerAgent, ...args);
         const body = {
             customName: 'Bot Shock',
             shocks: shocks,
         };
         const res = await this.client.sendControlRequest(body);
+        console.log(res);
         if (res) {
             DebugLog.debug('OPENSHOCK', 'Successfully sent control request');
         } else {
@@ -83,45 +139,40 @@ export class OpenshockControlDeviceAction extends AbstractAction {
         }
     }
 
-    private generateShocks(
+    protected generateShocks(
         handlerAgent: HandlerAgent,
         ...args: any
     ): OpenshockControlSchema[] {
         const shocks: OpenshockControlSchema[] = [];
-        let generatedShockerIds;
-        if (typeof this.shockerIDs === 'function') {
-            generatedShockerIds = this.shockerIDs(handlerAgent, ...args);
-        } else {
-            generatedShockerIds = this.shockerIDs;
-        }
+        const generatedShockerIds = this.generateStringArrayFromFunction(
+            this.shockerIDs,
+            handlerAgent,
+            ...args
+        );
 
-        let generatedDuration;
-        if (typeof this.duration == 'function') {
-            generatedDuration = this.duration(handlerAgent, ...args);
-        } else {
-            generatedDuration = this.duration;
-        }
+        const generatedDuration = this.generateNumberFromFunction(
+            this.duration,
+            handlerAgent,
+            ...args
+        );
 
-        let generatedIntensity;
-        if (typeof this.intensity == 'function') {
-            generatedIntensity = this.intensity(handlerAgent, ...args);
-        } else {
-            generatedIntensity = this.intensity;
-        }
+        const generatedIntensity = this.generateNumberFromFunction(
+            this.intensity,
+            handlerAgent,
+            ...args
+        );
 
-        let generatedExclusive;
-        if (typeof this.exclusive == 'function') {
-            generatedExclusive = this.exclusive(handlerAgent, ...args);
-        } else {
-            generatedExclusive = this.exclusive;
-        }
+        const generatedExclusive = this.generateBooleanFromFunction(
+            this.exclusive,
+            handlerAgent,
+            ...args
+        );
 
-        let generatedControlType;
-        if (typeof this.controlType == 'function') {
-            generatedControlType = this.controlType(handlerAgent, ...args);
-        } else {
-            generatedControlType = this.controlType;
-        }
+        const generatedControlType = this.generateValueFromFunction(
+            this.controlType,
+            handlerAgent,
+            ...args
+        );
 
         generatedShockerIds.forEach((id: string) => {
             const shock: OpenshockControlSchema = {
@@ -135,5 +186,71 @@ export class OpenshockControlDeviceAction extends AbstractAction {
         });
 
         return shocks;
+    }
+}
+
+// TODO Write tests
+export class OpenshockShockAction extends OpenshockControlDeviceAction {
+    constructor(
+        client: OpenshockClient,
+        shockerIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
+        intensity: number | ((arg0: HandlerAgent, ...args: any) => number) = 25,
+        duration: number | ((arg0: HandlerAgent, ...args: any) => number) = 300,
+        exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+    ) {
+        super(client, shockerIDs, intensity, duration, exclusive, 'Shock');
+    }
+
+    static make(
+        client: OpenshockClient,
+        shockerIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
+        intensity: number | ((arg0: HandlerAgent, ...args: any) => number),
+        duration: number | ((arg0: HandlerAgent, ...args: any) => number),
+        exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+    ): OpenshockShockAction {
+        return new OpenshockShockAction(
+            client,
+            shockerIDs,
+            intensity,
+            duration,
+            exclusive
+        );
+    }
+}
+
+// TODO Write tests
+export class OpenshockVibrateAction extends OpenshockControlDeviceAction {
+    constructor(
+        client: OpenshockClient,
+        shockerIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
+        intensity: number | ((arg0: HandlerAgent, ...args: any) => number) = 25,
+        duration: number | ((arg0: HandlerAgent, ...args: any) => number) = 300,
+        exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+    ) {
+        super(client, shockerIDs, intensity, duration, exclusive, 'Vibrate');
+    }
+
+    static make(
+        client: OpenshockClient,
+        shockerIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
+        intensity: number | ((arg0: HandlerAgent, ...args: any) => number),
+        duration: number | ((arg0: HandlerAgent, ...args: any) => number),
+        exclusive:
+            | boolean
+            | ((arg0: HandlerAgent, ...args: any) => boolean) = true
+    ): OpenshockVibrateAction {
+        return new OpenshockVibrateAction(
+            client,
+            shockerIDs,
+            intensity,
+            duration,
+            exclusive
+        );
     }
 }
