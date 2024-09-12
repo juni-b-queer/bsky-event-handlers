@@ -11,7 +11,6 @@ export type OpenshockControlSchema = {
     exclusive: boolean;
 };
 
-// TODO Write tests
 export class OpenshockControlDeviceAction extends AbstractAction {
     constructor(
         protected client: OpenshockClient,
@@ -199,7 +198,6 @@ export class OpenshockControlDeviceAction extends AbstractAction {
     }
 }
 
-// TODO Write tests
 export class OpenshockShockAction extends OpenshockControlDeviceAction {
     constructor(
         client: OpenshockClient,
@@ -239,7 +237,6 @@ export class OpenshockShockAction extends OpenshockControlDeviceAction {
     }
 }
 
-// TODO Write tests
 export class OpenshockVibrateAction extends OpenshockControlDeviceAction {
     constructor(
         client: OpenshockClient,

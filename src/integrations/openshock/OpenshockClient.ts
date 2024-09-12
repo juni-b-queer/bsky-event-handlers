@@ -18,7 +18,6 @@ export class OpenshockClient {
         }
     }
 
-    // TODO Write tests
     public async sendControlRequest(requestBody: {
         customName: string;
         shocks: OpenshockControlSchema[];
@@ -32,7 +31,6 @@ export class OpenshockClient {
             },
         });
         if (response.status !== 200) {
-            // console.log(response.body);
             DebugLog.warn(
                 'OPENSHOCK CLIENT',
                 JSON.stringify((await response.json()).errors, null, 2)
@@ -42,7 +40,6 @@ export class OpenshockClient {
         return response.status === 200;
     }
 
-    // TODO Write tests
     public async sendApiV1Request(
         method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH',
         route: string,
@@ -80,7 +77,6 @@ export class OpenshockClient {
     /**
      * Shockers
      */
-    // TODO Write tests
     public async getShockers(
         ownership: 'own' | 'shared' = 'own',
         hubId: string | undefined = undefined
@@ -112,13 +108,11 @@ export class OpenshockClient {
         return mappedShockers;
     }
 
-    // TODO Write tests
     public async getOwnedShockersFromNames(...names: string[]) {
         const shockers = await this.getShockers('own');
         return shockers.filter((shocker: any) => names.includes(shocker.name));
     }
 
-    // TODO Write tests
     public async getShockerIDFromName(name: string) {
         let shockers = await this.getShockers('own');
         shockers = shockers.filter((shocker: any) => {
