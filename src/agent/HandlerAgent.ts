@@ -113,7 +113,7 @@ export class HandlerAgent {
             limit: limit,
         };
         const resp = await this.agent?.getFollows(body);
-        return resp?.data;
+        return resp?.data.follows;
     }
 
     /**
@@ -133,7 +133,7 @@ export class HandlerAgent {
             limit: limit,
         };
         const resp = await this.agent?.getFollowers(body);
-        return resp?.data;
+        return resp?.data.followers;
     }
 
     /**
