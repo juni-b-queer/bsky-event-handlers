@@ -3,11 +3,17 @@ import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class PostedByUserValidator extends AbstractMessageValidator {
-    constructor(private userDid: string) {
+    constructor(
+        private userDid:
+            | string
+            | ((handlerAgent: HandlerAgent, ...args: any) => string)
+    ) {
         super();
     }
 
-    static make(userDid: string): PostedByUserValidator {
+    static make(
+        userDid: string | ((handlerAgent: HandlerAgent, ...args: any) => string)
+    ): PostedByUserValidator {
         return new PostedByUserValidator(userDid);
     }
 
@@ -15,10 +21,36 @@ export class PostedByUserValidator extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<boolean> {
+        let generatedDid;
+        if (typeof this.userDid == 'function') {
+            generatedDid = this.userDid(handlerAgent, message);
+        } else {
+            generatedDid = this.userDid;
+        }
         return (
-            this.userDid === message.did &&
+            generatedDid === message.did &&
             message.collection == 'app.bsky.feed.post'
         );
+    }
+}
+
+export class ReplyingToSkeetValidator extends AbstractMessageValidator {
+    constructor(private skeetUri: string) {
+        super();
+    }
+
+    static make(skeetUri: string): ReplyingToSkeetValidator {
+        return new ReplyingToSkeetValidator(skeetUri);
+    }
+
+    async handle(
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
+    ): Promise<boolean> {
+        if (!handlerAgent.hasPostReply(message)) {
+            return false;
+        }
+        return message.record.reply?.parent.uri == this.skeetUri;
     }
 }
 
