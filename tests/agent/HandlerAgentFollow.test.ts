@@ -89,6 +89,7 @@ describe('HandlerAgent', () => {
             getFollowers: getFollowersMock,
             follow: followMock,
             deleteFollow: deleteFollowMock,
+            getProfile: getProfileMock,
         } as unknown as BskyAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
@@ -122,6 +123,7 @@ describe('HandlerAgent', () => {
             getFollowers: getFollowersMock,
             follow: followMock,
             deleteFollow: deleteFollowMock,
+            getProfile: getProfileMock,
         } as unknown as BskyAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
@@ -158,6 +160,7 @@ describe('HandlerAgent', () => {
             getFollowers: getFollowersMock,
             follow: followMock,
             deleteFollow: deleteFollowMock,
+            getProfile: getProfileMock,
         } as unknown as BskyAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
@@ -195,6 +198,7 @@ describe('HandlerAgent', () => {
             getFollowers: getFollowersMock,
             follow: followMock,
             deleteFollow: deleteFollowMock,
+            getProfile: getProfileMock,
         } as unknown as BskyAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
