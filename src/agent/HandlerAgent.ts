@@ -86,25 +86,53 @@ export class HandlerAgent {
     //endregion
 
     //region Follower Interactions
+
+    /**
+     * getProfile
+     */
+
+    async getProfile(did: string) {
+        const response = await this.agent?.getProfile({ actor: did });
+        return response?.data;
+    }
+
     /**
      *
      */
-    async getFollows(userDID: string | undefined = undefined) {
+    async getFollows(
+        userDID: string | undefined = undefined,
+        cursor: string | undefined = undefined,
+        limit: number = 50
+    ) {
         if (userDID === undefined) {
             userDID = this.getDid;
         }
-        const resp = await this.agent?.getFollows({ actor: userDID });
+        const body = {
+            actor: userDID,
+            cursor: cursor,
+            limit: limit,
+        };
+        const resp = await this.agent?.getFollows(body);
         return resp?.data.follows;
     }
 
     /**
      *
      */
-    async getFollowers(userDID: string | undefined = undefined) {
+    async getFollowers(
+        userDID: string | undefined = undefined,
+        cursor: string | undefined = undefined,
+        limit: number = 50
+    ) {
         if (userDID === undefined) {
             userDID = this.getDid;
         }
-        const resp = await this.agent?.getFollowers({ actor: userDID });
+        const body = {
+            actor: userDID,
+            cursor: cursor,
+            limit: limit,
+        };
+        const resp = await this.agent?.getFollowers(body);
         return resp?.data.followers;
     }
 
@@ -112,46 +140,50 @@ export class HandlerAgent {
      *
      */
     async isFollowing(userDID: string): Promise<boolean> {
-        const getFollowsResponse = await this.getFollows();
-
-        if (Array.isArray(getFollowsResponse)) {
-            const following = this.extractDIDsFromProfiles(getFollowsResponse);
-            return following.includes(userDID);
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
+            return false;
         }
-        return false;
-    }
-
-    /**
-     *
-     */
-    async isFollowedBy(userDID: string): Promise<boolean> {
-        const getFollowerResponse = await this.getFollowers();
-        if (Array.isArray(getFollowerResponse)) {
-            const followers = this.extractDIDsFromProfiles(getFollowerResponse);
-            return followers.includes(userDID);
+        const viewer = followProfile?.viewer;
+        if (!viewer?.following) {
+            return false;
         }
-        return false;
-    }
-
-    /**
-     *
-     */
-    async followUser(did: string): Promise<boolean> {
-        await this.agent?.follow(did);
         return true;
     }
 
     /**
      *
      */
-    async unfollowUser(did: string): Promise<boolean> {
-        const getFollowsResponse = await this.getFollows();
-
-        if (!Array.isArray(getFollowsResponse)) {
+    async isFollowedBy(userDID: string): Promise<boolean> {
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
             return false;
         }
-        const resp = this.getRecordForDid(did, getFollowsResponse);
-        const followLink = resp?.viewer?.following;
+        const viewer = followProfile?.viewer;
+        if (!viewer?.followedBy) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     */
+    async followUser(userDID: string): Promise<boolean> {
+        await this.agent?.follow(userDID);
+        return true;
+    }
+
+    /**
+     *
+     */
+    async unfollowUser(userDID: string): Promise<boolean> {
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
+            return false;
+        }
+        const followLink = followProfile?.viewer?.following;
+        console.log(followProfile.viewer);
         if (followLink) {
             await this.agent?.deleteFollow(followLink);
             return true;
@@ -163,20 +195,21 @@ export class HandlerAgent {
 
     //region Follow Helpers
 
-    /**
-     *
-     * @param follows
-     */
-    extractDIDsFromProfiles(follows: ProfileView[]): string[] {
-        return follows.map((item) => item.did);
-    }
-
-    getRecordForDid(
-        targetDid: string,
-        data: ProfileView[]
-    ): ProfileView | undefined {
-        return data.find((item) => item.did === targetDid);
-    }
+    //
+    // /**
+    //  *
+    //  * @param follows
+    //  */
+    // extractDIDsFromProfiles(follows: ProfileView[]): string[] {
+    //     return follows.map((item) => item.did);
+    // }
+    //
+    // getRecordForDid(
+    //     targetDid: string,
+    //     data: ProfileView[]
+    // ): ProfileView | undefined {
+    //     return data.find((item) => item.did === targetDid);
+    // }
 
     //endregion
 
