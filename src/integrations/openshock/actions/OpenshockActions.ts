@@ -142,7 +142,7 @@ export class OpenshockControlDeviceAction extends AbstractAction {
         };
         const res = await this.client.sendControlRequest(body);
         if (res) {
-            DebugLog.debug('OPENSHOCK', 'Successfully sent control request');
+            DebugLog.info('OPENSHOCK', 'Successfully sent control request');
         } else {
             DebugLog.warn('OPENSHOCK', 'Failed to send control request');
         }
