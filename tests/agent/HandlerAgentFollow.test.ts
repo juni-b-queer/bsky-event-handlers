@@ -31,6 +31,7 @@ describe('HandlerAgent', () => {
     let getFollowersMock: jest.Mock<any, any, any>;
     const followMock = jest.fn();
     const deleteFollowMock = jest.fn();
+    const getProfileMock = jest.fn();
     beforeEach(() => {
         jest.clearAllMocks();
         getFollowsMock = jest
@@ -45,6 +46,7 @@ describe('HandlerAgent', () => {
             getFollowers: getFollowersMock,
             follow: followMock,
             deleteFollow: deleteFollowMock,
+            getProfile: getProfileMock,
         } as unknown as BskyAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
