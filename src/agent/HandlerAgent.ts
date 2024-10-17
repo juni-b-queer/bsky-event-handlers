@@ -195,20 +195,20 @@ export class HandlerAgent {
 
     //region Follow Helpers
 
-    /**
-     *
-     * @param follows
-     */
-    extractDIDsFromProfiles(follows: ProfileView[]): string[] {
-        return follows.map((item) => item.did);
-    }
-
-    getRecordForDid(
-        targetDid: string,
-        data: ProfileView[]
-    ): ProfileView | undefined {
-        return data.find((item) => item.did === targetDid);
-    }
+    // /**
+    //  *
+    //  * @param follows
+    //  */
+    // extractDIDsFromProfiles(follows: ProfileView[]): string[] {
+    //     return follows.map((item) => item.did);
+    // }
+    //
+    // getRecordForDid(
+    //     targetDid: string,
+    //     data: ProfileView[]
+    // ): ProfileView | undefined {
+    //     return data.find((item) => item.did === targetDid);
+    // }
 
     //endregion
 
