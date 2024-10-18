@@ -9,24 +9,28 @@ describe('HandlerAgent', () => {
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
 
-    const followingMocks = [
-        {
-            did: 'isFollowing',
-            viewer: {
-                following: 'followLink',
+    const followingMocks = {
+        follows: [
+            {
+                did: 'isFollowing',
+                viewer: {
+                    following: 'followLink',
+                },
             },
-        },
-    ];
+        ],
+    };
 
-    const followedByMocks = [
-        {
-            did: 'isFollowedBy',
-            viewer: {
-                following: 'followLink',
-                followedBy: 'followedByLink',
+    const followedByMocks = {
+        followers: [
+            {
+                did: 'isFollowedBy',
+                viewer: {
+                    following: 'followLink',
+                    followedBy: 'followedByLink',
+                },
             },
-        },
-    ];
+        ],
+    };
     let getFollowsMock: jest.Mock<any, any, any>;
     let getFollowersMock: jest.Mock<any, any, any>;
     const followMock = jest.fn();
@@ -34,12 +38,8 @@ describe('HandlerAgent', () => {
     let getProfileMock: jest.Mock<any, any, any>;
     beforeEach(() => {
         jest.clearAllMocks();
-        getFollowsMock = jest
-            .fn()
-            .mockReturnValue({ data: { follows: followingMocks } });
-        getFollowersMock = jest
-            .fn()
-            .mockReturnValue({ data: { followers: followedByMocks } });
+        getFollowsMock = jest.fn().mockReturnValue({ data: followingMocks });
+        getFollowersMock = jest.fn().mockReturnValue({ data: followedByMocks });
 
         // Require mocked module and define class' methods
         const mockedAgent = {
