@@ -2,11 +2,10 @@ import {
     HandlerAgent,
     JetstreamMessage,
     JetstreamMessageFactory,
-    LogMessageAction,
     TestAction,
 } from '../../src';
-import mocked = jest.mocked;
 import { advanceTo } from 'jest-date-mock';
+import mocked = jest.mocked;
 
 describe('TestAction', () => {
     let action: TestAction;
@@ -28,7 +27,7 @@ describe('TestAction', () => {
     });
 
     it('Should log Working', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent);
         expect(console.log).toHaveBeenCalledWith(
             '1/31/2023, 07:00 PM | Working | INFO | working'
         );

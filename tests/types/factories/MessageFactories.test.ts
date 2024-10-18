@@ -11,6 +11,7 @@ import {
     Record,
     RecordFactory,
 } from '../../../src';
+
 describe('JetstreamMessageFactory', () => {
     let factory: JetstreamMessageFactory;
 

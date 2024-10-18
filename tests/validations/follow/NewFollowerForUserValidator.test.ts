@@ -27,7 +27,7 @@ describe('New Follower For User Validator', () => {
             .record(RecordFactory.factory().isFollow(botDid).create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
         );
     });
@@ -38,7 +38,7 @@ describe('New Follower For User Validator', () => {
         const message: CreateMessage = CreateMessageFactory.factory()
             .record(RecordFactory.factory().isFollow(testDid).create())
             .create();
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
         );
     });
@@ -49,7 +49,7 @@ describe('New Follower For User Validator', () => {
         const message: CreateMessage = CreateMessageFactory.factory()
             .record(RecordFactory.factory().isFollow('did:plc:other').create())
             .create();
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
         );
     });
@@ -61,7 +61,7 @@ describe('New Follower For User Validator', () => {
             .record(RecordFactory.factory().isFollow(testDid).create())
             .create();
 
-        expect(await validator.shouldTrigger(message, mockHandlerAgent)).toBe(
+        expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
         );
     });

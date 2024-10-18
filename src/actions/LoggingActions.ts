@@ -1,23 +1,10 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
 import { JetstreamMessage } from '../types/JetstreamTypes';
-import { AbstractMessageAction } from './AbstractMessageAction';
+import { AbstractMessageAction } from './message-actions/AbstractMessageAction';
 import { DebugLog } from '../utils/DebugLog';
+import { AbstractAction } from './AbstractAction';
 
-export class LogMessageAction extends AbstractMessageAction {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-
-    static make(): LogMessageAction {
-        return new LogMessageAction();
-    }
-    async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
-    ): Promise<any> {
-        console.log(message);
-    }
-}
-
-export class LogInputTextAction extends AbstractMessageAction {
+export class LogInputTextAction extends AbstractAction {
     constructor(private logText: string) {
         super();
     }
@@ -26,15 +13,12 @@ export class LogInputTextAction extends AbstractMessageAction {
         return new LogInputTextAction(logText);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-    async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
-    ): Promise<any> {
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
         console.log(this.logText);
     }
 }
 
-export class DebugLogAction extends AbstractMessageAction {
+export class DebugLogAction extends AbstractAction {
     constructor(
         private action: string,
         private message: string,
@@ -43,6 +27,7 @@ export class DebugLogAction extends AbstractMessageAction {
         super();
     }
 
+    // TODO add a stringOrCallable interface, and function to return string or called function
     static make(
         action: string,
         message: string,
@@ -52,10 +37,7 @@ export class DebugLogAction extends AbstractMessageAction {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
-    async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
-    ): Promise<any> {
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
         DebugLog.log(this.action, this.message, this.level);
     }
 }

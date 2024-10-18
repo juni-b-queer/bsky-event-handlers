@@ -14,7 +14,7 @@ describe('InputContainsValidator no strict parameter', () => {
             .withText('test message')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns true if input contains trigger keyword in other words', async () => {
@@ -22,7 +22,7 @@ describe('InputContainsValidator no strict parameter', () => {
             .withText('blahblahtestblahblah')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns false if input does not contain trigger keyword', async () => {
@@ -30,7 +30,7 @@ describe('InputContainsValidator no strict parameter', () => {
             .withText('message example')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -45,14 +45,14 @@ describe('InputContainsValidator true strict parameter', () => {
             .withText('test message')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns true if input contains trigger keyword in other words', async () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('blahblahtestblahblah')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(true);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     test('shouldTrigger returns false if input does not contain trigger keyword', async () => {
@@ -60,7 +60,7 @@ describe('InputContainsValidator true strict parameter', () => {
             .withText('message example')
             .create();
 
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
@@ -69,7 +69,7 @@ describe('InputContainsValidator true strict parameter', () => {
         const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
             .withText('Test')
             .create();
-        expect(await validator.shouldTrigger(message, handlerAgent)).toBe(
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

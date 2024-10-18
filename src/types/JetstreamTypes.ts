@@ -66,6 +66,14 @@ export interface CreateSkeetRecord extends Record {
     reply?: Reply;
 }
 
+export interface NewSkeetRecord {
+    embed?: { $type: string; images?: ImageEmbed[]; external?: External };
+    facets?: Facet[];
+    langs?: string[];
+    text?: string;
+    reply?: Reply;
+}
+
 export type CollectionType =
     | 'app.bsky.feed.post'
     | 'app.bsky.feed.like'

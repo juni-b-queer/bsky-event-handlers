@@ -1,6 +1,5 @@
 import { debugLog, nowDateTime } from '../../src';
 import mocked = jest.mocked;
-import { BskyAgent } from '@atproto/api';
 
 jest.mock('console', () => ({
     log: jest.fn(),

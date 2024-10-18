@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
-import atprotoApiMock, { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, BskyAgent } from '@atproto/api';
 
 dotenv.config();
 

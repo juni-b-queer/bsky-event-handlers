@@ -6,8 +6,8 @@ import {
     JetstreamSubscription,
     JetstreamSubscriptionHandlers,
     MessageHandler,
-    Record,
 } from '../../src';
+import WebSocket from 'ws';
 
 describe('JetstreamSubscription', () => {
     let jetSub: JetstreamSubscription;
@@ -35,10 +35,7 @@ describe('JetstreamSubscription', () => {
     } as unknown as MessageHandler;
 
     beforeEach(() => {
-        jetSub = new JetstreamSubscription(
-            handlers,
-            'ws://localhost:6008/subscribe'
-        );
+        jetSub = new JetstreamSubscription(handlers);
         (dummyHandler.handle as jest.Mock).mockClear();
     });
 
@@ -65,7 +62,7 @@ describe('JetstreamSubscription', () => {
         const msg: CreateMessage = CreateMessageFactory.make();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate like', () => {
@@ -77,7 +74,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate repost', () => {
@@ -89,7 +86,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleCreate follow', () => {
@@ -101,7 +98,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete post', () => {
@@ -113,7 +110,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete like', () => {
@@ -125,7 +122,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete repost', () => {
@@ -137,7 +134,7 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
     test('handleDelete follow', () => {
@@ -149,6 +146,49 @@ describe('JetstreamSubscription', () => {
             .create();
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
-        expect(dummyHandler.handle).toHaveBeenCalledWith(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+});
+
+describe('JetstreamSubscription', () => {
+    let jetSub: JetstreamSubscription;
+    const handlers: JetstreamSubscriptionHandlers = {
+        post: {
+            c: [],
+            d: [],
+        },
+        like: {
+            c: [],
+            d: [],
+        },
+        repost: {
+            c: [],
+            d: [],
+        },
+        follow: {
+            c: [],
+            d: [],
+        },
+    };
+    // A dummy message handler for testing
+    const dummyHandler: MessageHandler = {
+        handle: jest.fn(),
+    } as unknown as MessageHandler;
+
+    const closeMock = jest.fn();
+
+    beforeEach(() => {
+        jetSub = new JetstreamSubscription(
+            handlers,
+            'ws://localhost:6008/subscribe'
+        );
+
+        jetSub.wsClient = { close: closeMock } as unknown as WebSocket;
+        (dummyHandler.handle as jest.Mock).mockClear();
+    });
+
+    test('close sub closes it', () => {
+        jetSub.stopSubscription();
+        expect(closeMock).toHaveBeenCalled();
     });
 });

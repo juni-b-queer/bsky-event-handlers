@@ -1,27 +1,20 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
-import { AbstractMessageAction } from './AbstractMessageAction';
-import { JetstreamMessage } from '../types/JetstreamTypes';
+import { AbstractAction } from './AbstractAction';
 
-export class FunctionAction extends AbstractMessageAction {
+export class FunctionAction extends AbstractAction {
     constructor(
-        private actionFunction: (
-            arg0: JetstreamMessage,
-            arg1: HandlerAgent
-        ) => any
+        private actionFunction: (arg0: HandlerAgent, ...args: any) => any
     ) {
         super();
     }
 
     static make(
-        actionFunction: (arg0: JetstreamMessage, arg1: HandlerAgent) => any
+        actionFunction: (arg0: HandlerAgent, ...args: any) => any
     ): FunctionAction {
         return new FunctionAction(actionFunction);
     }
 
-    async handle(
-        message: JetstreamMessage,
-        handlerAgent: HandlerAgent
-    ): Promise<any> {
-        await this.actionFunction(message, handlerAgent);
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
+        await this.actionFunction(handlerAgent, ...args);
     }
 }

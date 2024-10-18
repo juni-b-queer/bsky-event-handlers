@@ -60,7 +60,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await goodBotHandler.handle(message);
+            await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -81,7 +81,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await goodBotHandler.handle(message);
+            await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -102,7 +102,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await goodBotHandler.handle(message);
+            await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -124,7 +124,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await goodBotHandler.handle(message);
+            await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -139,7 +139,7 @@ describe('Good and Bad Bot Handler', () => {
                     CreateSkeetRecordFactory.factory().text('good bot').create()
                 )
                 .create();
-            await goodBotHandler.handle(message);
+            await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
             expect(mockCreateSkeet).not.toHaveBeenCalled();
@@ -157,7 +157,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await badBotHandler.handle(message);
+            await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -178,7 +178,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await badBotHandler.handle(message);
+            await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -199,7 +199,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await badBotHandler.handle(message);
+            await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -221,7 +221,7 @@ describe('Good and Bad Bot Handler', () => {
                         .create()
                 )
                 .create();
-            await badBotHandler.handle(message);
+            await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
                 message?.record?.reply?.parent.uri
@@ -236,7 +236,7 @@ describe('Good and Bad Bot Handler', () => {
                     CreateSkeetRecordFactory.factory().text('bad bot').create()
                 )
                 .create();
-            await badBotHandler.handle(message);
+            await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
             expect(mockCreateSkeet).not.toHaveBeenCalled();
