@@ -183,7 +183,6 @@ export class HandlerAgent {
             return false;
         }
         const followLink = followProfile?.viewer?.following;
-        console.log(followProfile.viewer);
         if (followLink) {
             await this.agent?.deleteFollow(followLink);
             return true;
