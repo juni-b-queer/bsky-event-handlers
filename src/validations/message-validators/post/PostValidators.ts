@@ -66,3 +66,24 @@ export class IsReplyValidator extends AbstractMessageValidator {
         return handlerAgent.hasPostReply(message);
     }
 }
+
+export class IsNewPost extends AbstractMessageValidator {
+    constructor() {
+        super();
+    }
+
+    static make(): IsNewPost {
+        return new IsNewPost();
+    }
+
+    async handle(
+        handlerAgent: HandlerAgent,
+        message: CreateSkeetMessage
+    ): Promise<boolean> {
+        const createdAt = new Date(message.record.createdAt);
+        const now = new Date();
+        const oneDay = 24 * 60 * 60 * 1000;
+
+        return now.getTime() - createdAt.getTime() < oneDay;
+    }
+}
