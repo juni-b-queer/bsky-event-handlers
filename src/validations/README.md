@@ -68,7 +68,7 @@ export class ExampleValidator extends AbstractValidator {
 
     async handle(
       handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+      ...args: any
     ): Promise<boolean> {
         // Perform validation
         // must return a boolean
@@ -76,132 +76,164 @@ export class ExampleValidator extends AbstractValidator {
 }
 ```
 
-Any additional parameters you may need for the action can be passed into the constructor and used within the `handle` function as needed, like so
-
+Any additional parameters you may need for the action can be passed into the constructor and used within the handle function as needed, like so:
 ```typescript
 export class ExampleValidator extends AbstractValidator {
     constructor(private shouldPass: boolean) {
         super();
     }
 
-    async handle(
-        handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
-    ): Promise<boolean> {
+    async handle(handlerAgent: HandlerAgent, messsage: CreateSkeetMessage): Promise<boolean> {
         // This example takes in a boolean, and returns it from should trigger.
-        return this.shouldPass;
+        return this.message.opType === 'c' && this.shouldPass;
     }
 }
 ```
 
-## Logical validator
+## Logical Validator
 
 ### SimpleFunctionValidator
 
-The `SimpleFunctionValidator` class provides a way to create a validator by passing a single function that accepts the JetstreamMessage and HandlerAgent and returns a boolean indicating whether to trigger the action or not.
-
-`SimpleFunctionValidator.make((message, handlerAgent) => { return true; }); // replace function with specific condition`
+The SimpleFunctionValidator class provides a way to create a validator by passing a single function that accepts the HandlerAgent and returns a boolean indicating whether to trigger the action or not.
+```typescript
+SimpleFunctionValidator.make((handlerAgent) => { return true; });
+```
+If it's being used for a message handler, you can expect the message parameter in the function as well
+```typescript
+SimpleFunctionValidator.make((handlerAgent, message) => { 
+    // perform validation with message
+});
+```
 
 ### OrValidator
 
-The `OrValidator` class allows you to pass in multiple validators. If any of these validators return `true`, it will trigger the action.
-
-`OrValidator.make([validator1, validator2, validator3]); // replace with actual validator instances`
+The OrValidator class allows you to pass in multiple validators. If any of these validators return true, it will trigger the action.
+```typescript
+OrValidator.make([validator1, validator2, validator3]); // replace with actual validator instances
+```
 
 ## Generic Validators
 
 ### ActionTakenByUserValidator
 
-The `ActionTakenByUserValidator` class checks if the action (post, repost, like, follow) was done by a given user
+The ActionTakenByUserValidator class checks if the action (post, repost, etc.) was taken by a specified user.
+```typescript
+ActionTakenByUserValidator.make('userDid');
+```
 
-`ActionTakenByUserValidator.make('did:plc:123');`
-
-## Post validators
+### Post Validators
 
 ### PostedByUserValidator
 
-The `PostedByUserValidator` class checks if the post was made by a specific user, identified by their DID (Decentralized Identifier).
-
-`PostedByUserValidator.make('did:plc:123');`
+The PostedByUserValidator checks if a post was created by a specific user.
+```typescript
+PostedByUserValidator.make('userDid');
+```
 
 ### ReplyingToBotValidator
 
-The `ReplyingToBotValidator` class verifies if the post is a reply to the bot/handlerAgent.
-
-`ReplyingToBotValidator.make();`
+The ReplyingToBotValidator checks if a post is a reply to the bot.
+```typescript
+ReplyingToBotValidator.make();
+```
 
 ### IsReplyValidator
 
-The `IsReplyValidator` class checks if the post is a reply to another post.
+The IsReplyValidator checks if a post is a reply.
+```typescript
+IsReplyValidator.make();
+```
 
-`IsReplyValidator.make();`
-
-## String Validators
+### String Validators
 
 ### InputIsCommandValidator
 
-The `InputIsCommandValidator` class validates if the input is a command triggered by a specific key. The `strict` argument enforces case sensitivity when set to `true`.
-
-`InputIsCommandValidator.make('myTriggerKey', true); // enabling strict mode`
+The InputIsCommandValidator checks if a post starts with a specific command trigger.
+```typescript
+InputIsCommandValidator.make('triggerKey', true); // strict mode
+```
 
 ### InputStartsWithValidator
 
-The `InputStartsWithValidator` class checks if the input starts with a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
-
-`InputStartsWithValidator.make('myTriggerKey', false);`
+The InputStartsWithValidator checks if a post starts with a specific string.
+```typescript
+InputStartsWithValidator.make('triggerKey', true); // strict mode
+```
 
 ### InputContainsValidator
 
-The `InputContainsValidator` class verifies if the input contains a specific key. The `strict` argument, when set to `true`, enforces case sensitivity.
-
-`InputContainsValidator.make('myTriggerKey', false);`
+The InputContainsValidator checks if a post contains a specific string.
+```typescript
+InputContainsValidator.make('triggerKey', true); // strict mode
+```
 
 ### InputEqualsValidator
 
-The `InputEqualsValidator` class checks if the input exactly matches a specific key.
+The InputEqualsValidator checks if a post equals a specific string.
+```typescript
+InputEqualsValidator.make('triggerKey');
+```
 
-`InputEqualsValidator.make('myTriggerKey');`
-
-## Bot Validators
+### Bot Validators
 
 ### IsGoodBotValidator
 
-The `IsGoodBotValidator` class checks if the input is replying to the bot and the text is "{positive word} bot" (ex. good bot).
-
-It will also accept "thank you" (for full list of accepted inputs, see `isGoodBotResponse` in `utils/text-utils`)
-
-`IsGoodBotValidator.make();`
+The IsGoodBotValidator checks if a post responds positively to the bot.
+```typescript
+IsGoodBotValidator.make();
+```
 
 ### IsBadBotValidator
 
-The `IsBadBotValidator` class checks if the input is replying to the bot and the text is "{negative word} bot" (ex. bad bot).
+The IsBadBotValidator checks if a post responds negatively to the bot.
+```typescript
+IsBadBotValidator.make();
+```
 
-(for full list of accepted inputs, see `isBadBotResponse` in `utils/text-utils`)
-
-`IsBadBotValidator.make();`
-
-## Follow Validators
+### Follow Validators
 
 ### NewFollowerForUserValidator
 
-The `NewFollowerForUserValidator` will return true if the follow action was a new follower for the given user
-If no did is provided, it will default to the bot/handlerAgent did
-
-`NewFollowerForUserValidator.make('did:plc:123');`
+The NewFollowerForUserValidator checks if a user has a new follower.
+```typescript
+NewFollowerForUserValidator.make('userDid');
+```
 
 ### NewFollowFromUserValidator
 
-The `NewFollowFromUserValidator` will return true if the follow action was the given user following someone
-If no did is provided, it will default to the bot/handlerAgent did
+The NewFollowFromUserValidator checks if a user has followed someone.
+```typescript
+NewFollowFromUserValidator.make('userDid');
+```
 
-`NewFollowFromUserValidator.make('did:plc:123');`
+### UserFollowedValidator
 
-**Was previously `UserFollowedValidator` (which still works for now) but has been renamed to fit with the other follow validators**
+The UserFollowedValidator (alias for NewFollowFromUserValidator) checks if a user has followed someone. (To be deprecated in next major release)
+```typescript
+UserFollowedValidator.make('userDid');
+```
 
-## Test Validator
+## Testing
 
-### TestValidator
+### Test Validator
 
-The `TestValidator` class accepts a boolean in the constructor, and then returns that boolean when validated. Mostly used for testing
+The TestValidator is used for unit testing your validator logic.
+```typescript
+TestValidator.make(true); // Returns an instance that will pass
+```
 
-`TestValidator.make(true|false);`
+### Specialized Validators
+
+### IsSpecifiedTimeValidator
+
+The IsSpecifiedTimeValidator checks if the current time matches any specified times.
+```typescript
+IsSpecifiedTimeValidator.make('HH:MM', 'HH:MM');
+```
+
+### IsFourTwentyValidator
+
+The IsFourTwentyValidator checks if the current time is 4:20 AM or PM in any timezone.
+```typescript
+IsFourTwentyValidator.make();
+```
