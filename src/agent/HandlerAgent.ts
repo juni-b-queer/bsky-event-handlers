@@ -52,10 +52,6 @@ export class HandlerAgent {
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
                 this.setSession = sess;
-                if (this.session !== undefined) {
-                    DebugLog.warn('AGENT', 'Saving session');
-                    this.saveSessionData(this.session);
-                }
             },
         });
     }
@@ -629,6 +625,10 @@ export class HandlerAgent {
      */
     public set setSession(sess: AtpSessionData | undefined) {
         this.session = sess;
+        if (this.session !== undefined) {
+            DebugLog.warn('AGENT', 'Saving session');
+            this.saveSessionData(this.session);
+        }
     }
 
     /**

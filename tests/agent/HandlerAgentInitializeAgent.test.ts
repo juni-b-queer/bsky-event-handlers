@@ -1,5 +1,10 @@
 import { HandlerAgent } from '../../src';
 import { BskyAgent } from '@atproto/api';
+import fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
+process.env.SESSION_DATA_PATH = './tests/temp';
 
 describe('HandlerAgent', () => {
     it('should initialize BskyAgent if agent is not provided', () => {
@@ -24,6 +29,10 @@ describe('HandlerAgent', () => {
 
         // Clean up by removing the spy
         initializeBskyAgentSpy.mockRestore();
+
+        if (fs.existsSync(handlerAgent.getSessionLocation())) {
+            fs.unlinkSync(handlerAgent.getSessionLocation());
+        }
     });
 
     it('should initialize BskyAgent object if agent is null', async () => {
@@ -65,6 +74,10 @@ describe('HandlerAgent', () => {
 
         // Clean up by removing the spy
         initializeBskyAgentSpy.mockRestore();
+
+        if (fs.existsSync(handlerAgent.getSessionLocation())) {
+            fs.unlinkSync(handlerAgent.getSessionLocation());
+        }
     });
 
     it('should throw error when session is undefined', async () => {
@@ -74,6 +87,10 @@ describe('HandlerAgent', () => {
             'Test Handle',
             'Test Password'
         );
+
+        if (fs.existsSync(handlerAgent.getSessionLocation())) {
+            fs.unlinkSync(handlerAgent.getSessionLocation());
+        }
 
         // Set session to null
         handlerAgent.setSession = undefined;
@@ -85,6 +102,10 @@ describe('HandlerAgent', () => {
         await expect(handlerAgent.authenticate()).rejects.toThrow(
             'Could not retrieve bluesky session data for reply bot'
         );
+
+        if (fs.existsSync(handlerAgent.getSessionLocation())) {
+            fs.unlinkSync(handlerAgent.getSessionLocation());
+        }
     });
 
     it('should throw error when agent is undefined after resumeSession', async () => {
@@ -115,5 +136,9 @@ describe('HandlerAgent', () => {
         await expect(handlerAgent.authenticate()).rejects.toThrow(
             `Could not get agent from ${handlerAgent.getAgentName}`
         );
+
+        if (fs.existsSync(handlerAgent.getSessionLocation())) {
+            fs.unlinkSync(handlerAgent.getSessionLocation());
+        }
     });
 });

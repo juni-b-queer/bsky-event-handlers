@@ -6,8 +6,21 @@ import {
     ReplyingToBotValidator,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/val/post/replyToBot';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 describe('ReplyingToBotValidator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
     const validator = ReplyingToBotValidator.make();
     const botDid = 'did:plc:bot';
 

@@ -8,6 +8,14 @@ import {
     ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/bot';
+fs.mkdirSync(sessPath, { recursive: true });
+
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 const botDid = 'did:plc:bot';
 const bskyAgent: BskyAgent = {
@@ -21,7 +29,14 @@ const mockAgent: HandlerAgent = new HandlerAgent(
     'password',
     bskyAgent
 );
+
 describe('IsGoodBotValidator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
     const validator = IsGoodBotValidator.make();
     const botReply = ReplyFactory.factory().replyTo(botDid).create();
     const skeetRecord = CreateSkeetRecordFactory.factory()

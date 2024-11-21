@@ -1,10 +1,19 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
 import { AtpSessionData, BskyAgent } from '@atproto/api';
+import fs from 'fs';
 
 dotenv.config();
+process.env.SESSION_DATA_PATH = './tests/temp/initialization';
 
 describe('HandlerAgent', () => {
+    afterAll(() => {
+        fs.rmSync('./tests/temp/initialization', {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync('./tests/temp/initialization');
     let handlerAgent: HandlerAgent;
     const testHandle: string | undefined =
         process.env.TEST_HANDLE ?? 'testhandle';

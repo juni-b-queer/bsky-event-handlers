@@ -7,6 +7,14 @@ import {
     ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
+import fs from 'fs';
+import dotenv from 'dotenv';
+
+const sessPath = './tests/temp/bot';
+fs.mkdirSync(sessPath, { recursive: true });
+
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 const botDid = 'did:plc:bot';
 
@@ -22,6 +30,13 @@ const mockAgent: HandlerAgent = new HandlerAgent(
     bskyAgent
 );
 describe('IsBadBotValidator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+
     const validator = IsBadBotValidator.make();
 
     it('shouldTrigger returns true for negative bot responses', async () => {

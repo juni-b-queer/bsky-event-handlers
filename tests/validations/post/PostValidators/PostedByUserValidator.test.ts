@@ -4,8 +4,21 @@ import {
     HandlerAgent,
     PostedByUserValidator,
 } from '../../../../src';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/val/post/postedBy';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 describe('Posted by user validator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
     const userDid = 'did:plc:user';
     const validator = PostedByUserValidator.make(userDid);
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
