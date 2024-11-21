@@ -6,8 +6,21 @@ import {
     OfflineHandler,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
-describe('Good Bot Handler', () => {
+const sessPath = './tests/temp/handler/offline';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
+
+describe('Offline Handler', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
     let offlineHandler: OfflineHandler;
     let message: CreateSkeetMessage;
     const mockCreateSkeet = jest.fn();

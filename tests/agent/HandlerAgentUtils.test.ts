@@ -9,12 +9,21 @@ import {
 } from '../../src';
 import { AtpSessionData, BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
+process.env.SESSION_DATA_PATH = './tests/temp/utils';
 
 jest.mock('@atproto/api', () => jest.genMockFromModule('@atproto/api'));
 
 describe('HandlerAgent', () => {
+    afterAll(() => {
+        fs.rmSync('./tests/temp/utils', {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync('./tests/temp/utils', { recursive: true });
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';

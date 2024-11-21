@@ -8,8 +8,22 @@ import {
     ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/GoodBad';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 describe('Good and Bad Bot Handler', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
+
     let goodBotHandler: GoodBotHandler;
     let badBotHandler: BadBotHandler;
     // let handlerAgent: HandlerAgent;

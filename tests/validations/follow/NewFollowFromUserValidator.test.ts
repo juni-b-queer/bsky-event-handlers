@@ -7,8 +7,21 @@ import {
     UserFollowedValidator,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/val/follow/NewFollow';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 describe('New Follow From User Validator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
     const botDid = 'did:plc:bot';
     const testDid = 'did:plc:test';
     const bskyAgent: BskyAgent = {

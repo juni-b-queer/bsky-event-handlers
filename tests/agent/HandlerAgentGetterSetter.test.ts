@@ -1,12 +1,22 @@
 import { HandlerAgent } from '../../src';
 import { AtpSessionData, BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
+process.env.SESSION_DATA_PATH = './tests/temp/getterSetter';
 
 jest.mock('@atproto/api', () => jest.genMockFromModule('@atproto/api'));
 
 describe('HandlerAgent', () => {
+    afterAll(() => {
+        fs.rmSync('./tests/temp/getterSetter', {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync('./tests/temp/getterSetter', { recursive: true });
+
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
@@ -24,6 +34,10 @@ describe('HandlerAgent', () => {
                 testPassword,
                 mockedAgent
             );
+        }
+
+        if (fs.existsSync('./agentName-session.json')) {
+            fs.unlinkSync('./agentName-session.json');
         }
     });
 
@@ -45,6 +59,9 @@ describe('HandlerAgent', () => {
         const testAgentName = 'TestAgent';
         handlerAgent.setAgentName = testAgentName;
         expect(handlerAgent.getAgentName).toBe(testAgentName);
+        if (fs.existsSync('./Test Agent-session.json')) {
+            fs.unlinkSync('./Test Agent-session.json');
+        }
     });
 
     it('#getHandle & setHandle should set correct handle value', () => {
@@ -63,13 +80,20 @@ describe('HandlerAgent', () => {
     });
 
     it('#getSession & setSession should set correct session value', () => {
+        handlerAgent.setAgentName = 'agentName';
+        const saveSessionMock = jest.fn();
+        handlerAgent.saveSessionData = saveSessionMock;
         const testSession = {
             did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
         } as AtpSessionData;
         handlerAgent.setSession = testSession;
+
+        expect(saveSessionMock).toBeCalledWith(testSession);
+
         expect(handlerAgent.getSession).toBe(testSession);
 
         handlerAgent.setSession = undefined;
         expect(handlerAgent.getSession).toBe(false);
+        expect(saveSessionMock).toBeCalledTimes(1);
     });
 });

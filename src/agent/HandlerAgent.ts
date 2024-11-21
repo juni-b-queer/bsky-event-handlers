@@ -16,6 +16,7 @@ import {
 } from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
+import fs from 'node:fs';
 
 export class HandlerAgent {
     private did: string | undefined;
@@ -62,7 +63,19 @@ export class HandlerAgent {
         if (!this.agent) {
             this.agent = this.initializeBskyAgent();
         }
-        if (this.agent) {
+
+        if (fs.existsSync(this.getSessionLocation())) {
+            DebugLog.warn('AGENT', 'Existing session. Loading session');
+
+            const loadedSession: AtpSessionData | undefined =
+                await this.loadSessionData();
+            if (loadedSession) {
+                this.setSession = loadedSession;
+            }
+        }
+
+        if (this.agent && this.session === undefined) {
+            DebugLog.warn('AGENT', 'No existing session. creating session');
             await this.agent.login({
                 identifier: this.handle,
                 password: this.password,
@@ -74,6 +87,9 @@ export class HandlerAgent {
             } else {
                 debugLog('AGENT', `${this.agentName} is authenticated!`);
             }
+        }
+
+        if (this.session !== undefined) {
             await this.agent.resumeSession(this.session);
 
             if (!this.agent) {
@@ -83,6 +99,52 @@ export class HandlerAgent {
         }
     }
 
+    getSessionLocation(): string {
+        const path = process.env?.SESSION_DATA_PATH ?? '.';
+        return `${path}/${this.agentName}-session.json`;
+    }
+
+    async saveSessionData(session: AtpSessionData): Promise<void> {
+        const sessionLocation = this.getSessionLocation();
+        return new Promise((resolve, reject) => {
+            fs.writeFile(sessionLocation, JSON.stringify(session), (err) => {
+                if (err) {
+                    DebugLog.error(
+                        'AGENT',
+                        `Failed to save session data. ${err.message}`
+                    );
+                    reject(new Error('Failed to save'));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async loadSessionData(): Promise<AtpSessionData | undefined> {
+        const sessionLocation = this.getSessionLocation();
+        return new Promise((resolve, reject) => {
+            fs.readFile(sessionLocation, 'utf8', (err, data) => {
+                if (err) {
+                    DebugLog.error(
+                        'AGENT',
+                        `Failed to read session data. ${err.message}`
+                    );
+                    resolve(undefined);
+                } else {
+                    try {
+                        resolve(JSON.parse(data) as AtpSessionData);
+                    } catch (parseError) {
+                        DebugLog.error(
+                            'AGENT',
+                            `Failed to parse session data. ${parseError}`
+                        );
+                        resolve(undefined);
+                    }
+                }
+            });
+        });
+    }
     //endregion
 
     //region Follower Interactions
@@ -563,6 +625,10 @@ export class HandlerAgent {
      */
     public set setSession(sess: AtpSessionData | undefined) {
         this.session = sess;
+        if (this.session !== undefined) {
+            DebugLog.warn('AGENT', 'Saving session');
+            this.saveSessionData(this.session);
+        }
     }
 
     /**

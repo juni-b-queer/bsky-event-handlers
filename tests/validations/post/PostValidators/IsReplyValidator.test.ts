@@ -5,8 +5,21 @@ import {
     IsReplyValidator,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+const sessPath = './tests/temp/val/post/reply';
+dotenv.config();
+process.env.SESSION_DATA_PATH = sessPath;
 
 describe('IsReplyValidator', () => {
+    afterAll(() => {
+        fs.rmSync(sessPath, {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync(sessPath, { recursive: true });
     const validator = IsReplyValidator.make();
     const botDid = 'did:plc:bot';
     const bskyAgent: BskyAgent = {

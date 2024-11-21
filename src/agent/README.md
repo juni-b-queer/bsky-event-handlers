@@ -25,6 +25,9 @@ const myBotHandlerAgent = new HandlerAgent(
 ### Methods for Initialization and Authentication
 - `initializeBskyAgent()`: Initializes the `BskyAgent` with the required service URL and session persistence.
 - `authenticate()`: Authenticates the agent using the provided handle and password.
+- `getSessionLocation()`: Returns the filepath of the session.json that is/will be stored when an agent authenticates. Can be modified by setting SESSION_DATA_PATH to the directory you want the session data saved in (i.e. SESSION_DATA_LOCATION='./agentData')
+- `saveSessionData(session: AtpSessionData)`: Saves the agent session data to the file at the path from `getSessionLocation`
+- `loadSessionData(): AtpSessionData|undefined`: Loads the session data stored in the json file at the path from `getSessionLocation`
 
 ### Methods for Follower Interactions
 - `getProfile(did: string)`: Retrieves the profile of the user with the specified DID.
