@@ -15,7 +15,7 @@ describe('HandlerAgent', () => {
             force: true,
         });
     });
-    fs.mkdirSync('./tests/temp/getterSetter');
+    fs.mkdirSync('./tests/temp/getterSetter', { recursive: true });
 
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';

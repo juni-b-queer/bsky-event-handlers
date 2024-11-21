@@ -13,7 +13,7 @@ describe('HandlerAgent', () => {
             force: true,
         });
     });
-    fs.mkdirSync('./tests/temp/initialization');
+    fs.mkdirSync('./tests/temp/initialization', { recursive: true });
     let handlerAgent: HandlerAgent;
     const testHandle: string | undefined =
         process.env.TEST_HANDLE ?? 'testhandle';

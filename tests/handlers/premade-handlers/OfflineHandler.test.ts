@@ -20,7 +20,7 @@ describe('Offline Handler', () => {
             force: true,
         });
     });
-    fs.mkdirSync(sessPath);
+    fs.mkdirSync(sessPath, { recursive: true });
     let offlineHandler: OfflineHandler;
     let message: CreateSkeetMessage;
     const mockCreateSkeet = jest.fn();

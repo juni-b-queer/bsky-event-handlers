@@ -8,7 +8,7 @@ dotenv.config();
 process.env.SESSION_DATA_PATH = './tests/temp/saveLoad';
 
 describe('HandlerAgent Session Management', () => {
-    fs.mkdirSync('./tests/temp/saveLoad');
+    fs.mkdirSync('./tests/temp/saveLoad', { recursive: true });
     let handlerAgent: HandlerAgent;
     const testHandle: string | undefined =
         process.env.TEST_HANDLE ?? 'testhandle';

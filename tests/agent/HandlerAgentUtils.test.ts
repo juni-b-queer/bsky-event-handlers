@@ -23,7 +23,7 @@ describe('HandlerAgent', () => {
             force: true,
         });
     });
-    fs.mkdirSync('./tests/temp/utils');
+    fs.mkdirSync('./tests/temp/utils', { recursive: true });
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
