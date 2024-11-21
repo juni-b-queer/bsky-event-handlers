@@ -22,7 +22,6 @@ describe('Good and Bad Bot Handler', () => {
             force: true,
         });
     });
-    fs.mkdirSync(sessPath);
     fs.mkdirSync(sessPath, { recursive: true });
 
     let goodBotHandler: GoodBotHandler;
