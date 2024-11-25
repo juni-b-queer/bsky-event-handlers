@@ -1,9 +1,9 @@
 import { IsGoodBotValidator } from '../../../validations/message-validators/BotValidators';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import {
-    CreateSkeetMessage,
-    JetstreamMessage,
-} from '../../../types/JetstreamTypes';
+  CreateSkeetMessage, JetstreamEventCommit,
+  JetstreamMessage
+} from "../../../types/JetstreamTypes";
 // import { CreateSkeetHandler } from '../skeet/CreateSkeetHandler';
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
 import { MessageHandler } from '../MessageHandler';
@@ -42,9 +42,10 @@ export class GoodBotHandler extends MessageHandler {
         return new GoodBotHandler(handlerAgent, response);
     }
 
+  // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<void> {
         return super.handle(this.handlerAgent, message);
     }

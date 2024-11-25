@@ -12,8 +12,8 @@ import {
     JetstreamMessage,
     NewSkeetRecord,
     JetstreamReply,
-    JetstreamSubject,
-} from '../types/JetstreamTypes';
+    JetstreamSubject, JetstreamEventCommit
+} from "../types/JetstreamTypes";
 import { DebugLog } from '../utils/DebugLog';
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 import fs from 'node:fs';
@@ -503,16 +503,30 @@ export class HandlerAgent {
     /**
      *
      */
-    generateReplyFromMessage(message: CreateSkeetMessage): JetstreamReply {
+    // TODO update
+    generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
         let reply: JetstreamReply; //TODO Test
+        if(typeof event.commit.record?.subject == "string"){
+            return {
+                root: {
+                    uri: "",
+                    cid: ""
+                },
+                parent: {
+                    uri: "",
+                    cid: ""
+                }
+            };
+        }
         const parentReply: JetstreamSubject = {
-            cid: message.cid,
-            uri: `at://${message.did}/app.bsky.feed.post/${message.rkey}`,
+            // @ts-ignore
+            cid: event.commit.record?.subject?.cid,
+            uri: `at://${event.did}/app.bsky.feed.post/${event.commit.rkey}`,
         };
-        // if message is a reply
-        if (message.record.reply) {
+        // if event is a reply
+        if (event.commit.record?.reply) {
             reply = {
-                root: message.record.reply.root,
+                root: event.commit.record.reply.root,
                 parent: parentReply,
             };
         } else {

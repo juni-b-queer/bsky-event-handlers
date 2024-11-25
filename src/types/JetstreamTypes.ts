@@ -56,6 +56,7 @@ export interface JetstreamRecord {
     $type: JetstreamCollectionType;
     createdAt: string;
     subject?: JetstreamSubject | string;
+    reply?: JetstreamReply;
 }
 
 
@@ -69,20 +70,20 @@ export type JetstreamCollectionType =
 
 
 export interface JetstreamEvent {
-    did: string,
-    time_us: number,
-    kind: "commit" | "account" | "identity",
-    commit?: JetstreamCommit,
-    identity?: JetstreamIdentity,
-    account?: JetstreamAccount
+    did: string;
+    time_us: number;
+    kind: "commit" | "account" | "identity";
+    commit?: JetstreamCommit;
+    identity?: JetstreamIdentity;
+    account?: JetstreamAccount;
 
 }
 
 export interface JetstreamCommit {
-    rev: string,
-    operation: "create" | "delete" | "update",
-    collection: JetstreamCollectionType,
-    rkey: string,
+    rev: string;
+    operation: "create" | "delete" | "update";
+    collection: JetstreamCollectionType;
+    rkey: string;
     record?: JetstreamRecord;
 }
 
@@ -91,10 +92,10 @@ export interface JetstreamEventCommit extends JetstreamEvent {
 }
 
 export interface JetstreamIdentity {
-    did: string,
-    handle: string,
-    seq: number,
-    time: string
+    did: string;
+    handle: string;
+    seq: number;
+    time: string;
 }
 
 export interface JetstreamEventIdentity extends JetstreamEvent {
@@ -102,10 +103,10 @@ export interface JetstreamEventIdentity extends JetstreamEvent {
 }
 
 export interface JetstreamAccount {
-    active: boolean,
-    did: string,
-    seq: number,
-    time: string
+    active: boolean;
+    did: string;
+    seq: number;
+    time: string;
 }
 
 export interface JetstreamEventAccount extends JetstreamEvent {

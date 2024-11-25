@@ -1,11 +1,6 @@
 import WebSocket from "ws";
 import { DebugLog } from "../../utils/DebugLog";
-import {
-  CreateSkeetMessage,
-  JetstreamEvent,
-  JetstreamEventCommit,
-  JetstreamEventCommitCreate
-} from "../../types/JetstreamTypes";
+import { CreateSkeetMessage, JetstreamEvent, JetstreamEventCommit } from "../../types/JetstreamTypes";
 import { MessageHandler } from "../../handlers/message-handlers/MessageHandler";
 import { AbstractSubscription } from "../AbstractSubscription";
 
@@ -78,14 +73,13 @@ export class JetstreamSubscription extends AbstractSubscription {
         // console.log(isBinary);
         if (typeof message === "string") {
           const event: JetstreamEvent = JSON.parse(message);
-          console.log(event);
           if (event.kind === "commit") {
             switch (event.commit?.operation) {
               case "create":
                 this.handleCreate(event as JetstreamEventCommit);
                 break;
               case "delete":
-                this.handleDelete(event as JetstreamEventCommitCreate);
+                this.handleDelete(event as JetstreamEventCommit);
                 break;
             }
           }
@@ -129,17 +123,16 @@ export class JetstreamSubscription extends AbstractSubscription {
   }
 
   // TODO There has got to be a better way to do this, I'm just to high to do it now
-  handleCreate(createEvent: JetstreamEventCommitCreate) {
+  handleCreate(createEvent: JetstreamEventCommit) {
     switch (createEvent.commit.collection) {
       case "app.bsky.feed.post":
-        console.log("post");
         this.handlerControllers.post?.c?.forEach(
           // @ts-ignore
           (handler: MessageHandler) => {
             // TODO Update MessageHandler for new types
             handler.handle(
               undefined,
-              createMessage as CreateSkeetMessage
+              createEvent
             );
           }
         );
@@ -147,21 +140,21 @@ export class JetstreamSubscription extends AbstractSubscription {
       case "app.bsky.feed.like":
         this.handlerControllers.like?.c?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, createMessage);
+            handler.handle(undefined, createEvent);
           }
         );
         break;
       case "app.bsky.feed.repost":
         this.handlerControllers.repost?.c?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, createMessage);
+            handler.handle(undefined, createEvent);
           }
         );
         break;
       case "app.bsky.graph.follow":
         this.handlerControllers.follow?.c?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, createMessage);
+            handler.handle(undefined, createEvent);
           }
         );
         break;
@@ -173,28 +166,28 @@ export class JetstreamSubscription extends AbstractSubscription {
       case "app.bsky.feed.post":
         this.handlerControllers.post?.d?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, deleteMessage);
+            handler.handle(undefined, deleteEvent);
           }
         );
         break;
       case "app.bsky.feed.like":
         this.handlerControllers.like?.d?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, deleteMessage);
+            handler.handle(undefined, deleteEvent);
           }
         );
         break;
       case "app.bsky.feed.repost":
         this.handlerControllers.repost?.d?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, deleteMessage);
+            handler.handle(undefined, deleteEvent);
           }
         );
         break;
       case "app.bsky.graph.follow":
         this.handlerControllers.follow?.d?.forEach(
           (handler: MessageHandler) => {
-            handler.handle(undefined, deleteMessage);
+            handler.handle(undefined, deleteEvent);
           }
         );
         break;

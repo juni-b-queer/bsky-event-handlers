@@ -15,6 +15,7 @@ export class TestMessageHandler extends MessageHandler {
         return this;
     }
 
+    // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
         message: JetstreamMessage

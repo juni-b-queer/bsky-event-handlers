@@ -2,7 +2,7 @@ import { AbstractValidator } from '../../validations/AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { AbstractHandler } from '../AbstractHandler';
-import { CreateSkeetMessage, JetstreamReply } from '../../types/JetstreamTypes';
+import { CreateSkeetMessage, JetstreamEventCommit, JetstreamReply } from "../../types/JetstreamTypes";
 import { DebugLog } from '../../utils/DebugLog';
 
 // @ts-ignore
@@ -18,6 +18,7 @@ export class MessageHandler extends AbstractHandler {
         return this;
     }
 
+    // TODO Update to use JetstreamEventCommit
     static getUriFromMessage(
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
@@ -25,6 +26,7 @@ export class MessageHandler extends AbstractHandler {
         return handlerAgent.generateURIFromCreateMessage(message);
     }
 
+    // TODO Update to use JetstreamEventCommit
     static getCidFromMessage(
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
@@ -32,9 +34,10 @@ export class MessageHandler extends AbstractHandler {
         return message.cid;
     }
 
+    // TODO Update to use JetstreamEventCommit
     static generateReplyFromMessage(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): JetstreamReply {
         return handlerAgent.generateReplyFromMessage(message);
     }

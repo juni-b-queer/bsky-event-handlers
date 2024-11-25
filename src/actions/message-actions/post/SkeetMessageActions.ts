@@ -1,9 +1,9 @@
 import { AbstractMessageAction } from '../AbstractMessageAction';
 import {
-    CreateSkeetMessage,
+    CreateSkeetMessage, JetstreamEventCommit,
     JetstreamMessage,
-    JetstreamReply,
-} from '../../../types/JetstreamTypes';
+    JetstreamReply
+} from "../../../types/JetstreamTypes";
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetAction } from '../../standard-bsky-actions/SkeetActions';
 
@@ -19,7 +19,7 @@ export class CreateSkeetMessageAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<any> {
         await CreateSkeetAction.make(this.skeetText).handle(handlerAgent);
     }
@@ -29,14 +29,14 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
     constructor(
         private textGenerator: (
             arg0: HandlerAgent,
-            arg1: JetstreamMessage
+            arg1: JetstreamEventCommit
         ) => string
     ) {
         super();
     }
 
     static make(
-        textGenerator: (arg0: HandlerAgent, arg1: JetstreamMessage) => string
+        textGenerator: (arg0: HandlerAgent, arg1: JetstreamEventCommit) => string
     ): CreateSkeetWithGeneratedTextAction {
         return new CreateSkeetWithGeneratedTextAction(textGenerator);
     }
@@ -44,7 +44,7 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<any> {
         await handlerAgent.createSkeet(
             this.textGenerator(handlerAgent, message)
@@ -64,8 +64,9 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<any> {
+        //TODO Update
         const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(this.replyText, reply);
     }
@@ -75,14 +76,14 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
     constructor(
         private textGenerator: (
             arg0: HandlerAgent,
-            arg1: CreateSkeetMessage
+            arg1: JetstreamEventCommit
         ) => string
     ) {
         super();
     }
 
     static make(
-        textGenerator: (arg0: HandlerAgent, arg1: CreateSkeetMessage) => string
+        textGenerator: (arg0: HandlerAgent, arg1: JetstreamEventCommit) => string
     ): ReplyToSkeetWithGeneratedTextAction {
         return new ReplyToSkeetWithGeneratedTextAction(textGenerator);
     }
@@ -90,7 +91,7 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<any> {
         const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(
