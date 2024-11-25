@@ -108,6 +108,18 @@ export interface JetstreamEventAccount extends JetstreamEvent {
     account: JetstreamAccount;
 }
 
+
+export interface NewSkeetRecord {
+    embed?: {
+        $type: string;
+        images?: JetstreamImageEmbed[];
+        external?: JetstreamExternal;
+    };
+    facets?: JetstreamFacet[];
+    langs?: string[];
+    text?: string;
+    reply?: JetstreamReply;
+}
 // Deprecated
 
 export type OperationType = 'c' | 'd';
@@ -142,14 +154,4 @@ export interface CreateSkeetRecord extends JetstreamRecord {
     reply?: JetstreamReply;
 }
 
-export interface NewSkeetRecord {
-    embed?: {
-        $type: string;
-        images?: JetstreamImageEmbed[];
-        external?: JetstreamExternal;
-    };
-    facets?: JetstreamFacet[];
-    langs?: string[];
-    text?: string;
-    reply?: JetstreamReply;
-}
+

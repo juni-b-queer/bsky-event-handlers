@@ -8,8 +8,6 @@ import {
 import { debugLog } from '../utils/logging-utils';
 import { ProfileView } from '@atproto/api/dist/client/types/app/bsky/actor/defs';
 import {
-    CreateSkeetMessage,
-    JetstreamMessage,
     NewSkeetRecord,
     JetstreamReply,
     JetstreamSubject,
@@ -490,15 +488,15 @@ export class HandlerAgent {
     /**
      *
      */
-    postedByAgent(message: JetstreamMessage) {
+    postedByAgent(message: JetstreamEventCommit) {
         return message.did === this.getDid; //TODO Test
     }
 
     /**
      *
      */
-    generateURIFromCreateMessage(message: CreateSkeetMessage) {
-        return `at://${message.did}/app.bsky.feed.post/${message.rkey}`;
+    generateURIFromCreateMessage(message: JetstreamEventCommit) {
+        return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
     /**
@@ -539,12 +537,14 @@ export class HandlerAgent {
         return reply;
     }
 
-    hasPostReply(message: CreateSkeetMessage) {
-        return 'reply' in message.record && message.record?.reply !== undefined;
+    hasPostReply(message: JetstreamEventCommit) {
+        if(!message?.commit?.record) return false;
+
+        return 'reply' in message?.commit?.record && message.commit?.record?.reply !== undefined;
     }
 
-    getPostReply(message: CreateSkeetMessage) {
-        return message.record.reply;
+    getPostReply(message: JetstreamEventCommit) {
+        return message?.commit?.record?.reply;
     }
 
     //endregion
