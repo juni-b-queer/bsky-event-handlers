@@ -73,11 +73,13 @@ export class JetstreamSubscription extends AbstractSubscription {
         this.wsClient.on(
             'message',
             (data: WebSocket.RawData, isBinary: boolean) => {
-                const message = !isBinary ? data : data.toString();
+                const message = data.toString();
+                // console.log(isBinary);
                 if (typeof message === 'string') {
                     const data = JSON.parse(message);
-                    switch (data.opType) {
-                        case 'c':
+                    console.log(data);
+                    switch (data.commit.operation) {
+                        case 'create':
                             this.handleCreate(data as CreateMessage);
                             break;
                         case 'd':
@@ -90,6 +92,7 @@ export class JetstreamSubscription extends AbstractSubscription {
 
         this.wsClient.on('close', () => {
             DebugLog.error('JETSTREAM', 'Subscription Closed');
+            this.restart = true;
             this.wsClient?.close();
             if (this.restart) {
                 DebugLog.warn(
@@ -104,7 +107,8 @@ export class JetstreamSubscription extends AbstractSubscription {
         });
 
         this.wsClient.on('error', (err) => {
-            DebugLog.error('FIREHOSE', `Error: ${err}`);
+            console.log(err)
+            DebugLog.error('FIREHOSE', `Error: ${err.message}`);
             this.restart = true;
         });
 
@@ -125,6 +129,7 @@ export class JetstreamSubscription extends AbstractSubscription {
     handleCreate(createMessage: CreateMessage) {
         switch (createMessage.collection) {
             case 'app.bsky.feed.post':
+                console.log('post');
                 this.handlerControllers.post?.c?.forEach(
                     // @ts-ignore
                     (handler: MessageHandler) => {
