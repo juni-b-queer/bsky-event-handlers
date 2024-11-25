@@ -2,7 +2,10 @@ import { IsBadBotValidator } from '../../../validations/message-validators/BotVa
 import { DebugLogAction } from '../../../actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
-import { CreateSkeetMessage, JetstreamEventCommit } from "../../../types/JetstreamTypes";
+import {
+    CreateSkeetMessage,
+    JetstreamEventCommit,
+} from '../../../types/JetstreamTypes';
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
 import { CreateSkeetAction } from '../../../actions/standard-bsky-actions/SkeetActions';
@@ -40,7 +43,7 @@ export class BadBotHandler extends MessageHandler {
         return new BadBotHandler(handlerAgent, response);
     }
 
-  // TODO Update to use JetstreamEventCommit
+    // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
         message: JetstreamEventCommit

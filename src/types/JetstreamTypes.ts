@@ -59,36 +59,31 @@ export interface JetstreamRecord {
     reply?: JetstreamReply;
 }
 
-
-
 export type JetstreamCollectionType =
     | 'app.bsky.feed.post'
     | 'app.bsky.feed.like'
     | 'app.bsky.feed.repost'
     | 'app.bsky.graph.follow';
 
-
-
 export interface JetstreamEvent {
     did: string;
     time_us: number;
-    kind: "commit" | "account" | "identity";
+    kind: 'commit' | 'account' | 'identity';
     commit?: JetstreamCommit;
     identity?: JetstreamIdentity;
     account?: JetstreamAccount;
-
 }
 
 export interface JetstreamCommit {
     rev: string;
-    operation: "create" | "delete" | "update";
+    operation: 'create' | 'delete' | 'update';
     collection: JetstreamCollectionType;
     rkey: string;
     record?: JetstreamRecord;
 }
 
 export interface JetstreamEventCommit extends JetstreamEvent {
-    commit: JetstreamCommit
+    commit: JetstreamCommit;
 }
 
 export interface JetstreamIdentity {
@@ -99,7 +94,7 @@ export interface JetstreamIdentity {
 }
 
 export interface JetstreamEventIdentity extends JetstreamEvent {
-    identity: JetstreamIdentity
+    identity: JetstreamIdentity;
 }
 
 export interface JetstreamAccount {
@@ -110,9 +105,8 @@ export interface JetstreamAccount {
 }
 
 export interface JetstreamEventAccount extends JetstreamEvent {
-    account: JetstreamAccount
+    account: JetstreamAccount;
 }
-
 
 // Deprecated
 
@@ -137,7 +131,11 @@ export interface CreateSkeetMessage extends JetstreamMessage {
 }
 
 export interface CreateSkeetRecord extends JetstreamRecord {
-    embed?: { $type: string; images?: JetstreamImageEmbed[]; external?: JetstreamExternal };
+    embed?: {
+        $type: string;
+        images?: JetstreamImageEmbed[];
+        external?: JetstreamExternal;
+    };
     facets?: JetstreamFacet[];
     langs?: string[];
     text?: string;
@@ -145,7 +143,11 @@ export interface CreateSkeetRecord extends JetstreamRecord {
 }
 
 export interface NewSkeetRecord {
-    embed?: { $type: string; images?: JetstreamImageEmbed[]; external?: JetstreamExternal };
+    embed?: {
+        $type: string;
+        images?: JetstreamImageEmbed[];
+        external?: JetstreamExternal;
+    };
     facets?: JetstreamFacet[];
     langs?: string[];
     text?: string;

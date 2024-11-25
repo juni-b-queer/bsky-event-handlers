@@ -1,7 +1,10 @@
 import { InputIsCommandValidator } from '../../../validations/message-validators/post/StringValidators';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
-import { CreateSkeetMessage, JetstreamEventCommit } from "../../../types/JetstreamTypes";
+import {
+    CreateSkeetMessage,
+    JetstreamEventCommit,
+} from '../../../types/JetstreamTypes';
 import { MessageHandler } from '../MessageHandler';
 
 // @ts-ignore

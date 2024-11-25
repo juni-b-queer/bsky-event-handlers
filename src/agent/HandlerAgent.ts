@@ -12,8 +12,9 @@ import {
     JetstreamMessage,
     NewSkeetRecord,
     JetstreamReply,
-    JetstreamSubject, JetstreamEventCommit
-} from "../types/JetstreamTypes";
+    JetstreamSubject,
+    JetstreamEventCommit,
+} from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 import fs from 'node:fs';
@@ -506,16 +507,16 @@ export class HandlerAgent {
     // TODO update
     generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
         let reply: JetstreamReply; //TODO Test
-        if(typeof event.commit.record?.subject == "string"){
+        if (typeof event.commit.record?.subject == 'string') {
             return {
                 root: {
-                    uri: "",
-                    cid: ""
+                    uri: '',
+                    cid: '',
                 },
                 parent: {
-                    uri: "",
-                    cid: ""
-                }
+                    uri: '',
+                    cid: '',
+                },
             };
         }
         const parentReply: JetstreamSubject = {

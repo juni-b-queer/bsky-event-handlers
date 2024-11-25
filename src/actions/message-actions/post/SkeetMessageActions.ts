@@ -1,9 +1,10 @@
 import { AbstractMessageAction } from '../AbstractMessageAction';
 import {
-    CreateSkeetMessage, JetstreamEventCommit,
+    CreateSkeetMessage,
+    JetstreamEventCommit,
     JetstreamMessage,
-    JetstreamReply
-} from "../../../types/JetstreamTypes";
+    JetstreamReply,
+} from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetAction } from '../../standard-bsky-actions/SkeetActions';
 
@@ -36,7 +37,10 @@ export class CreateSkeetWithGeneratedTextAction extends AbstractMessageAction {
     }
 
     static make(
-        textGenerator: (arg0: HandlerAgent, arg1: JetstreamEventCommit) => string
+        textGenerator: (
+            arg0: HandlerAgent,
+            arg1: JetstreamEventCommit
+        ) => string
     ): CreateSkeetWithGeneratedTextAction {
         return new CreateSkeetWithGeneratedTextAction(textGenerator);
     }
@@ -67,7 +71,8 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
         message: JetstreamEventCommit
     ): Promise<any> {
         //TODO Update
-        const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
+        const reply: JetstreamReply =
+            handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(this.replyText, reply);
     }
 }
@@ -83,7 +88,10 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
     }
 
     static make(
-        textGenerator: (arg0: HandlerAgent, arg1: JetstreamEventCommit) => string
+        textGenerator: (
+            arg0: HandlerAgent,
+            arg1: JetstreamEventCommit
+        ) => string
     ): ReplyToSkeetWithGeneratedTextAction {
         return new ReplyToSkeetWithGeneratedTextAction(textGenerator);
     }
@@ -93,7 +101,8 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<any> {
-        const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
+        const reply: JetstreamReply =
+            handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(
             this.textGenerator(handlerAgent, message),
             reply
