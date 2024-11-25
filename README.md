@@ -25,7 +25,7 @@ skeets**
 -   [Validators](./src/validations/README.md)
 -   [Actions](src/actions/message-actions/README.md)
 -   [Handlers](src/handlers/message-handlers/README.md)
-    -   [Record Handlers](src/handlers/message-handlers/README.md)
+    -   [JetstreamRecord Handlers](src/handlers/message-handlers/README.md)
     -   [Pre-made Handlers](src/handlers/message-handlers/premade-handlers/README.md)
 -   [Jetsteam Firehose Subscription](src/subscriptions/firehose/README.md)
 -   [Utility Functions](./src/utils/README.md)

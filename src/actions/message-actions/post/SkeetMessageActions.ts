@@ -2,7 +2,7 @@ import { AbstractMessageAction } from '../AbstractMessageAction';
 import {
     CreateSkeetMessage,
     JetstreamMessage,
-    Reply,
+    JetstreamReply,
 } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { CreateSkeetAction } from '../../standard-bsky-actions/SkeetActions';
@@ -66,7 +66,7 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<any> {
-        const reply: Reply = handlerAgent.generateReplyFromMessage(message);
+        const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(this.replyText, reply);
     }
 }
@@ -92,7 +92,7 @@ export class ReplyToSkeetWithGeneratedTextAction extends AbstractMessageAction {
         handlerAgent: HandlerAgent,
         message: CreateSkeetMessage
     ): Promise<any> {
-        const reply: Reply = handlerAgent.generateReplyFromMessage(message);
+        const reply: JetstreamReply = handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(
             this.textGenerator(handlerAgent, message),
             reply

@@ -1,11 +1,11 @@
 import {
-    CollectionType,
+    JetstreamCollectionType,
     CreateMessage,
     CreateSkeetMessage,
     CreateSkeetRecord,
     JetstreamMessage,
-    Record,
-    Reply,
+    JetstreamRecord,
+    JetstreamReply,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 import { CreateSkeetRecordFactory, ReplyFactory } from './RecordFactories';
@@ -64,7 +64,7 @@ export class JetstreamMessageFactory extends AbstractTypeFactory {
      *
      * @return {JetstreamMessageFactory} - The modified collection object.
      */
-    collection(messageType: CollectionType) {
+    collection(messageType: JetstreamCollectionType) {
         this.messageObject.collection = messageType;
         return this;
     }
@@ -198,10 +198,10 @@ export class CreateMessageFactory extends JetstreamMessageFactory {
     /**
      * Sets the record for the message.
      *
-     * @param {Record} record - The record to set for the message.
+     * @param {JetstreamRecord} record - The record to set for the message.
      * @return {CreateMessageFactory} - The updated Factory with the new record.
      */
-    record(record: Record): CreateMessageFactory {
+    record(record: JetstreamRecord): CreateMessageFactory {
         this.messageObject.record = record;
         return this;
     }
@@ -241,7 +241,7 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
         return this;
     }
 
-    withReply(reply: Reply | undefined = undefined) {
+    withReply(reply: JetstreamReply | undefined = undefined) {
         if (reply === undefined) {
             this.messageObject.record.reply = ReplyFactory.make();
         } else {

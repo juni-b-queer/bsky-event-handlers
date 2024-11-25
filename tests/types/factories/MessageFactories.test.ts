@@ -1,5 +1,5 @@
 import {
-    CollectionType,
+    JetstreamCollectionType,
     CreateMessage,
     CreateMessageFactory,
     CreateSkeetMessage,
@@ -8,7 +8,7 @@ import {
     JetstreamMessage,
     JetstreamMessageFactory,
     OperationType,
-    Record,
+    JetstreamRecord,
     RecordFactory,
 } from '../../../src';
 
@@ -34,7 +34,7 @@ describe('JetstreamMessageFactory', () => {
     });
     //collection
     it('Updates the JetstreamMessage.collection with a given collection', () => {
-        const collection: CollectionType = 'app.bsky.feed.like';
+        const collection: JetstreamCollectionType = 'app.bsky.feed.like';
         factory.collection(collection);
         defaultJetstreamMessage.collection = collection;
         expect(factory.create()).toEqual(defaultJetstreamMessage);
@@ -113,7 +113,7 @@ describe('CreateMessageFactory', () => {
     });
     //record
     it('Updates the createMessage with a given record', () => {
-        const record: Record = RecordFactory.make();
+        const record: JetstreamRecord = RecordFactory.make();
         factory.record(record);
         defaultCreateMessage.record = record;
         expect(factory.create()).toEqual(defaultCreateMessage);

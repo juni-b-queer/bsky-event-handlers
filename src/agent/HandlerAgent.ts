@@ -11,8 +11,8 @@ import {
     CreateSkeetMessage,
     JetstreamMessage,
     NewSkeetRecord,
-    Reply,
-    Subject,
+    JetstreamReply,
+    JetstreamSubject,
 } from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
@@ -292,7 +292,7 @@ export class HandlerAgent {
      */
     async createSkeet(
         newPostDetails: string,
-        skeetReply: Reply | undefined = undefined
+        skeetReply: JetstreamReply | undefined = undefined
     ) {
         // TODO Add in handling for facets and maybe images?
         const replyText = new RichText({
@@ -503,9 +503,9 @@ export class HandlerAgent {
     /**
      *
      */
-    generateReplyFromMessage(message: CreateSkeetMessage): Reply {
-        let reply: Reply; //TODO Test
-        const parentReply: Subject = {
+    generateReplyFromMessage(message: CreateSkeetMessage): JetstreamReply {
+        let reply: JetstreamReply; //TODO Test
+        const parentReply: JetstreamSubject = {
             cid: message.cid,
             uri: `at://${message.did}/app.bsky.feed.post/${message.rkey}`,
         };

@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import {
     DebugLog,
     HandlerAgent,
-    Reply,
+    JetstreamReply,
     ReplyFactory,
-    Subject,
-    SubjectFactory,
+    JetstreamSubject,
+    JetstreamSubjectFactory,
 } from '../../src';
 import { BskyAgent } from '@atproto/api';
 
@@ -83,8 +83,8 @@ describe('HandlerAgent', () => {
         });
 
         it('createSkeet should call post with input text and reply if existingPostDetails is present', async () => {
-            const subject: Subject = SubjectFactory.make();
-            const reply: Reply = ReplyFactory.factory()
+            const subject: JetstreamSubject = JetstreamSubjectFactory.make();
+            const reply: JetstreamReply = ReplyFactory.factory()
                 .parent(subject)
                 .root(subject)
                 .create();
