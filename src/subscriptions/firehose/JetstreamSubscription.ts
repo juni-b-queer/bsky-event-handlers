@@ -1,9 +1,8 @@
 import WebSocket from 'ws';
 import { DebugLog } from '../../utils/DebugLog';
 import {
-    CreateMessage,
-    CreateSkeetMessage,
-    DeleteMessage,
+    JetstreamEvent,
+    JetstreamEventCommit,
 } from '../../types/JetstreamTypes';
 import { MessageHandler } from '../../handlers/message-handlers/MessageHandler';
 import { AbstractSubscription } from '../AbstractSubscription';
@@ -73,16 +72,23 @@ export class JetstreamSubscription extends AbstractSubscription {
         this.wsClient.on(
             'message',
             (data: WebSocket.RawData, isBinary: boolean) => {
-                const message = !isBinary ? data : data.toString();
+                const message = data.toString();
+                // console.log(isBinary);
                 if (typeof message === 'string') {
-                    const data = JSON.parse(message);
-                    switch (data.opType) {
-                        case 'c':
-                            this.handleCreate(data as CreateMessage);
-                            break;
-                        case 'd':
-                            this.handleDelete(data as DeleteMessage);
-                            break;
+                    const event: JetstreamEvent = JSON.parse(message);
+                    if (event.kind === 'commit') {
+                        switch (event.commit?.operation) {
+                            case 'create':
+                                this.handleCreate(
+                                    event as JetstreamEventCommit
+                                );
+                                break;
+                            case 'delete':
+                                this.handleDelete(
+                                    event as JetstreamEventCommit
+                                );
+                                break;
+                        }
                     }
                 }
             }
@@ -90,6 +96,7 @@ export class JetstreamSubscription extends AbstractSubscription {
 
         this.wsClient.on('close', () => {
             DebugLog.error('JETSTREAM', 'Subscription Closed');
+            this.restart = true;
             this.wsClient?.close();
             if (this.restart) {
                 DebugLog.warn(
@@ -104,8 +111,7 @@ export class JetstreamSubscription extends AbstractSubscription {
         });
 
         this.wsClient.on('error', (err) => {
-            DebugLog.error('FIREHOSE', `Error: ${err}`);
-            this.restart = true;
+            this.handleError(err);
         });
 
         return this;
@@ -115,6 +121,12 @@ export class JetstreamSubscription extends AbstractSubscription {
         DebugLog.info('FIREHOSE', `Connection Opened`);
     }
 
+    public handleError(err: Error) {
+        console.log(err);
+        DebugLog.error('FIREHOSE', `Error: ${err.message}`);
+        this.restart = true;
+    }
+
     public stopSubscription(restart: boolean = false): this {
         this.wsClient.close();
         this.restart = restart;
@@ -122,70 +134,68 @@ export class JetstreamSubscription extends AbstractSubscription {
     }
 
     // TODO There has got to be a better way to do this, I'm just to high to do it now
-    handleCreate(createMessage: CreateMessage) {
-        switch (createMessage.collection) {
+    handleCreate(createEvent: JetstreamEventCommit) {
+        switch (createEvent.commit.collection) {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.c?.forEach(
                     // @ts-ignore
                     (handler: MessageHandler) => {
-                        handler.handle(
-                            undefined,
-                            createMessage as CreateSkeetMessage
-                        );
+                        // TODO Update MessageHandler for new types
+                        handler.handle(undefined, createEvent);
                     }
                 );
                 break;
             case 'app.bsky.feed.like':
                 this.handlerControllers.like?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, createMessage);
+                        handler.handle(undefined, createEvent);
                     }
                 );
                 break;
             case 'app.bsky.feed.repost':
                 this.handlerControllers.repost?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, createMessage);
+                        handler.handle(undefined, createEvent);
                     }
                 );
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.c?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, createMessage);
+                        handler.handle(undefined, createEvent);
                     }
                 );
                 break;
         }
     }
 
-    handleDelete(deleteMessage: DeleteMessage) {
-        switch (deleteMessage.collection) {
+    handleDelete(deleteEvent: JetstreamEventCommit) {
+        switch (deleteEvent.commit.collection) {
             case 'app.bsky.feed.post':
                 this.handlerControllers.post?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, deleteMessage);
+                        handler.handle(undefined, deleteEvent);
                     }
                 );
                 break;
             case 'app.bsky.feed.like':
                 this.handlerControllers.like?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, deleteMessage);
+                        handler.handle(undefined, deleteEvent);
                     }
                 );
                 break;
             case 'app.bsky.feed.repost':
                 this.handlerControllers.repost?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, deleteMessage);
+                        handler.handle(undefined, deleteEvent);
                     }
                 );
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.d?.forEach(
                     (handler: MessageHandler) => {
-                        handler.handle(undefined, deleteMessage);
+                        handler.handle(undefined, deleteEvent);
                     }
                 );
                 break;

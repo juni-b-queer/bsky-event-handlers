@@ -6,16 +6,13 @@ import {
     RichText,
 } from '@atproto/api';
 import { debugLog } from '../utils/logging-utils';
-import { ProfileView } from '@atproto/api/dist/client/types/app/bsky/actor/defs';
 import {
-    CreateSkeetMessage,
-    JetstreamMessage,
+    JetstreamEventCommit,
+    JetstreamReply,
+    JetstreamSubject,
     NewSkeetRecord,
-    Reply,
-    Subject,
 } from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
-import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 import fs from 'node:fs';
 
 export class HandlerAgent {
@@ -292,7 +289,7 @@ export class HandlerAgent {
      */
     async createSkeet(
         newPostDetails: string,
-        skeetReply: Reply | undefined = undefined
+        skeetReply: JetstreamReply | undefined = undefined
     ) {
         // TODO Add in handling for facets and maybe images?
         const replyText = new RichText({
@@ -489,30 +486,44 @@ export class HandlerAgent {
     /**
      *
      */
-    postedByAgent(message: JetstreamMessage) {
+    postedByAgent(message: JetstreamEventCommit) {
         return message.did === this.getDid; //TODO Test
     }
 
     /**
      *
      */
-    generateURIFromCreateMessage(message: CreateSkeetMessage) {
-        return `at://${message.did}/app.bsky.feed.post/${message.rkey}`;
+    generateURIFromCreateMessage(message: JetstreamEventCommit) {
+        return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
     /**
      *
      */
-    generateReplyFromMessage(message: CreateSkeetMessage): Reply {
-        let reply: Reply; //TODO Test
-        const parentReply: Subject = {
-            cid: message.cid,
-            uri: `at://${message.did}/app.bsky.feed.post/${message.rkey}`,
+    // TODO update
+    generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
+        let reply: JetstreamReply; //TODO Test
+        if (typeof event.commit.record?.subject == 'string') {
+            return {
+                root: {
+                    uri: '',
+                    cid: '',
+                },
+                parent: {
+                    uri: '',
+                    cid: '',
+                },
+            };
+        }
+        const parentReply: JetstreamSubject = {
+            // @ts-ignore
+            cid: event.commit.record?.subject?.cid,
+            uri: `at://${event.did}/app.bsky.feed.post/${event.commit.rkey}`,
         };
-        // if message is a reply
-        if (message.record.reply) {
+        // if event is a reply
+        if (event.commit.record?.reply) {
             reply = {
-                root: message.record.reply.root,
+                root: event.commit.record.reply.root,
                 parent: parentReply,
             };
         } else {
@@ -524,12 +535,18 @@ export class HandlerAgent {
         return reply;
     }
 
-    hasPostReply(message: CreateSkeetMessage) {
-        return 'reply' in message.record && message.record?.reply !== undefined;
+    hasPostReply(message: JetstreamEventCommit) {
+        if (!message.commit) return false;
+        if (!message.commit.record) return false;
+
+        return (
+            'reply' in message.commit.record &&
+            message.commit?.record?.reply !== undefined
+        );
     }
 
-    getPostReply(message: CreateSkeetMessage) {
-        return message.record.reply;
+    getPostReply(message: JetstreamEventCommit) {
+        return message?.commit?.record?.reply;
     }
 
     //endregion

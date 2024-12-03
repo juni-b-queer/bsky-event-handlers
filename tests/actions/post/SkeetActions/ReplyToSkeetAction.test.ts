@@ -1,30 +1,47 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
     HandlerAgent,
-    Reply,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    JetstreamReply,
+    NewSkeetRecordFactory,
     ReplyFactory,
     ReplyToSkeetAction,
     ReplyToSkeetWithGeneratedTextAction,
 } from '../../../../src';
 
-describe('Reply To Skeet Action', () => {
+describe('JetstreamReply To Skeet Action', () => {
     let action: ReplyToSkeetAction;
     let handlerAgent: HandlerAgent;
-    let message: CreateSkeetMessage;
     const mockCreateSkeet = jest.fn();
-    const mockReply: Reply = ReplyFactory.factory().create();
+    const mockReply: JetstreamReply = ReplyFactory.factory().create();
     const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
 
     const skeetText: string = 'Test Text';
     const did: string = 'did:plc:did';
+
+    const createMessage = (did: string) => {
+        return JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .record(
+                        NewSkeetRecordFactory.factory()
+
+                            .create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
 
     beforeEach(() => {
         handlerAgent = {
             createSkeet: mockCreateSkeet,
             generateReplyFromMessage: mockGenerateReplyFromMessage,
         } as unknown as HandlerAgent;
-        message = CreateSkeetMessageFactory.factory().fromDid(did).create();
         action = ReplyToSkeetAction.make(skeetText);
     });
 
@@ -33,29 +50,45 @@ describe('Reply To Skeet Action', () => {
     });
 
     it('Should call CreateSkeet with text', async () => {
+        const message = createMessage(did);
         await action.handle(handlerAgent, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, mockReply);
     });
 });
 
-describe('Reply To Skeet with generated text Action', () => {
+describe('JetstreamReply To Skeet with generated text Action', () => {
     let action: ReplyToSkeetWithGeneratedTextAction;
     let handlerAgent: HandlerAgent;
-    let message: CreateSkeetMessage;
     const skeetText: string = 'Test Text';
     const mockTextGenerator = jest.fn().mockReturnValue(skeetText);
     const mockCreateSkeet = jest.fn();
-    const mockReply: Reply = ReplyFactory.factory().create();
+    const mockReply: JetstreamReply = ReplyFactory.factory().create();
     const mockGenerateReplyFromMessage = jest.fn().mockReturnValue(mockReply);
 
     const did: string = 'did:plc:did';
+
+    const createMessage = (did: string) => {
+        return JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .record(
+                        NewSkeetRecordFactory.factory()
+
+                            .create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
 
     beforeEach(() => {
         handlerAgent = {
             createSkeet: mockCreateSkeet,
             generateReplyFromMessage: mockGenerateReplyFromMessage,
         } as unknown as HandlerAgent;
-        message = CreateSkeetMessageFactory.factory().fromDid(did).create();
         action = ReplyToSkeetWithGeneratedTextAction.make(mockTextGenerator);
     });
 
@@ -64,6 +97,7 @@ describe('Reply To Skeet with generated text Action', () => {
     });
 
     it('Should call CreateSkeet with text', async () => {
+        const message = createMessage(did);
         await action.handle(handlerAgent, message);
         expect(mockTextGenerator).toHaveBeenCalledWith(handlerAgent, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(skeetText, mockReply);

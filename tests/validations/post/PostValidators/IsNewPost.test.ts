@@ -1,10 +1,10 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecord,
-    CreateSkeetRecordFactory,
     HandlerAgent,
     IsNewPost,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecord,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
@@ -36,14 +36,30 @@ describe('IsNewPost', () => {
         bskyAgent
     );
 
+    test('handle returns false with no record ', async () => {
+        const recentDate = new Date();
+        recentDate.setHours(recentDate.getHours() - 1);
+
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
+
+        expect(await validator.handle(handlerAgent, message)).toBe(false);
+    });
+
     test('handle returns true if message is created within the last 24 hours', async () => {
         const recentDate = new Date();
         recentDate.setHours(recentDate.getHours() - 1);
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .record({
-                createdAt: recentDate.toISOString(),
-            } as CreateSkeetRecord)
-            .create();
+
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record({
+                        createdAt: recentDate.toISOString(),
+                    } as NewSkeetRecord)
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.handle(handlerAgent, message)).toBe(true);
     });
@@ -51,9 +67,15 @@ describe('IsNewPost', () => {
     test('handle returns false if message is created more than 24 hours ago', async () => {
         const oldDate = new Date();
         oldDate.setDate(oldDate.getDate() - 2);
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .record({ createdAt: oldDate.toISOString() } as CreateSkeetRecord)
-            .create();
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record({
+                        createdAt: oldDate.toISOString(),
+                    } as NewSkeetRecord)
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.handle(handlerAgent, message)).toBe(false);
     });

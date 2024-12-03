@@ -1,4 +1,4 @@
-import { CreateMessage } from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
@@ -15,12 +15,12 @@ export class NewFollowerForUserValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!this.userDid) {
-            return handlerAgent.getDid === message.record.subject;
+            return handlerAgent.getDid === message?.commit?.record?.subject;
         }
-        return this.userDid === message.record.subject;
+        return this.userDid === message?.commit?.record?.subject;
     }
 }
 
@@ -36,7 +36,7 @@ export class NewFollowFromUserValidator extends AbstractMessageValidator {
     }
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!this.userDid) {
             return handlerAgent.getDid === message.did;

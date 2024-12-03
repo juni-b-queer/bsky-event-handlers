@@ -1,10 +1,11 @@
 import {
-    CreateMessageFactory,
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecordFactory,
     HandlerAgent,
     IsGoodBotValidator,
+    JetstreamCollectionType,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
@@ -37,62 +38,61 @@ describe('IsGoodBotValidator', () => {
             force: true,
         });
     });
+
     const validator = IsGoodBotValidator.make();
-    const botReply = ReplyFactory.factory().replyTo(botDid).create();
-    const skeetRecord = CreateSkeetRecordFactory.factory()
-        .text('great bot')
-        .reply(botReply)
-        .create();
+
+    const createMessage = (
+        text: string,
+        reply: boolean = true,
+        collection: JetstreamCollectionType = 'app.bsky.feed.post'
+    ) => {
+        const recordFactory = NewSkeetRecordFactory.factory().text(text);
+
+        if (reply) {
+            recordFactory.reply(
+                ReplyFactory.factory().replyTo(botDid).create()
+            );
+        }
+
+        return JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection(collection)
+                    .record(recordFactory.create())
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
 
     it('shouldTrigger returns true for positive bot responses', async () => {
-        const positiveMessage = CreateMessageFactory.factory()
-            .record(skeetRecord)
-            .create();
+        const positiveMessage = createMessage('great bot');
         expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             true
         );
     });
 
     it('shouldTrigger returns true for thank you', async () => {
-        skeetRecord.text = 'ok thank you';
-        const positiveMessage = CreateMessageFactory.factory()
-            .record(skeetRecord)
-            .create();
+        const positiveMessage = createMessage('ok thank you');
         expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
             true
         );
     });
 
     it('shouldTrigger returns false for non-positive bot responses', async () => {
-        skeetRecord.text = 'bad bot';
-        const negativeMessage = CreateMessageFactory.factory()
-            .record(skeetRecord)
-            .create();
+        const negativeMessage = createMessage('bad bot');
         expect(await validator.shouldTrigger(mockAgent, negativeMessage)).toBe(
             false
         );
     });
 
     it('shouldTrigger returns false for non post collection', async () => {
-        const positiveMessage: CreateSkeetMessage =
-            CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory().text('bad bot').create()
-                )
-                .collection('app.bsky.feed.like')
-                .create();
-        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
-            false
-        );
+        const message = createMessage('bad bot', true, 'app.bsky.feed.like');
+        expect(await validator.shouldTrigger(mockAgent, message)).toBe(false);
     });
 
     it('shouldTrigger returns false for non reply', async () => {
-        skeetRecord.reply = undefined;
-        const positiveMessage = CreateMessageFactory.factory()
-            .record(skeetRecord)
-            .create();
-        expect(await validator.shouldTrigger(mockAgent, positiveMessage)).toBe(
-            false
-        );
+        const message = createMessage('great bot', false);
+        expect(await validator.shouldTrigger(mockAgent, message)).toBe(false);
     });
 });

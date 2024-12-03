@@ -1,5 +1,5 @@
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class PostedByUserValidator extends AbstractMessageValidator {
@@ -13,11 +13,11 @@ export class PostedByUserValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return (
             this.userDid === message.did &&
-            message.collection == 'app.bsky.feed.post'
+            message.commit.collection == 'app.bsky.feed.post'
         );
     }
 }
@@ -33,19 +33,16 @@ export class ReplyingToBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
-        if (!handlerAgent.hasPostReply(message)) {
-            return false;
-        }
+        if (!message.commit.record?.reply) return false;
         const replyingToDid = handlerAgent.getDIDFromUri(
-            // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
 
         return (
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post'
+            message.commit.collection == 'app.bsky.feed.post'
         );
     }
 }
@@ -61,7 +58,7 @@ export class IsReplyValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return handlerAgent.hasPostReply(message);
     }
@@ -78,9 +75,10 @@ export class IsNewPost extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
-        const createdAt = new Date(message.record.createdAt);
+        if (!message.commit.record) return false;
+        const createdAt = new Date(message?.commit.record?.createdAt);
         const now = new Date();
         const oneDay = 24 * 60 * 60 * 1000;
 

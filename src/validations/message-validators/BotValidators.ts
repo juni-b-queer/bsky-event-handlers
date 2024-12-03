@@ -1,6 +1,6 @@
 import { isBadBotResponse, isGoodBotResponse } from '../../utils/text-utils';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 
 export class IsGoodBotValidator extends AbstractMessageValidator {
@@ -14,18 +14,18 @@ export class IsGoodBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
         }
         const replyingToDid = handlerAgent.getDIDFromUri(
             // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post';
+            message.commit.collection == 'app.bsky.feed.post';
         return isGoodBotResponse(this.getTextFromPost(message)) && isReplyToBot;
     }
 }
@@ -41,18 +41,18 @@ export class IsBadBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
         }
         const replyingToDid = handlerAgent.getDIDFromUri(
             // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post';
+            message.commit.collection == 'app.bsky.feed.post';
         return isBadBotResponse(this.getTextFromPost(message)) && isReplyToBot;
     }
 }

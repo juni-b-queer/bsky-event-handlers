@@ -1,5 +1,4 @@
 import {
-    CreateLikeAction,
     CreateSkeetAction,
     DeleteSkeetAction,
     ReplyFactory,

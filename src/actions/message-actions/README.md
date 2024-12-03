@@ -101,7 +101,7 @@ When the validations pass, it will call the function to generate the response te
 The `ReplyToSkeetAction` only works on post creation messages for now.
 Pass in a string, and when the validations pass, it will reply to the created skeet with a new skeet using the given input text
 
-`ReplyToSkeetAction.make("Reply Text")`
+`ReplyToSkeetAction.make("JetstreamReply Text")`
 
 ### ReplyToSkeetWithGeneratedTextAction
 

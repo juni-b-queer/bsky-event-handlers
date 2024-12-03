@@ -1,13 +1,27 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
     HandlerAgent,
     InputEqualsValidator,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
 } from '../../../../src';
 
 describe('InputEqualsValidator', () => {
     const validator = InputEqualsValidator.make('test');
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
+
+    const createMessage = (text: string) => {
+        return JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .record(NewSkeetRecordFactory.factory().text(text).create())
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
 
     /**
      * Test: shouldTrigger returns true if input is trigger keyword
@@ -15,9 +29,7 @@ describe('InputEqualsValidator', () => {
      * matches the trigger keyword.
      */
     test('shouldTrigger returns true if input is trigger keyword', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .withText('test')
-            .create();
+        const message = createMessage('test');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
@@ -27,9 +39,7 @@ describe('InputEqualsValidator', () => {
      * does not match the trigger keyword.
      */
     test('shouldTrigger returns false if input does not equal trigger keyword', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .withText('message test')
-            .create();
+        const message = createMessage('message test');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );

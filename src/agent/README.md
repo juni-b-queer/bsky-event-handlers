@@ -39,8 +39,8 @@ const myBotHandlerAgent = new HandlerAgent(
 - `unfollowUser(userDID: string)`: Unfollows the specified user.
 
 ### Methods for Posting Interactions
-- `post(details: Partial<AppBskyFeedPost.Record>)`: Creates a post with the given details.
-- `createSkeet(newPostDetails: string, skeetReply: Reply | undefined)`: Creates a skeet (post) with the specified details and optional reply.
+- `post(details: Partial<AppBskyFeedPost.JetstreamRecord>)`: Creates a post with the given details.
+- `createSkeet(newPostDetails: string, skeetReply: JetstreamReply | undefined)`: Creates a skeet (post) with the specified details and optional reply.
 - `deleteSkeet(skeetURI: string)`: Deletes the skeet with the given URI.
 - `likeSkeet(skeetURI: string, skeetCID: string)`: Likes the skeet with the given URI and CID.
 - `unlikeSkeet(skeetURI: string)`: Unlikes the skeet with the given URI.

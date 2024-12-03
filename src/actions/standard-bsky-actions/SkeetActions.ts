@@ -1,6 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
-import { Reply } from '../../types/JetstreamTypes';
+import { JetstreamReply } from '../../types/JetstreamTypes';
 
 export class CreateSkeetAction extends AbstractAction {
     constructor(
@@ -8,8 +8,8 @@ export class CreateSkeetAction extends AbstractAction {
             | string
             | ((arg0: HandlerAgent, ...args: any) => string),
         protected skeetReply:
-            | Reply
-            | ((arg0: HandlerAgent, ...args: any) => Reply)
+            | JetstreamReply
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamReply)
             | undefined = undefined
     ) {
         super();
@@ -18,8 +18,8 @@ export class CreateSkeetAction extends AbstractAction {
     static make(
         skeetText: string | ((arg0: HandlerAgent, ...args: any) => string),
         skeetReply:
-            | Reply
-            | ((arg0: HandlerAgent, ...args: any) => Reply)
+            | JetstreamReply
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamReply)
             | undefined = undefined
     ): CreateSkeetAction {
         return new CreateSkeetAction(skeetText, skeetReply);

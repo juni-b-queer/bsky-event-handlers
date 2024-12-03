@@ -46,9 +46,19 @@ describe('JetstreamSubscription createSubscription', () => {
             server?.clients.forEach((client) => {
                 // @ts-ignore
                 if (client !== ws && client.readyState === ws.OPEN) {
-                    client.send(Buffer.from(JSON.stringify({ opType: 'c' })), {
-                        binary: true,
-                    });
+                    client.send(
+                        Buffer.from(
+                            JSON.stringify({
+                                kind: 'commit',
+                                commit: {
+                                    operation: 'create',
+                                },
+                            })
+                        ),
+                        {
+                            binary: true,
+                        }
+                    );
                 }
             });
             await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -58,9 +68,19 @@ describe('JetstreamSubscription createSubscription', () => {
             server?.clients.forEach((client) => {
                 // @ts-ignore
                 if (client !== ws && client.readyState === ws.OPEN) {
-                    client.send(Buffer.from(JSON.stringify({ opType: 'd' })), {
-                        binary: true,
-                    });
+                    client.send(
+                        Buffer.from(
+                            JSON.stringify({
+                                kind: 'commit',
+                                commit: {
+                                    operation: 'delete',
+                                },
+                            })
+                        ),
+                        {
+                            binary: true,
+                        }
+                    );
                 }
             });
             await new Promise((resolve) => setTimeout(resolve, 1000));

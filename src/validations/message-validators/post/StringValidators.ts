@@ -1,6 +1,6 @@
 import { flattenTextUpdated } from '../../../utils/text-utils';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class InputIsCommandValidator extends AbstractMessageValidator {
@@ -20,7 +20,7 @@ export class InputIsCommandValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (this.strict) {
             const input = this.getTextFromPost(message);
@@ -56,7 +56,7 @@ export class InputStartsWithValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -84,7 +84,7 @@ export class InputContainsValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         if (this.strict) {
@@ -106,7 +106,7 @@ export class InputEqualsValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         const input = this.getTextFromPost(message);
         return input === this.triggerKey;
