@@ -88,6 +88,20 @@ export class NewSkeetRecordFactory extends AbstractTypeFactory {
     create(): NewSkeetRecord {
         return this.record as NewSkeetRecord;
     }
+
+    reply(reply: JetstreamReply | undefined = undefined) {
+        if (reply === undefined) {
+            this.record.reply = ReplyFactory.make();
+        } else {
+            this.record.reply = reply;
+        }
+        return this;
+    }
+
+    text(text: string) {
+        this.record.text = text;
+        return this;
+    }
 }
 
 /**

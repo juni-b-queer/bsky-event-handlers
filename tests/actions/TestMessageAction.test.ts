@@ -1,5 +1,8 @@
 import {
     HandlerAgent,
+    JetstreamEvent,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     JetstreamMessage,
     JetstreamMessageFactory,
     TestMessageAction,
@@ -10,12 +13,14 @@ import mocked = jest.mocked;
 describe('TestMessageAction', () => {
     let action: TestMessageAction;
     let handlerAgent: HandlerAgent;
-    let message: JetstreamMessage;
+    let message: JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {
         handlerAgent = {} as HandlerAgent;
-        message = JetstreamMessageFactory.factory().create();
+        message = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
         action = new TestMessageAction();
         advanceTo(new Date(Date.UTC(2023, 1, 1, 1, 0, 0)));
         mocked(process.env, { shallow: true }).DEBUG_LOG_ACTIVE = 'true';

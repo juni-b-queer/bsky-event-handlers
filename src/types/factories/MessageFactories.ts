@@ -10,6 +10,8 @@ import {
     JetstreamCommit,
     JetstreamIdentity,
     JetstreamAccount,
+    JetstreamEventCommit,
+    NewSkeetRecord,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 import { CreateSkeetRecordFactory, ReplyFactory } from './RecordFactories';
@@ -282,6 +284,22 @@ export class JetstreamEventFactory extends AbstractTypeFactory {
     create(): JetstreamEvent {
         return this.eventObject as JetstreamEvent;
     }
+
+    fromDid(did: string) {
+        this.eventObject.did = did;
+        return this;
+    }
+    commit(
+        commit: JetstreamCommit | undefined = undefined
+    ): JetstreamEventFactory {
+        this.eventObject.kind = 'commit';
+        if (commit === undefined) {
+            this.eventObject.commit = JetstreamCommitFactory.make();
+        } else {
+            this.eventObject.commit = commit;
+        }
+        return this;
+    }
 }
 
 export class JetstreamCommitFactory extends AbstractTypeFactory {
@@ -295,6 +313,7 @@ export class JetstreamCommitFactory extends AbstractTypeFactory {
             rev: 'examplerev',
             rkey: 'examplerkey',
             cid: 'examplecid',
+            record: undefined,
         };
         // get keys from commit, replace values in event object
     }
@@ -309,6 +328,16 @@ export class JetstreamCommitFactory extends AbstractTypeFactory {
 
     create(): JetstreamCommit {
         return this.eventObject as JetstreamCommit;
+    }
+
+    rkey(rkey: string) {
+        this.eventObject.rkey = rkey;
+        return this;
+    }
+
+    record(record: JetstreamRecord | NewSkeetRecord) {
+        this.eventObject.record = record;
+        return this;
     }
 }
 

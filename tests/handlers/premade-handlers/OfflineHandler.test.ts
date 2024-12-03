@@ -3,7 +3,12 @@ import {
     CreateSkeetMessageFactory,
     CreateSkeetRecordFactory,
     HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     OfflineHandler,
+    ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
 import fs from 'fs';
@@ -22,13 +27,15 @@ describe('Offline Handler', () => {
     });
     fs.mkdirSync(sessPath, { recursive: true });
     let offlineHandler: OfflineHandler;
-    let message: CreateSkeetMessage;
+    let message: JetstreamEventCommit;
     const mockCreateSkeet = jest.fn();
     const mockHasPostReply = jest
         .fn()
-        .mockImplementation((message: CreateSkeetMessage) => {
+        .mockImplementation((message: JetstreamEventCommit) => {
             return (
-                'reply' in message.record && message.record?.reply !== undefined
+                // @ts-ignore
+                'reply' in message.commit.record &&
+                message.commit.record?.reply !== undefined
             );
         });
     const mockGetDidFromUri = jest.fn().mockImplementation((uri: string) => {
@@ -59,9 +66,17 @@ describe('Offline Handler', () => {
 
     it('OfflineHandler Does run actions with defaults when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = CreateSkeetMessageFactory.factory()
-            .record(CreateSkeetRecordFactory.factory().text('!test').create())
-            .create();
+        message = JetstreamEventFactory.factory()
+            .fromDid('did:plc:other')
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        NewSkeetRecordFactory.factory().text('!test').create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+
         await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'Bot functionality offline',
@@ -71,9 +86,16 @@ describe('Offline Handler', () => {
 
     it('OfflineHandler Does run actions with input when post is command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test', 'output');
-        message = CreateSkeetMessageFactory.factory()
-            .record(CreateSkeetRecordFactory.factory().text('test!').create())
-            .create();
+        message = JetstreamEventFactory.factory()
+            .fromDid('did:plc:other')
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        NewSkeetRecordFactory.factory().text('test!').create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).toHaveBeenCalledWith(
             'output',
@@ -83,9 +105,16 @@ describe('Offline Handler', () => {
 
     it('OfflineHandler Does not run actions when post is not command', async () => {
         offlineHandler = OfflineHandler.make(handlerAgent, 'test');
-        message = CreateSkeetMessageFactory.factory()
-            .record(CreateSkeetRecordFactory.factory().text('blah').create())
-            .create();
+        message = JetstreamEventFactory.factory()
+            .fromDid('did:plc:other')
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        NewSkeetRecordFactory.factory().text('blah').create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         await offlineHandler.handle(undefined, message);
         expect(mockCreateSkeet).not.toHaveBeenCalled();
     });

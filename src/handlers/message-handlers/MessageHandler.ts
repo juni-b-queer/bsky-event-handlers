@@ -25,20 +25,18 @@ export class MessageHandler extends AbstractHandler {
     // TODO Update to use JetstreamEventCommit
     static getUriFromMessage(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): string {
         return handlerAgent.generateURIFromCreateMessage(message);
     }
 
-    // TODO Update to use JetstreamEventCommit
     static getCidFromMessage(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): string {
-        return message.cid;
+        return message.commit.cid;
     }
 
-    // TODO Update to use JetstreamEventCommit
     static generateReplyFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit

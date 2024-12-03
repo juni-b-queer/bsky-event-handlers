@@ -24,7 +24,7 @@ export class IsGoodBotValidator extends AbstractMessageValidator {
         }
         const replyingToDid = handlerAgent.getDIDFromUri(
             // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&
@@ -51,7 +51,7 @@ export class IsBadBotValidator extends AbstractMessageValidator {
         }
         const replyingToDid = handlerAgent.getDIDFromUri(
             // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&

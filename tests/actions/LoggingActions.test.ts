@@ -1,6 +1,9 @@
 import {
     DebugLogAction,
     HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     JetstreamMessage,
     JetstreamMessageFactory,
     LogInputTextAction,
@@ -12,13 +15,15 @@ describe('LogInputTextAction', () => {
     let input: string;
     let action: LogInputTextAction;
     let handlerAgent: HandlerAgent;
-    let message: JetstreamMessage;
+    let message: JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {
         input = 'hello';
         handlerAgent = {} as HandlerAgent;
-        message = JetstreamMessageFactory.factory().create();
+        message = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
         action = LogInputTextAction.make(input);
     });
 
@@ -35,8 +40,9 @@ describe('LogInputTextAction', () => {
 describe('LogInputTextAction', () => {
     let action: DebugLogAction;
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage =
-        JetstreamMessageFactory.factory().create();
+    const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+        .commit()
+        .create() as JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {

@@ -5,6 +5,10 @@ import {
     CreateSkeetRecordFactory,
     GoodBotHandler,
     HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     ReplyFactory,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
@@ -27,13 +31,15 @@ describe('Good and Bad Bot Handler', () => {
     let goodBotHandler: GoodBotHandler;
     let badBotHandler: BadBotHandler;
     // let handlerAgent: HandlerAgent;
-    let message: CreateSkeetMessage;
+    let message: JetstreamEventCommit;
     const mockCreateSkeet = jest.fn();
     const mockHasPostReply = jest
         .fn()
-        .mockImplementation((message: CreateSkeetMessage) => {
+        .mockImplementation((message: JetstreamEventCommit) => {
             return (
-                'reply' in message.record && message.record?.reply !== undefined
+                // @ts-ignore
+                'reply' in message.commit.record &&
+                message.commit.record?.reply !== undefined
             );
         });
     const mockGetDidFromUri = jest.fn().mockImplementation((uri: string) => {
@@ -66,18 +72,27 @@ describe('Good and Bad Bot Handler', () => {
     describe('Good Bot Handler', () => {
         it('GoodBotHandler Does run actions with default when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('good bot')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('good bot')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
             await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'Thank you 🥹',
@@ -87,18 +102,28 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does run actions with input when post is reply to bot and good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent, 'test');
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('good bot')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('good bot')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
+
             await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'test',
@@ -108,51 +133,73 @@ describe('Good and Bad Bot Handler', () => {
 
         it('GoodBotHandler Does not run actions when post is reply to bot, but not good bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('test')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('test')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
             await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).not.toHaveBeenCalled();
         });
 
         it('GoodBotHandler Does not run actions when post is not reply to bot', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(
-                            ReplyFactory.factory()
-                                .replyTo('did:plc:other')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo('did:plc:other')
+                                        .create()
+                                )
+                                .text('good bot')
                                 .create()
                         )
-                        .text('good bot')
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
+
             await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).not.toHaveBeenCalled();
         });
 
         it('GoodBotHandler Does not run actions when post is not reply', async () => {
             goodBotHandler = GoodBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory().text('good bot').create()
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .text('good bot')
+                                .create()
+                        )
+                        .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
             await goodBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
@@ -163,18 +210,27 @@ describe('Good and Bad Bot Handler', () => {
     describe('Bad Bot Handler', () => {
         it('BadBotHandler Does run actions with default when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('bad bot')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('bad bot')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
             await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 "I'm sorry 😓",
@@ -184,18 +240,28 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does run actions with input when post is reply to bot and bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent, 'test');
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('bad bot')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('bad bot')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
+
             await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'test',
@@ -205,51 +271,74 @@ describe('Good and Bad Bot Handler', () => {
 
         it('BadBotHandler Does not run actions when post is reply to bot, but not bad bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(ReplyFactory.factory().replyTo(botDid).create())
-                        .text('good bot')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo(botDid)
+                                        .create()
+                                )
+                                .text('good bot')
+                                .create()
+                        )
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
+
             await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).not.toHaveBeenCalled();
         });
 
         it('BadBotHandler Does not run actions when post is not reply to bot', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory()
-                        .reply(
-                            ReplyFactory.factory()
-                                .replyTo('did:plc:other')
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .reply(
+                                    ReplyFactory.factory()
+                                        .replyTo('did:plc:other')
+                                        .create()
+                                )
+                                .text('bad bot')
                                 .create()
                         )
-                        .text('bad bot')
                         .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
+
             await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).toHaveBeenCalledWith(
-                message?.record?.reply?.parent.uri
+                message?.commit?.record?.reply?.parent.uri
             );
             expect(mockCreateSkeet).not.toHaveBeenCalled();
         });
 
         it('BadBotHandler Does not run actions when post is not reply', async () => {
             badBotHandler = BadBotHandler.make(handlerAgent);
-            message = CreateSkeetMessageFactory.factory()
-                .record(
-                    CreateSkeetRecordFactory.factory().text('bad bot').create()
+            message = JetstreamEventFactory.factory()
+                .fromDid('did:plc:other')
+                .commit(
+                    JetstreamCommitFactory.factory()
+                        .record(
+                            NewSkeetRecordFactory.factory()
+                                .text('bad bot')
+                                .create()
+                        )
+                        .create()
                 )
-                .create();
+                .create() as JetstreamEventCommit;
             await badBotHandler.handle(undefined, message);
             expect(mockHasPostReply).toHaveBeenCalledWith(message);
             expect(mockGetDidFromUri).not.toHaveBeenCalled();
