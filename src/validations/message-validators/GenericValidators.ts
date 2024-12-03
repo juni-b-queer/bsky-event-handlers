@@ -1,4 +1,7 @@
-import { JetstreamMessage } from '../../types/JetstreamTypes';
+import {
+    JetstreamEventCommit,
+    JetstreamMessage,
+} from '../../types/JetstreamTypes';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 
@@ -13,7 +16,7 @@ export class ActionTakenByUserValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return this.userDid === message.did;
     }

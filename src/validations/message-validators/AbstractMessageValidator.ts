@@ -1,7 +1,10 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import {
     CreateSkeetMessage,
+    JetstreamEvent,
+    JetstreamEventCommit,
     JetstreamMessage,
+    NewSkeetRecord,
 } from '../../types/JetstreamTypes';
 import { AbstractValidator } from '../AbstractValidator';
 
@@ -14,22 +17,22 @@ export abstract class AbstractMessageValidator extends AbstractValidator {
         throw new Error('Method Not Implemented! Use constructor.');
     }
 
-    getTextFromPost(message: JetstreamMessage): string {
-        const createSkeetMessage = message as CreateSkeetMessage;
-        const text = createSkeetMessage.record.text;
+    getTextFromPost(message: JetstreamEvent): string {
+        const createSkeetMessage = message?.commit?.record as NewSkeetRecord;
+        const text = createSkeetMessage?.text;
         return <string>text;
     }
 
     // @ts-ignore
     abstract async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEvent
     ): Promise<boolean>;
 
     // @ts-ignore
     async shouldTrigger(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEvent
     ): Promise<boolean> {
         const valid: boolean = await this.handle(handlerAgent, message);
         return this.negate ? !valid : valid;

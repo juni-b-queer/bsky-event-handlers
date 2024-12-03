@@ -6,6 +6,10 @@ import {
     JetstreamMessage,
     JetstreamRecord,
     JetstreamReply,
+    JetstreamEvent,
+    JetstreamCommit,
+    JetstreamIdentity,
+    JetstreamAccount,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 import { CreateSkeetRecordFactory, ReplyFactory } from './RecordFactories';
@@ -253,5 +257,111 @@ export class CreateSkeetMessageFactory extends CreateMessageFactory {
     withText(text: string) {
         this.messageObject.record.text = text;
         return this;
+    }
+}
+
+export class JetstreamEventFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamEvent;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            did: 'did:plc:example',
+            kind: 'commit',
+            time_us: 0,
+        };
+    }
+
+    static factory(): JetstreamEventFactory {
+        return new JetstreamEventFactory();
+    }
+
+    static make(): JetstreamEvent {
+        return JetstreamEventFactory.factory().create();
+    }
+    create(): JetstreamEvent {
+        return this.eventObject as JetstreamEvent;
+    }
+}
+
+export class JetstreamCommitFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamCommit;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            collection: 'app.bsky.feed.post',
+            operation: 'create',
+            rev: 'examplerev',
+            rkey: 'examplerkey',
+            cid: 'examplecid',
+        };
+        // get keys from commit, replace values in event object
+    }
+
+    static factory(): JetstreamCommitFactory {
+        return new JetstreamCommitFactory();
+    }
+
+    static make(): JetstreamCommit {
+        return JetstreamCommitFactory.factory().create();
+    }
+
+    create(): JetstreamCommit {
+        return this.eventObject as JetstreamCommit;
+    }
+}
+
+export class JetstreamIdentityFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamIdentity;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            did: 'did:plc:example',
+            handle: 'handle.example',
+            seq: 0,
+            time: '',
+        };
+        // get keys from commit, replace values in event object
+    }
+
+    static factory(): JetstreamIdentityFactory {
+        return new JetstreamIdentityFactory();
+    }
+
+    static make(): JetstreamIdentity {
+        return JetstreamIdentityFactory.factory().create();
+    }
+
+    create(): JetstreamIdentity {
+        return this.eventObject as JetstreamIdentity;
+    }
+}
+
+export class JetstreamAccountFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamAccount;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            active: true,
+            did: 'did:plc:example',
+            seq: 0,
+            time: Date.now().toString(),
+        };
+        // get keys from commit, replace values in event object
+    }
+
+    static factory(): JetstreamAccountFactory {
+        return new JetstreamAccountFactory();
+    }
+
+    static make(): JetstreamAccount {
+        return JetstreamAccountFactory.factory().create();
+    }
+
+    create(): JetstreamAccount {
+        return this.eventObject as JetstreamAccount;
     }
 }

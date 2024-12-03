@@ -1,5 +1,8 @@
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import {
+    CreateSkeetMessage,
+    JetstreamEventCommit,
+} from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class PostedByUserValidator extends AbstractMessageValidator {
@@ -13,11 +16,11 @@ export class PostedByUserValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return (
             this.userDid === message.did &&
-            message.collection == 'app.bsky.feed.post'
+            message.commit.collection == 'app.bsky.feed.post'
         );
     }
 }
@@ -33,7 +36,7 @@ export class ReplyingToBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -45,7 +48,7 @@ export class ReplyingToBotValidator extends AbstractMessageValidator {
 
         return (
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post'
+            message.commit.collection == 'app.bsky.feed.post'
         );
     }
 }
@@ -61,7 +64,7 @@ export class IsReplyValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return handlerAgent.hasPostReply(message);
     }
@@ -78,9 +81,9 @@ export class IsNewPost extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
-        const createdAt = new Date(message.record.createdAt);
+        const createdAt = new Date(message?.time_us);
         const now = new Date();
         const oneDay = 24 * 60 * 60 * 1000;
 

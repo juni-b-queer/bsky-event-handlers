@@ -52,13 +52,6 @@ export interface JetstreamReply {
     root: JetstreamSubject;
 }
 
-export interface JetstreamRecord {
-    $type: JetstreamCollectionType;
-    createdAt: string;
-    subject?: JetstreamSubject | string;
-    reply?: JetstreamReply;
-}
-
 export type JetstreamCollectionType =
     | 'app.bsky.feed.post'
     | 'app.bsky.feed.like'
@@ -79,7 +72,8 @@ export interface JetstreamCommit {
     operation: 'create' | 'delete' | 'update';
     collection: JetstreamCollectionType;
     rkey: string;
-    record?: JetstreamRecord;
+    record?: JetstreamRecord | NewSkeetRecord;
+    cid: string;
 }
 
 export interface JetstreamEventCommit extends JetstreamEvent {
@@ -108,8 +102,15 @@ export interface JetstreamEventAccount extends JetstreamEvent {
     account: JetstreamAccount;
 }
 
+export interface JetstreamRecord {
+    $type: JetstreamCollectionType;
+    createdAt: string;
+    subject?: JetstreamSubject | string;
+    reply?: JetstreamReply;
+}
 
 export interface NewSkeetRecord {
+    $type: JetstreamCollectionType;
     embed?: {
         $type: string;
         images?: JetstreamImageEmbed[];
@@ -117,8 +118,9 @@ export interface NewSkeetRecord {
     };
     facets?: JetstreamFacet[];
     langs?: string[];
-    text?: string;
+    text: string;
     reply?: JetstreamReply;
+    subject?: JetstreamSubject | string;
 }
 // Deprecated
 
@@ -153,5 +155,3 @@ export interface CreateSkeetRecord extends JetstreamRecord {
     text?: string;
     reply?: JetstreamReply;
 }
-
-

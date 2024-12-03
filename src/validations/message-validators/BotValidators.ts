@@ -1,6 +1,9 @@
 import { isBadBotResponse, isGoodBotResponse } from '../../utils/text-utils';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import {
+    CreateSkeetMessage,
+    JetstreamEventCommit,
+} from '../../types/JetstreamTypes';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 
 export class IsGoodBotValidator extends AbstractMessageValidator {
@@ -14,7 +17,7 @@ export class IsGoodBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -25,7 +28,7 @@ export class IsGoodBotValidator extends AbstractMessageValidator {
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post';
+            message.commit.collection == 'app.bsky.feed.post';
         return isGoodBotResponse(this.getTextFromPost(message)) && isReplyToBot;
     }
 }
@@ -41,7 +44,7 @@ export class IsBadBotValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         if (!handlerAgent.hasPostReply(message)) {
             return false;
@@ -52,7 +55,7 @@ export class IsBadBotValidator extends AbstractMessageValidator {
         );
         const isReplyToBot =
             handlerAgent.getDid === replyingToDid &&
-            message.collection == 'app.bsky.feed.post';
+            message.commit.collection == 'app.bsky.feed.post';
         return isBadBotResponse(this.getTextFromPost(message)) && isReplyToBot;
     }
 }

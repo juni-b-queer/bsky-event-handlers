@@ -4,6 +4,10 @@ import {
     JetstreamRecord,
     JetstreamReply,
     JetstreamSubject,
+    NewSkeetRecord,
+    JetstreamImageEmbed,
+    JetstreamExternal,
+    JetstreamFacet,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 
@@ -56,6 +60,33 @@ export class RecordFactory extends AbstractTypeFactory {
     subject(inputSubject: JetstreamSubject | string) {
         this.record.subject = inputSubject;
         return this;
+    }
+}
+
+export class NewSkeetRecordFactory extends AbstractTypeFactory {
+    public record: NewSkeetRecord;
+    constructor() {
+        super();
+        this.record = {
+            $type: 'app.bsky.feed.post',
+            embed: undefined,
+            facets: undefined,
+            langs: undefined,
+            text: 'example text',
+            reply: undefined,
+        };
+    }
+
+    static factory(): NewSkeetRecordFactory {
+        return new NewSkeetRecordFactory();
+    }
+
+    static make(): NewSkeetRecord {
+        return NewSkeetRecordFactory.factory().create();
+    }
+
+    create(): NewSkeetRecord {
+        return this.record as NewSkeetRecord;
     }
 }
 
