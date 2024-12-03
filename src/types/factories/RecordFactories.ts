@@ -69,6 +69,7 @@ export class NewSkeetRecordFactory extends AbstractTypeFactory {
         super();
         this.record = {
             $type: 'app.bsky.feed.post',
+            createdAt: Date.now().toString(),
             embed: undefined,
             facets: undefined,
             langs: undefined,

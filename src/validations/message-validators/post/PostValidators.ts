@@ -83,7 +83,9 @@ export class IsNewPost extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        const createdAt = new Date(message?.time_us);
+        if (!message.commit) return false;
+        if (!message.commit.record) return false;
+        const createdAt = new Date(message?.commit.record?.createdAt);
         const now = new Date();
         const oneDay = 24 * 60 * 60 * 1000;
 

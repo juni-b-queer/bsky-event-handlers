@@ -111,6 +111,7 @@ export interface JetstreamRecord {
 
 export interface NewSkeetRecord {
     $type: JetstreamCollectionType;
+    createdAt: string;
     embed?: {
         $type: string;
         images?: JetstreamImageEmbed[];
