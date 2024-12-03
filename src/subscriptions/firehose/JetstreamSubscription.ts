@@ -111,9 +111,7 @@ export class JetstreamSubscription extends AbstractSubscription {
         });
 
         this.wsClient.on('error', (err) => {
-            console.log(err);
-            DebugLog.error('FIREHOSE', `Error: ${err.message}`);
-            this.restart = true;
+            this.handleError(err);
         });
 
         return this;
@@ -121,6 +119,12 @@ export class JetstreamSubscription extends AbstractSubscription {
 
     public handleOpen() {
         DebugLog.info('FIREHOSE', `Connection Opened`);
+    }
+
+    public handleError(err: Error) {
+        console.log(err);
+        DebugLog.error('FIREHOSE', `Error: ${err.message}`);
+        this.restart = true;
     }
 
     public stopSubscription(restart: boolean = false): this {
