@@ -538,9 +538,13 @@ export class HandlerAgent {
     }
 
     hasPostReply(message: JetstreamEventCommit) {
-        if(!message?.commit?.record) return false;
+        if (!message.commit) return false;
+        if (!message.commit.record) return false;
 
-        return 'reply' in message?.commit?.record && message.commit?.record?.reply !== undefined;
+        return (
+            'reply' in message.commit.record &&
+            message.commit?.record?.reply !== undefined
+        );
     }
 
     getPostReply(message: JetstreamEventCommit) {
