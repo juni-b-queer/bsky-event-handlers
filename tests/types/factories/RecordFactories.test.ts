@@ -2,24 +2,29 @@ import {
     CreateSkeetRecord,
     CreateSkeetRecordFactory,
     JetstreamRecord,
-    RecordFactory,
+    JetstreamRecordFactory,
     JetstreamReply,
-    ReplyFactory,
     JetstreamSubject,
     JetstreamSubjectFactory,
+    ReplyFactory,
 } from '../../../src';
 
 describe('RecordFactory', () => {
-    let factory: RecordFactory;
+    let factory: JetstreamRecordFactory;
     let defaultRecord: JetstreamRecord;
 
     beforeEach(() => {
-        factory = RecordFactory.factory();
+        factory = JetstreamRecordFactory.factory();
         defaultRecord = {
             $type: 'app.bsky.feed.like',
             createdAt: '',
             subject: undefined,
         };
+    });
+
+    it('default', () => {
+        const record = JetstreamRecordFactory.make();
+        expect(record).toEqual(JetstreamRecordFactory.factory().create());
     });
 
     it('Type', () => {

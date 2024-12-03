@@ -3,9 +3,9 @@ import {
     DebugLog,
     HandlerAgent,
     JetstreamReply,
-    ReplyFactory,
     JetstreamSubject,
     JetstreamSubjectFactory,
+    ReplyFactory,
 } from '../../src';
 import { BskyAgent } from '@atproto/api';
 

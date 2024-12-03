@@ -1,7 +1,10 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
     HandlerAgent,
+    JetstreamCollectionType,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     PostedByUserValidator,
 } from '../../../../src';
 import dotenv from 'dotenv';
@@ -23,28 +26,36 @@ describe('Posted by user validator', () => {
     const validator = PostedByUserValidator.make(userDid);
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
+    const createMessage = (
+        did: string,
+        collection: JetstreamCollectionType = 'app.bsky.feed.post'
+    ) => {
+        return JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection(collection)
+                    .record(NewSkeetRecordFactory.factory().create())
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
+
     it('shouldTrigger returns true if posted by same did', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .fromDid(userDid)
-            .create();
+        const message = createMessage(userDid);
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     it('shouldTrigger returns false not posted by same user', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .fromDid('did:plc:other')
-            .create();
-
+        const message = createMessage('did:plc:other');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
 
     it('shouldTrigger returns false if not a post', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .collection('app.bsky.feed.like')
-            .create();
-
+        const message = createMessage(userDid, 'app.bsky.feed.like');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );

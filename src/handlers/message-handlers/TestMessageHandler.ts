@@ -2,7 +2,10 @@ import { MessageHandler } from './MessageHandler';
 import { AbstractValidator } from '../../validations/AbstractValidator';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { JetstreamMessage } from '../../types/JetstreamTypes';
+import {
+    JetstreamEventCommit,
+    JetstreamMessage,
+} from '../../types/JetstreamTypes';
 import { DebugLog } from '../../utils/DebugLog';
 
 export class TestMessageHandler extends MessageHandler {
@@ -18,7 +21,7 @@ export class TestMessageHandler extends MessageHandler {
     // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<void> {
         const shouldTrigger = await this.shouldTrigger(message);
         if (shouldTrigger) {

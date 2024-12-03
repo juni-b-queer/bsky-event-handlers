@@ -1,9 +1,6 @@
 import { flattenTextUpdated } from '../../../utils/text-utils';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import {
-    CreateSkeetMessage,
-    JetstreamEventCommit,
-} from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class InputIsCommandValidator extends AbstractMessageValidator {

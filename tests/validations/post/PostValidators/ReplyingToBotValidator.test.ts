@@ -1,7 +1,9 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
     HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     ReplyFactory,
     ReplyingToBotValidator,
 } from '../../../../src';
@@ -24,21 +26,40 @@ describe('ReplyingToBotValidator', () => {
     const validator = ReplyingToBotValidator.make();
     const botDid = 'did:plc:bot';
 
-    it('shouldTrigger returns false if no reply', async () => {
-        const message: CreateSkeetMessage =
-            CreateSkeetMessageFactory.factory().create();
-
+    const createHandlerAgent = (): HandlerAgent => {
         const bskyAgent: BskyAgent = {
             session: {
                 did: botDid,
             },
         } as BskyAgent;
-        const handlerAgent: HandlerAgent = new HandlerAgent(
-            'name',
-            'handle',
-            'password',
-            bskyAgent
-        );
+
+        return new HandlerAgent('name', 'handle', 'password', bskyAgent);
+    };
+
+    const createMessage = (replyDid: string | undefined | null = null) => {
+        const recordFactory = NewSkeetRecordFactory.factory();
+        if (replyDid == 'default') {
+            recordFactory.reply();
+        } else if (replyDid) {
+            recordFactory.reply(
+                ReplyFactory.factory().replyTo(replyDid).create()
+            );
+        }
+
+        return JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .record(recordFactory.create())
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
+
+    it('shouldTrigger returns false if no reply', async () => {
+        const message = createMessage();
+        const handlerAgent = createHandlerAgent();
 
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
@@ -46,40 +67,15 @@ describe('ReplyingToBotValidator', () => {
     });
 
     it('shouldTrigger returns true if the did is the same as the agent', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .withReply(ReplyFactory.factory().replyTo(botDid).create())
-            .create();
-
-        const bskyAgent: BskyAgent = {
-            session: {
-                did: botDid,
-            },
-        } as BskyAgent;
-        const handlerAgent: HandlerAgent = new HandlerAgent(
-            'name',
-            'handle',
-            'password',
-            bskyAgent
-        );
+        const message = createMessage(botDid);
+        const handlerAgent = createHandlerAgent();
 
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
     it('shouldTrigger returns false if the did in the reply.parent.uri is not the same as the agent details', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .withReply(ReplyFactory.factory().replyTo('did:plc:bad').create())
-            .create();
-        const bskyAgent: BskyAgent = {
-            session: {
-                did: botDid,
-            },
-        } as BskyAgent;
-        const handlerAgent: HandlerAgent = new HandlerAgent(
-            'name',
-            'handle',
-            'password',
-            bskyAgent
-        );
+        const message = createMessage('default');
+        const handlerAgent = createHandlerAgent();
 
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false

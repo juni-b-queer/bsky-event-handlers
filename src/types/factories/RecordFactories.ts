@@ -1,17 +1,14 @@
 import {
-    JetstreamCollectionType,
     CreateSkeetRecord,
+    JetstreamCollectionType,
     JetstreamRecord,
     JetstreamReply,
     JetstreamSubject,
     NewSkeetRecord,
-    JetstreamImageEmbed,
-    JetstreamExternal,
-    JetstreamFacet,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 
-export class RecordFactory extends AbstractTypeFactory {
+export class JetstreamRecordFactory extends AbstractTypeFactory {
     public record: JetstreamRecord;
     constructor() {
         super();
@@ -22,12 +19,12 @@ export class RecordFactory extends AbstractTypeFactory {
         };
     }
 
-    static factory(): RecordFactory {
-        return new RecordFactory();
+    static factory(): JetstreamRecordFactory {
+        return new JetstreamRecordFactory();
     }
 
     static make(): JetstreamRecord {
-        return RecordFactory.factory().create();
+        return JetstreamRecordFactory.factory().create();
     }
 
     create(): JetstreamRecord {

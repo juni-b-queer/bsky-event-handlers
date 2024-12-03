@@ -3,11 +3,9 @@ import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageAction } from '../../actions/message-actions/AbstractMessageAction';
 import { AbstractHandler } from '../AbstractHandler';
 import {
-    CreateSkeetMessage,
     JetstreamEventCommit,
     JetstreamReply,
 } from '../../types/JetstreamTypes';
-import { DebugLog } from '../../utils/DebugLog';
 
 // @ts-ignore
 export class MessageHandler extends AbstractHandler {

@@ -1,9 +1,6 @@
 import { AbstractMessageAction } from './AbstractMessageAction';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    JetstreamEventCommit,
-    JetstreamMessage,
-} from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 
 export class LogMessageAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any

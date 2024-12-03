@@ -1,8 +1,5 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    JetstreamEventCommit,
-    JetstreamMessage,
-} from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { AbstractAction } from '../AbstractAction';
 
 export abstract class AbstractMessageAction extends AbstractAction {

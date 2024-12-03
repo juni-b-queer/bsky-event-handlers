@@ -1,19 +1,21 @@
 import {
     HandlerAgent,
-    JetstreamMessage,
-    JetstreamMessageFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     LogMessageAction,
 } from '../../../src';
 
 describe('LogMessageAction', () => {
     let action: LogMessageAction;
     let handlerAgent: HandlerAgent;
-    let message: JetstreamMessage;
+    let message: JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {
         handlerAgent = {} as HandlerAgent;
-        message = JetstreamMessageFactory.factory().create();
+        message = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
         action = LogMessageAction.make();
     });
 

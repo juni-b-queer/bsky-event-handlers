@@ -1,16 +1,10 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecord,
-    CreateSkeetRecordFactory,
     HandlerAgent,
     IsNewPost,
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
     NewSkeetRecord,
-    NewSkeetRecordFactory,
-    ReplyFactory,
 } from '../../../../src';
 import { BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
@@ -41,6 +35,17 @@ describe('IsNewPost', () => {
         'password',
         bskyAgent
     );
+
+    test('handle returns false with no record ', async () => {
+        const recentDate = new Date();
+        recentDate.setHours(recentDate.getHours() - 1);
+
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
+
+        expect(await validator.handle(handlerAgent, message)).toBe(false);
+    });
 
     test('handle returns true if message is created within the last 24 hours', async () => {
         const recentDate = new Date();

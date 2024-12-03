@@ -1,7 +1,6 @@
 import WebSocket from 'ws';
 import { DebugLog } from '../../utils/DebugLog';
 import {
-    CreateSkeetMessage,
     JetstreamEvent,
     JetstreamEventCommit,
 } from '../../types/JetstreamTypes';

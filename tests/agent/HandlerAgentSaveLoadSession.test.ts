@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
-import path from 'path';
 import { DebugLog, HandlerAgent } from '../../src';
 import { AtpSessionData } from '@atproto/api';
 

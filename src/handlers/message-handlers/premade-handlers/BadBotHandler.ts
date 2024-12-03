@@ -1,11 +1,7 @@
 import { IsBadBotValidator } from '../../../validations/message-validators/BotValidators';
 import { DebugLogAction } from '../../../actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
-import {
-    CreateSkeetMessage,
-    JetstreamEventCommit,
-} from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
 import { CreateSkeetAction } from '../../../actions/standard-bsky-actions/SkeetActions';

@@ -1,6 +1,4 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
-import { JetstreamMessage } from '../types/JetstreamTypes';
-import { AbstractMessageAction } from './message-actions/AbstractMessageAction';
 import { DebugLog } from '../utils/DebugLog';
 import { AbstractAction } from './AbstractAction';
 

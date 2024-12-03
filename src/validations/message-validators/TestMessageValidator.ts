@@ -1,9 +1,6 @@
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    CreateSkeetMessage,
-    JetstreamEventCommit,
-} from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 
 export class TestMessageValidator extends AbstractMessageValidator {
     constructor(private shouldPass: boolean) {

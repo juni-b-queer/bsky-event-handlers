@@ -1,8 +1,5 @@
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import {
-    CreateSkeetMessage,
-    JetstreamEventCommit,
-} from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
 export class PostedByUserValidator extends AbstractMessageValidator {
@@ -38,12 +35,9 @@ export class ReplyingToBotValidator extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        if (!handlerAgent.hasPostReply(message)) {
-            return false;
-        }
+        if (!message.commit.record?.reply) return false;
         const replyingToDid = handlerAgent.getDIDFromUri(
-            // @ts-ignore
-            message.record.reply?.parent.uri
+            message.commit.record.reply?.parent.uri
         );
 
         return (
@@ -83,7 +77,6 @@ export class IsNewPost extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        if (!message.commit) return false;
         if (!message.commit.record) return false;
         const createdAt = new Date(message?.commit.record?.createdAt);
         const now = new Date();

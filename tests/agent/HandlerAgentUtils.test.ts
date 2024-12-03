@@ -1,13 +1,10 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecordFactory,
     HandlerAgent,
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    JetstreamMessage,
-    JetstreamMessageFactory,
+    JetstreamRecord,
+    NewSkeetRecord,
     NewSkeetRecordFactory,
     ReplyFactory,
 } from '../../src';
@@ -100,6 +97,35 @@ describe('HandlerAgent', () => {
                     .create() as JetstreamEventCommit;
             const result = handlerAgent.getPostReply(message);
             expect(result).toBe(reply);
+        });
+    });
+
+    // New test to cover the specific lines
+    describe('special case for commit.record.subject being a string', () => {
+        it('should return default structure when subject is a string', () => {
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .fromDid('did:plc:other')
+                    .commit(
+                        JetstreamCommitFactory.factory()
+                            .record({
+                                subject: 'some string',
+                            } as JetstreamRecord)
+                            .create()
+                    )
+                    .create() as JetstreamEventCommit;
+
+            const result = handlerAgent.generateReplyFromMessage(message); // Or whichever method is relevant
+            expect(result).toEqual({
+                root: {
+                    uri: '',
+                    cid: '',
+                },
+                parent: {
+                    uri: '',
+                    cid: '',
+                },
+            });
         });
     });
 });

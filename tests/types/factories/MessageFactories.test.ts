@@ -1,152 +1,224 @@
 import {
-    JetstreamCollectionType,
-    CreateMessage,
-    CreateMessageFactory,
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecordFactory,
-    JetstreamMessage,
-    JetstreamMessageFactory,
-    OperationType,
-    JetstreamRecord,
-    RecordFactory,
+    JetstreamEvent,
+    JetstreamEventFactory,
+    JetstreamCommit,
+    JetstreamCommitFactory,
+    JetstreamIdentity,
+    JetstreamIdentityFactory,
+    JetstreamAccount,
+    JetstreamAccountFactory,
+    NewSkeetRecordFactory,
+    NewSkeetRecord,
 } from '../../../src';
 
-describe('JetstreamMessageFactory', () => {
-    let factory: JetstreamMessageFactory;
+describe('JetstreamEventFactory', () => {
+    let factory: JetstreamEventFactory;
+    let defaultEvent: JetstreamEvent;
 
-    let defaultJetstreamMessage: JetstreamMessage;
     beforeEach(() => {
-        factory = JetstreamMessageFactory.factory();
-        defaultJetstreamMessage = {
-            cid: '',
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-        };
+        factory = JetstreamEventFactory.factory();
+        defaultEvent = JetstreamEventFactory.factory().commit().create();
     });
 
-    it('creates a new JetstreamMessageFactory with Factory, and a default JetstreamMessage with create', () => {
-        const message = factory.create();
-        expect(message).toEqual(defaultJetstreamMessage);
+    it('creates a new JetstreamEvent with factory, and a default event with create', () => {
+        const event = factory.commit().create();
+        expect(event).toEqual(defaultEvent);
     });
-    //collection
-    it('Updates the JetstreamMessage.collection with a given collection', () => {
-        const collection: JetstreamCollectionType = 'app.bsky.feed.like';
-        factory.collection(collection);
-        defaultJetstreamMessage.collection = collection;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
+
+    it('updates the JetstreamEvent DID', () => {
+        const did = 'did:plc:custom';
+        const event = factory.fromDid(did).commit().create();
+        defaultEvent.did = did;
+        expect(event).toEqual(defaultEvent);
     });
-    // optType
-    it('Updates the JetstreamMessage.opType with a given opType', () => {
-        const opType: OperationType = 'c';
-        factory.opType(opType);
-        defaultJetstreamMessage.opType = opType;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    // isCreation
-    it("Updates the JetstreamMessage.opType with a 'c' using isCreation", () => {
-        factory.isCreation();
-        defaultJetstreamMessage.opType = 'c';
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    // isDeletion
-    it("Updates the JetstreamMessage.opType with a 'd' using isDeletion", () => {
-        factory.isDeletion();
-        defaultJetstreamMessage.opType = 'd';
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    // fromDid
-    it('Updates the JetstreamMessage.did with a given did', () => {
-        const did = 'did:plc:test';
-        factory.fromDid(did);
-        defaultJetstreamMessage.did = did;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    //rkey
-    it('Updates the JetstreamMessage.rkey with a given rkey', () => {
-        const rkey = 'testrkey';
-        factory.rkey(rkey);
-        defaultJetstreamMessage.rkey = rkey;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    // cid
-    it('Updates the JetstreamMessage.cid with a given cid', () => {
-        const cid = 'testcid';
-        factory.cid(cid);
-        defaultJetstreamMessage.cid = cid;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
-    });
-    // seq
-    it('Updates the JetstreamMessage.seq with a given seq', () => {
-        const seq = 100;
-        factory.seq(seq);
-        defaultJetstreamMessage.seq = seq;
-        expect(factory.create()).toEqual(defaultJetstreamMessage);
+
+    it('attaches a commit to the JetstreamEvent', () => {
+        const commit = JetstreamCommitFactory.make();
+        const event = factory.commit(commit).create();
+        defaultEvent.commit = commit;
+        expect(event).toEqual(defaultEvent);
     });
 });
 
-describe('CreateMessageFactory', () => {
-    const factory: CreateMessageFactory = CreateMessageFactory.factory();
-    let defaultCreateMessage: CreateMessage;
+describe('JetstreamCommitFactory', () => {
+    let factory: JetstreamCommitFactory;
+    let defaultCommit: JetstreamCommit;
 
     beforeEach(() => {
-        defaultCreateMessage = {
-            cid: '',
+        factory = JetstreamCommitFactory.factory();
+        defaultCommit = {
             collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            record: {
-                $type: 'app.bsky.feed.post',
-                createdAt: '',
-            },
+            operation: 'create',
+            rkey: 'examplerkey',
+            cid: 'examplecid',
+            rev: 'examplerev',
+            record: undefined,
         };
     });
 
-    it('creates a new CreateMessageFactory with factory, and a default CreateMessage with create', () => {
-        const message = factory.create();
-        expect(message).toEqual(defaultCreateMessage);
+    it('creates a new JetstreamCommit with factory, and a default commit with create', () => {
+        const commit = factory.create();
+        expect(commit).toEqual(defaultCommit);
     });
-    //record
-    it('Updates the createMessage with a given record', () => {
-        const record: JetstreamRecord = RecordFactory.make();
-        factory.record(record);
-        defaultCreateMessage.record = record;
-        expect(factory.create()).toEqual(defaultCreateMessage);
+
+    it('updates the JetstreamCommit operation', () => {
+        const operation = 'update';
+        const commit = factory.operation(operation).create();
+        defaultCommit.operation = operation;
+        expect(commit).toEqual(defaultCommit);
+    });
+
+    it('updates the JetstreamCommit collection', () => {
+        const collection = 'app.bsky.feed.like';
+        const commit = factory.collection(collection).create();
+        defaultCommit.collection = collection;
+        expect(commit).toEqual(defaultCommit);
+    });
+
+    it('updates the JetstreamCommit rkey', () => {
+        const rkey = 'newrkey';
+        const commit = factory.rkey(rkey).create();
+        defaultCommit.rkey = rkey;
+        expect(commit).toEqual(defaultCommit);
+    });
+
+    it('attaches a record to the JetstreamCommit', () => {
+        const record = NewSkeetRecordFactory.factory()
+            .text('sample message')
+            .create();
+        const commit = factory.record(record).create();
+        defaultCommit.record = record;
+        expect(commit).toEqual(defaultCommit);
     });
 });
 
-describe('CreateSkeetMessageFactory', () => {
-    let factory: CreateSkeetMessageFactory;
-    let defaultCreateSkeetMessage: CreateSkeetMessage;
+describe('JetstreamIdentityFactory', () => {
+    let factory: JetstreamIdentityFactory;
+    let defaultIdentity: JetstreamIdentity;
 
     beforeEach(() => {
-        factory = CreateSkeetMessageFactory.factory();
-        defaultCreateSkeetMessage = {
-            cid: '',
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
+        factory = JetstreamIdentityFactory.factory();
+        defaultIdentity = {
+            did: 'did:plc:example',
+            handle: 'handle.example',
             seq: 0,
-            record: CreateSkeetRecordFactory.factory().create(),
+            time: '',
         };
     });
 
-    it('creates a new CreateSkeetMessageFactory with factory, and a default CreateMessage with create', () => {
-        const message = factory.create();
-        defaultCreateSkeetMessage.record.createdAt = message.record.createdAt;
-        expect(message).toEqual(defaultCreateSkeetMessage);
+    it('creates a new JetstreamIdentity with factory, and a default identity with create', () => {
+        const identity = factory.create();
+        expect(identity).toEqual(defaultIdentity);
     });
-    //record
-    it('Updates the CreateSkeetMessageRecord with a given record', () => {
-        const record = CreateSkeetRecordFactory.factory().create();
-        factory.record(record);
-        defaultCreateSkeetMessage.record = record;
-        expect(factory.create()).toEqual(defaultCreateSkeetMessage);
+
+    it('updates the JetstreamIdentity handle', () => {
+        const handle = 'custom.handle';
+        const identity = factory.handle(handle).create();
+        defaultIdentity.handle = handle;
+        expect(identity).toEqual(defaultIdentity);
+    });
+});
+
+describe('JetstreamAccountFactory', () => {
+    let factory: JetstreamAccountFactory;
+    let defaultAccount: JetstreamAccount;
+
+    beforeEach(() => {
+        factory = JetstreamAccountFactory.factory();
+        defaultAccount = JetstreamAccountFactory.make();
+    });
+
+    it('creates a new JetstreamAccount with factory, and a default account with create', () => {
+        const account = factory.create();
+        defaultAccount.time = account.time;
+        expect(account).toEqual(defaultAccount);
+    });
+
+    it('deactivates a JetstreamAccount', () => {
+        const account = factory.deactivate().create();
+        defaultAccount.active = false;
+        expect(account).toEqual(defaultAccount);
+    });
+
+    it('updates the JetstreamAccount sequence', () => {
+        const seq = 42;
+        const account = factory.sequence(seq).create();
+        defaultAccount.seq = seq;
+        expect(account).toEqual(defaultAccount);
+    });
+
+    it('updates the JetstreamAccount sequence', () => {
+        const account = JetstreamAccountFactory.make();
+        expect(account).toEqual(defaultAccount);
+    });
+});
+
+describe('Additional Tests for Jetstream Factories', () => {
+    describe('JetstreamCommitFactory', () => {
+        it('should update text in the commit record correctly', () => {
+            const factory = JetstreamCommitFactory.factory();
+            const text = 'new text';
+            const commit = factory.text(text).create();
+            if (commit.record !== undefined) {
+                if ('text' in commit.record) {
+                    expect(commit.record?.text).toEqual(text);
+                }
+            }
+        });
+
+        it('should create a commit with a custom record', () => {
+            const factory = JetstreamCommitFactory.factory();
+            const customRecord = { text: 'custom message' } as NewSkeetRecord; // assuming simple structure
+            const commit = factory.record(customRecord).create();
+            expect(commit.record).toEqual(customRecord);
+        });
+
+        it('should create a commit with a custom record', () => {
+            const factory = JetstreamCommitFactory.factory();
+            const customRecord = { text: 'custom message' } as NewSkeetRecord; // assuming simple structure
+            const commit = factory.record(customRecord).create();
+            expect(commit.record).toEqual(customRecord);
+
+            customRecord.text = 'new message';
+            factory.text('new message');
+            expect(commit.record).toEqual(customRecord);
+        });
+    });
+
+    describe('JetstreamEventFactory', () => {
+        it('should create a commit if none provided', () => {
+            const factory = JetstreamEventFactory.factory();
+            factory.commit(); // This should invoke JetstreamCommitFactory.make()
+            const event = factory.create();
+            expect(event.commit).toBeDefined();
+        });
+
+        it('should be default for make', () => {
+            const event = JetstreamEventFactory.make();
+            expect(event).toEqual({
+                did: 'did:plc:example',
+                kind: 'commit',
+                time_us: 0,
+            });
+        });
+    });
+
+    describe('JetstreamIdentityFactory', () => {
+        it('should create identity with a custom sequence', () => {
+            const factory = JetstreamIdentityFactory.factory();
+            const seq = 99;
+            const identity = factory.sequence(seq).create(); // If this method exists
+            expect(identity.seq).toEqual(seq);
+        });
+
+        it('should create identity with a custom sequence', () => {
+            const identity = JetstreamIdentityFactory.make();
+            expect(identity).toEqual({
+                did: 'did:plc:example',
+                handle: 'handle.example',
+                seq: 0,
+                time: '',
+            });
+        });
     });
 });

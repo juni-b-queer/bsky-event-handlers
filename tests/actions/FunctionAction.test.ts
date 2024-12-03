@@ -5,7 +5,6 @@ import {
     JetstreamEventCommit,
     JetstreamEventFactory,
     JetstreamMessage,
-    JetstreamMessageFactory,
     nowDateTime,
 } from '../../src';
 import mocked = jest.mocked;

@@ -1,8 +1,6 @@
 import { AbstractMessageAction } from '../AbstractMessageAction';
 import {
-    CreateSkeetMessage,
     JetstreamEventCommit,
-    JetstreamMessage,
     JetstreamReply,
 } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';

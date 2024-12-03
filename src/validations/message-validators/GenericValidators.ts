@@ -1,7 +1,4 @@
-import {
-    JetstreamEventCommit,
-    JetstreamMessage,
-} from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 

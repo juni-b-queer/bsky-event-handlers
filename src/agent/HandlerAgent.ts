@@ -6,15 +6,13 @@ import {
     RichText,
 } from '@atproto/api';
 import { debugLog } from '../utils/logging-utils';
-import { ProfileView } from '@atproto/api/dist/client/types/app/bsky/actor/defs';
 import {
-    NewSkeetRecord,
+    JetstreamEventCommit,
     JetstreamReply,
     JetstreamSubject,
-    JetstreamEventCommit,
+    NewSkeetRecord,
 } from '../types/JetstreamTypes';
 import { DebugLog } from '../utils/DebugLog';
-import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 import fs from 'node:fs';
 
 export class HandlerAgent {

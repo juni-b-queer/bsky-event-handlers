@@ -1,6 +1,5 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
-import { DebugLog } from '../../utils/DebugLog';
 
 export class CreateLikeAction extends AbstractAction {
     constructor(

@@ -1,10 +1,7 @@
 import {
     HandlerAgent,
-    JetstreamEvent,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    JetstreamMessage,
-    JetstreamMessageFactory,
     TestMessageAction,
 } from '../../src';
 import { advanceTo } from 'jest-date-mock';

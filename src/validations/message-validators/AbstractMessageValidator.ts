@@ -1,11 +1,5 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    CreateSkeetMessage,
-    JetstreamEvent,
-    JetstreamEventCommit,
-    JetstreamMessage,
-    NewSkeetRecord,
-} from '../../types/JetstreamTypes';
+import { JetstreamEvent, NewSkeetRecord } from '../../types/JetstreamTypes';
 import { AbstractValidator } from '../AbstractValidator';
 
 export abstract class AbstractMessageValidator extends AbstractValidator {

@@ -1,9 +1,10 @@
 import {
-    CreateMessage,
-    CreateMessageFactory,
     HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    JetstreamRecordFactory,
     NewFollowFromUserValidator,
-    RecordFactory,
     UserFollowedValidator,
 } from '../../../src';
 import { BskyAgent } from '@atproto/api';
@@ -38,10 +39,16 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns true if no did provided, and follow is by bot user', async () => {
         const validator = NewFollowFromUserValidator.make();
-        const message: CreateMessage = CreateMessageFactory.factory()
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(botDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
@@ -50,10 +57,16 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns true if given did is same as message did', async () => {
         const validator = NewFollowFromUserValidator.make(testDid);
-        const message: CreateMessage = CreateMessageFactory.factory()
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(testDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
@@ -62,10 +75,16 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns false if given did is different from message did', async () => {
         const validator = NewFollowFromUserValidator.make('did:plc:test');
-        const message: CreateMessage = CreateMessageFactory.factory()
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(botDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
@@ -74,10 +93,16 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns false if default bot did not follow did', async () => {
         const validator = NewFollowFromUserValidator.make();
-        const message: CreateMessage = CreateMessageFactory.factory()
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(testDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false
@@ -86,10 +111,16 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns true if using deprecated UserFollowedValidator', async () => {
         const validator = UserFollowedValidator.make();
-        const message: CreateMessage = CreateMessageFactory.factory()
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(botDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             true
@@ -98,10 +129,17 @@ describe('New Follow From User Validator', () => {
 
     it('shouldTrigger returns false if using deprecated UserFollowedValidator and given did differs', async () => {
         const validator = UserFollowedValidator.make(testDid);
-        const message: CreateMessage = CreateMessageFactory.factory()
+
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
             .fromDid(botDid)
-            .record(RecordFactory.factory().isFollow().create())
-            .create();
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .record(
+                        JetstreamRecordFactory.factory().isFollow().create()
+                    )
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
 
         expect(await validator.shouldTrigger(mockHandlerAgent, message)).toBe(
             false

@@ -1,11 +1,8 @@
 import {
     DebugLogAction,
     HandlerAgent,
-    JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    JetstreamMessage,
-    JetstreamMessageFactory,
     LogInputTextAction,
 } from '../../src';
 import { advanceTo } from 'jest-date-mock';

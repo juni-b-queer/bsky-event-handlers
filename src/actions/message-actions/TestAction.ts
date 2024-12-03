@@ -1,8 +1,5 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    JetstreamEventCommit,
-    JetstreamMessage,
-} from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { DebugLog } from '../../utils/DebugLog';
 import { AbstractMessageAction } from './AbstractMessageAction';
 
