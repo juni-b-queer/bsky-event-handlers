@@ -61,11 +61,11 @@ await myBotHandlerAgent.authenticate()
 - `findRepostRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a repost record for the specified skeet URI.
 - `findSpecificRecord(collectionType: string, errorName: string, skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a specific record in the specified collection for the given skeet URI.
 - `getDIDFromUri(uri: string)`: Extracts the DID from a URI.
-- `postedByAgent(message: JetstreamMessage)`: Checks if a message was posted by the agent.
-- `generateURIFromCreateMessage(message: CreateSkeetMessage)`: Generates a URI from a `CreateSkeetMessage`.
-- `generateReplyFromMessage(message: CreateSkeetMessage)`: Generates a reply from a `CreateSkeetMessage`.
-- `hasPostReply(message: CreateSkeetMessage)`: Checks if a message has a reply.
-- `getPostReply(message: CreateSkeetMessage)`: Retrieves the reply from a message.
+- `postedByAgent(message: JetstreamEventCommit)`: Checks if a message was posted by the agent.
+- `generateURIFromCreateMessage(message: JetstreamEventCommit)`: Generates a URI from a `JetstreamEventCommit`.
+- `generateReplyFromMessage(message: JetstreamEventCommit)`: Generates a reply from a `JetstreamEventCommit`.
+- `hasPostReply(message: JetstreamEventCommit)`: Checks if a message has a reply.
+- `getPostReply(message: JetstreamEventCommit)`: Retrieves the reply from a message.
 
 ### Getters and Setters
 - `setAgent`: Sets the agent.
