@@ -27,6 +27,7 @@ export * from './validations/message-validators/GenericValidators';
 export * from './validations/message-validators/post/StringValidators';
 export * from './validations/message-validators/post/PostValidators';
 export * from './validations/message-validators/follow/FollowValidators';
+export * from './validations/message-validators/repost/RepostValidators';
 
 /**
  * Actions
