@@ -26,7 +26,7 @@ jobs:
         id: cache-nodemodules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-node-modules-test
         with:
           # caching node_modules
           path: node_modules
@@ -60,7 +60,7 @@ jobs:
         id: cache-nodemodules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-node-modules-lint
         with:
           # caching node_modules
           path: node_modules
