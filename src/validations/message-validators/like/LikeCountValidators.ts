@@ -2,22 +2,9 @@ import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
 import { AbstractMessageValidator } from '../AbstractMessageValidator';
 
-export abstract class AbstractPostLikeCount extends AbstractMessageValidator {
-    constructor(...args: any) {
-        super();
-    }
-
-    // TODO fill this function in
-    getPostLikes(postUri: string): Promise<number> {
-        return new Promise((resolve, reject) => {
-            resolve(postUri.length);
-        });
-    }
-}
-
 type ComparisonType = 'equal' | 'greaterThan' | 'lessThan' | 'between';
 
-export class PostLikesValidator extends AbstractPostLikeCount {
+export class PostLikesValidator extends AbstractMessageValidator {
     constructor(
         private postUri: string,
         private comparisonType: ComparisonType,
@@ -62,7 +49,7 @@ export class PostLikesValidator extends AbstractPostLikeCount {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        const likes = await this.getPostLikes(this.postUri);
+        const likes = await handlerAgent.getPostLikeCount(this.postUri);
 
         switch (this.comparisonType) {
             case 'equal':
@@ -75,8 +62,10 @@ export class PostLikesValidator extends AbstractPostLikeCount {
                 return likes < this.likeCount;
             case 'between':
                 return (
-                    likes >= (this.likeCountMin ?? 0) &&
-                    likes <= (this.likeCountMax ?? Number.MAX_SAFE_INTEGER)
+                    // @ts-ignore
+                    likes >= this.likeCountMin &&
+                    // @ts-ignore
+                    likes <= this.likeCountMax
                 );
         }
     }
