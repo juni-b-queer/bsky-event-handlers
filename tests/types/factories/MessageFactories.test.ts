@@ -149,6 +149,8 @@ describe('JetstreamAccountFactory', () => {
 
     it('updates the JetstreamAccount sequence', () => {
         const account = JetstreamAccountFactory.make();
+
+        account.time = defaultAccount.time;
         expect(account).toEqual(defaultAccount);
     });
 });
