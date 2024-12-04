@@ -1,15 +1,14 @@
 import {
     HandlerAgent,
-    InputStartsWithValidator,
+    InputEqualsValidator,
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
     NewSkeetRecordFactory,
-} from '../../../../src';
+} from '../../../../../src';
 
-describe('InputStartsWithValidator', () => {
-    const validator = InputStartsWithValidator.make('test');
-    const strictValidator = InputStartsWithValidator.make('test', true);
+describe('InputEqualsValidator', () => {
+    const validator = InputEqualsValidator.make('test');
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
     const createMessage = (text: string) => {
@@ -24,21 +23,24 @@ describe('InputStartsWithValidator', () => {
             .create() as JetstreamEventCommit;
     };
 
-    test('shouldTrigger returns true if input starts with trigger keyword', async () => {
-        const message = createMessage('test message');
+    /**
+     * Test: shouldTrigger returns true if input is trigger keyword
+     * This test confirms that the validator correctly returns true when the input
+     * matches the trigger keyword.
+     */
+    test('shouldTrigger returns true if input is trigger keyword', async () => {
+        const message = createMessage('test');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
     });
 
-    test('shouldTrigger returns false if input does not start with trigger keyword', async () => {
+    /**
+     * Test: shouldTrigger returns false if input does not equal trigger keyword
+     * This test confirms that the validator correctly returns false when the input
+     * does not match the trigger keyword.
+     */
+    test('shouldTrigger returns false if input does not equal trigger keyword', async () => {
         const message = createMessage('message test');
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
-            false
-        );
-    });
-
-    test('shouldTrigger in strict mode returns true only if input strictly starts with trigger keyword', async () => {
-        const message = createMessage('Test message');
-        expect(await strictValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

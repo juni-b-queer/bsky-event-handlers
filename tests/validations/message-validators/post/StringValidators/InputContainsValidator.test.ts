@@ -5,7 +5,7 @@ import {
     JetstreamEventCommit,
     JetstreamEventFactory,
     NewSkeetRecordFactory,
-} from '../../../../src';
+} from '../../../../../src';
 
 describe('InputContainsValidator no strict parameter', () => {
     const validator = InputContainsValidator.make('test');
