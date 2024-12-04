@@ -517,7 +517,7 @@ export class HandlerAgent {
         }
         const parentReply: JetstreamSubject = {
             // @ts-ignore
-            cid: event.commit.record?.subject?.cid,
+            cid: event.commit.cid,
             uri: `at://${event.did}/app.bsky.feed.post/${event.commit.rkey}`,
         };
         // if event is a reply
@@ -536,7 +536,6 @@ export class HandlerAgent {
     }
 
     hasPostReply(message: JetstreamEventCommit) {
-        if (!message.commit) return false;
         if (!message.commit.record) return false;
 
         return (
