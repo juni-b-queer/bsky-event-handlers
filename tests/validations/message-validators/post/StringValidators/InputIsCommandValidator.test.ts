@@ -6,7 +6,7 @@ import {
     JetstreamEventFactory,
     NewSkeetRecord,
     NewSkeetRecordFactory,
-} from '../../../../src';
+} from '../../../../../src';
 
 describe('InputIsCommandValidator Class', () => {
     let inputIsCommandValidator: InputIsCommandValidator;

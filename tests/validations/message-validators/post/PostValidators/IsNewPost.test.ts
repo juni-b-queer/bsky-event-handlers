@@ -5,7 +5,7 @@ import {
     JetstreamEventCommit,
     JetstreamEventFactory,
     NewSkeetRecord,
-} from '../../../../src';
+} from '../../../../../src';
 import { BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 import fs from 'fs';

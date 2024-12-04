@@ -6,7 +6,7 @@ import {
     JetstreamEventFactory,
     NewSkeetRecordFactory,
     PostedByUserValidator,
-} from '../../../../src';
+} from '../../../../../src';
 import dotenv from 'dotenv';
 import fs from 'fs';
 

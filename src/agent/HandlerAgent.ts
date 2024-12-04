@@ -548,6 +548,75 @@ export class HandlerAgent {
         return message?.commit?.record?.reply;
     }
 
+    /**
+     *
+     * example
+     * {
+     *   thread: {
+     *     $type: "app.bsky.feed.defs#threadViewPost",
+     *     post: {
+     *       uri: "at://did:plc:2e7wbruzrfxm67xhtlfrruqn/app.bsky.feed.post/3lciwnhgsds2o",
+     *       cid: "bafyreiciz24z2nvheaxoxixcclwuyrxnh2fgmlskzksb6igjp6xivfayby",
+     *       author: [Object ...],
+     *       record: [Object ...],
+     *       replyCount: 1,
+     *       repostCount: 0,
+     *       likeCount: 2,
+     *       quoteCount: 0,
+     *       indexedAt: "2024-12-04T19:54:38.622Z",
+     *       viewer: [Object ...],
+     *       labels: [],
+     *     },
+     *     replies: [
+     *       [Object ...]
+     *     ],
+     *   },
+     * }
+     */
+    async getPostLikeCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'like');
+    }
+
+    async getPostRepostCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'repost');
+    }
+
+    async getPostReplyCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'reply');
+    }
+
+    async getPostQuoteCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'quote');
+    }
+
+    async getPostCount(
+        postUri: string,
+        countType: 'like' | 'repost' | 'reply' | 'quote'
+    ): Promise<number> {
+        const resp = await this.agent?.getPostThread({
+            uri: postUri,
+        });
+        if (!resp) return -1;
+
+        const post = resp.data.thread.post;
+
+        // Using a switch statement to retrieve the appropriate count based on the input parameter
+        switch (countType) {
+            case 'like':
+                // @ts-ignore
+                return post.likeCount;
+            case 'repost':
+                // @ts-ignore
+                return post.repostCount;
+            case 'reply':
+                // @ts-ignore
+                return post.replyCount;
+            case 'quote':
+                // @ts-ignore
+                return post.quoteCount;
+        }
+    }
+
     //endregion
 
     // region class prop getters and setters
