@@ -23,7 +23,7 @@ skeets**
 -   [Overview](#overview)
 -   [Agent](./src/agent/README.md)
 -   [Validators](./src/validations/README.md)
--   [Actions](src/actions/message-actions/README.md)
+-   [Actions](src/actions/README.md)
 -   [Handlers](src/handlers/message-handlers/README.md)
     -   [JetstreamRecord Handlers](src/handlers/message-handlers/README.md)
     -   [Pre-made Handlers](src/handlers/message-handlers/premade-handlers/README.md)
