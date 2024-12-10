@@ -2,150 +2,195 @@
 
 ## Jetstream Interfaces
 
-### JetstreamMessage
+### JetstreamEvent
 
-A standard message format that's used as the base for other message types.
+A standard message format that's used as the base for other message types. Received from the jetstream firehose
 
-| Property   | Type   | Description                                       |
-| ---------- | ------ | ------------------------------------------------- |
-| did        | string | Identifier for the Distributed IDentifiers (DIDs) |
-| seq        | number | Sequence number of the message                    |
-| opType     | string | Operation type of the message (c or d)            |
-| collection | string | Specific collection that the message belongs to   |
-| rkey       | string | Routing key for the message                       |
+| Property  | Type              | Description                     |
+|-----------|-------------------|---------------------------------|
+| did       | string            | DID that took the action        |
+| time_us   | number            | When bluesky received the event |
+| kind      | string            | 'commit', 'account', 'identity' |
+| commit?   | JetstreamCommit   | Commit data                     |
+| identity? | JetstreamIdentity | Identity data                   |
+| account?  | JetstreamAccount  | Account data                    |
 
-### CreateMessage extends JetstreamMessage
+### JetstreamEventCommit extends JetstreamEvent
 
-A message with attached record content aimed at creating a new record.
+An event with the commit property, kind = 'commit'
 
-| Property | Type   | Description                           |
-| -------- | ------ | ------------------------------------- |
-| record   | Record | The record information to be created. |
+| Property | Type            | Description                    |
+|----------|-----------------|--------------------------------|
+| commit   | JetstreamCommit | The commit data from the event |
 
-### DeleteMessage extends JetstreamMessage
+### JetstreamCommit
 
-A message intended to delete a certain record.
+The commit data in a jetstream event
 
-### CreateSkeetMessage extends CreateMessage
+| Property   | Type                            | Description                                |
+|------------|---------------------------------|--------------------------------------------|
+| rev        | string                          | rev                                        |
+| operation  | string                          | 'create', 'delete', 'update'               |
+| collection | JetstreamCollectionType         | Collection that the commit is operating on |
+| reky       | string                          | rkey of the commit item                    |
+| cid        | string                          | Cid of the commit item                     |
+| record?    | JetstreamRecord, NewSkeetRecord | Record Data                                |
 
-A special type of message used for record creation with the Skeet type.
+### JetstreamEventIdentity extends JetstreamEvent
 
-| Property | Type              | Description                          |
-| -------- | ----------------- | ------------------------------------ |
-| record   | CreateSkeetRecord | The Skeet record data to be created. |
+An event with the identity property, kind = 'identity'
 
-### AspectRatio
+| Property | Type              | Description                      |
+|----------|-------------------|----------------------------------|
+| identity | JetstreamIdentity | The identity data from the event |
+
+### JetstreamIdentity
+
+The identity data in a jetstream event
+
+| Property | Type   | Description            |
+|----------|--------|------------------------|
+| did      | string | did of the identity    |
+| handle   | string | handle of the identity |
+| seq      | number | sequence number        |
+| time     | string | time of event          |
+
+### JetstreamEventAccount extends JetstreamEvent
+
+An event with the account property, kind = 'account'
+
+| Property | Type             | Description                     |
+|----------|------------------|---------------------------------|
+| account  | JetstreamAccount | The account data from the event |
+
+### JetstreamAccount
+
+The account data in a jetstream event
+
+| Property | Type    | Description                          |
+|----------|---------|--------------------------------------|
+| did      | string  | did of the identity                  |
+| active   | boolean | whether the account is active or not |
+| seq      | number  | sequence number                      |
+| time     | string  | time of event                        |
+
+### JetstreamAspectRatio
 
 Defines the ratio of width to height for an element in numeric terms
 
 | Property | Type   | Description            |
-| -------- | ------ | ---------------------- |
+|----------|--------|------------------------|
 | width    | number | Width of the element.  |
 | height   | number | Height of the element. |
 
-### Ref
+### JetstreamRef
 
 A reference object that points to a certain link.
 
 | Property | Type   | Description             |
-| -------- | ------ | ----------------------- |
+|----------|--------|-------------------------|
 | $link    | string | The URL reference link. |
 
-### Subject
+### JetstreamSubject
 
 Represents a unique subject entity in the system.
 
 | Property | Type   | Description                           |
-| -------- | ------ | ------------------------------------- |
+|----------|--------|---------------------------------------|
 | cid      | string | The unique identifier of the subject. |
 | uri      | string | The URI of the subject.               |
 
-### Image
+### JetstreamImage
 
 Represents an image resource.
 
-| Property | Type   | Description                               |
-| -------- | ------ | ----------------------------------------- |
-| $type    | string | Specifies the type of the object.         |
-| ref      | Ref    | A reference to where the image is stored. |
-| mimeType | string | The MIME type of the image.               |
-| size     | number | The size of the image file.               |
+| Property | Type         | Description                               |
+|----------|--------------|-------------------------------------------|
+| $type    | string       | Specifies the type of the object.         |
+| ref      | JetstreamRef | A reference to where the image is stored. |
+| mimeType | string       | The MIME type of the image.               |
+| size     | number       | The size of the image file.               |
 
-### External
+### JetstreamExternal
 
 Describes an external resource with an optional thumbnail image.
 
-| Property    | Type   | Description                                |
-| ----------- | ------ | ------------------------------------------ |
-| description | string | Description of the external resource.      |
-| thumb       | Image  | Thumbnail image for the external resource. |
-| title       | string | The title of the external resource.        |
-| uri         | string | The external resource URI.                 |
+| Property    | Type           | Description                                |
+|-------------|----------------|--------------------------------------------|
+| description | string         | Description of the external resource.      |
+| thumb       | JetstreamImage | Thumbnail image for the external resource. |
+| title       | string         | The title of the external resource.        |
+| uri         | string         | The external resource URI.                 |
 
-### Feature
+### JetstreamFeature
 
 A certain feature, parameters are left generic for flexibility.
 
-| Property | Type   | Description                        |
-| -------- | ------ | ---------------------------------- |
-| $type    | string | Specifies the type of the feature. |
-| uri      | string | Feature reference or source URI.   |
+| Property | Type   | Description                               |
+|----------|--------|-------------------------------------------|
+| $type    | string | Specifies the type of the feature.        |
+| uri      | string | JetstreamFeature reference or source URI. |
 
-### Index
+### JetstreamIndex
 
 Represents a byte range.
 
 | Property  | Type   | Description              |
-| --------- | ------ | ------------------------ |
+|-----------|--------|--------------------------|
 | byteStart | number | Start of the byte range. |
 | byteEnd   | number | End of the byte range.   |
 
-### Facet
+### JetstreamFacet
 
 Contains information on features and their indexes.
 
-| Property | Type      | Description                             |
-| -------- | --------- | --------------------------------------- |
-| features | Feature[] | Array of features.                      |
-| index    | Index     | Index object representing a byte range. |
+| Property | Type               | Description                                      |
+|----------|--------------------|--------------------------------------------------|
+| features | JetstreamFeature[] | Array of features.                               |
+| index    | JetstreamIndex     | JetstreamIndex object representing a byte range. |
 
-### ImageEmbed
+### JetstreamImageEmbed
 
 Represents embedded image data.
 
-| Property    | Type        | Description                   |
-| ----------- | ----------- | ----------------------------- |
-| alt         | string      | Alternate text for the image. |
-| aspectRatio | AspectRatio | Aspect ratio of the image.    |
-| image       | Image       | The image object.             |
+| Property    | Type                 | Description                   |
+|-------------|----------------------|-------------------------------|
+| alt         | string               | Alternate text for the image. |
+| aspectRatio | JetstreamAspectRatio | Aspect ratio of the image.    |
+| image       | JetstreamImage       | The image object.             |
 
-### Reply
+### JetstreamReply
 
 Defines a reply with references to its parent and root subjects.
 
-| Property | Type    | Description                           |
-| -------- | ------- | ------------------------------------- |
-| parent   | Subject | Reference to the parent of the reply. |
-| root     | Subject | Reference to the root of the reply.   |
+| Property | Type             | Description                           |
+|----------|------------------|---------------------------------------|
+| parent   | JetstreamSubject | Reference to the parent of the reply. |
+| root     | JetstreamSubject | Reference to the root of the reply.   |
 
-### Record
+### JetstreamRecord
 
 A generic record with timestamps and associated subject.
 
-| Property  | Type             | Description                                              |
-| --------- | ---------------- | -------------------------------------------------------- |
-| $type     | string           | The type of the record.                                  |
-| createdAt | string           | The creation timestamp of the record.                    |
-| subject   | Subject / string | The associated subject of the record. Or DID as a string |
+| Property  | Type                      | Description                                              |
+|-----------|---------------------------|----------------------------------------------------------|
+| $type     | string                    | The type of the record.                                  |
+| createdAt | string                    | The creation timestamp of the record.                    |
+| subject?  | JetstreamSubject / string | The associated subject of the record. Or DID as a string |
+| reply?    | JetstreamReply / string   | The associated reply of the record                       |
 
-### CreateSkeetRecord extends Record
+### NewSkeetRecord
 
-A specific type of record intended to be created in the system.
+The Record object in an event commit when a skeet is created
 
-| Property | Type     | Description                    |
-| -------- | -------- | ------------------------------ |
-| embed    | object   | Optional embedded object data. |
-| facets   | Facet[]  | Optional array of facets.      |
-| langs    | string[] | Optional array of languages.   |
-| text     | string   | Optional text data.            |
-| reply    | Reply    | Optional reply data.           |
+| Property  | Type                      | Description         |
+|-----------|---------------------------|---------------------|
+| $type     | JetstreamCollectionType   | collection type     |
+| createdAt | string                    | time of creation    |
+| text      | string                    | sequence number     |
+| embed?    | object                    | embeded image data  |
+| facets?   | JetstreamFacet[]          | array of facet data |
+| langs?    | string[]                  | array of langs      |
+| subject?  | JetstreamSubject / string | Subject of commit   |
+| reply?    | JetstreamReply            | reply of commit     |
+

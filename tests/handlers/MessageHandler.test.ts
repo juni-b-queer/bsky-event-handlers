@@ -1,11 +1,11 @@
 import {
     AbstractMessageAction,
     AbstractValidator,
-    CreateSkeetMessage,
     DebugLog,
     HandlerAgent,
-    JetstreamMessage,
-    JetstreamMessageFactory,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     MessageHandler,
 } from '../../src';
 
@@ -24,15 +24,15 @@ describe('MessageHandler', () => {
         mockValidatorShouldTrigger = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
-                    return message.opType === 'c';
+                (agent: HandlerAgent, message: JetstreamEventCommit) => {
+                    return message.commit.operation === 'create';
                 }
             );
         mockActionHandle = jest
             .fn()
             .mockImplementation(
-                (message: CreateSkeetMessage, agent: HandlerAgent) => {
-                    if (message.seq === 3) {
+                (agent: HandlerAgent, message: JetstreamEventCommit) => {
+                    if (message.did === 'err') {
                         throw new Error('error');
                     }
                     return;
@@ -63,31 +63,43 @@ describe('MessageHandler', () => {
     describe('handle', () => {
         it('should run actions when opType is c', async () => {
             //make CreateSkeetMessage
-            const message: JetstreamMessage = JetstreamMessageFactory.make();
-            await messageHandler.handle(message);
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit()
+                    .create() as JetstreamEventCommit;
+            await messageHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalledWith(
-                message,
-                mockedHandlerAgent
+                mockedHandlerAgent,
+                message
             );
         });
 
         it('should run not actions when opType is d', async () => {
-            const message: JetstreamMessage = JetstreamMessageFactory.factory()
-                .isDeletion()
-                .create();
-            await messageHandler.handle(message);
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit(
+                        JetstreamCommitFactory.factory()
+                            .operation('delete')
+                            .create()
+                    )
+                    .create() as JetstreamEventCommit;
+
+            await messageHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).not.toHaveBeenCalled();
         });
 
         it('should debug log error when handle throws error', async () => {
-            const message: JetstreamMessage = JetstreamMessageFactory.factory()
-                .seq(3)
-                .create();
-            await messageHandler.handle(message);
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .fromDid('err')
+                    .commit()
+                    .create() as JetstreamEventCommit;
+
+            await messageHandler.handle(undefined, message);
 
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();

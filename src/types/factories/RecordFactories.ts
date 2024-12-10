@@ -1,14 +1,15 @@
 import {
     CreateSkeetRecord,
-    Reply,
-    Subject,
-    Record,
-    CollectionType,
+    JetstreamCollectionType,
+    JetstreamRecord,
+    JetstreamReply,
+    JetstreamSubject,
+    NewSkeetRecord,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
 
-export class RecordFactory extends AbstractTypeFactory {
-    public record: Record;
+export class JetstreamRecordFactory extends AbstractTypeFactory {
+    public record: JetstreamRecord;
     constructor() {
         super();
         this.record = {
@@ -18,19 +19,19 @@ export class RecordFactory extends AbstractTypeFactory {
         };
     }
 
-    static factory(): RecordFactory {
-        return new RecordFactory();
+    static factory(): JetstreamRecordFactory {
+        return new JetstreamRecordFactory();
     }
 
-    static make(): Record {
-        return RecordFactory.factory().create();
+    static make(): JetstreamRecord {
+        return JetstreamRecordFactory.factory().create();
     }
 
-    create(): Record {
-        return this.record as Record;
+    create(): JetstreamRecord {
+        return this.record as JetstreamRecord;
     }
 
-    type(inputType: CollectionType) {
+    type(inputType: JetstreamCollectionType) {
         this.record.$type = inputType;
         return this;
     }
@@ -53,8 +54,50 @@ export class RecordFactory extends AbstractTypeFactory {
         return this;
     }
 
-    subject(inputSubject: Subject | string) {
+    subject(inputSubject: JetstreamSubject | string) {
         this.record.subject = inputSubject;
+        return this;
+    }
+}
+
+export class NewSkeetRecordFactory extends AbstractTypeFactory {
+    public record: NewSkeetRecord;
+    constructor() {
+        super();
+        this.record = {
+            $type: 'app.bsky.feed.post',
+            createdAt: Date.now().toString(),
+            embed: undefined,
+            facets: undefined,
+            langs: undefined,
+            text: 'example text',
+            reply: undefined,
+        };
+    }
+
+    static factory(): NewSkeetRecordFactory {
+        return new NewSkeetRecordFactory();
+    }
+
+    static make(): NewSkeetRecord {
+        return NewSkeetRecordFactory.factory().create();
+    }
+
+    create(): NewSkeetRecord {
+        return this.record as NewSkeetRecord;
+    }
+
+    reply(reply: JetstreamReply | undefined = undefined) {
+        if (reply === undefined) {
+            this.record.reply = ReplyFactory.make();
+        } else {
+            this.record.reply = reply;
+        }
+        return this;
+    }
+
+    text(text: string) {
+        this.record.text = text;
         return this;
     }
 }
@@ -106,9 +149,9 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
     }
 
     /**
-     * Set the text for the Skeet Record object.
+     * Set the text for the Skeet JetstreamRecord object.
      *
-     * @param {string} skeetText - The text to be set for the Skeet Record.
+     * @param {string} skeetText - The text to be set for the Skeet JetstreamRecord.
      * @return {CreateSkeetRecordFactory} - The update instance of CreateSkeetRecordFactory.
      */
     text(skeetText: string): CreateSkeetRecordFactory {
@@ -119,17 +162,17 @@ export class CreateSkeetRecordFactory extends AbstractTypeFactory {
     /**
      * Sets the reply value for a SkeetRecordFactory object.
      *
-     * @param {Reply} skeetReply - The reply value to be set for the SkeetRecordFactory object.
+     * @param {JetstreamReply} skeetReply - The reply value to be set for the SkeetRecordFactory object.
      * @return {CreateSkeetRecordFactory} - The update instance of CreateSkeetRecordFactory.
      */
-    reply(skeetReply: Reply): CreateSkeetRecordFactory {
+    reply(skeetReply: JetstreamReply): CreateSkeetRecordFactory {
         this.skeetRecordObject.reply = skeetReply;
         return this;
     }
 }
 
-export class SubjectFactory extends AbstractTypeFactory {
-    public subject: Subject;
+export class JetstreamSubjectFactory extends AbstractTypeFactory {
+    public subject: JetstreamSubject;
     constructor() {
         super();
         this.subject = {
@@ -138,16 +181,16 @@ export class SubjectFactory extends AbstractTypeFactory {
         };
     }
 
-    static factory(): SubjectFactory {
-        return new SubjectFactory();
+    static factory(): JetstreamSubjectFactory {
+        return new JetstreamSubjectFactory();
     }
 
-    static make(): Subject {
-        return SubjectFactory.factory().create();
+    static make(): JetstreamSubject {
+        return JetstreamSubjectFactory.factory().create();
     }
 
-    create(): Subject {
-        return this.subject as Subject;
+    create(): JetstreamSubject {
+        return this.subject as JetstreamSubject;
     }
 
     cid(inputCid: string) {
@@ -162,11 +205,11 @@ export class SubjectFactory extends AbstractTypeFactory {
 }
 
 /**
- * A factory class for creating Reply objects.
+ * A factory class for creating JetstreamReply objects.
  * @extends AbstractTypeFactory
  */
 export class ReplyFactory extends AbstractTypeFactory {
-    public reply: Reply;
+    public reply: JetstreamReply;
     constructor() {
         super();
         this.reply = {
@@ -185,21 +228,21 @@ export class ReplyFactory extends AbstractTypeFactory {
         return new ReplyFactory();
     }
 
-    static make(): Reply {
+    static make(): JetstreamReply {
         return ReplyFactory.factory().create();
     }
 
-    create(): Reply {
-        return this.reply as Reply;
+    create(): JetstreamReply {
+        return this.reply as JetstreamReply;
     }
 
     /**
      * Sets the root subject for the reply.
      *
-     * @param {Subject} replyRoot - The root subject for the reply.
+     * @param {JetstreamSubject} replyRoot - The root subject for the reply.
      * @return {ReplyFactory} - The updated instance of the ReplyFactory.
      */
-    root(replyRoot: Subject): ReplyFactory {
+    root(replyRoot: JetstreamSubject): ReplyFactory {
         this.reply.root = replyRoot;
         return this;
     }
@@ -207,10 +250,10 @@ export class ReplyFactory extends AbstractTypeFactory {
     /**
      * Sets the parent reply for the given subject.
      *
-     * @param {Subject} replyParent - The parent reply to be set.
+     * @param {JetstreamSubject} replyParent - The parent reply to be set.
      * @return {ReplyFactory} - The updated instance of the ReplyFactory.
      */
-    parent(replyParent: Subject): ReplyFactory {
+    parent(replyParent: JetstreamSubject): ReplyFactory {
         this.reply.parent = replyParent;
         return this;
     }

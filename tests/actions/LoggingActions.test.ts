@@ -1,47 +1,26 @@
 import {
     DebugLogAction,
     HandlerAgent,
-    JetstreamMessage,
-    JetstreamMessageFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     LogInputTextAction,
-    LogMessageAction,
 } from '../../src';
 import { advanceTo } from 'jest-date-mock';
 import mocked = jest.mocked;
-
-describe('LogMessageAction', () => {
-    let action: LogMessageAction;
-    let handlerAgent: HandlerAgent;
-    let message: JetstreamMessage;
-    console.log = jest.fn();
-
-    beforeEach(() => {
-        handlerAgent = {} as HandlerAgent;
-        message = JetstreamMessageFactory.factory().create();
-        action = LogMessageAction.make();
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
-    it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(message, handlerAgent);
-        expect(console.log).toHaveBeenCalledWith(message);
-    });
-});
 
 describe('LogInputTextAction', () => {
     let input: string;
     let action: LogInputTextAction;
     let handlerAgent: HandlerAgent;
-    let message: JetstreamMessage;
+    let message: JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {
         input = 'hello';
         handlerAgent = {} as HandlerAgent;
-        message = JetstreamMessageFactory.factory().create();
+        message = JetstreamEventFactory.factory()
+            .commit()
+            .create() as JetstreamEventCommit;
         action = LogInputTextAction.make(input);
     });
 
@@ -50,7 +29,7 @@ describe('LogInputTextAction', () => {
     });
 
     it('Should log output of RepoOp object when handle() is called', async () => {
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(input);
     });
 });
@@ -58,8 +37,9 @@ describe('LogInputTextAction', () => {
 describe('LogInputTextAction', () => {
     let action: DebugLogAction;
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
-    const message: JetstreamMessage =
-        JetstreamMessageFactory.factory().create();
+    const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+        .commit()
+        .create() as JetstreamEventCommit;
     console.log = jest.fn();
 
     beforeEach(() => {
@@ -77,7 +57,16 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
+        expect(console.log).toHaveBeenCalledWith(expected);
+    });
+
+    it('Should log info when no level given without make', async () => {
+        const expected = '1/31/2023, 07:00 PM | TEST | INFO | Hello';
+
+        action = new DebugLogAction('TEST', 'Hello');
+
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -86,7 +75,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'info');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -95,7 +84,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'warn');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 
@@ -104,7 +93,7 @@ describe('LogInputTextAction', () => {
 
         action = DebugLogAction.make('TEST', 'Hello', 'error');
 
-        await action.handle(message, handlerAgent);
+        await action.handle(handlerAgent, message);
         expect(console.log).toHaveBeenCalledWith(expected);
     });
 });

@@ -1,10 +1,11 @@
 import {
-    CreateSkeetMessage,
-    CreateSkeetMessageFactory,
-    CreateSkeetRecordFactory,
     HandlerAgent,
     InputEqualsValidator,
     InputStartsWithValidator,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
+    NewSkeetRecordFactory,
     OrValidator,
 } from '../../../src';
 
@@ -18,31 +19,35 @@ describe('OrValidator', () => {
     ]);
     const handlerAgent: HandlerAgent = {} as HandlerAgent;
 
+    const createMessage = (text: string) => {
+        return JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .record(NewSkeetRecordFactory.factory().text(text).create())
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+    };
+
     test('shouldTrigger returns true if both validators pass', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .record(CreateSkeetRecordFactory.factory().text('test').create())
-            .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        const message = createMessage('test');
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns true if one validator passes', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .record(
-                CreateSkeetRecordFactory.factory().text('test message').create()
-            )
-            .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        const message = createMessage('test message');
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             true
         );
     });
 
     test('shouldTrigger returns false if no validators pass', async () => {
-        const message: CreateSkeetMessage = CreateSkeetMessageFactory.factory()
-            .record(CreateSkeetRecordFactory.factory().text('random').create())
-            .create();
-        expect(await orValidator.shouldTrigger(message, handlerAgent)).toBe(
+        const message = createMessage('random');
+        expect(await orValidator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });

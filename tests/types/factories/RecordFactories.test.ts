@@ -1,26 +1,30 @@
 import {
     CreateSkeetRecord,
     CreateSkeetRecordFactory,
-    Record,
-    RecordFactory,
-    Reply,
+    JetstreamRecord,
+    JetstreamRecordFactory,
+    JetstreamReply,
+    JetstreamSubject,
+    JetstreamSubjectFactory,
     ReplyFactory,
-    Subject,
-    SubjectFactory,
 } from '../../../src';
-import { factory } from 'ts-jest/dist/transformers/hoist-jest';
 
 describe('RecordFactory', () => {
-    let factory: RecordFactory;
-    let defaultRecord: Record;
+    let factory: JetstreamRecordFactory;
+    let defaultRecord: JetstreamRecord;
 
     beforeEach(() => {
-        factory = RecordFactory.factory();
+        factory = JetstreamRecordFactory.factory();
         defaultRecord = {
             $type: 'app.bsky.feed.like',
             createdAt: '',
             subject: undefined,
         };
+    });
+
+    it('default', () => {
+        const record = JetstreamRecordFactory.make();
+        expect(record).toEqual(JetstreamRecordFactory.factory().create());
     });
 
     it('Type', () => {
@@ -29,7 +33,7 @@ describe('RecordFactory', () => {
     });
 
     it('subject', () => {
-        const subject: Subject = SubjectFactory.make();
+        const subject: JetstreamSubject = JetstreamSubjectFactory.make();
         const record = factory.subject(subject).create();
         defaultRecord.subject = subject;
         expect(record).toEqual(defaultRecord);
@@ -83,7 +87,7 @@ describe('CreateSkeetRecordFactory', () => {
         expect(record).toEqual(defaultCreateSkeetRecord);
     });
 
-    it('updates the CreateSkeetRecord reply with a given Reply', () => {
+    it('updates the CreateSkeetRecord reply with a given JetstreamReply', () => {
         const reply = ReplyFactory.factory().create();
         defaultCreateSkeetRecord.reply = reply;
         const record = factory.reply(reply).create();
@@ -93,15 +97,15 @@ describe('CreateSkeetRecordFactory', () => {
 });
 
 describe('SubjectFactory', () => {
-    let factory: SubjectFactory;
-    let defaultSubject: Subject;
+    let factory: JetstreamSubjectFactory;
+    let defaultSubject: JetstreamSubject;
 
     beforeEach(() => {
-        factory = SubjectFactory.factory();
-        defaultSubject = SubjectFactory.make();
+        factory = JetstreamSubjectFactory.factory();
+        defaultSubject = JetstreamSubjectFactory.make();
     });
 
-    it('creates a new Subject with factory, and a default subject with create', () => {
+    it('creates a new JetstreamSubject with factory, and a default subject with create', () => {
         const message = factory.create();
         expect(message).toEqual(defaultSubject);
     });
@@ -122,20 +126,20 @@ describe('SubjectFactory', () => {
 });
 describe('ReplyFactory', () => {
     let factory: ReplyFactory;
-    let defaultReply: Reply;
+    let defaultReply: JetstreamReply;
 
     beforeEach(() => {
         factory = ReplyFactory.factory();
         defaultReply = ReplyFactory.make();
     });
 
-    it('creates a new ReplyFactory with factory, and a default Reply with create', () => {
+    it('creates a new ReplyFactory with factory, and a default JetstreamReply with create', () => {
         const message = factory.create();
         expect(message).toEqual(defaultReply);
     });
 
-    it('updates the Reply Root with a given root Subject', () => {
-        const root: Subject = {
+    it('updates the JetstreamReply Root with a given root JetstreamSubject', () => {
+        const root: JetstreamSubject = {
             cid: 'uri',
             uri: 'uri',
         };
@@ -144,8 +148,8 @@ describe('ReplyFactory', () => {
         expect(factory.create()).toEqual(defaultReply);
     });
 
-    it('updates the Reply parent with a given parent Subject', () => {
-        const parent: Subject = {
+    it('updates the JetstreamReply parent with a given parent JetstreamSubject', () => {
+        const parent: JetstreamSubject = {
             cid: 'uri',
             uri: 'uri',
         };
@@ -154,7 +158,7 @@ describe('ReplyFactory', () => {
         expect(factory.create()).toEqual(defaultReply);
     });
 
-    it('updates the Reply parent uri to be replying to the given did', () => {
+    it('updates the JetstreamReply parent uri to be replying to the given did', () => {
         const did: string = 'did:plc:example';
         defaultReply.parent.uri = `at://${did}/app.bsky.feed.post/rkey`;
         factory.replyTo(did);

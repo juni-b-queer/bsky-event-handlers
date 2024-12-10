@@ -6,13 +6,14 @@ import {
     RichText,
 } from '@atproto/api';
 import { debugLog } from '../utils/logging-utils';
-import { ProfileView } from '@atproto/api/dist/client/types/app/bsky/actor/defs';
 import {
-    CreateSkeetMessage,
-    JetstreamMessage,
-    Reply,
-    Subject,
+    JetstreamEventCommit,
+    JetstreamReply,
+    JetstreamSubject,
+    NewSkeetRecord,
 } from '../types/JetstreamTypes';
+import { DebugLog } from '../utils/DebugLog';
+import fs from 'node:fs';
 
 export class HandlerAgent {
     private did: string | undefined;
@@ -59,7 +60,19 @@ export class HandlerAgent {
         if (!this.agent) {
             this.agent = this.initializeBskyAgent();
         }
-        if (this.agent) {
+
+        if (fs.existsSync(this.getSessionLocation())) {
+            DebugLog.warn('AGENT', 'Existing session. Loading session');
+
+            const loadedSession: AtpSessionData | undefined =
+                await this.loadSessionData();
+            if (loadedSession) {
+                this.setSession = loadedSession;
+            }
+        }
+
+        if (this.agent && this.session === undefined) {
+            DebugLog.warn('AGENT', 'No existing session. creating session');
             await this.agent.login({
                 identifier: this.handle,
                 password: this.password,
@@ -70,8 +83,10 @@ export class HandlerAgent {
                 );
             } else {
                 debugLog('AGENT', `${this.agentName} is authenticated!`);
-                // console.log()
             }
+        }
+
+        if (this.session !== undefined) {
             await this.agent.resumeSession(this.session);
 
             if (!this.agent) {
@@ -81,75 +96,152 @@ export class HandlerAgent {
         }
     }
 
+    getSessionLocation(): string {
+        const path = process.env?.SESSION_DATA_PATH ?? '.';
+        return `${path}/${this.agentName}-session.json`;
+    }
+
+    async saveSessionData(session: AtpSessionData): Promise<void> {
+        const sessionLocation = this.getSessionLocation();
+        return new Promise((resolve, reject) => {
+            fs.writeFile(sessionLocation, JSON.stringify(session), (err) => {
+                if (err) {
+                    DebugLog.error(
+                        'AGENT',
+                        `Failed to save session data. ${err.message}`
+                    );
+                    reject(new Error('Failed to save'));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async loadSessionData(): Promise<AtpSessionData | undefined> {
+        const sessionLocation = this.getSessionLocation();
+        return new Promise((resolve, reject) => {
+            fs.readFile(sessionLocation, 'utf8', (err, data) => {
+                if (err) {
+                    DebugLog.error(
+                        'AGENT',
+                        `Failed to read session data. ${err.message}`
+                    );
+                    resolve(undefined);
+                } else {
+                    try {
+                        resolve(JSON.parse(data) as AtpSessionData);
+                    } catch (parseError) {
+                        DebugLog.error(
+                            'AGENT',
+                            `Failed to parse session data. ${parseError}`
+                        );
+                        resolve(undefined);
+                    }
+                }
+            });
+        });
+    }
     //endregion
 
     //region Follower Interactions
+
     /**
-     *
+     * getProfile
      */
-    async getFollows(userDID: string | undefined = undefined) {
-        if (userDID === undefined) {
-            userDID = this.getDid;
-        }
-        const resp = await this.agent?.getFollows({ actor: userDID });
-        return resp?.data.follows;
+
+    async getProfile(did: string) {
+        const response = await this.agent?.getProfile({ actor: did });
+        return response?.data;
     }
 
     /**
      *
      */
-    async getFollowers(userDID: string | undefined = undefined) {
+    async getFollows(
+        userDID: string | undefined = undefined,
+        cursor: string | undefined = undefined,
+        limit: number = 50
+    ) {
         if (userDID === undefined) {
             userDID = this.getDid;
         }
-        const resp = await this.agent?.getFollowers({ actor: userDID });
-        return resp?.data.followers;
+        const body = {
+            actor: userDID,
+            cursor: cursor,
+            limit: limit,
+        };
+        const resp = await this.agent?.getFollows(body);
+        return resp?.data;
+    }
+
+    /**
+     *
+     */
+    async getFollowers(
+        userDID: string | undefined = undefined,
+        cursor: string | undefined = undefined,
+        limit: number = 50
+    ) {
+        if (userDID === undefined) {
+            userDID = this.getDid;
+        }
+        const body = {
+            actor: userDID,
+            cursor: cursor,
+            limit: limit,
+        };
+        const resp = await this.agent?.getFollowers(body);
+        return resp?.data;
     }
 
     /**
      *
      */
     async isFollowing(userDID: string): Promise<boolean> {
-        const getFollowsResponse = await this.getFollows();
-
-        if (Array.isArray(getFollowsResponse)) {
-            const following = this.extractDIDsFromProfiles(getFollowsResponse);
-            return following.includes(userDID);
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
+            return false;
         }
-        return false;
-    }
-
-    /**
-     *
-     */
-    async isFollowedBy(userDID: string): Promise<boolean> {
-        const getFollowerResponse = await this.getFollowers();
-        if (Array.isArray(getFollowerResponse)) {
-            const followers = this.extractDIDsFromProfiles(getFollowerResponse);
-            return followers.includes(userDID);
+        const viewer = followProfile?.viewer;
+        if (!viewer?.following) {
+            return false;
         }
-        return false;
-    }
-
-    /**
-     *
-     */
-    async followUser(did: string): Promise<boolean> {
-        await this.agent?.follow(did);
         return true;
     }
 
     /**
      *
      */
-    async unfollowUser(did: string): Promise<boolean> {
-        const getFollowsResponse = await this.getFollows();
-
-        if (!Array.isArray(getFollowsResponse)) {
+    async isFollowedBy(userDID: string): Promise<boolean> {
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
             return false;
         }
-        const resp = this.getRecordForDid(did, getFollowsResponse);
-        const followLink = resp?.viewer?.following;
+        const viewer = followProfile?.viewer;
+        if (!viewer?.followedBy) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     */
+    async followUser(userDID: string): Promise<boolean> {
+        await this.agent?.follow(userDID);
+        return true;
+    }
+
+    /**
+     *
+     */
+    async unfollowUser(userDID: string): Promise<boolean> {
+        const followProfile = await this.getProfile(userDID);
+        if (!followProfile) {
+            return false;
+        }
+        const followLink = followProfile?.viewer?.following;
         if (followLink) {
             await this.agent?.deleteFollow(followLink);
             return true;
@@ -161,20 +253,21 @@ export class HandlerAgent {
 
     //region Follow Helpers
 
-    /**
-     *
-     * @param follows
-     */
-    extractDIDsFromProfiles(follows: ProfileView[]): string[] {
-        return follows.map((item) => item.did);
-    }
-
-    getRecordForDid(
-        targetDid: string,
-        data: ProfileView[]
-    ): ProfileView | undefined {
-        return data.find((item) => item.did === targetDid);
-    }
+    //
+    // /**
+    //  *
+    //  * @param follows
+    //  */
+    // extractDIDsFromProfiles(follows: ProfileView[]): string[] {
+    //     return follows.map((item) => item.did);
+    // }
+    //
+    // getRecordForDid(
+    //     targetDid: string,
+    //     data: ProfileView[]
+    // ): ProfileView | undefined {
+    //     return data.find((item) => item.did === targetDid);
+    // }
 
     //endregion
 
@@ -196,24 +289,29 @@ export class HandlerAgent {
      */
     async createSkeet(
         newPostDetails: string,
-        skeetReply: Reply | undefined = undefined
+        skeetReply: JetstreamReply | undefined = undefined
     ) {
         // TODO Add in handling for facets and maybe images?
         const replyText = new RichText({
             text: newPostDetails,
         });
-        if (skeetReply == undefined) {
-            // if it's not a reply
-            return await this.agent?.post({
-                text: replyText.text,
-            });
-        } else {
-            return await this.agent?.post({
-                // @ts-ignore
-                reply: skeetReply,
-                text: replyText.text,
-            });
+        if (this.getAgent !== undefined) {
+            await replyText.detectFacets(this.getAgent);
         }
+        // @ts-ignore
+        const record: NewSkeetRecord = {
+            text: replyText.text,
+        };
+        if (skeetReply !== undefined) {
+            // @ts-ignore
+            record.reply = skeetReply;
+        }
+        if (replyText.facets !== undefined) {
+            // @ts-ignore
+            record.facets = replyText.facets;
+        }
+
+        return await this.agent?.post(record as any);
     }
 
     /**
@@ -237,9 +335,12 @@ export class HandlerAgent {
     /**
      *
      */
-    async unlikeSkeet(likeURI: string) {
-        await this.agent?.deleteLike(likeURI);
-        // TODO error handling
+    async unlikeSkeet(skeetUri: string) {
+        const likeUri: string = await this.findLikeRecord(skeetUri);
+        if (likeUri == '') {
+            return false;
+        }
+        await this.agent?.deleteLike(likeUri);
         return true;
     }
 
@@ -248,22 +349,133 @@ export class HandlerAgent {
      */
     async reskeetSkeet(skeetURI: string, skeetCID: string) {
         await this.agent?.repost(skeetURI, skeetCID);
-        // TODO add error handling
         return true;
     }
 
     /**
      *
      */
-    async unreskeetSkeet(reskeetURI: string) {
-        await this.agent?.deleteRepost(reskeetURI);
-        // TODO error handling
+    async unreskeetSkeet(skeetUri: string) {
+        const reskeetUri: string = await this.findRepostRecord(skeetUri);
+        if (reskeetUri == '') {
+            return false;
+        }
+        await this.agent?.deleteRepost(reskeetUri);
         return true;
     }
 
     //endregion
 
     //region Post Helpers
+
+    /**
+     * Finds a record that is similar to a given skeet URI.
+     *
+     * @param {string} skeetUri - The skeet URI to find a similar record for.
+     * @param {string} [cursor=undefined] - The optional cursor to paginate results.
+     * @param {number} [attempt=1] - The number of attempts made to find the record.
+     * @returns {Promise<string>} A promise that resolves to the ID of the found record.
+     */
+    async findLikeRecord(
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        return this.findSpecificRecord(
+            'app.bsky.feed.like',
+            'like',
+            skeetUri,
+            cursor,
+            attempt
+        );
+    }
+
+    /**
+     * Finds a repost record based on the given parameters.
+     * @param {string} skeetUri - The skeet URI to search for.
+     * @param {string | undefined} cursor - Optional cursor for pagination.
+     * @param {number} attempt - The attempt number for the search.
+     * @return {Promise<string>} - A Promise that resolves to the found repost record.
+     */
+    async findRepostRecord(
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        return this.findSpecificRecord(
+            'app.bsky.feed.repost',
+            'repost',
+            skeetUri,
+            cursor,
+            attempt
+        );
+    }
+
+    /**
+     * Finds a specific record in a collection.
+     *
+     * @param {string} collectionType - The type of collection to search in.
+     * @param {string} errorName - The name of the error associated with the record.
+     * @param {string} skeetUri - The URI of the record to find.
+     * @param {string[]} cursor - The cursor used for pagination (optional).
+     * @param {number} attempt - The attempt number (optional).
+     *
+     * @return {Promise<string>} - A promise that resolves to the URI of the found record.
+     */
+    async findSpecificRecord(
+        collectionType: string,
+        errorName: string,
+        skeetUri: string,
+        cursor: string | undefined = undefined,
+        attempt: number = 1
+    ): Promise<string> {
+        const params = {
+            repo: this.getDid,
+            collection: collectionType,
+            limit: 100,
+        };
+
+        if (cursor !== undefined) {
+            // @ts-ignore
+            params['cursor'] = cursor;
+        }
+        const recordsResponse =
+            await this.agent?.api.com.atproto.repo.listRecords(params, {});
+        if (recordsResponse == undefined) {
+            DebugLog.error(
+                'Handler Agent',
+                `Failed to retrieve ${errorName} records`
+            );
+            return '';
+        }
+        const records = recordsResponse.data.records;
+        cursor = recordsResponse.data.cursor;
+        const record = records.find(
+            // @ts-ignore
+            (record) => record.value.subject.uri === skeetUri
+        );
+
+        if (record == null) {
+            DebugLog.info('Handler Agent', `Attempt ${attempt} to find record`);
+            if (attempt >= 25) {
+                DebugLog.error(
+                    'Handler Agent',
+                    `Failed to retrieve ${errorName} record`
+                );
+                return '';
+            }
+            return await this.findSpecificRecord(
+                collectionType,
+                errorName,
+                skeetUri,
+                cursor,
+                attempt + 1
+            );
+        }
+
+        return record.uri;
+    }
+
     /**
      *
      */
@@ -274,30 +486,43 @@ export class HandlerAgent {
     /**
      *
      */
-    postedByAgent(message: JetstreamMessage) {
-        return message.did === this.getDid; //TODO Test
+    postedByAgent(message: JetstreamEventCommit) {
+        return message.did === this.getDid;
     }
 
     /**
      *
      */
-    generateURIFromCreateMessage(message: CreateSkeetMessage) {
-        return `at://${message.did}/app.bsky.feed.post/${message.rkey}`;
+    generateURIFromCreateMessage(message: JetstreamEventCommit) {
+        return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
     /**
      *
      */
-    generateReplyFromMessage(message: CreateSkeetMessage): Reply {
-        let reply: Reply; //TODO Test
-        const parentReply: Subject = {
-            cid: message.cid,
-            uri: `at://${message.did}/app.bsky.feed.post/${message.rkey}`,
+    generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
+        let reply: JetstreamReply;
+        if (typeof event.commit.record?.subject == 'string') {
+            return {
+                root: {
+                    uri: '',
+                    cid: '',
+                },
+                parent: {
+                    uri: '',
+                    cid: '',
+                },
+            };
+        }
+        const parentReply: JetstreamSubject = {
+            // @ts-ignore
+            cid: event.commit.cid,
+            uri: `at://${event.did}/app.bsky.feed.post/${event.commit.rkey}`,
         };
-        // if message is a reply
-        if (message.record.reply) {
+        // if event is a reply
+        if (event.commit.record?.reply) {
             reply = {
-                root: message.record.reply.root,
+                root: event.commit.record.reply.root,
                 parent: parentReply,
             };
         } else {
@@ -309,12 +534,61 @@ export class HandlerAgent {
         return reply;
     }
 
-    hasPostReply(message: CreateSkeetMessage) {
-        return 'reply' in message.record && message.record?.reply !== undefined;
+    hasPostReply(message: JetstreamEventCommit) {
+        if (!message.commit.record) return false;
+
+        return (
+            'reply' in message.commit.record &&
+            message.commit?.record?.reply !== undefined
+        );
     }
 
-    getPostReply(message: CreateSkeetMessage) {
-        return message.record.reply;
+    getPostReply(message: JetstreamEventCommit) {
+        return message?.commit?.record?.reply;
+    }
+
+    async getPostLikeCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'like');
+    }
+
+    async getPostRepostCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'repost');
+    }
+
+    async getPostReplyCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'reply');
+    }
+
+    async getPostQuoteCount(postUri: string): Promise<number> {
+        return await this.getPostCount(postUri, 'quote');
+    }
+
+    async getPostCount(
+        postUri: string,
+        countType: 'like' | 'repost' | 'reply' | 'quote'
+    ): Promise<number> {
+        const resp = await this.agent?.getPostThread({
+            uri: postUri,
+        });
+        if (!resp) return -1;
+
+        const post = resp.data.thread.post;
+
+        // Using a switch statement to retrieve the appropriate count based on the input parameter
+        switch (countType) {
+            case 'like':
+                // @ts-ignore
+                return post.likeCount;
+            case 'repost':
+                // @ts-ignore
+                return post.repostCount;
+            case 'reply':
+                // @ts-ignore
+                return post.replyCount;
+            case 'quote':
+                // @ts-ignore
+                return post.quoteCount;
+        }
     }
 
     //endregion
@@ -410,6 +684,10 @@ export class HandlerAgent {
      */
     public set setSession(sess: AtpSessionData | undefined) {
         this.session = sess;
+        if (this.session !== undefined) {
+            DebugLog.warn('AGENT', 'Saving session');
+            this.saveSessionData(this.session);
+        }
     }
 
     /**
@@ -418,7 +696,7 @@ export class HandlerAgent {
      */
     public get getSession(): AtpSessionData | boolean {
         if (!this.session) {
-            return false; //TODO Test
+            return false;
         }
         return this.session;
     }
