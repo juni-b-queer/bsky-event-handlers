@@ -216,7 +216,7 @@ package offers a wide array of inbuilt validators and action handlers to facilit
 actions- all of which contribute to smoother, faster, and more efficient bot development.
 
 The package internally uses the Bluesky Agent to interact with the Bluesky network. The flexibility provided by the
-AbstractValidator and AbstractMessageAction base classes, paves the way for easy extension and creation of custom
+AbstractValidator and AbstractAction base classes paves the way for easy extension and creation of custom
 validators and actions to suit your specific requirements.
 
 By leveraging the combination of Validators and Actions, you can create a unique sequence of automatic responses for
