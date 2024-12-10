@@ -2,8 +2,6 @@
 
 An easy package to use for making bluesky bots with validators and handler actions
 
-https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=Run%20Tests&label=Tests
-
 
 [![GitHub Actions Test Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=Run%20Tests&label=Tests)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
 [![GitHub Actions Publish Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=release&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
