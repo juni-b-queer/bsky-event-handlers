@@ -110,7 +110,7 @@ const handlers: JetstreamSubscriptionHandlers = {
         c: [
             MessageHandler.make(
                 [InputEqualsValidator.make('Hello')],
-                [ReplyToSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -170,7 +170,7 @@ const handlers: JetstreamSubscriptionHandlers = {
         c: [
             MessageHandler.make(
                 [InputEqualsValidator.make('Hello')],
-                [ReplyToSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
