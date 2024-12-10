@@ -75,9 +75,9 @@ Initialize your handlers
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -106,9 +106,9 @@ for our example, we'll only be acting upon post creations, so our handlers will 
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [ReplyToSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -153,6 +153,7 @@ import {
     ReplyToSkeetAction,
     DebugLog,
 } from 'bsky-event-handlers';
+import { MessageHandler } from './MessageHandler';
 
 const testAgent = new HandlerAgent(
     'test-bot',
@@ -165,9 +166,9 @@ let jetstreamSubscription: JetstreamSubscription;
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [ReplyToSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -204,6 +205,7 @@ TEST_BSKY_PASSWORD=app-pass-word
 DEBUG_LOG_ACTIVE=true #This will enable DebugLog
 DEBUG_LOG_LEVEL=info # This sets the minimum log level that will be output
 JETSTREAM_URL='ws://localhost:6008/subscribe'
+SESSION_DATA_PATH="./sessionData"
 ```
 
 # Overview
@@ -225,9 +227,7 @@ your bot in response to defined triggers, enhancing your bot's interactivity, fl
 ## Packages/dependencies used
 
 -   [@atproto/api](https://www.npmjs.com/package/@atproto/api)
--   [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use
-    a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker
-    container)
+-   [Jetstream](https://github.com/bluesky-social/jetstream)
 
 ## Contact me
 
