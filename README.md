@@ -6,7 +6,7 @@ https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?n
 
 
 [![GitHub Actions Test Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=Run%20Tests&label=Tests)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
-[![GitHub Actions Publish Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=release&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain))
+[![GitHub Actions Publish Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=release&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
 [![Codecov](https://img.shields.io/codecov/c/github/juni-b-queer/bsky-event-handlers.svg?logo=codecov)](https://app.codecov.io/gh/juni-b-queer/bsky-event-handlers)
 [![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
 
