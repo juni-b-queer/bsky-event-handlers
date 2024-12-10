@@ -83,6 +83,8 @@ The `DebugLogAction` class will output to the log using the DebugLog class. give
 
 ## Skeet Actions
 
+### These are older functions, Use actions in [standard-bsky-actions](./standard-bsky-actions/README.md) instead!
+
 ### CreateSkeetAction
 
 Pass in a string, and when the validations pass, it will create a new skeet from the agent with the given input text.
