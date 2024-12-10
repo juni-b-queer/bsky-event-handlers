@@ -1,7 +1,5 @@
 # Types
 
-[//]: # (TODO UPDATE these for the changed types)
-
 ## Jetstream Interfaces
 
 ### JetstreamEvent

@@ -487,7 +487,7 @@ export class HandlerAgent {
      *
      */
     postedByAgent(message: JetstreamEventCommit) {
-        return message.did === this.getDid; //TODO Test
+        return message.did === this.getDid;
     }
 
     /**
@@ -500,9 +500,8 @@ export class HandlerAgent {
     /**
      *
      */
-    // TODO update
     generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
-        let reply: JetstreamReply; //TODO Test
+        let reply: JetstreamReply;
         if (typeof event.commit.record?.subject == 'string') {
             return {
                 root: {
@@ -697,7 +696,7 @@ export class HandlerAgent {
      */
     public get getSession(): AtpSessionData | boolean {
         if (!this.session) {
-            return false; //TODO Test
+            return false;
         }
         return this.session;
     }
