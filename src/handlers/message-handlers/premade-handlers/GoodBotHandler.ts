@@ -38,7 +38,6 @@ export class GoodBotHandler extends MessageHandler {
         return new GoodBotHandler(handlerAgent, response);
     }
 
-    // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
         message: JetstreamEventCommit

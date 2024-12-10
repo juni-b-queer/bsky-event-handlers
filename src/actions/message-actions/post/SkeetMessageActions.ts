@@ -68,7 +68,6 @@ export class ReplyToSkeetAction extends AbstractMessageAction {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<any> {
-        //TODO Update
         const reply: JetstreamReply =
             handlerAgent.generateReplyFromMessage(message);
         await handlerAgent.createSkeet(this.replyText, reply);

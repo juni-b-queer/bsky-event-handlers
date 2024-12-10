@@ -3,6 +3,8 @@
 This is the class/object that our Bluesky agent will be created and acted upon from.
 It contains numerous functions to interact with Bluesky, along with helper functions for interacting with Jetstream Messages.
 
+Session data is stored locally for each individual handlerAgent, change the location with the env variable `SESSION_DATA_PATH`
+
 ### Class Properties
 - `agentName`: The name of the agent.
 - `handle`: The handle used for authentication.
@@ -20,6 +22,8 @@ const myBotHandlerAgent = new HandlerAgent(
     'Handle.bsky.social',
     'AppPassword'
 );
+
+await myBotHandlerAgent.authenticate()
 ```
 
 ### Methods for Initialization and Authentication
@@ -46,17 +50,22 @@ const myBotHandlerAgent = new HandlerAgent(
 - `unlikeSkeet(skeetURI: string)`: Unlikes the skeet with the given URI.
 - `reskeetSkeet(skeetURI: string, skeetCID: string)`: Reskeets (reposts) the skeet with the given URI.
 - `unreskeetSkeet(skeetURI: string)`: Unreskeets (deletes repost) for the skeet with the given URI.
+- `getPostLikeCount(skeetURI: string)` : Returns the number of likes on a post
+- `getPostRepostCount(skeetURI: string)` : Returns the number of reposts on a post
+- `getPostReplyCount(skeetURI: string)` : Returns the number of replies on a post
+- `getPostQuoteCount(skeetURI: string)` : Returns the number of quotes on a post
+- `getPostCount(skeetURI: string, countType: 'like' | 'repost' | 'reply' | 'quote')` : Returns the number of {something} on a post
 
 ### Helper Functions
 - `findLikeRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a record similar to the specified skeet URI.
 - `findRepostRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a repost record for the specified skeet URI.
 - `findSpecificRecord(collectionType: string, errorName: string, skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a specific record in the specified collection for the given skeet URI.
 - `getDIDFromUri(uri: string)`: Extracts the DID from a URI.
-- `postedByAgent(message: JetstreamMessage)`: Checks if a message was posted by the agent.
-- `generateURIFromCreateMessage(message: CreateSkeetMessage)`: Generates a URI from a `CreateSkeetMessage`.
-- `generateReplyFromMessage(message: CreateSkeetMessage)`: Generates a reply from a `CreateSkeetMessage`.
-- `hasPostReply(message: CreateSkeetMessage)`: Checks if a message has a reply.
-- `getPostReply(message: CreateSkeetMessage)`: Retrieves the reply from a message.
+- `postedByAgent(message: JetstreamEventCommit)`: Checks if a message was posted by the agent.
+- `generateURIFromCreateMessage(message: JetstreamEventCommit)`: Generates a URI from a `JetstreamEventCommit`.
+- `generateReplyFromMessage(message: JetstreamEventCommit)`: Generates a reply from a `JetstreamEventCommit`.
+- `hasPostReply(message: JetstreamEventCommit)`: Checks if a message has a reply.
+- `getPostReply(message: JetstreamEventCommit)`: Retrieves the reply from a message.
 
 ### Getters and Setters
 - `setAgent`: Sets the agent.

@@ -20,7 +20,6 @@ export class MessageHandler extends AbstractHandler {
         return this;
     }
 
-    // TODO Update to use JetstreamEventCommit
     static getUriFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit

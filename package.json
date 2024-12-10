@@ -53,10 +53,8 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
-        "@atproto/api": "^0.13.18",
-        "atproto-firehose": "^0.2.2",
+        "@atproto/api": "^0.13.19",
         "moment-timezone": "^0.5.46",
-        "save-dev": "^0.0.1-security",
         "ws": "^8.18.0"
     },
     "release": {

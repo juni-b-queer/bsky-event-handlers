@@ -487,7 +487,7 @@ export class HandlerAgent {
      *
      */
     postedByAgent(message: JetstreamEventCommit) {
-        return message.did === this.getDid; //TODO Test
+        return message.did === this.getDid;
     }
 
     /**
@@ -500,9 +500,8 @@ export class HandlerAgent {
     /**
      *
      */
-    // TODO update
     generateReplyFromMessage(event: JetstreamEventCommit): JetstreamReply {
-        let reply: JetstreamReply; //TODO Test
+        let reply: JetstreamReply;
         if (typeof event.commit.record?.subject == 'string') {
             return {
                 root: {
@@ -548,31 +547,6 @@ export class HandlerAgent {
         return message?.commit?.record?.reply;
     }
 
-    /**
-     *
-     * example
-     * {
-     *   thread: {
-     *     $type: "app.bsky.feed.defs#threadViewPost",
-     *     post: {
-     *       uri: "at://did:plc:2e7wbruzrfxm67xhtlfrruqn/app.bsky.feed.post/3lciwnhgsds2o",
-     *       cid: "bafyreiciz24z2nvheaxoxixcclwuyrxnh2fgmlskzksb6igjp6xivfayby",
-     *       author: [Object ...],
-     *       record: [Object ...],
-     *       replyCount: 1,
-     *       repostCount: 0,
-     *       likeCount: 2,
-     *       quoteCount: 0,
-     *       indexedAt: "2024-12-04T19:54:38.622Z",
-     *       viewer: [Object ...],
-     *       labels: [],
-     *     },
-     *     replies: [
-     *       [Object ...]
-     *     ],
-     *   },
-     * }
-     */
     async getPostLikeCount(postUri: string): Promise<number> {
         return await this.getPostCount(postUri, 'like');
     }
@@ -722,7 +696,7 @@ export class HandlerAgent {
      */
     public get getSession(): AtpSessionData | boolean {
         if (!this.session) {
-            return false; //TODO Test
+            return false;
         }
         return this.session;
     }

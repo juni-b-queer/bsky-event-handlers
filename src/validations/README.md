@@ -14,6 +14,7 @@ Validators are used to determine whether an action should be triggered. We provi
         -   [PostedByUserValidator](#postedbyuservalidator)
         -   [ReplyingToBotValidator](#replyingtobotvalidator)
         -   [IsReplyValidator](#isreplyvalidator)
+        -   [IsNewPost](#isnewpost)
     -   [String Validators](#string-validators)
         -   [InputIsCommandValidator](#inputiscommandvalidator)
         -   [InputStartsWithValidator](#inputstartswithvalidator)
@@ -151,6 +152,14 @@ The IsReplyValidator checks if a post is a reply.
 ```typescript
 IsReplyValidator.make();
 ```
+
+### IsNewPost
+
+The IsNewPost validator checks if a post was created in the past 24 hours, this helps to skip posts that are imported from twitter with an import tool.
+```typescript
+IsNewPost.make();
+```
+
 
 ### String Validators
 
