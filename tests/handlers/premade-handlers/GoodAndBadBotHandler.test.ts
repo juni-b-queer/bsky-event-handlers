@@ -93,7 +93,8 @@ describe('Good and Bad Bot Handler', () => {
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'Thank you 🥹',
-                handlerAgent.generateReplyFromMessage(message)
+                handlerAgent.generateReplyFromMessage(message),
+                undefined
             );
         });
 
@@ -124,7 +125,8 @@ describe('Good and Bad Bot Handler', () => {
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'test',
-                handlerAgent.generateReplyFromMessage(message)
+                handlerAgent.generateReplyFromMessage(message),
+                undefined
             );
         });
 
@@ -231,7 +233,8 @@ describe('Good and Bad Bot Handler', () => {
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 "I'm sorry 😓",
-                handlerAgent.generateReplyFromMessage(message)
+                handlerAgent.generateReplyFromMessage(message),
+                undefined
             );
         });
 
@@ -262,7 +265,8 @@ describe('Good and Bad Bot Handler', () => {
             );
             expect(mockCreateSkeet).toHaveBeenCalledWith(
                 'test',
-                handlerAgent.generateReplyFromMessage(message)
+                handlerAgent.generateReplyFromMessage(message),
+                undefined
             );
         });
 

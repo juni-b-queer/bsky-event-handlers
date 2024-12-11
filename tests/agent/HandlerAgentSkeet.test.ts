@@ -94,6 +94,18 @@ describe('HandlerAgent', () => {
                 reply: reply,
             });
         });
+
+        it('createSkeet should call post with input text, and quote if quoteskeet is present', async () => {
+            const quotekseet: JetstreamSubject = JetstreamSubjectFactory.make();
+            await handlerAgent.createSkeet('Test post', undefined, quotekseet);
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post',
+                embed: {
+                    $type: 'app.bsky.embed.record',
+                    record: quotekseet,
+                },
+            });
+        });
     });
 
     it('DeleteSkeet should call deletePost for given post', async () => {
