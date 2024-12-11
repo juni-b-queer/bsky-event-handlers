@@ -17,6 +17,7 @@ export interface JetstreamSubscriptionHandlers {
     like?: CreateAndDeleteHandlersInterface;
     repost?: CreateAndDeleteHandlersInterface;
     follow?: CreateAndDeleteHandlersInterface;
+    block?: CreateAndDeleteHandlersInterface;
 }
 
 export class JetstreamSubscription extends AbstractSubscription {
@@ -31,10 +32,12 @@ export class JetstreamSubscription extends AbstractSubscription {
      *
      * @param {JetstreamSubscriptionHandlers} handlerControllers - An array of handler controllers.
      * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
+     * @param dids
      */
     constructor(
         protected handlerControllers: JetstreamSubscriptionHandlers,
-        protected wsURL: string = 'ws://localhost:6008/subscribe'
+        protected wsURL: string = 'ws://localhost:6008/subscribe',
+        protected wantedDids: string[] = []
     ) {
         super(handlerControllers);
         this.generateWsURL();
@@ -46,16 +49,30 @@ export class JetstreamSubscription extends AbstractSubscription {
     }
 
     generateWsURL() {
-        const properties = ['post', 'like', 'repost', 'follow'];
+        const properties = ['post', 'like', 'repost', 'follow', 'block'];
         const queryParams: string[] = properties
             // @ts-ignore
             .filter((property) => Boolean(this.handlerControllers[property]))
             .map((property) => {
-                const prefix = property === 'follow' ? 'graph' : 'feed';
+                const prefix =
+                    property === 'follow' || property === 'block'
+                        ? 'graph'
+                        : 'feed';
                 return `wantedCollections=app.bsky.${prefix}.${property}`;
             });
         if (queryParams.length > 0) {
             this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        }
+
+        if (this.wantedDids.length > 0) {
+            const dids = this.wantedDids
+                .map((did) => `wantedDids=${did}`)
+                .join('&');
+            if (queryParams.length > 0) {
+                this.setWsURL = `${this.wsURL}&${dids}`;
+            } else {
+                this.setWsURL = `${this.wsURL}?${dids}`;
+            }
         }
     }
 
@@ -166,6 +183,13 @@ export class JetstreamSubscription extends AbstractSubscription {
                     }
                 );
                 break;
+            case 'app.bsky.graph.block':
+                this.handlerControllers.block?.c?.forEach(
+                    (handler: MessageHandler) => {
+                        handler.handle(undefined, createEvent);
+                    }
+                );
+                break;
         }
     }
 
@@ -194,6 +218,13 @@ export class JetstreamSubscription extends AbstractSubscription {
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.d?.forEach(
+                    (handler: MessageHandler) => {
+                        handler.handle(undefined, deleteEvent);
+                    }
+                );
+                break;
+            case 'app.bsky.graph.block':
+                this.handlerControllers.block?.d?.forEach(
                     (handler: MessageHandler) => {
                         handler.handle(undefined, deleteEvent);
                     }

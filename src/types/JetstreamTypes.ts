@@ -56,7 +56,8 @@ export type JetstreamCollectionType =
     | 'app.bsky.feed.post'
     | 'app.bsky.feed.like'
     | 'app.bsky.feed.repost'
-    | 'app.bsky.graph.follow';
+    | 'app.bsky.graph.follow'
+    | 'app.bsky.graph.block';
 
 export interface JetstreamEvent {
     did: string;
@@ -116,6 +117,7 @@ export interface NewSkeetRecord {
         $type: string;
         images?: JetstreamImageEmbed[];
         external?: JetstreamExternal;
+        record?: JetstreamSubject;
     };
     facets?: JetstreamFacet[];
     langs?: string[];

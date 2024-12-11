@@ -44,7 +44,7 @@ await myBotHandlerAgent.authenticate()
 
 ### Methods for Posting Interactions
 - `post(details: Partial<AppBskyFeedPost.JetstreamRecord>)`: Creates a post with the given details.
-- `createSkeet(newPostDetails: string, skeetReply: JetstreamReply | undefined)`: Creates a skeet (post) with the specified details and optional reply.
+- `createSkeet(newPostDetails: string, skeetReply: JetstreamReply | undefined, quoteSkeet: JetstreamSubject | undefined)`: Creates a skeet (post) with the specified details and optional reply and quoteskeet details.
 - `deleteSkeet(skeetURI: string)`: Deletes the skeet with the given URI.
 - `likeSkeet(skeetURI: string, skeetCID: string)`: Likes the skeet with the given URI and CID.
 - `unlikeSkeet(skeetURI: string)`: Unlikes the skeet with the given URI.

@@ -36,7 +36,7 @@ initialize().then(() => {
 ```
 
 The jetstream subscription accepts an object of type `JetstreamSubscriptionHandlers`
-This interface provides a blueprint for defining handlers for various events such as "post", "like", "repost", "follow".
+This interface provides a blueprint for defining handlers for various events such as "post", "like", "repost", "follow", and "block".
 For each event, you can specify create-and-delete handlers through the CreateAndDeleteHandlersInterface.
 
 ```typescript
@@ -57,7 +57,22 @@ const handlers: JetstreamSubscriptionHandlers = {
         c: [],
         d: [],
     },
+    block: {
+        c: [],
+        d: []
+    }
 };
 ```
 
 This also allows the JetstreamSubscription to automatically subscribe to only events that it's handling.
+
+
+### Wanted DIDs
+If you want to only listen for events from a specific user (or users) you can pass an optional 3rd parameter into the jetstream constructor
+```typescript
+new JetstreamSubscription(
+    handlers,
+    'ws://localhost:6010/subscribe',
+    ['did:plc:123', 'did:plc:124']
+);
+```
