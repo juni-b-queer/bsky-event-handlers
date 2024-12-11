@@ -65,3 +65,14 @@ const handlers: JetstreamSubscriptionHandlers = {
 ```
 
 This also allows the JetstreamSubscription to automatically subscribe to only events that it's handling.
+
+
+### Wanted DIDs
+If you want to only listen for events from a specific user (or users) you can pass an optional 3rd parameter into the jetstream constructor
+```typescript
+new JetstreamSubscription(
+    handlers,
+    'ws://localhost:6010/subscribe',
+    ['did:plc:123', 'did:plc:124']
+);
+```
