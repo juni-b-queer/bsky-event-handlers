@@ -27,6 +27,10 @@ describe('JetstreamSubscription', () => {
             c: [],
             d: [],
         },
+        block: {
+            c: [],
+            d: [],
+        },
     };
     // A dummy message handler for testing
     const dummyHandler: MessageHandler = {
@@ -122,6 +126,23 @@ describe('JetstreamSubscription', () => {
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
     });
 
+    test('handleCreate block', () => {
+        // @ts-ignore
+        handlers.block.c = [dummyHandler];
+
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.graph.block')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+
     test('handleDelete post', () => {
         // @ts-ignore
         handlers.post.d = [dummyHandler];
@@ -178,6 +199,22 @@ describe('JetstreamSubscription', () => {
                 JetstreamCommitFactory.factory()
                     .operation('delete')
                     .collection('app.bsky.graph.follow')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+
+    test('handleDelete follow', () => {
+        // @ts-ignore
+        handlers.block.d = [dummyHandler];
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.graph.block')
                     .create()
             )
             .create() as JetstreamEventCommit;

@@ -17,6 +17,7 @@ export interface JetstreamSubscriptionHandlers {
     like?: CreateAndDeleteHandlersInterface;
     repost?: CreateAndDeleteHandlersInterface;
     follow?: CreateAndDeleteHandlersInterface;
+    block?: CreateAndDeleteHandlersInterface;
 }
 
 export class JetstreamSubscription extends AbstractSubscription {
@@ -46,12 +47,15 @@ export class JetstreamSubscription extends AbstractSubscription {
     }
 
     generateWsURL() {
-        const properties = ['post', 'like', 'repost', 'follow'];
+        const properties = ['post', 'like', 'repost', 'follow', 'block'];
         const queryParams: string[] = properties
             // @ts-ignore
             .filter((property) => Boolean(this.handlerControllers[property]))
             .map((property) => {
-                const prefix = property === 'follow' ? 'graph' : 'feed';
+                const prefix =
+                    property === 'follow' || property === 'block'
+                        ? 'graph'
+                        : 'feed';
                 return `wantedCollections=app.bsky.${prefix}.${property}`;
             });
         if (queryParams.length > 0) {
@@ -166,6 +170,13 @@ export class JetstreamSubscription extends AbstractSubscription {
                     }
                 );
                 break;
+            case 'app.bsky.graph.block':
+                this.handlerControllers.block?.c?.forEach(
+                    (handler: MessageHandler) => {
+                        handler.handle(undefined, createEvent);
+                    }
+                );
+                break;
         }
     }
 
@@ -194,6 +205,13 @@ export class JetstreamSubscription extends AbstractSubscription {
                 break;
             case 'app.bsky.graph.follow':
                 this.handlerControllers.follow?.d?.forEach(
+                    (handler: MessageHandler) => {
+                        handler.handle(undefined, deleteEvent);
+                    }
+                );
+                break;
+            case 'app.bsky.graph.block':
+                this.handlerControllers.block?.d?.forEach(
                     (handler: MessageHandler) => {
                         handler.handle(undefined, deleteEvent);
                     }
