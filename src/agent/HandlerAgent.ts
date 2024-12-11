@@ -288,12 +288,13 @@ export class HandlerAgent {
      *
      */
     async createSkeet(
-        newPostDetails: string,
-        skeetReply: JetstreamReply | undefined = undefined
+        newPostText: string,
+        skeetReply: JetstreamReply | undefined = undefined,
+        quoteSkeet: JetstreamSubject | undefined = undefined
     ) {
         // TODO Add in handling for facets and maybe images?
         const replyText = new RichText({
-            text: newPostDetails,
+            text: newPostText,
         });
         if (this.getAgent !== undefined) {
             await replyText.detectFacets(this.getAgent);
@@ -305,6 +306,15 @@ export class HandlerAgent {
         if (skeetReply !== undefined) {
             // @ts-ignore
             record.reply = skeetReply;
+        }
+
+        if (quoteSkeet !== undefined) {
+            // @ts-ignore
+            record.embed = {};
+            // @ts-ignore
+            record.embed.record = quoteSkeet;
+            // @ts-ignore
+            record.embed.$type = 'app.bsky.embed.record';
         }
         if (replyText.facets !== undefined) {
             // @ts-ignore

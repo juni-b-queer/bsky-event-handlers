@@ -36,7 +36,7 @@ initialize().then(() => {
 ```
 
 The jetstream subscription accepts an object of type `JetstreamSubscriptionHandlers`
-This interface provides a blueprint for defining handlers for various events such as "post", "like", "repost", "follow".
+This interface provides a blueprint for defining handlers for various events such as "post", "like", "repost", "follow", and "block".
 For each event, you can specify create-and-delete handlers through the CreateAndDeleteHandlersInterface.
 
 ```typescript
@@ -57,6 +57,10 @@ const handlers: JetstreamSubscriptionHandlers = {
         c: [],
         d: [],
     },
+    block: {
+        c: [],
+        d: []
+    }
 };
 ```
 
