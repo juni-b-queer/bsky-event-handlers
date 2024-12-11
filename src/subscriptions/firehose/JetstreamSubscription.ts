@@ -32,10 +32,12 @@ export class JetstreamSubscription extends AbstractSubscription {
      *
      * @param {JetstreamSubscriptionHandlers} handlerControllers - An array of handler controllers.
      * @param {string} wsURL - The WebSocket URL to connect to. Defaults to `wss://bsky.network`.
+     * @param dids
      */
     constructor(
         protected handlerControllers: JetstreamSubscriptionHandlers,
-        protected wsURL: string = 'ws://localhost:6008/subscribe'
+        protected wsURL: string = 'ws://localhost:6008/subscribe',
+        protected wantedDids: string[] = []
     ) {
         super(handlerControllers);
         this.generateWsURL();
@@ -60,6 +62,17 @@ export class JetstreamSubscription extends AbstractSubscription {
             });
         if (queryParams.length > 0) {
             this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        }
+
+        if (this.wantedDids.length > 0) {
+            const dids = this.wantedDids
+                .map((did) => `wantedDids=${did}`)
+                .join('&');
+            if (queryParams.length > 0) {
+                this.setWsURL = `${this.wsURL}&${dids}`;
+            } else {
+                this.setWsURL = `${this.wsURL}?${dids}`;
+            }
         }
     }
 
