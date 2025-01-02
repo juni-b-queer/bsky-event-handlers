@@ -39,7 +39,6 @@ export class BadBotHandler extends MessageHandler {
         return new BadBotHandler(handlerAgent, response);
     }
 
-    // TODO Update to use JetstreamEventCommit
     async handle(
         handlerAgent: HandlerAgent | undefined,
         message: JetstreamEventCommit

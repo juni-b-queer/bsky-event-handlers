@@ -11,6 +11,7 @@ export { TestMessageHandler } from './handlers/message-handlers/TestMessageHandl
 
 export { GoodBotHandler } from './handlers/message-handlers/premade-handlers/GoodBotHandler';
 export { BadBotHandler } from './handlers/message-handlers/premade-handlers/BadBotHandler';
+export { GoodAndBadBotHandler } from './handlers/message-handlers/premade-handlers/GoodAndBadBotHandler';
 export { OfflineHandler } from './handlers/message-handlers/premade-handlers/OfflineHandler';
 
 /**
