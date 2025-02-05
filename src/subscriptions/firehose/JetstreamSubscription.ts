@@ -37,7 +37,8 @@ export class JetstreamSubscription extends AbstractSubscription {
     constructor(
         protected handlerControllers: JetstreamSubscriptionHandlers,
         protected wsURL: string = 'ws://localhost:6008/subscribe',
-        protected wantedDids: string[] = []
+        protected wantedDids: string[] = [],
+        protected cursor: number = 0
     ) {
         super(handlerControllers);
         this.generateWsURL();
@@ -46,6 +47,10 @@ export class JetstreamSubscription extends AbstractSubscription {
 
     public set setWsURL(url: string) {
         this.wsURL = url;
+    }
+
+    public set setCursor(cursor: number) {
+        this.cursor = cursor;
     }
 
     generateWsURL() {
@@ -60,20 +65,22 @@ export class JetstreamSubscription extends AbstractSubscription {
                         : 'feed';
                 return `wantedCollections=app.bsky.${prefix}.${property}`;
             });
-        if (queryParams.length > 0) {
-            this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
-        }
 
         if (this.wantedDids.length > 0) {
             const dids = this.wantedDids
                 .map((did) => `wantedDids=${did}`)
-                .join('&');
-            if (queryParams.length > 0) {
-                this.setWsURL = `${this.wsURL}&${dids}`;
-            } else {
-                this.setWsURL = `${this.wsURL}?${dids}`;
-            }
+            queryParams.push(...dids)
         }
+
+        if (this.cursor !== 0){
+            queryParams.push(`cursor=${this.cursor}`)
+        }
+
+        if (queryParams.length > 0) {
+            this.setWsURL = `${this.wsURL}?${queryParams.join('&')}`;
+        }
+
+        console.log(`WsURL: ${this.wsURL}`);
     }
 
     /**
@@ -113,6 +120,7 @@ export class JetstreamSubscription extends AbstractSubscription {
 
         this.wsClient.on('close', () => {
             DebugLog.error('JETSTREAM', 'Subscription Closed');
+            this.generateWsURL();
             this.restart = true;
             this.wsClient?.close();
             if (this.restart) {
@@ -142,12 +150,17 @@ export class JetstreamSubscription extends AbstractSubscription {
         console.log(err);
         DebugLog.error('FIREHOSE', `Error: ${err.message}`);
         this.restart = true;
+        this.generateWsURL();
     }
 
     public stopSubscription(restart: boolean = false): this {
         this.wsClient.close();
         this.restart = restart;
         return this;
+    }
+
+    public updateCursor(event: JetstreamEventCommit) {
+        this.setCursor = event.time_us - 1000;
     }
 
     // TODO There has got to be a better way to do this, I'm just to high to do it now
@@ -159,6 +172,8 @@ export class JetstreamSubscription extends AbstractSubscription {
                     (handler: MessageHandler) => {
                         // TODO Update MessageHandler for new types
                         handler.handle(undefined, createEvent);
+
+                        this.updateCursor(createEvent);
                     }
                 );
                 break;
