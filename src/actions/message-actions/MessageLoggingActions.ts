@@ -1,6 +1,6 @@
 import { AbstractMessageAction } from './AbstractMessageAction';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { JetstreamMessage } from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 
 export class LogMessageAction extends AbstractMessageAction {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
@@ -10,7 +10,7 @@ export class LogMessageAction extends AbstractMessageAction {
     }
     async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<any> {
         console.log(message);
     }

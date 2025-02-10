@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import {
     DebugLog,
     HandlerAgent,
-    Reply,
+    JetstreamReply,
+    JetstreamSubject,
+    JetstreamSubjectFactory,
     ReplyFactory,
-    Subject,
-    SubjectFactory,
 } from '../../src';
 import { BskyAgent } from '@atproto/api';
 
@@ -83,8 +83,8 @@ describe('HandlerAgent', () => {
         });
 
         it('createSkeet should call post with input text and reply if existingPostDetails is present', async () => {
-            const subject: Subject = SubjectFactory.make();
-            const reply: Reply = ReplyFactory.factory()
+            const subject: JetstreamSubject = JetstreamSubjectFactory.make();
+            const reply: JetstreamReply = ReplyFactory.factory()
                 .parent(subject)
                 .root(subject)
                 .create();
@@ -92,6 +92,18 @@ describe('HandlerAgent', () => {
             expect(postMock).toHaveBeenCalledWith({
                 text: 'Test post',
                 reply: reply,
+            });
+        });
+
+        it('createSkeet should call post with input text, and quote if quoteskeet is present', async () => {
+            const quotekseet: JetstreamSubject = JetstreamSubjectFactory.make();
+            await handlerAgent.createSkeet('Test post', undefined, quotekseet);
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post',
+                embed: {
+                    $type: 'app.bsky.embed.record',
+                    record: quotekseet,
+                },
             });
         });
     });

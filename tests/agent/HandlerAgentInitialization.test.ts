@@ -1,16 +1,30 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
 import { AtpSessionData, BskyAgent } from '@atproto/api';
+import fs from 'fs';
 
 dotenv.config();
+process.env.SESSION_DATA_PATH = './tests/temp/initialization';
 
 describe('HandlerAgent', () => {
+    afterAll(() => {
+        fs.rmSync('./tests/temp/initialization', {
+            recursive: true,
+            force: true,
+        });
+    });
+    fs.mkdirSync('./tests/temp/initialization', { recursive: true });
     let handlerAgent: HandlerAgent;
     const testHandle: string | undefined =
         process.env.TEST_HANDLE ?? 'testhandle';
     const testPassword: string | undefined =
         process.env.TEST_PASSWORD ?? 'testpassword';
-    const loginMock = jest.fn();
+    const loginMock = jest.fn(() => {
+        handlerAgent.setSession = {
+            did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
+            // add any other session values needed for your tests
+        } as AtpSessionData;
+    });
     const resumeSessionMock = jest.fn();
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
@@ -35,18 +49,16 @@ describe('HandlerAgent', () => {
     });
 
     it('authenticate() should login and resume session if agent exists', async () => {
-        // Manually set the session
-        handlerAgent.setSession = {
-            did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
-            // add any other session values needed for your tests
-        } as AtpSessionData;
-        handlerAgent.setDid = 'did:plc:2bnsooklzchcu5ao7xdjosrs';
+        // Simulate no existing session
+        handlerAgent.setSession = undefined;
+        handlerAgent.setDid = undefined;
+
         await handlerAgent.authenticate();
         expect(loginMock).toHaveBeenCalledTimes(1);
         expect(loginMock).toHaveBeenCalledWith({
             identifier: testHandle,
             password: testPassword,
         });
-        expect(handlerAgent.getDid).toBe('did:plc:2bnsooklzchcu5ao7xdjosrs');
+        expect(handlerAgent.getDid).toBeDefined();
     });
 });

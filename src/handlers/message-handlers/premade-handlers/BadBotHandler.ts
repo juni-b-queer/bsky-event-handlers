@@ -1,8 +1,7 @@
 import { IsBadBotValidator } from '../../../validations/message-validators/BotValidators';
 import { DebugLogAction } from '../../../actions/LoggingActions';
 import { HandlerAgent } from '../../../agent/HandlerAgent';
-import { ReplyToSkeetAction } from '../../../actions/message-actions/post/SkeetMessageActions';
-import { CreateSkeetMessage } from '../../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../../types/JetstreamTypes';
 import { MessageHandler } from '../MessageHandler';
 import { CreateLikeAction } from '../../../actions/standard-bsky-actions/LikeActions';
 import { CreateSkeetAction } from '../../../actions/standard-bsky-actions/SkeetActions';
@@ -42,7 +41,7 @@ export class BadBotHandler extends MessageHandler {
 
     async handle(
         handlerAgent: HandlerAgent | undefined,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<void> {
         return super.handle(this.handlerAgent, message);
     }

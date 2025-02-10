@@ -16,6 +16,15 @@ By default, it will respond "I'm sorry 😓", but passing a string into the seco
 To use it
 `BadBotHandler.make(handlerAgent, "reponse")`
 
+## Good And Bad Bot Handler
+
+This is a combination of the above two handlers
+
+By default, it will respond "Thank you 🥹" to good replies, and "I'm sorry 😓" to bad replies, but passing a string into the second and third parameters will use that string as the response for Good and Bad replies respectively
+To use it
+`GoodAndBadBotHandler.make(handlerAgent, "Good Reponse", "Bad Response")`
+
+
 ## Offline Handler
 
 The offline handler is more for command based bots, so it can be put up while a bot is undergoing maintenance

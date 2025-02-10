@@ -2,8 +2,9 @@
 
 An easy package to use for making bluesky bots with validators and handler actions
 
-[![GitHub Actions Test Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/testandlint.yml?logo=github&label=Tests)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/testandlint.yml?query=branch%3Amain)
-[![GitHub Actions Publish Status](https://img.shields.io/github/actions/workflow/status/juni-b-queer/bsky-event-handlers/semanticversionpublish.yml?logo=github&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/semanticversionpublish.yml?query=branch%3Amain)
+
+[![GitHub Actions Test Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=Run%20Tests&label=Tests)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
+[![GitHub Actions Publish Status](https://img.shields.io/github/check-runs/juni-b-queer/bsky-event-handlers/main?nameFilter=release&label=Publish)](https://github.com/juni-b-queer/bsky-event-handlers/actions/workflows/cicd.yml?query=branch%3Amain)
 [![Codecov](https://img.shields.io/codecov/c/github/juni-b-queer/bsky-event-handlers.svg?logo=codecov)](https://app.codecov.io/gh/juni-b-queer/bsky-event-handlers)
 [![npm version](https://img.shields.io/npm/dw/bsky-event-handlers?logo=npm)](https://www.npmjs.com/package/bsky-event-handlers)
 
@@ -23,11 +24,12 @@ skeets**
 -   [Overview](#overview)
 -   [Agent](./src/agent/README.md)
 -   [Validators](./src/validations/README.md)
--   [Actions](src/actions/message-actions/README.md)
+-   [Actions](src/actions/README.md)
 -   [Handlers](src/handlers/message-handlers/README.md)
-    -   [Record Handlers](src/handlers/message-handlers/README.md)
+    -   [JetstreamRecord Handlers](src/handlers/message-handlers/README.md)
     -   [Pre-made Handlers](src/handlers/message-handlers/premade-handlers/README.md)
 -   [Jetsteam Firehose Subscription](src/subscriptions/firehose/README.md)
+-   [Interval Subscription](src/subscriptions/README.md)
 -   [Utility Functions](./src/utils/README.md)
 -   [Jetstream Types](./src/types/README.md)
 -   [Credits](#credits)
@@ -75,9 +77,9 @@ Initialize your handlers
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -106,9 +108,9 @@ for our example, we'll only be acting upon post creations, so our handlers will 
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -153,6 +155,7 @@ import {
     ReplyToSkeetAction,
     DebugLog,
 } from 'bsky-event-handlers';
+import { MessageHandler } from './MessageHandler';
 
 const testAgent = new HandlerAgent(
     'test-bot',
@@ -165,9 +168,9 @@ let jetstreamSubscription: JetstreamSubscription;
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
         c: [
-            new CreateSkeetHandler(
-                [new InputEqualsValidator('Hello')],
-                [new ReplyToSkeetAction('World!')],
+            MessageHandler.make(
+                [InputEqualsValidator.make('Hello')],
+                [CreateSkeetAction.make('World!', MessageHandler.generateReplyFromMessage)],
                 testAgent
             ),
         ],
@@ -204,6 +207,7 @@ TEST_BSKY_PASSWORD=app-pass-word
 DEBUG_LOG_ACTIVE=true #This will enable DebugLog
 DEBUG_LOG_LEVEL=info # This sets the minimum log level that will be output
 JETSTREAM_URL='ws://localhost:6008/subscribe'
+SESSION_DATA_PATH="./sessionData"
 ```
 
 # Overview
@@ -214,7 +218,7 @@ package offers a wide array of inbuilt validators and action handlers to facilit
 actions- all of which contribute to smoother, faster, and more efficient bot development.
 
 The package internally uses the Bluesky Agent to interact with the Bluesky network. The flexibility provided by the
-AbstractValidator and AbstractMessageAction base classes, paves the way for easy extension and creation of custom
+AbstractValidator and AbstractAction base classes paves the way for easy extension and creation of custom
 validators and actions to suit your specific requirements.
 
 By leveraging the combination of Validators and Actions, you can create a unique sequence of automatic responses for
@@ -225,9 +229,7 @@ your bot in response to defined triggers, enhancing your bot's interactivity, fl
 ## Packages/dependencies used
 
 -   [@atproto/api](https://www.npmjs.com/package/@atproto/api)
--   [Jetstream](https://github.com/ericvolp12/jetstream) (Though I use
-    a [forked version](https://github.com/juni-b-queer/jetstream) to include the CID and build/publish the docker
-    container)
+-   [Jetstream](https://github.com/bluesky-social/jetstream)
 
 ## Contact me
 

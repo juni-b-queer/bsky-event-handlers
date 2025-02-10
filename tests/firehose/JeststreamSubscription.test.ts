@@ -1,8 +1,7 @@
 import {
-    CreateMessage,
-    CreateMessageFactory,
-    DeleteMessage,
-    JetstreamMessageFactory,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
+    JetstreamEventFactory,
     JetstreamSubscription,
     JetstreamSubscriptionHandlers,
     MessageHandler,
@@ -11,30 +10,35 @@ import WebSocket from 'ws';
 
 describe('JetstreamSubscription', () => {
     let jetSub: JetstreamSubscription;
-    const handlers: JetstreamSubscriptionHandlers = {
-        post: {
-            c: [],
-            d: [],
-        },
-        like: {
-            c: [],
-            d: [],
-        },
-        repost: {
-            c: [],
-            d: [],
-        },
-        follow: {
-            c: [],
-            d: [],
-        },
-    };
+    let handlers: JetstreamSubscriptionHandlers;
     // A dummy message handler for testing
     const dummyHandler: MessageHandler = {
         handle: jest.fn(),
     } as unknown as MessageHandler;
 
     beforeEach(() => {
+        handlers = {
+            post: {
+                c: [],
+                d: [],
+            },
+            like: {
+                c: [],
+                d: [],
+            },
+            repost: {
+                c: [],
+                d: [],
+            },
+            follow: {
+                c: [],
+                d: [],
+            },
+            block: {
+                c: [],
+                d: [],
+            },
+        };
         jetSub = new JetstreamSubscription(handlers);
         (dummyHandler.handle as jest.Mock).mockClear();
     });
@@ -55,11 +59,50 @@ describe('JetstreamSubscription', () => {
         expect((jetSub as any).wsURL).toContain('post');
     });
 
+    test('generateWsURL with did', () => {
+        handlers = {
+            post: {
+                c: [dummyHandler],
+            },
+        };
+        jetSub = new JetstreamSubscription(
+            handlers,
+            'ws://localhost:6010/subscribe',
+            ['did:plc:123']
+        );
+        jetSub.setWsURL = 'ws://localhost:6010/subscribe';
+        jetSub.generateWsURL();
+        expect((jetSub as any).wsURL).toBe(
+            'ws://localhost:6010/subscribe?wantedCollections=app.bsky.feed.post&wantedDids=did:plc:123'
+        );
+    });
+
+    test('generateWsURL with dids', () => {
+        handlers = {};
+        jetSub = new JetstreamSubscription(
+            handlers,
+            'ws://localhost:6010/subscribe',
+            ['did:plc:123', 'did:plc:124']
+        );
+        jetSub.setWsURL = 'ws://localhost:6010/subscribe';
+        jetSub.generateWsURL();
+        expect((jetSub as any).wsURL).toBe(
+            'ws://localhost:6010/subscribe?wantedDids=did:plc:123&wantedDids=did:plc:124'
+        );
+    });
+
     test('handleCreate post', () => {
         // @ts-ignore
         handlers.post.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.make();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.post')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -69,9 +112,14 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.like.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory()
-            .collection('app.bsky.feed.like')
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.like')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -81,9 +129,14 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.repost.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory()
-            .collection('app.bsky.feed.repost')
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.feed.repost')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -93,9 +146,31 @@ describe('JetstreamSubscription', () => {
         // @ts-ignore
         handlers.follow.c = [dummyHandler];
 
-        const msg: CreateMessage = CreateMessageFactory.factory()
-            .collection('app.bsky.graph.follow')
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.graph.follow')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+        jetSub.handleCreate(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+
+    test('handleCreate block', () => {
+        // @ts-ignore
+        handlers.block.c = [dummyHandler];
+
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('create')
+                    .collection('app.bsky.graph.block')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleCreate(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -104,10 +179,14 @@ describe('JetstreamSubscription', () => {
     test('handleDelete post', () => {
         // @ts-ignore
         handlers.post.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory.factory()
-            .collection('app.bsky.feed.post')
-            .isDeletion()
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.feed.post')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -116,10 +195,14 @@ describe('JetstreamSubscription', () => {
     test('handleDelete like', () => {
         // @ts-ignore
         handlers.like.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory.factory()
-            .collection('app.bsky.feed.like')
-            .isDeletion()
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.feed.like')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -128,10 +211,14 @@ describe('JetstreamSubscription', () => {
     test('handleDelete repost', () => {
         // @ts-ignore
         handlers.repost.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory.factory()
-            .collection('app.bsky.feed.repost')
-            .isDeletion()
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.feed.repost')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
@@ -140,10 +227,30 @@ describe('JetstreamSubscription', () => {
     test('handleDelete follow', () => {
         // @ts-ignore
         handlers.follow.d = [dummyHandler];
-        const msg: DeleteMessage = JetstreamMessageFactory.factory()
-            .collection('app.bsky.graph.follow')
-            .isDeletion()
-            .create();
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.graph.follow')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
+        jetSub.handleDelete(msg);
+        expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
+        expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);
+    });
+
+    test('handleDelete follow', () => {
+        // @ts-ignore
+        handlers.block.d = [dummyHandler];
+        const msg: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .commit(
+                JetstreamCommitFactory.factory()
+                    .operation('delete')
+                    .collection('app.bsky.graph.block')
+                    .create()
+            )
+            .create() as JetstreamEventCommit;
         jetSub.handleDelete(msg);
         expect(dummyHandler.handle).toHaveBeenCalledTimes(1);
         expect(dummyHandler.handle).toHaveBeenCalledWith(undefined, msg);

@@ -1,6 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
-import { Reply } from '../../types/JetstreamTypes';
+import { JetstreamReply, JetstreamSubject } from '../../types/JetstreamTypes';
 
 export class CreateSkeetAction extends AbstractAction {
     constructor(
@@ -8,8 +8,12 @@ export class CreateSkeetAction extends AbstractAction {
             | string
             | ((arg0: HandlerAgent, ...args: any) => string),
         protected skeetReply:
-            | Reply
-            | ((arg0: HandlerAgent, ...args: any) => Reply)
+            | JetstreamReply
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamReply)
+            | undefined = undefined,
+        protected quoteSkeet:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
             | undefined = undefined
     ) {
         super();
@@ -18,11 +22,15 @@ export class CreateSkeetAction extends AbstractAction {
     static make(
         skeetText: string | ((arg0: HandlerAgent, ...args: any) => string),
         skeetReply:
-            | Reply
-            | ((arg0: HandlerAgent, ...args: any) => Reply)
+            | JetstreamReply
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamReply)
+            | undefined = undefined,
+        quoteSkeet:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
             | undefined = undefined
     ): CreateSkeetAction {
-        return new CreateSkeetAction(skeetText, skeetReply);
+        return new CreateSkeetAction(skeetText, skeetReply, quoteSkeet);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,7 +49,16 @@ export class CreateSkeetAction extends AbstractAction {
             }
         }
 
-        await handlerAgent.createSkeet(text, reply);
+        let quoteRecord = undefined;
+        if (this.quoteSkeet !== undefined) {
+            if (typeof this.quoteSkeet == 'function') {
+                quoteRecord = this.quoteSkeet(handlerAgent, ...args);
+            } else {
+                quoteRecord = this.quoteSkeet;
+            }
+        }
+
+        await handlerAgent.createSkeet(text, reply, quoteRecord);
     }
 }
 

@@ -11,6 +11,7 @@ export { TestMessageHandler } from './handlers/message-handlers/TestMessageHandl
 
 export { GoodBotHandler } from './handlers/message-handlers/premade-handlers/GoodBotHandler';
 export { BadBotHandler } from './handlers/message-handlers/premade-handlers/BadBotHandler';
+export { GoodAndBadBotHandler } from './handlers/message-handlers/premade-handlers/GoodAndBadBotHandler';
 export { OfflineHandler } from './handlers/message-handlers/premade-handlers/OfflineHandler';
 
 /**
@@ -27,6 +28,9 @@ export * from './validations/message-validators/GenericValidators';
 export * from './validations/message-validators/post/StringValidators';
 export * from './validations/message-validators/post/PostValidators';
 export * from './validations/message-validators/follow/FollowValidators';
+export * from './validations/message-validators/repost/RepostValidators';
+export * from './validations/message-validators/like/LikeUserValidators';
+export * from './validations/message-validators/like/LikeCountValidators';
 
 /**
  * Actions

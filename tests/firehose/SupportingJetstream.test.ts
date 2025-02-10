@@ -1,9 +1,18 @@
-import { WebSocket } from 'ws';
 import {
-    DebugLog,
     JetstreamSubscription,
     JetstreamSubscriptionHandlers,
+    DebugLog,
 } from '../../src';
+
+// Mock the entire 'ws' module and its WebSocket constructor
+jest.mock('ws', () => {
+    const mockWebSocket = jest.fn().mockImplementation(() => ({
+        on: jest.fn(),
+        close: jest.fn(),
+    }));
+
+    return { WebSocket: mockWebSocket };
+});
 
 describe('JetstreamSubscription', () => {
     let mockHandlers: JetstreamSubscriptionHandlers;
@@ -12,8 +21,6 @@ describe('JetstreamSubscription', () => {
     const mockDebugError = jest.fn();
 
     beforeEach(() => {
-        jest.spyOn(WebSocket.prototype, 'on').mockImplementation(jest.fn());
-
         mockHandlers = {
             post: { c: [], d: [] },
             like: { c: [], d: [] },
@@ -21,14 +28,18 @@ describe('JetstreamSubscription', () => {
             follow: { c: [], d: [] },
         };
 
-        // websocket url can be anything, considering it's a mock
-        subscription = new JetstreamSubscription(mockHandlers, 'url');
+        subscription = new JetstreamSubscription(
+            mockHandlers,
+            'ws://localhost'
+        );
+
+        // Mock the DebugLog methods
         DebugLog.info = mockDebugInfo;
         DebugLog.error = mockDebugError;
     });
 
     afterEach(() => {
-        jest.restoreAllMocks();
+        jest.clearAllMocks();
     });
 
     it('calls debug when opened', () => {
@@ -37,5 +48,15 @@ describe('JetstreamSubscription', () => {
             'FIREHOSE',
             'Connection Opened'
         );
+    });
+
+    it('handles errors correctly', () => {
+        const testError = new Error('Test error');
+        subscription.handleError(testError);
+        expect(mockDebugError).toHaveBeenCalledWith(
+            'FIREHOSE',
+            'Error: Test error'
+        );
+        expect(subscription.restart).toBe(true);
     });
 });

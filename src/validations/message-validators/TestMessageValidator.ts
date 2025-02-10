@@ -1,6 +1,6 @@
 import { AbstractMessageValidator } from './AbstractMessageValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { CreateSkeetMessage } from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 
 export class TestMessageValidator extends AbstractMessageValidator {
     constructor(private shouldPass: boolean) {
@@ -13,7 +13,7 @@ export class TestMessageValidator extends AbstractMessageValidator {
 
     async handle(
         handlerAgent: HandlerAgent,
-        message: CreateSkeetMessage
+        message: JetstreamEventCommit
     ): Promise<boolean> {
         return this.shouldPass;
     }

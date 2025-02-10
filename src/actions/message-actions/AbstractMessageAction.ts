@@ -1,5 +1,5 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import { JetstreamMessage } from '../../types/JetstreamTypes';
+import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { AbstractAction } from '../AbstractAction';
 
 export abstract class AbstractMessageAction extends AbstractAction {
@@ -14,6 +14,6 @@ export abstract class AbstractMessageAction extends AbstractAction {
     // @ts-ignore
     abstract async handle(
         handlerAgent: HandlerAgent,
-        message: JetstreamMessage
+        message: JetstreamEventCommit
     ): Promise<any | void>;
 }

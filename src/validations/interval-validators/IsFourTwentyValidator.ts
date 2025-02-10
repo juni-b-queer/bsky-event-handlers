@@ -1,10 +1,6 @@
 import { AbstractValidator } from '../AbstractValidator';
 import { HandlerAgent } from '../../agent/HandlerAgent';
-import {
-    getTimezonesWhereItIsAGivenTime,
-    isTimeInHHMMFormat,
-} from '../../utils/time-utils';
-import moment from 'moment-timezone';
+import { getTimezonesWhereItIsAGivenTime } from '../../utils/time-utils';
 
 export class IsFourTwentyValidator extends AbstractValidator {
     protected timezones: string[] = [];

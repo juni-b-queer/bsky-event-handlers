@@ -1,257 +1,186 @@
 import {
-    CollectionType,
-    CreateMessage,
-    CreateSkeetMessage,
-    CreateSkeetRecord,
-    JetstreamMessage,
-    Record,
-    Reply,
+    JetstreamAccount,
+    JetstreamCollectionType,
+    JetstreamCommit,
+    JetstreamEvent,
+    JetstreamIdentity,
+    JetstreamRecord,
+    NewSkeetRecord,
 } from '../JetstreamTypes';
 import { AbstractTypeFactory } from './AbstractTypeFactory';
-import { CreateSkeetRecordFactory, ReplyFactory } from './RecordFactories';
+import { NewSkeetRecordFactory } from './RecordFactories';
 
-/**
- * JetstreamMessageFactory
- *
- * A factory class for creating Jetstream messages.
- */
-export class JetstreamMessageFactory extends AbstractTypeFactory {
-    public messageObject: JetstreamMessage;
+export class JetstreamEventFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamEvent;
 
-    /**
-     * Creates a new instance of the constructor.
-     *
-     * @constructor
-     */
     constructor() {
         super();
-        this.messageObject = {
-            cid: '',
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
+        this.eventObject = {
+            did: 'did:plc:example',
+            kind: 'commit',
+            time_us: 0,
         };
     }
 
-    /**
-     * Returns an instance of JetstreamMessageFactory.
-     *
-     * @returns {JetstreamMessageFactory} An instance of JetstreamMessageFactory
-     */
-    static factory(): JetstreamMessageFactory {
-        return new JetstreamMessageFactory();
+    static factory(): JetstreamEventFactory {
+        return new JetstreamEventFactory();
     }
 
-    static make(): JetstreamMessage {
-        return JetstreamMessageFactory.factory().create();
+    static make(): JetstreamEvent {
+        return JetstreamEventFactory.factory().create();
+    }
+    create(): JetstreamEvent {
+        return this.eventObject as JetstreamEvent;
     }
 
-    /**
-     * Returns the message object as a JetstreamMessage.
-     *
-     * @return {JetstreamMessage} The message object as a JetstreamMessage.
-     */
-    create(): JetstreamMessage {
-        return this.messageObject;
-    }
-
-    /**
-     * Sets the collection type for the message object.
-     *
-     * @param {string} messageType - The type of collection to set. Valid values are "app.bsky.feed.post", "app.bsky.feed.like", "app.bsky.feed.repost", and "app.bsky.graph.follow".
-     *
-     * @return {JetstreamMessageFactory} - The modified collection object.
-     */
-    collection(messageType: CollectionType) {
-        this.messageObject.collection = messageType;
-        return this;
-    }
-
-    /**
-     * Sets the operation type for the message object.
-     *
-     * @param {string} opType - The operation type. Must be either "c" or "d".
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    opType(opType: 'c' | 'd') {
-        this.messageObject.opType = opType;
-        return this;
-    }
-
-    /**
-     * Sets the operation type to "c" (creation) for the message object.
-     *
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    isCreation() {
-        this.messageObject.opType = 'c';
-        return this;
-    }
-
-    /**
-     * Sets the operation type to "d" (deletion) for the message object.
-     *
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    isDeletion() {
-        this.messageObject.opType = 'd';
-        return this;
-    }
-
-    /**
-     * Sets the 'did' property of the message object.
-     *
-     * @param {string} did - The value to set as the 'did' property.
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
     fromDid(did: string) {
-        this.messageObject.did = did;
+        this.eventObject.did = did;
         return this;
     }
-
-    /**
-     * Set the value of the rkey property in the message object.
-     *
-     * @param {string} rkey - The rkey value to set.
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    rkey(rkey: string) {
-        this.messageObject.rkey = rkey;
-        return this;
-    }
-
-    /**
-     * Sets the CID for the message object.
-     *
-     * @param {string} cid - The custom identifier for the message.
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    cid(cid: string) {
-        this.messageObject.cid = cid;
-        return this;
-    }
-
-    /**
-     * Set the seq property of the message object.
-     *
-     * @param {number} seq - The value to set as the seq property.
-     * @return {JetstreamMessageFactory} - Returns the updated instance of the class.
-     */
-    seq(seq: number) {
-        this.messageObject.seq = seq;
-        return this;
-    }
-}
-
-/**
- * Represents a factory for creating create message objects.
- */
-export class CreateMessageFactory extends JetstreamMessageFactory {
-    public messageObject: CreateMessage;
-
-    /**
-     * Constructor for creating a new instance of the class.
-     * Initializes a message object with default values for its properties.
-     *
-     * @constructor
-     */
-    constructor() {
-        super();
-        this.messageObject = {
-            cid: '',
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            record: {
-                $type: 'app.bsky.feed.post',
-                createdAt: '',
-            },
-        } as CreateMessage;
-    }
-
-    /**
-     * Creates a new instance of CreateMessageFactory.
-     *
-     * @return {CreateMessageFactory} The newly created instance of CreateMessageFactory.
-     */
-    static factory(): CreateMessageFactory {
-        return new CreateMessageFactory();
-    }
-
-    static make(): CreateMessage {
-        return CreateMessageFactory.factory().create();
-    }
-
-    /**
-     * Creates a Jetstream message object.
-     *
-     * @returns {CreateMessage} The created CreateMessage object.
-     */
-    create(): CreateMessage {
-        return this.messageObject as CreateMessage;
-    }
-
-    /**
-     * Sets the record for the message.
-     *
-     * @param {Record} record - The record to set for the message.
-     * @return {CreateMessageFactory} - The updated Factory with the new record.
-     */
-    record(record: Record): CreateMessageFactory {
-        this.messageObject.record = record;
-        return this;
-    }
-}
-
-// TODO what was I going to add here? Probably functions for setting text
-//  and adding embeds and stuff
-export class CreateSkeetMessageFactory extends CreateMessageFactory {
-    public messageObject: CreateSkeetMessage;
-
-    constructor() {
-        super();
-        this.messageObject = {
-            cid: '',
-            collection: 'app.bsky.feed.post',
-            did: '',
-            opType: 'c',
-            rkey: '',
-            seq: 0,
-            record: CreateSkeetRecordFactory.factory().create(),
-        } as CreateSkeetMessage;
-    }
-
-    static factory(): CreateSkeetMessageFactory {
-        return new CreateSkeetMessageFactory();
-    }
-
-    static make(): CreateSkeetMessage {
-        return CreateSkeetMessageFactory.factory().create();
-    }
-    create(): CreateSkeetMessage {
-        return this.messageObject as CreateSkeetMessage;
-    }
-
-    record(record: CreateSkeetRecord): CreateSkeetMessageFactory {
-        this.messageObject.record = record;
-        return this;
-    }
-
-    withReply(reply: Reply | undefined = undefined) {
-        if (reply === undefined) {
-            this.messageObject.record.reply = ReplyFactory.make();
+    commit(
+        commit: JetstreamCommit | undefined = undefined
+    ): JetstreamEventFactory {
+        this.eventObject.kind = 'commit';
+        if (commit === undefined) {
+            this.eventObject.commit = JetstreamCommitFactory.make();
         } else {
-            this.messageObject.record.reply = reply;
+            this.eventObject.commit = commit;
         }
         return this;
     }
+}
 
-    withText(text: string) {
-        this.messageObject.record.text = text;
+export class JetstreamCommitFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamCommit;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            collection: 'app.bsky.feed.post',
+            operation: 'create',
+            rev: 'examplerev',
+            rkey: 'examplerkey',
+            cid: 'examplecid',
+            record: undefined,
+        };
+        // get keys from commit, replace values in event object
+    }
+
+    static factory(): JetstreamCommitFactory {
+        return new JetstreamCommitFactory();
+    }
+
+    static make(): JetstreamCommit {
+        return JetstreamCommitFactory.factory().create();
+    }
+
+    create(): JetstreamCommit {
+        return this.eventObject as JetstreamCommit;
+    }
+
+    rkey(rkey: string) {
+        this.eventObject.rkey = rkey;
+        return this;
+    }
+
+    record(record: JetstreamRecord | NewSkeetRecord) {
+        this.eventObject.record = record;
+        return this;
+    }
+
+    operation(operation: 'create' | 'update' | 'delete') {
+        this.eventObject.operation = operation;
+        return this;
+    }
+
+    collection(collection: JetstreamCollectionType) {
+        this.eventObject.collection = collection;
+        return this;
+    }
+
+    text(text: string) {
+        if (this.eventObject.record == undefined) {
+            this.eventObject.record = NewSkeetRecordFactory.factory()
+                .text(text)
+                .create();
+        } else {
+            const tempRecord: NewSkeetRecord = this.eventObject
+                .record as NewSkeetRecord;
+            tempRecord.text = text;
+            this.eventObject.record = tempRecord;
+        }
+        return this;
+    }
+}
+
+export class JetstreamIdentityFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamIdentity;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            did: 'did:plc:example',
+            handle: 'handle.example',
+            seq: 0,
+            time: '',
+        };
+    }
+
+    static factory(): JetstreamIdentityFactory {
+        return new JetstreamIdentityFactory();
+    }
+
+    static make(): JetstreamIdentity {
+        return JetstreamIdentityFactory.factory().create();
+    }
+
+    create(): JetstreamIdentity {
+        return this.eventObject as JetstreamIdentity;
+    }
+
+    handle(handle: string): JetstreamIdentityFactory {
+        this.eventObject.handle = handle;
+        return this;
+    }
+
+    sequence(seq: number): JetstreamIdentityFactory {
+        this.eventObject.seq = seq;
+        return this;
+    }
+}
+
+export class JetstreamAccountFactory extends AbstractTypeFactory {
+    public eventObject: JetstreamAccount;
+
+    constructor() {
+        super();
+        this.eventObject = {
+            active: true,
+            did: 'did:plc:example',
+            seq: 0,
+            time: Date.now().toString(),
+        };
+    }
+
+    static factory(): JetstreamAccountFactory {
+        return new JetstreamAccountFactory();
+    }
+
+    static make(): JetstreamAccount {
+        return JetstreamAccountFactory.factory().create();
+    }
+
+    create(): JetstreamAccount {
+        return this.eventObject as JetstreamAccount;
+    }
+
+    deactivate(): JetstreamAccountFactory {
+        this.eventObject.active = false;
+        return this;
+    }
+
+    sequence(seq: number): JetstreamAccountFactory {
+        this.eventObject.seq = seq;
         return this;
     }
 }
