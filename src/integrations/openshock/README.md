@@ -1,5 +1,7 @@
 # Openshock Integration
 
+## [DIY Setup Walkthrough](./examples/OpenShockDITGuide.md)
+
 
 ## Openshock Client
 The client is necessary to send requests to the Openshock platform
