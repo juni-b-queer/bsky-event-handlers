@@ -1,6 +1,6 @@
 # Openshock Integration
 
-## [DIY Setup Walkthrough](./examples/OpenShockDITGuide.md)
+## [DIY Setup Walkthrough](./examples/OpenShockDIYGuide.md)
 
 
 ## Openshock Client
