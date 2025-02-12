@@ -64,7 +64,7 @@ OpenshockControlDeviceAction.make(
 #### Static Parameters
 
 ```typescript
-const client = OpenshockClient('API_TOKEN');
+const client = new OpenshockClient('API_TOKEN');
 
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
@@ -136,7 +136,7 @@ OpenshockShockAction.make(
 #### Static Parameters
 
 ```typescript
-const client = OpenshockClient('API_TOKEN');
+const client = new OpenshockClient('API_TOKEN');
 
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
@@ -202,7 +202,7 @@ OpenshockVibrateAction.make(
 #### Static Parameters
 
 ```typescript
-const client = OpenshockClient('API_TOKEN');
+const client = new OpenshockClient('API_TOKEN');
 
 const handlers: JetstreamSubscriptionHandlers = {
     post: {
