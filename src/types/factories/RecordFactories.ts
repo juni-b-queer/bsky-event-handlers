@@ -269,4 +269,9 @@ export class ReplyFactory extends AbstractTypeFactory {
         this.reply.parent.uri = `at://${did}/app.bsky.feed.post/rkey`;
         return this;
     }
+
+    replyUri(uri: string): ReplyFactory {
+        this.reply.parent.uri = uri;
+        return this;
+    }
 }
