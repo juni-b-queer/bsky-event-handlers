@@ -1,5 +1,5 @@
 import {
-    AppBskyFeedPost,
+    AppBskyFeedPost, AtpAgent,
     AtpSessionData,
     AtpSessionEvent,
     BskyAgent,
@@ -18,7 +18,7 @@ import fs from 'node:fs';
 export class HandlerAgent {
     private did: string | undefined;
     private session: AtpSessionData | undefined;
-    private agent: BskyAgent | undefined;
+    private agent: BskyAgent | AtpAgent | undefined;
 
     /**
      *
@@ -27,7 +27,7 @@ export class HandlerAgent {
         private agentName: string,
         private handle: string,
         private password: string,
-        agent: BskyAgent | undefined = undefined
+        agent: BskyAgent | AtpAgent | undefined = undefined
     ) {
         if (!agent) {
             this.agent = this.initializeBskyAgent();
@@ -43,8 +43,8 @@ export class HandlerAgent {
     /**
      *
      */
-    initializeBskyAgent(): BskyAgent {
-        return new BskyAgent({
+    initializeBskyAgent(): AtpAgent {
+        return new AtpAgent({
             service: 'https://bsky.social/',
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
@@ -248,26 +248,6 @@ export class HandlerAgent {
         }
         return false;
     }
-
-    //endregion
-
-    //region Follow Helpers
-
-    //
-    // /**
-    //  *
-    //  * @param follows
-    //  */
-    // extractDIDsFromProfiles(follows: ProfileView[]): string[] {
-    //     return follows.map((item) => item.did);
-    // }
-    //
-    // getRecordForDid(
-    //     targetDid: string,
-    //     data: ProfileView[]
-    // ): ProfileView | undefined {
-    //     return data.find((item) => item.did === targetDid);
-    // }
 
     //endregion
 
@@ -603,13 +583,23 @@ export class HandlerAgent {
 
     //endregion
 
+    // region Direct Message
+
+    //send DM to user
+
+    //get dm with user
+
+    //get unread dms
+
+    // endregion
+
     // region class prop getters and setters
 
     /**
      * Setter for agent.
      * @param agent
      */
-    public set setAgent(agent: BskyAgent | undefined) {
+    public set setAgent(agent: BskyAgent | AtpAgent | undefined) {
         this.agent = agent;
     }
 
@@ -617,7 +607,7 @@ export class HandlerAgent {
      * Getter for agent.
      * @return {BskyAgent} The current value of agent.
      */
-    public get getAgent(): BskyAgent | undefined {
+    public get getAgent(): BskyAgent | AtpAgent | undefined {
         return this.agent;
     }
 
