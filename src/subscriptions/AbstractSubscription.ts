@@ -1,12 +1,14 @@
 import { AbstractHandler } from '../handlers/AbstractHandler';
 import { JetstreamSubscriptionHandlers } from './firehose/JetstreamSubscription';
 import { IntervalSubscriptionHandlers } from './IntervalSubscription';
+import {WebhookSubscriptionConfig} from "./WebhookSubscription";
 
 export abstract class AbstractSubscription {
     constructor(
         protected handlers:
             | JetstreamSubscriptionHandlers
             | IntervalSubscriptionHandlers
+            | WebhookSubscriptionConfig
             | AbstractHandler[]
     ) {}
 
