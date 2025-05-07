@@ -7,7 +7,7 @@ import {
     JetstreamSubjectFactory,
     ReplyFactory,
 } from '../../src';
-import { BskyAgent } from '@atproto/api';
+import { AtpAgent } from '@atproto/api';
 
 dotenv.config();
 
@@ -57,7 +57,7 @@ describe('HandlerAgent', () => {
                         },
                     },
                 },
-            } as unknown as BskyAgent;
+            } as unknown as AtpAgent;
             handlerAgent = new HandlerAgent(
                 'agentName',
                 testHandle,

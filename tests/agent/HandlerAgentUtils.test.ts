@@ -8,7 +8,7 @@ import {
     NewSkeetRecordFactory,
     ReplyFactory,
 } from '../../src';
-import { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, AtpAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -28,14 +28,14 @@ describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
-    let mockedAgent: BskyAgent;
+    let mockedAgent: AtpAgent;
     const botDid = 'did:plc:bot';
     beforeEach(() => {
         mockedAgent = {
             session: {
                 did: botDid,
             } as AtpSessionData,
-        } as BskyAgent;
+        } as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
