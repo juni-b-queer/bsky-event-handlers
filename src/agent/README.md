@@ -11,10 +11,10 @@ Session data is stored locally for each individual handlerAgent, change the loca
 - `password`: The password used for authentication.
 - `did`: (private) Decentralized Identifier for the agent, assigned after authentication.
 - `session`: (private) The current session data.
-- `agent`: (private) Instance of `BskyAgent`.
+- `agent`: (private) Instance of `AtpAgent`.
 
 ### Class Constructor
-Initializes the `HandlerAgent` class, setting up the `BskyAgent` and session details.
+Initializes the `HandlerAgent` class, setting up the `AtpAgent` and session details.
 
 ```typescript
 const myBotHandlerAgent = new HandlerAgent(
@@ -27,7 +27,7 @@ await myBotHandlerAgent.authenticate()
 ```
 
 ### Methods for Initialization and Authentication
-- `initializeBskyAgent()`: Initializes the `BskyAgent` with the required service URL and session persistence.
+- `initializeBskyAgent()`: Initializes the `AtpAgent` with the required service URL and session persistence.
 - `authenticate()`: Authenticates the agent using the provided handle and password.
 - `getSessionLocation()`: Returns the filepath of the session.json that is/will be stored when an agent authenticates. Can be modified by setting SESSION_DATA_PATH to the directory you want the session data saved in (i.e. SESSION_DATA_LOCATION='./agentData')
 - `saveSessionData(session: AtpSessionData)`: Saves the agent session data to the file at the path from `getSessionLocation`
@@ -55,6 +55,11 @@ await myBotHandlerAgent.authenticate()
 - `getPostReplyCount(skeetURI: string)` : Returns the number of replies on a post
 - `getPostQuoteCount(skeetURI: string)` : Returns the number of quotes on a post
 - `getPostCount(skeetURI: string, countType: 'like' | 'repost' | 'reply' | 'quote')` : Returns the number of {something} on a post
+
+### Methods for DM interactions
+- `getConvoForUser(userDID: string)` : Gets the DM convo details between a user and the bot agent
+- `getConvoIdForUser(userDID: string)` : Gets the DM convo ID between a user and the bot agent
+- `sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined)` : Sends a DM to the given DID with the message text, and embeds the embed subject if provided
 
 ### Helper Functions
 - `findLikeRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a record similar to the specified skeet URI.

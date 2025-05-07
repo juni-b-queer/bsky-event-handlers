@@ -36,6 +36,9 @@ export class HandlerAgent {
             this.setDid = agent.session?.did;
             this.setSession = agent.session;
         }
+        if(this.agent?.chat?._client){
+            this.agent.chat._client.setHeader('Atproto-Proxy', 'did:web:api.bsky.chat#bsky_chat')
+        }
     }
 
     //region INIT Agent
@@ -248,26 +251,6 @@ export class HandlerAgent {
         }
         return false;
     }
-
-    //endregion
-
-    //region Follow Helpers
-
-    //
-    // /**
-    //  *
-    //  * @param follows
-    //  */
-    // extractDIDsFromProfiles(follows: ProfileView[]): string[] {
-    //     return follows.map((item) => item.did);
-    // }
-    //
-    // getRecordForDid(
-    //     targetDid: string,
-    //     data: ProfileView[]
-    // ): ProfileView | undefined {
-    //     return data.find((item) => item.did === targetDid);
-    // }
 
     //endregion
 
@@ -601,6 +584,54 @@ export class HandlerAgent {
                 return post.quoteCount;
         }
     }
+
+    //endregion
+
+    //region Chat interactions
+
+    async getConvoForUser(userDID: string){
+        const getConvoResponse = await this.agent!.chat.bsky.convo.getConvoForMembers({
+            members: [userDID]
+        })
+        return getConvoResponse.data.convo;
+    }
+
+    async getConvoIdForUser(userDID: string){
+        const convo = await this.getConvoForUser(userDID);
+        return convo.id;
+    }
+
+    async sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined = undefined) {
+        const convoId = await this.getConvoIdForUser(userDID)
+        const richText = new RichText({
+            text: message
+        });
+        await richText.detectFacets(this.getAgent!);
+        const messageBody = {
+            convoId: convoId,
+            message: {
+                text: richText.text,
+                facets: richText.facets,
+                embed: undefined
+            }
+        }
+        if(embed !== undefined){
+            // @ts-ignore
+            messageBody.message.embed = {
+                $type: 'app.bsky.embed.record',
+                record: embed
+            }
+        }
+
+
+        await this.agent!.chat.bsky.convo.sendMessage(messageBody)
+    }
+
+    //endregion
+
+    //region Chat Helpers
+
+
 
     //endregion
 
