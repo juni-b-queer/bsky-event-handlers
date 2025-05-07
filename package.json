@@ -1,7 +1,7 @@
 {
     "name": "bsky-event-handlers",
     "version": "0.4.59",
-    "description": "Utilities to help handle bluesky events with validation",
+    "description": "A typescript framework for building bluesky bots",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
