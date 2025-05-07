@@ -601,6 +601,39 @@ export class HandlerAgent {
         return convo.id;
     }
 
+    async getMessagesInConvo(convoId: string, limit: number = 100, cursor: string | undefined = undefined){
+        const getMessagesResponse = await this.agent!.chat.bsky.convo.getMessages({
+            convoId: convoId,
+            limit: limit,
+            cursor: cursor,
+        })
+        return getMessagesResponse.data;
+    }
+
+    async setMessageAsRead(convoId: string, messageId: string | undefined = undefined){
+        const setMessageAsReadResponse = await this.agent!.chat.bsky.convo.updateRead({
+            convoId: convoId,
+            messageId: messageId,
+        })
+        return setMessageAsReadResponse.data;
+    }
+
+    async reactToMessage(convoId: string, messageId: string, reaction: string){
+        const reactToMessageResponse = await this.agent!.chat.bsky.convo.addReaction({
+            convoId: convoId,
+            messageId: messageId,
+            value: reaction,
+        })
+        return reactToMessageResponse.data;
+    }
+
+    async getCanDmUser(userDID: string){
+        const getCanDmUserResponse = await this.agent!.chat.bsky.convo.getConvoAvailability({
+            members: [userDID]
+        })
+        return getCanDmUserResponse.data;
+    }
+
     async sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined = undefined) {
         const convoId = await this.getConvoIdForUser(userDID)
         const richText = new RichText({

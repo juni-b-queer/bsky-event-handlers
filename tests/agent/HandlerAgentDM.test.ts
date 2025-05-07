@@ -1,5 +1,5 @@
 import {AtpAgent} from "@atproto/api";
-import {mockDeep} from "jest-mock-extended";
+import {mockDeep, notUndefined} from "jest-mock-extended";
 import {HandlerAgent, JetstreamSubject} from "../../src";
 
 describe('HandlerAgentDM', () => {
@@ -86,6 +86,108 @@ describe('HandlerAgentDM', () => {
         })
 
 
+    })
+
+    describe('getMessagesInConvo', () => {
+        const getMessagesMockResp = {
+            data:{
+                cursor: '1243',
+                messages: []
+            }
+        }
+        it('getMessagesInConvo gets messages', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.getMessages.mockResolvedValue(getMessagesMockResp)
+            const resp = await handlerAgent.getMessagesInConvo('123');
+
+            expect(mockAtpAgent.chat.bsky.convo.getMessages).toHaveBeenCalledWith({
+                convoId: '123',
+                cursor: undefined,
+                limit: 100
+            })
+            expect(resp).toBe(getMessagesMockResp.data)
+        })
+
+
+    })
+
+    describe('setMessageAsRead', () => {
+        const setMessageAsReadResp = {
+            data:{
+                convo:{
+                    id: '123'
+                }
+            },
+            success: true,
+        }
+        it('setMessageAsRead sets a convo as read', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setMessageAsReadResp)
+            const resp = await handlerAgent.setMessageAsRead('123');
+
+            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
+                convoId: '123',
+                messageId: undefined
+            })
+            expect(resp).toBe(setMessageAsReadResp.data)
+        })
+
+        it('setMessageAsRead sets a message as read', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setMessageAsReadResp)
+            const resp = await handlerAgent.setMessageAsRead('123', '456');
+
+            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
+                convoId: '123',
+                messageId: '456'
+            })
+            expect(resp).toBe(setMessageAsReadResp.data)
+        })
+    })
+
+    describe('reactToMessage', () => {
+        const reactToMessageResp = {
+            data:{
+                message: {
+                    id: '5678'
+                }
+            },
+            success: true,
+        }
+        it('reactToMessage sets a reaction on a message', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.addReaction.mockResolvedValue(reactToMessageResp)
+            const resp = await handlerAgent.reactToMessage('123', '456', '❤️');
+
+            expect(mockAtpAgent.chat.bsky.convo.addReaction).toHaveBeenCalledWith({
+                convoId: '123',
+                messageId: '456',
+                value: '❤️'
+            })
+            expect(resp).toBe(reactToMessageResp.data)
+        })
+    })
+
+    describe('getCanDmUser', () => {
+        const getCanDmUserResp = {
+            data:{
+                canChat: true,
+                convo: {
+                    id: '123'
+                }
+            },
+            success: true,
+        }
+        it('getCanDmUser sets a reaction on a message', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.getConvoAvailability.mockResolvedValue(getCanDmUserResp)
+            const resp = await handlerAgent.getCanDmUser('did:plc:example');
+
+            expect(mockAtpAgent.chat.bsky.convo.getConvoAvailability).toHaveBeenCalledWith({
+                members: ['did:plc:example']
+            })
+            expect(resp).toBe(getCanDmUserResp.data)
+        })
     })
 
     describe('sendMessageToUser', () => {
