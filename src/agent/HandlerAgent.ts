@@ -2,7 +2,7 @@ import {
     AppBskyFeedPost,
     AtpSessionData,
     AtpSessionEvent,
-    BskyAgent,
+    AtpAgent,
     RichText,
 } from '@atproto/api';
 import { debugLog } from '../utils/logging-utils';
@@ -18,7 +18,7 @@ import fs from 'node:fs';
 export class HandlerAgent {
     private did: string | undefined;
     private session: AtpSessionData | undefined;
-    private agent: BskyAgent | undefined;
+    private agent: AtpAgent | undefined;
 
     /**
      *
@@ -27,7 +27,7 @@ export class HandlerAgent {
         private agentName: string,
         private handle: string,
         private password: string,
-        agent: BskyAgent | undefined = undefined
+        agent: AtpAgent | undefined = undefined
     ) {
         if (!agent) {
             this.agent = this.initializeBskyAgent();
@@ -43,8 +43,8 @@ export class HandlerAgent {
     /**
      *
      */
-    initializeBskyAgent(): BskyAgent {
-        return new BskyAgent({
+    initializeBskyAgent(): AtpAgent {
+        return new AtpAgent({
             service: 'https://bsky.social/',
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
@@ -582,6 +582,7 @@ export class HandlerAgent {
         });
         if (!resp) return -1;
 
+        // @ts-expect-error - YES IT DOES EXIST
         const post = resp.data.thread.post;
 
         // Using a switch statement to retrieve the appropriate count based on the input parameter
@@ -609,15 +610,15 @@ export class HandlerAgent {
      * Setter for agent.
      * @param agent
      */
-    public set setAgent(agent: BskyAgent | undefined) {
+    public set setAgent(agent: AtpAgent | undefined) {
         this.agent = agent;
     }
 
     /**
      * Getter for agent.
-     * @return {BskyAgent} The current value of agent.
+     * @return {AtpAgent} The current value of agent.
      */
-    public get getAgent(): BskyAgent | undefined {
+    public get getAgent(): AtpAgent | undefined {
         return this.agent;
     }
 

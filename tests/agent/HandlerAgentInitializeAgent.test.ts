@@ -1,5 +1,5 @@
 import { HandlerAgent } from '../../src';
-import { BskyAgent } from '@atproto/api';
+import { AtpAgent } from '@atproto/api';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
@@ -7,7 +7,7 @@ dotenv.config();
 process.env.SESSION_DATA_PATH = './tests/temp';
 
 describe('HandlerAgent', () => {
-    it('should initialize BskyAgent if agent is not provided', () => {
+    it('should initialize AtpAgent if agent is not provided', () => {
         // Create spy on initializeBskyAgent method
         const initializeBskyAgentSpy = jest.spyOn(
             HandlerAgent.prototype,
@@ -24,8 +24,8 @@ describe('HandlerAgent', () => {
         // Check if initializeBskyAgent method is called
         expect(initializeBskyAgentSpy).toHaveBeenCalled();
 
-        // Check if `agent` is an instance of BskyAgent
-        expect(handlerAgent.getAgent).toBeInstanceOf(BskyAgent);
+        // Check if `agent` is an instance of AtpAgent
+        expect(handlerAgent.getAgent).toBeInstanceOf(AtpAgent);
 
         // Clean up by removing the spy
         initializeBskyAgentSpy.mockRestore();
@@ -35,7 +35,7 @@ describe('HandlerAgent', () => {
         }
     });
 
-    it('should initialize BskyAgent object if agent is null', async () => {
+    it('should initialize AtpAgent object if agent is null', async () => {
         // Create an instance of HandlerAgent
         const handlerAgent = new HandlerAgent(
             'Test Agent',
@@ -53,12 +53,12 @@ describe('HandlerAgent', () => {
         );
 
         // Mock agent.login method
-        BskyAgent.prototype.login = jest.fn().mockImplementation(() => {
+        AtpAgent.prototype.login = jest.fn().mockImplementation(() => {
             handlerAgent.setSession = { did: 'plc:did:bot' } as any;
             handlerAgent.setDid = 'plc:did:bot';
         });
 
-        BskyAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
+        AtpAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
             handlerAgent.setSession = { did: 'plc:did:bot' } as any;
             handlerAgent.setDid = 'plc:did:bot';
         });
@@ -69,8 +69,8 @@ describe('HandlerAgent', () => {
         // Check if initializeBskyAgent method is called
         expect(initializeBskyAgentSpy).toHaveBeenCalled();
 
-        // Check if agent is an instance of BskyAgent after authenticate
-        expect(handlerAgent.getAgent).toBeInstanceOf(BskyAgent);
+        // Check if agent is an instance of AtpAgent after authenticate
+        expect(handlerAgent.getAgent).toBeInstanceOf(AtpAgent);
 
         // Clean up by removing the spy
         initializeBskyAgentSpy.mockRestore();
@@ -96,7 +96,7 @@ describe('HandlerAgent', () => {
         handlerAgent.setSession = undefined;
 
         // Mock agent.login method
-        BskyAgent.prototype.login = jest.fn();
+        AtpAgent.prototype.login = jest.fn();
 
         // Expect authenticate method to throw an error
         await expect(handlerAgent.authenticate()).rejects.toThrow(
@@ -117,18 +117,18 @@ describe('HandlerAgent', () => {
         );
 
         // Mock agent.login method
-        BskyAgent.prototype.login = jest.fn().mockImplementation(() => {
+        AtpAgent.prototype.login = jest.fn().mockImplementation(() => {
             handlerAgent.setSession = { did: 'plc:did:bot' } as any;
             handlerAgent.setDid = 'plc:did:bot';
         });
 
-        BskyAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
+        AtpAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
             handlerAgent.setSession = { did: 'plc:did:bot' } as any;
             handlerAgent.setDid = 'plc:did:bot';
         });
 
         // Mock agent.resumeSession method to nullify agent
-        BskyAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
+        AtpAgent.prototype.resumeSession = jest.fn().mockImplementation(() => {
             handlerAgent.setAgent = undefined;
         });
 
