@@ -61,6 +61,8 @@ await myBotHandlerAgent.authenticate()
 - `getConvoIdForUser(userDID: string)` : Gets the DM convo ID between a user and the bot agent
 - `sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined)` : Sends a DM to the given DID with the message text, and embeds the embed subject if provided
 
+[//]: # (TODO Finish adding the docs for the other new functions. Dont forget the util functions either!)
+
 ### Helper Functions
 - `findLikeRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a record similar to the specified skeet URI.
 - `findRepostRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a repost record for the specified skeet URI.

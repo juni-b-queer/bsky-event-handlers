@@ -17,7 +17,9 @@ These are standardized actions that make them easy to use from any subscriber or
 -   [Reskeet Actions](#reskeet-actions)
     -   [CreateReskeetAction](#createreskeetaction)
     -   [DeleteReskeetAction](#deletereskeetaction)
-
+-   [Direct Message Actions](#direct-message-actions)
+    -   [SendDMAction](#senddmaction)
+    -   [SendDMToMultipleUsersAction](#senddmtomultipleusersaction)
 ## Skeet Actions
 
 ### CreateSkeetAction
@@ -94,4 +96,16 @@ Helper functions `MessageHandler.getUriFromMessage` and `MessageHandler.getCidFr
 Unreskeets a given post. Accepts a function or string for the URI of the post to unreskeet
 
 `DeleteReskeetAction.make(MessageHandler.getUriFromMessage)`
+
+
+## Direct Message Actions
+
+### SendDMAction
+
+`SendDMAction.make(TODO)`
+
+### SendDMToMultipleUsersAction
+
+
+`SendDMToMultipleUsersAction.make(TODO)`
 
