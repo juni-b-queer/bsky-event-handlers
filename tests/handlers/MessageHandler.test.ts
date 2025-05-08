@@ -105,5 +105,16 @@ describe('MessageHandler', () => {
             expect(mockActionHandle).toHaveBeenCalled();
             expect(mockDebugError).toHaveBeenCalled();
         });
+
+        it('getDIDFromMessage gets the did', () => {
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit().fromDid('did:plc:example')
+                    .create() as JetstreamEventCommit;
+
+            const result = MessageHandler.getDIDFromMessage(mockedHandlerAgent, message);
+
+            expect(result).toBe('did:plc:example');
+        })
     });
 });

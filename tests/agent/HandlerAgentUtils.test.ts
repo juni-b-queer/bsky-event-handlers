@@ -3,7 +3,7 @@ import {
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    JetstreamRecord,
+    JetstreamRecord, MessageHandler,
     NewSkeetRecord,
     NewSkeetRecordFactory,
     ReplyFactory,
@@ -64,6 +64,21 @@ describe('HandlerAgent', () => {
             .commit(JetstreamCommitFactory.factory().rkey(rkey).create())
             .create() as JetstreamEventCommit;
         const result = handlerAgent.generateSubjectFromMessage(message);
+
+        expect(result).toEqual({
+            uri: `at://${did}/app.bsky.feed.post/${rkey}`,
+            cid: message.commit.cid,
+        });
+    });
+
+    it('generateSubjectFromMessage from MessageHandler creates expected uri', () => {
+        const did = 'did:plc:12345';
+        const rkey = 'rkeytest';
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(JetstreamCommitFactory.factory().rkey(rkey).create())
+            .create() as JetstreamEventCommit;
+        const result = MessageHandler.getSubjectFromMessage(handlerAgent, message);
 
         expect(result).toEqual({
             uri: `at://${did}/app.bsky.feed.post/${rkey}`,
