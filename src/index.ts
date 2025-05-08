@@ -75,6 +75,7 @@ export * from './utils/text-utils';
 export * from './utils/logging-utils';
 export * from './utils/time-utils';
 export * from './utils/DebugLog';
+export * from './utils/type-or-function';
 
 /**
  * Integrations
