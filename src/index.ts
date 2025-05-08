@@ -42,6 +42,7 @@ export * from './actions/standard-bsky-actions/SkeetActions';
 export * from './actions/standard-bsky-actions/LikeActions';
 export * from './actions/standard-bsky-actions/ReskeetActions';
 export * from './actions/standard-bsky-actions/FollowActions';
+export * from './actions/standard-bsky-actions/DirectMessageActions';
 export * from './actions/message-actions/AbstractMessageAction';
 export * from './actions/message-actions/TestAction';
 export * from './actions/message-actions/MessageLoggingActions';

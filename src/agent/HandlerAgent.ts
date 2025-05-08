@@ -667,6 +667,37 @@ export class HandlerAgent {
         await this.agent!.chat.bsky.convo.sendMessage(messageBody)
     }
 
+    // TODO write tests
+    async sendMessageToMultipleUsers(userDIDs: string[], message: string, embed: JetstreamSubject | undefined = undefined) {
+        const richText = new RichText({
+            text: message
+        });
+        await richText.detectFacets(this.getAgent!);
+
+        const items = [];
+        for(const userDID of userDIDs){
+            const convoId = await this.getConvoIdForUser(userDID)
+            const messageBody = {
+                convoId: convoId,
+                message: {
+                    text: richText.text,
+                    facets: richText.facets,
+                    embed: undefined
+                }
+            }
+            if(embed !== undefined){
+                // @ts-ignore
+                messageBody.message.embed = {
+                    $type: 'app.bsky.embed.record',
+                    record: embed
+                }
+            }
+            items.push(messageBody);
+        }
+
+        await this.agent!.chat.bsky.convo.sendMessageBatch({items: items})
+    }
+
     //endregion
 
     //region Chat Helpers

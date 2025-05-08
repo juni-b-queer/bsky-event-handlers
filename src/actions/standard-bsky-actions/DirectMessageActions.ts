@@ -1,0 +1,108 @@
+import { HandlerAgent } from '../../agent/HandlerAgent';
+import { AbstractAction } from '../AbstractAction';
+import { JetstreamSubject } from '../../types/JetstreamTypes';
+
+// TODO Write Tests
+export class SendDMAction extends AbstractAction {
+    constructor(
+        protected userDID:
+            | string
+            | ((arg0: HandlerAgent, ...args: any) => string),
+        protected messageText:
+            | string
+            | ((arg0: HandlerAgent, ...args: any) => string),
+        protected embeddedPost:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
+            | undefined = undefined
+    ) {
+        super();
+    }
+
+    static make(
+        userDID: string | ((arg0: HandlerAgent, ...args: any) => string),
+        messageText: string | ((arg0: HandlerAgent, ...args: any) => string),
+        embeddedPost:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
+            | undefined = undefined
+    ): SendDMAction {
+        return new SendDMAction(userDID, messageText, embeddedPost);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
+        const did: string = AbstractAction.getStringOrFunctionReturn(
+            this.userDID,
+            handlerAgent,
+            ...args
+        );
+        const text: string = AbstractAction.getStringOrFunctionReturn(
+            this.messageText,
+            handlerAgent,
+            ...args
+        );
+        let embed: JetstreamSubject | undefined = undefined;
+        if (this.embeddedPost !== undefined) {
+            if (typeof this.embeddedPost == 'function') {
+                embed = this.embeddedPost(handlerAgent, ...args);
+            } else {
+                embed = this.embeddedPost;
+            }
+        }
+
+        await handlerAgent.sendMessageToUser(did, text, embed);
+    }
+}
+
+export class SendDMToMultipleUsersAction extends AbstractAction {
+    constructor(
+        protected userDIDs:
+            | string[]
+            | ((arg0: HandlerAgent, ...args: any) => string[]),
+        protected messageText:
+            | string
+            | ((arg0: HandlerAgent, ...args: any) => string),
+        protected embeddedPost:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
+            | undefined = undefined
+    ) {
+        super();
+    }
+
+    static make(
+        userDIDs: string[] | ((arg0: HandlerAgent, ...args: any) => string[]),
+        messageText: string | ((arg0: HandlerAgent, ...args: any) => string),
+        embeddedPost:
+            | JetstreamSubject
+            | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
+            | undefined = undefined
+    ): SendDMToMultipleUsersAction {
+        return new SendDMToMultipleUsersAction(userDIDs, messageText, embeddedPost);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
+        const dids: string[] = AbstractAction.getStringArrayOrFunctionReturn(
+            this.userDIDs,
+            handlerAgent,
+            ...args
+        );
+        const text: string = AbstractAction.getStringOrFunctionReturn(
+            this.messageText,
+            handlerAgent,
+            ...args
+        );
+        let embed: JetstreamSubject | undefined = undefined;
+        if (this.embeddedPost !== undefined) {
+            if (typeof this.embeddedPost == 'function') {
+                embed = this.embeddedPost(handlerAgent, ...args);
+            } else {
+                embed = this.embeddedPost;
+            }
+        }
+
+        await handlerAgent.sendMessageToMultipleUsers(dids, text, embed);
+    }
+}
