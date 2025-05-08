@@ -242,4 +242,120 @@ describe('HandlerAgentDM', () => {
 
 
     })
+
+    describe('sendMessageToMultipleUsers', () => {
+
+        it('sendMessageToMultipleUsers gets convo ids and sends message', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation((params, opts) => {
+
+                    return Promise.resolve({
+                        success: true,
+                        headers: {},
+                        data: {
+                            convo: {
+                                id: `convoid-${params!.members[0]}`,
+                                rev: '1234',
+                            }
+                        }
+                    } as unknown as Response)
+
+            })
+
+            const messageText = 'hello world'
+            await handlerAgent.sendMessageToMultipleUsers(['did:plc:test', 'did:plc:other'], messageText);
+
+            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
+                members: [
+                    'did:plc:test'
+                ]
+            })
+            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
+                members: [
+                    'did:plc:other'
+                ]
+            })
+            expect(mockAtpAgent.chat.bsky.convo.sendMessageBatch).toHaveBeenCalledWith({
+                items:[
+                    {
+                        convoId: `convoid-did:plc:test`,
+                        message: {
+                            text: messageText
+                        }
+                    },
+                    {
+                        convoId: `convoid-did:plc:other`,
+                        message: {
+                            text: messageText
+                        }
+                    }
+                ]
+            })
+        })
+
+        it('sendMessageToUser gets convo id and sends message with embed', async () => {
+            // @ts-ignore
+
+            const embedSubject: JetstreamSubject = {
+                cid: 'examplecid',
+                uri: 'at//did:plc:example/app.bsky.feed.post/rkey',
+            }
+
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation((params, opts) => {
+
+                return Promise.resolve({
+                    success: true,
+                    headers: {},
+                    data: {
+                        convo: {
+                            id: `convoid-${params!.members[0]}`,
+                            rev: '1234',
+                        }
+                    }
+                } as unknown as Response)
+
+            })
+
+            const messageText = 'hello world'
+            await handlerAgent.sendMessageToMultipleUsers(['did:plc:test', 'did:plc:other'], messageText, embedSubject);
+
+            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
+                members: [
+                    'did:plc:test'
+                ]
+            })
+            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
+                members: [
+                    'did:plc:other'
+                ]
+            })
+            expect(mockAtpAgent.chat.bsky.convo.sendMessageBatch).toHaveBeenCalledWith({
+                items:[
+                    {
+                        convoId: `convoid-did:plc:test`,
+                        message: {
+                            text: messageText,
+                            embed: {
+                                $type: 'app.bsky.embed.record',
+                                record: embedSubject,
+                            }
+                        }
+                    },
+                    {
+                        convoId: `convoid-did:plc:other`,
+                        message: {
+                            text: messageText,
+                            embed: {
+                                $type: 'app.bsky.embed.record',
+                                record: embedSubject,
+                            }
+                        }
+                    }
+                ]
+            })
+        })
+
+
+    })
 })

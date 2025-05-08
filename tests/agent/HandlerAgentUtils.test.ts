@@ -56,6 +56,21 @@ describe('HandlerAgent', () => {
         expect(result).toEqual(`at://${did}/app.bsky.feed.post/${rkey}`);
     });
 
+    it('generateSubjectFromMessage creates expected uri', () => {
+        const did = 'did:plc:12345';
+        const rkey = 'rkeytest';
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(JetstreamCommitFactory.factory().rkey(rkey).create())
+            .create() as JetstreamEventCommit;
+        const result = handlerAgent.generateSubjectFromMessage(message);
+
+        expect(result).toEqual({
+            uri: `at://${did}/app.bsky.feed.post/${rkey}`,
+            cid: message.commit.cid,
+        });
+    });
+
     describe('postedByAgent', () => {
         it('should return true when message is same did as bot', () => {
             const message: JetstreamEventCommit =
