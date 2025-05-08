@@ -490,6 +490,13 @@ export class HandlerAgent {
         return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
+    generateSubjectFromMessage(message: JetstreamEventCommit): JetstreamSubject {
+        return {
+            uri: `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`,
+            cid: message.commit.cid
+        };
+    }
+
     /**
      *
      */
