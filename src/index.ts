@@ -24,6 +24,7 @@ export * from './validations/interval-validators/IsSpecifiedTimeValidator';
 export * from './validations/interval-validators/IsFourTwentyValidator';
 export * from './validations/message-validators/BotValidators';
 export * from './validations/message-validators/GenericValidators';
+export * from './validations/message-validators/DirectMessageValidators';
 
 export * from './validations/message-validators/post/StringValidators';
 export * from './validations/message-validators/post/PostValidators';

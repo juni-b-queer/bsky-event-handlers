@@ -634,11 +634,11 @@ export class HandlerAgent {
         return reactToMessageResponse.data;
     }
 
-    async getCanDmUser(userDID: string){
+    async getCanDmUser(userDID: string): Promise<boolean>{
         const getCanDmUserResponse = await this.agent!.chat.bsky.convo.getConvoAvailability({
             members: [userDID]
         })
-        return getCanDmUserResponse.data;
+        return getCanDmUserResponse.data.canChat
     }
 
     async sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined = undefined) {

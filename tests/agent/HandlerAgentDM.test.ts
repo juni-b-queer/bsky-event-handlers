@@ -186,7 +186,7 @@ describe('HandlerAgentDM', () => {
             expect(mockAtpAgent.chat.bsky.convo.getConvoAvailability).toHaveBeenCalledWith({
                 members: ['did:plc:example']
             })
-            expect(resp).toBe(getCanDmUserResp.data)
+            expect(resp).toBe(getCanDmUserResp.data.canChat)
         })
     })
 
