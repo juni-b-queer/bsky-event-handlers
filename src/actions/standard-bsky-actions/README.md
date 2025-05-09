@@ -119,5 +119,5 @@ Sends a DM to multiple users (separately) with the given message text and option
 `embeddedPost` can be either a JetstreamSubject (Object with CID and URI) or a function that returns a JetstreamSubject \
 The function parameters should be `(handlerAgent: HandlerAgent, ...args: any)`
 
-`SendDMToMultipleUsersAction.make(TODO)`
+`SendDMToMultipleUsersAction.make(userDIDs, "Message Text")`
 
