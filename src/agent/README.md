@@ -60,8 +60,12 @@ await myBotHandlerAgent.authenticate()
 - `getConvoForUser(userDID: string)` : Gets the DM convo details between a user and the bot agent
 - `getConvoIdForUser(userDID: string)` : Gets the DM convo ID between a user and the bot agent
 - `sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined)` : Sends a DM to the given DID with the message text, and embeds the embed subject if provided
-
-[//]: # (TODO Finish adding the docs for the other new functions. Dont forget the util functions either!)
+- `getMessagesInConvo(convoId: string, limit?: number (default 100), cursor?: string | undefined)` - Retrieves messages from a conversation
+- `setMessageAsRead(convoId: string, messageId: string)` - Marks a specific message as read
+- `setConvoAsRead(convoId: string)` - Marks a convo as read
+- `reactToMessage(convoId, messageId, reaction)` - Adds a reaction to a message
+- `getCanDmUser(userDID)` - Checks if the bot can DM a user (only mentioned in validators, not in agent docs)
+- `sendMessageToMultipleUsers(userDIDs, message, embed)` - Sends the same message to multiple users
 
 ### Helper Functions
 - `findLikeRecord(skeetURI: string, cursor: string | undefined, attempt: number)`: Finds a record similar to the specified skeet URI.
@@ -73,6 +77,7 @@ await myBotHandlerAgent.authenticate()
 - `generateReplyFromMessage(message: JetstreamEventCommit)`: Generates a reply from a `JetstreamEventCommit`.
 - `hasPostReply(message: JetstreamEventCommit)`: Checks if a message has a reply.
 - `getPostReply(message: JetstreamEventCommit)`: Retrieves the reply from a message.
+- `generateSubjectFromMessage(message: JetstreamEventCommit)` - Creates a JetstreamSubject from a message
 
 ### Getters and Setters
 - `setAgent`: Sets the agent.

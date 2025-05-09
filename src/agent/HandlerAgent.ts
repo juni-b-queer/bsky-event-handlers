@@ -490,7 +490,6 @@ export class HandlerAgent {
         return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
-    // TODO Test
     generateSubjectFromMessage(message: JetstreamEventCommit): JetstreamSubject {
         return {
             uri: `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`,
@@ -618,12 +617,19 @@ export class HandlerAgent {
         return getMessagesResponse.data;
     }
 
-    async setMessageAsRead(convoId: string, messageId: string | undefined = undefined){
+    async setMessageAsRead(convoId: string, messageId: string){
         const setMessageAsReadResponse = await this.agent!.chat.bsky.convo.updateRead({
             convoId: convoId,
             messageId: messageId,
         })
         return setMessageAsReadResponse.data;
+    }
+
+    async setConvoAsRead(convoId: string){
+        const setConvoAsReadResponse = await this.agent!.chat.bsky.convo.updateRead({
+            convoId: convoId,
+        })
+        return setConvoAsReadResponse.data;
     }
 
     async reactToMessage(convoId: string, messageId: string, reaction: string){
@@ -668,7 +674,6 @@ export class HandlerAgent {
         await this.agent!.chat.bsky.convo.sendMessage(messageBody)
     }
 
-    // TODO write tests
     async sendMessageToMultipleUsers(userDIDs: string[], message: string, embed: JetstreamSubject | undefined = undefined) {
         const richText = new RichText({
             text: message
@@ -698,12 +703,6 @@ export class HandlerAgent {
 
         await this.agent!.chat.bsky.convo.sendMessageBatch({items: items})
     }
-
-    //endregion
-
-    //region Chat Helpers
-
-
 
     //endregion
 
