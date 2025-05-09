@@ -1,6 +1,6 @@
 import {
     flattenTextUpdated,
-    getJetstreamSubjectOrFunctionReturn,
+    getJetstreamSubjectOrFunctionReturn, getStringArrayOrFunctionReturn,
     getStringOrFunctionReturn,
     HandlerAgent,
     JetstreamSubject
@@ -24,6 +24,28 @@ describe('getStringOrFunctionReturn', () => {
         expect(getStringOrFunctionReturn(input, mockHandlerAgent)).toBe(expected);
     });
 });
+
+describe('getStringArrayOrFunctionReturn', () => {
+    const mockHandlerAgent = mockDeep<HandlerAgent>();
+
+    test('getStringArrayOrFunctionReturn with string array', () => {
+        const input = ['hello', 'world'];
+        const expected = ['hello', 'world'];
+
+        expect(getStringArrayOrFunctionReturn(input, mockHandlerAgent)).toEqual(expected);
+    });
+
+    test('getStringArrayOrFunctionReturn with function', () => {
+        const expected = ['function', 'generated', 'array'];
+
+        const input = (handlerAgent: HandlerAgent, ...args: any): string[] => {
+            return expected;
+        };
+
+        expect(getStringArrayOrFunctionReturn(input, mockHandlerAgent)).toEqual(expected);
+    });
+});
+
 
 describe('getJetstreamSubjectOrFunctionReturn', () => {
     const mockHandlerAgent = mockDeep<HandlerAgent>();

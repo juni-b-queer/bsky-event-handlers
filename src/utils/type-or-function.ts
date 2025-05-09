@@ -15,6 +15,20 @@ export function getStringOrFunctionReturn(
     }
 }
 
+export function getStringArrayOrFunctionReturn(
+    stringArrayOrFunction:
+        | string[]
+        | ((arg0: HandlerAgent, ...args: any) => string[]),
+    handlerAgent: HandlerAgent,
+    ...args: any
+): string[] {
+    if (typeof stringArrayOrFunction == 'function') {
+        return stringArrayOrFunction(handlerAgent, ...args);
+    } else {
+        return stringArrayOrFunction;
+    }
+}
+
 export function getJetstreamSubjectOrFunctionReturn(
     subjectOrFunction:
         | JetstreamSubject
