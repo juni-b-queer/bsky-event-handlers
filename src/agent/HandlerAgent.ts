@@ -358,6 +358,15 @@ export class HandlerAgent {
 
     //region Post Helpers
 
+    async getPostThreadgate(uri: string){
+        const response = await this.agent!.getPostThread({
+            uri: uri
+        })
+
+        return response.data.threadgate ?? undefined
+    }
+
+
     /**
      * Finds a record that is similar to a given skeet URI.
      *
