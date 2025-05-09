@@ -3,7 +3,7 @@
 Actions are the set of operations that are executed in response to certain validation or criteria fulfillment. This could range from sending reply posts, logging particular information, or executing any function, to more complex sequences of operations. You even have the ability to create custom actions based on your needs.
 
 ## Provided Actions
-
+-   [Standardized Bsky actions](./standard-bsky-actions/README.md)
 -   [FunctionAction](#functionaction)
 -   [Logging Actions](#logging-actions)
     -   [LogMessageAction](#logmessageaction)

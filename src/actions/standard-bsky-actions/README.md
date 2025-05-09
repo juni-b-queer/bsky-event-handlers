@@ -102,10 +102,22 @@ Unreskeets a given post. Accepts a function or string for the URI of the post to
 
 ### SendDMAction
 
-`SendDMAction.make(TODO)`
+Sends a DM to the user with the given message text and optional embedded post. 
+userDID and messageText can be either a string, or a function that returns a string. 
+embeddedPost can be either a JetstreamSubject (Object with CID and URI) or a function that returns a JetstreamSubject
+The function parameters should be `(handlerAgent: HandlerAgent, ...args: any)`
+
+`SendDMAction.make(userDID, messageText, embeddedPost?)`
+
+On simple creation events, to DM the user that took the action, getting their DID is simple thanks to a build in MessageHandler function
+`SendDMAction.make(MessageHandler.getDIDFromMessage, "This is a DM message")`
 
 ### SendDMToMultipleUsersAction
-
+Sends a DM to multiple users (separately) with the given message text and optional embedded post.
+userDIDs can be either a string array, or a function that returns a string array.
+messageText can be either a string, or a function that returns a string.
+embeddedPost can be either a JetstreamSubject (Object with CID and URI) or a function that returns a JetstreamSubject
+The function parameters should be `(handlerAgent: HandlerAgent, ...args: any)`
 
 `SendDMToMultipleUsersAction.make(TODO)`
 
