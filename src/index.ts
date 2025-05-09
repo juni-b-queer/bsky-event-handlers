@@ -24,6 +24,7 @@ export * from './validations/interval-validators/IsSpecifiedTimeValidator';
 export * from './validations/interval-validators/IsFourTwentyValidator';
 export * from './validations/message-validators/BotValidators';
 export * from './validations/message-validators/GenericValidators';
+export * from './validations/message-validators/DirectMessageValidators';
 
 export * from './validations/message-validators/post/StringValidators';
 export * from './validations/message-validators/post/PostValidators';
@@ -42,6 +43,7 @@ export * from './actions/standard-bsky-actions/SkeetActions';
 export * from './actions/standard-bsky-actions/LikeActions';
 export * from './actions/standard-bsky-actions/ReskeetActions';
 export * from './actions/standard-bsky-actions/FollowActions';
+export * from './actions/standard-bsky-actions/DirectMessageActions';
 export * from './actions/message-actions/AbstractMessageAction';
 export * from './actions/message-actions/TestAction';
 export * from './actions/message-actions/MessageLoggingActions';
@@ -74,6 +76,7 @@ export * from './utils/text-utils';
 export * from './utils/logging-utils';
 export * from './utils/time-utils';
 export * from './utils/DebugLog';
+export * from './utils/type-or-function';
 
 /**
  * Integrations

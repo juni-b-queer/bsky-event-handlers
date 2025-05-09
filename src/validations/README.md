@@ -39,6 +39,8 @@ Validators are used to determine whether an action should be triggered. We provi
         -   [RepostByUser](#repostbyuser)
         -   [RepostOfUser](#repostofuser)
         -   [RepostOfPost](#repostofpost)
+-   Direct Messages
+  -    [Direct Message Validators](#direct-message-validators)
 -   Testing
     -   [Test Validator](#test-validator)
 
@@ -338,6 +340,20 @@ The `RepostOfPost` validator checks if reposts are directed towards a specific p
 ```typescript
 // Validate if a specific post has been reposted
 RepostOfPost.make('postUri');
+```
+
+### Direct Message Validators
+
+#### CanDmUserValidator
+
+The `CanDmUserValidator` validator checks if the bot is able to DM a specified user
+
+```typescript
+// Validate from a static did
+CanDmUserValidator.make('userDid123');
+
+// Validate using the DID from the post
+CanDmUserValidator.make(MessageHandler.getDIDFromMessage);
 ```
 
 ## Testing

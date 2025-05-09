@@ -19,3 +19,14 @@ will output
 ```
 
 more docs coming soon?
+
+### TypeOrFunction Utilities
+Sometimes in the program, we want to either pass in a defined value with a specific type, or use a function during runtime to get the value of a specific type. These functions are helpers to make that easier \
+Theses util functions take the same structure of parameters
+`(valueOrFunction: Type | function, handlerAgent: HandlerAgent, ...args: any)`
+
+The function that it accepts should have the parameters `(handlerAgent: HandlerAgent, ...args: any)` and should return a value with the Type specified by the function
+
+-   `getStringOrFunctionReturn` - accepts a string or function and returns either the string, or the string returned by the function
+-   `getStringArrayOrFunctionReturn` - accepts a string array or function and returns either the string array, or the string array returned by the function
+-   `getJetstreamSubjectOrFunctionReturn` - accepts a JetstreamSubject or function and returns either the JetstreamSubject, or the JetstreamSubject returned by the function

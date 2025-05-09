@@ -4,11 +4,12 @@ import {
     JetstreamEventCommit,
     JetstreamEventFactory,
     JetstreamRecord,
+    MessageHandler,
     NewSkeetRecord,
     NewSkeetRecordFactory,
     ReplyFactory,
 } from '../../src';
-import { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, AtpAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -28,14 +29,14 @@ describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
-    let mockedAgent: BskyAgent;
+    let mockedAgent: AtpAgent;
     const botDid = 'did:plc:bot';
     beforeEach(() => {
         mockedAgent = {
             session: {
                 did: botDid,
             } as AtpSessionData,
-        } as BskyAgent;
+        } as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -54,6 +55,39 @@ describe('HandlerAgent', () => {
         const result = handlerAgent.generateURIFromCreateMessage(message);
 
         expect(result).toEqual(`at://${did}/app.bsky.feed.post/${rkey}`);
+    });
+
+    it('generateSubjectFromMessage creates expected uri', () => {
+        const did = 'did:plc:12345';
+        const rkey = 'rkeytest';
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(JetstreamCommitFactory.factory().rkey(rkey).create())
+            .create() as JetstreamEventCommit;
+        const result = handlerAgent.generateSubjectFromMessage(message);
+
+        expect(result).toEqual({
+            uri: `at://${did}/app.bsky.feed.post/${rkey}`,
+            cid: message.commit.cid,
+        });
+    });
+
+    it('generateSubjectFromMessage from MessageHandler creates expected uri', () => {
+        const did = 'did:plc:12345';
+        const rkey = 'rkeytest';
+        const message: JetstreamEventCommit = JetstreamEventFactory.factory()
+            .fromDid(did)
+            .commit(JetstreamCommitFactory.factory().rkey(rkey).create())
+            .create() as JetstreamEventCommit;
+        const result = MessageHandler.getSubjectFromMessage(
+            handlerAgent,
+            message
+        );
+
+        expect(result).toEqual({
+            uri: `at://${did}/app.bsky.feed.post/${rkey}`,
+            cid: message.commit.cid,
+        });
     });
 
     describe('postedByAgent', () => {

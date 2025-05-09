@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
-import { BskyAgent } from '@atproto/api';
+import { AtpAgent } from '@atproto/api';
 
 dotenv.config();
 
@@ -48,7 +48,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -79,7 +79,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -99,7 +99,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -122,7 +122,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -144,7 +144,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -164,7 +164,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -187,7 +187,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -215,7 +215,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -237,7 +237,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,
@@ -262,7 +262,7 @@ describe('HandlerAgent', () => {
             follow: followMock,
             deleteFollow: deleteFollowMock,
             getProfile: getProfileMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
         handlerAgent = new HandlerAgent(
             'agentName',
             testHandle,

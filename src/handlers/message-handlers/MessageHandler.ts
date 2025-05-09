@@ -5,6 +5,7 @@ import { AbstractHandler } from '../AbstractHandler';
 import {
     JetstreamEventCommit,
     JetstreamReply,
+    JetstreamSubject,
 } from '../../types/JetstreamTypes';
 
 // @ts-ignore
@@ -39,6 +40,22 @@ export class MessageHandler extends AbstractHandler {
         message: JetstreamEventCommit
     ): JetstreamReply {
         return handlerAgent.generateReplyFromMessage(message);
+    }
+
+    // TODO Write tests
+    static getSubjectFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): JetstreamSubject {
+        return handlerAgent.generateSubjectFromMessage(message);
+    }
+
+    // TODO Write tests
+    static getDIDFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): string {
+        return message.did;
     }
 
     static make(
