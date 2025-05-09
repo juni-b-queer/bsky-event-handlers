@@ -4,15 +4,16 @@ import { HandlerAgent, JetstreamSubject } from '../../src';
 
 describe('HandlerAgentDM', () => {
     const mockAtpAgent = mockDeep<AtpAgent>();
+    const sessData = {
+        did: 'did:plc:mockdid',
+        handle: 'mockhandle.test',
+        email: 'mock@example.com',
+        emailConfirmed: true,
+        accessJwt: 'mock-access-jwt',
+        refreshJwt: 'mock-refresh-jwt',
+    }
     Object.defineProperty(mockAtpAgent, 'session', {
-        value: {
-            did: 'did:plc:mockdid',
-            handle: 'mockhandle.test',
-            email: 'mock@example.com',
-            emailConfirmed: true,
-            accessJwt: 'mock-access-jwt',
-            refreshJwt: 'mock-refresh-jwt',
-        },
+        value: sessData,
         writable: false,
     });
     let handlerAgent: HandlerAgent;
@@ -68,7 +69,7 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(resp).toMatchObject(mockGetConvoForUserResp.data.convo);
         });
@@ -85,7 +86,7 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(resp).toBe(mockGetConvoForUserResp.data.convo.id);
         });
@@ -215,7 +216,7 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoAvailability
             ).toHaveBeenCalledWith({
-                members: ['did:plc:example'],
+                members: ['did:plc:example', sessData.did],
             });
             expect(resp).toBe(getCanDmUserResp.data.canChat);
         });
@@ -234,7 +235,7 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
@@ -266,7 +267,7 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
@@ -310,12 +311,12 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:other'],
+                members: ['did:plc:other', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch
@@ -370,12 +371,12 @@ describe('HandlerAgentDM', () => {
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:test'],
+                members: ['did:plc:test', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
-                members: ['did:plc:other'],
+                members: ['did:plc:other', sessData.did],
             });
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch

@@ -604,7 +604,7 @@ export class HandlerAgent {
     async getConvoForUser(userDID: string) {
         const getConvoResponse =
             await this.agent!.chat.bsky.convo.getConvoForMembers({
-                members: [userDID],
+                members: [userDID, this.did!],
             });
         return getConvoResponse.data.convo;
     }
@@ -658,7 +658,7 @@ export class HandlerAgent {
     async getCanDmUser(userDID: string): Promise<boolean> {
         const getCanDmUserResponse =
             await this.agent!.chat.bsky.convo.getConvoAvailability({
-                members: [userDID],
+                members: [userDID, this.did!],
             });
         return getCanDmUserResponse.data.canChat;
     }
