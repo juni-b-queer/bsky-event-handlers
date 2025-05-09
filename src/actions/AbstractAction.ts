@@ -8,6 +8,7 @@ export abstract class AbstractAction {
         throw new Error('Method not implemented! Use constructor!');
     }
 
+    // Deprecated - Use function from utils/type-or-function.ts
     static getStringOrFunctionReturn(
         stringOrFunction:
             | string
@@ -19,20 +20,6 @@ export abstract class AbstractAction {
             return stringOrFunction(handlerAgent, ...args);
         } else {
             return stringOrFunction;
-        }
-    }
-
-    static getStringArrayOrFunctionReturn(
-        stringArrayOrFunction:
-            | string[]
-            | ((arg0: HandlerAgent, ...args: any) => string[]),
-        handlerAgent: HandlerAgent,
-        ...args: any
-    ): string[] {
-        if (typeof stringArrayOrFunction == 'function') {
-            return stringArrayOrFunction(handlerAgent, ...args);
-        } else {
-            return stringArrayOrFunction;
         }
     }
 
