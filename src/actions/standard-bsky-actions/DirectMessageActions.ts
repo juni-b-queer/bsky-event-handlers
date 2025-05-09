@@ -1,6 +1,7 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
 import { JetstreamSubject } from '../../types/JetstreamTypes';
+import {getJetstreamSubjectOrFunctionReturn, getStringOrFunctionReturn} from "../../utils/type-or-function";
 
 // TODO Write Tests
 export class SendDMAction extends AbstractAction {
@@ -37,18 +38,14 @@ export class SendDMAction extends AbstractAction {
             handlerAgent,
             ...args
         );
-        const text: string = AbstractAction.getStringOrFunctionReturn(
+        const text: string = getStringOrFunctionReturn(
             this.messageText,
             handlerAgent,
             ...args
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            if (typeof this.embeddedPost == 'function') {
-                embed = this.embeddedPost(handlerAgent, ...args);
-            } else {
-                embed = this.embeddedPost;
-            }
+            embed = getJetstreamSubjectOrFunctionReturn(this.embeddedPost, handlerAgent, ...args);
         }
 
         await handlerAgent.sendMessageToUser(did, text, embed);
@@ -89,18 +86,14 @@ export class SendDMToMultipleUsersAction extends AbstractAction {
             handlerAgent,
             ...args
         );
-        const text: string = AbstractAction.getStringOrFunctionReturn(
+        const text: string = getStringOrFunctionReturn(
             this.messageText,
             handlerAgent,
             ...args
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            if (typeof this.embeddedPost == 'function') {
-                embed = this.embeddedPost(handlerAgent, ...args);
-            } else {
-                embed = this.embeddedPost;
-            }
+            embed = getJetstreamSubjectOrFunctionReturn(this.embeddedPost, handlerAgent, ...args);
         }
 
         await handlerAgent.sendMessageToMultipleUsers(dids, text, embed);
