@@ -36,12 +36,6 @@ export class HandlerAgent {
             this.setDid = agent.session?.did;
             this.setSession = agent.session;
         }
-        if (this.agent?.chat?._client) {
-            this.agent.chat._client.setHeader(
-                'Atproto-Proxy',
-                'did:web:api.bsky.chat#bsky_chat'
-            );
-        }
     }
 
     //region INIT Agent
@@ -601,10 +595,19 @@ export class HandlerAgent {
 
     //region Chat interactions
 
+    public get chatHeaders(){
+        return {
+                'Atproto-Proxy': 'did:web:api.bsky.chat#bsky_chat'
+            }
+
+    }
+
     async getConvoForUser(userDID: string) {
         const getConvoResponse =
             await this.agent!.chat.bsky.convo.getConvoForMembers({
                 members: [userDID, this.did!],
+            }, {
+                headers: this.chatHeaders
             });
         return getConvoResponse.data.convo;
     }
@@ -624,6 +627,8 @@ export class HandlerAgent {
                 convoId: convoId,
                 limit: limit,
                 cursor: cursor,
+            }, {
+                headers: this.chatHeaders
             });
         return getMessagesResponse.data;
     }
@@ -633,6 +638,8 @@ export class HandlerAgent {
             await this.agent!.chat.bsky.convo.updateRead({
                 convoId: convoId,
                 messageId: messageId,
+            }, {
+                headers: this.chatHeaders
             });
         return setMessageAsReadResponse.data;
     }
@@ -641,6 +648,8 @@ export class HandlerAgent {
         const setConvoAsReadResponse =
             await this.agent!.chat.bsky.convo.updateRead({
                 convoId: convoId,
+            }, {
+                headers: this.chatHeaders
             });
         return setConvoAsReadResponse.data;
     }
@@ -651,6 +660,8 @@ export class HandlerAgent {
                 convoId: convoId,
                 messageId: messageId,
                 value: reaction,
+            }, {
+                headers: this.chatHeaders
             });
         return reactToMessageResponse.data;
     }
@@ -659,6 +670,8 @@ export class HandlerAgent {
         const getCanDmUserResponse =
             await this.agent!.chat.bsky.convo.getConvoAvailability({
                 members: [userDID, this.did!],
+            }, {
+                headers: this.chatHeaders
             });
         return getCanDmUserResponse.data.canChat;
     }
@@ -688,8 +701,9 @@ export class HandlerAgent {
                 record: embed,
             };
         }
-
-        await this.agent!.chat.bsky.convo.sendMessage(messageBody);
+        await this.agent!.chat.bsky.convo.sendMessage(messageBody, {
+            headers: this.chatHeaders
+        });
     }
 
     async sendMessageToMultipleUsers(
@@ -722,8 +736,9 @@ export class HandlerAgent {
             }
             items.push(messageBody);
         }
-
-        await this.agent!.chat.bsky.convo.sendMessageBatch({ items: items });
+        await this.agent!.chat.bsky.convo.sendMessageBatch({ items: items }, {
+            headers: this.chatHeaders
+        });
     }
 
     //endregion

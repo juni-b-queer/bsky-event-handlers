@@ -70,7 +70,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toMatchObject(mockGetConvoForUserResp.data.convo);
         });
     });
@@ -87,7 +87,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(mockGetConvoForUserResp.data.convo.id);
         });
     });
@@ -112,7 +112,7 @@ describe('HandlerAgentDM', () => {
                 convoId: '123',
                 cursor: undefined,
                 limit: 100,
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(getMessagesMockResp.data);
         });
     });
@@ -139,7 +139,7 @@ describe('HandlerAgentDM', () => {
             ).toHaveBeenCalledWith({
                 convoId: '123',
                 messageId: '456',
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(setMessageAsReadResp.data);
         });
     });
@@ -164,7 +164,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.updateRead
             ).toHaveBeenCalledWith({
                 convoId: '123',
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(setConvoAsReadResp.data);
         });
     });
@@ -191,7 +191,7 @@ describe('HandlerAgentDM', () => {
                 convoId: '123',
                 messageId: '456',
                 value: '❤️',
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(reactToMessageResp.data);
         });
     });
@@ -217,7 +217,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoAvailability
             ).toHaveBeenCalledWith({
                 members: ['did:plc:example', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(resp).toBe(getCanDmUserResp.data.canChat);
         });
     });
@@ -236,7 +236,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
             ).toHaveBeenCalledWith({
@@ -244,7 +244,7 @@ describe('HandlerAgentDM', () => {
                 message: {
                     text: messageText,
                 },
-            });
+            }, {headers: handlerAgent.chatHeaders});
         });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
@@ -268,7 +268,7 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
             ).toHaveBeenCalledWith({
@@ -280,7 +280,7 @@ describe('HandlerAgentDM', () => {
                         record: embedSubject,
                     },
                 },
-            });
+            }, {headers: handlerAgent.chatHeaders});
         });
     });
 
@@ -312,12 +312,12 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:other', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch
             ).toHaveBeenCalledWith({
@@ -335,7 +335,7 @@ describe('HandlerAgentDM', () => {
                         },
                     },
                 ],
-            });
+            }, {headers: handlerAgent.chatHeaders});
         });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
@@ -372,12 +372,12 @@ describe('HandlerAgentDM', () => {
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:test', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders} );
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
             ).toHaveBeenCalledWith({
                 members: ['did:plc:other', sessData.did],
-            });
+            }, {headers: handlerAgent.chatHeaders});
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch
             ).toHaveBeenCalledWith({
@@ -403,7 +403,7 @@ describe('HandlerAgentDM', () => {
                         },
                     },
                 ],
-            });
+            }, {headers: handlerAgent.chatHeaders});
         });
     });
 });
