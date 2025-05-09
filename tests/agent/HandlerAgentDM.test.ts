@@ -120,17 +120,6 @@ describe('HandlerAgentDM', () => {
             },
             success: true,
         }
-        it('setMessageAsRead sets a convo as read', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setMessageAsReadResp)
-            const resp = await handlerAgent.setMessageAsRead('123');
-
-            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
-                convoId: '123',
-                messageId: undefined
-            })
-            expect(resp).toBe(setMessageAsReadResp.data)
-        })
 
         it('setMessageAsRead sets a message as read', async () => {
             // @ts-ignore
@@ -143,6 +132,28 @@ describe('HandlerAgentDM', () => {
             })
             expect(resp).toBe(setMessageAsReadResp.data)
         })
+    })
+
+    describe('setConvoAsRead', () => {
+        const setConvoAsReadResp = {
+            data:{
+                convo:{
+                    id: '123'
+                }
+            },
+            success: true,
+        }
+        it('setConvoAsRead sets a convo as read', async () => {
+            // @ts-ignore
+            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setConvoAsReadResp)
+            const resp = await handlerAgent.setConvoAsRead('123');
+
+            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
+                convoId: '123'
+            })
+            expect(resp).toBe(setConvoAsReadResp.data)
+        })
+
     })
 
     describe('reactToMessage', () => {

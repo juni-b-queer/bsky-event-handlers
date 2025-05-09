@@ -1,9 +1,12 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
 import { JetstreamSubject } from '../../types/JetstreamTypes';
-import {getJetstreamSubjectOrFunctionReturn, getStringOrFunctionReturn} from "../../utils/type-or-function";
+import {
+    getJetstreamSubjectOrFunctionReturn,
+    getStringArrayOrFunctionReturn,
+    getStringOrFunctionReturn
+} from "../../utils/type-or-function";
 
-// TODO Write Tests
 export class SendDMAction extends AbstractAction {
     constructor(
         protected userDID:
@@ -33,7 +36,7 @@ export class SendDMAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const did: string = AbstractAction.getStringOrFunctionReturn(
+        const did: string = getStringOrFunctionReturn(
             this.userDID,
             handlerAgent,
             ...args
@@ -81,7 +84,7 @@ export class SendDMToMultipleUsersAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const dids: string[] = AbstractAction.getStringArrayOrFunctionReturn(
+        const dids: string[] = getStringArrayOrFunctionReturn(
             this.userDIDs,
             handlerAgent,
             ...args
