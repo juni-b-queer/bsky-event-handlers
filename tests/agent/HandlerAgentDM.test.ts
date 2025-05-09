@@ -1,17 +1,20 @@
-import {AtpAgent} from "@atproto/api";
-import {mockDeep, notUndefined} from "jest-mock-extended";
-import {HandlerAgent, JetstreamSubject} from "../../src";
+import { AtpAgent } from '@atproto/api';
+import { mockDeep, notUndefined } from 'jest-mock-extended';
+import { HandlerAgent, JetstreamSubject } from '../../src';
 
 describe('HandlerAgentDM', () => {
     const mockAtpAgent = mockDeep<AtpAgent>();
-    Object.defineProperty(mockAtpAgent, 'session', { value: {
+    Object.defineProperty(mockAtpAgent, 'session', {
+        value: {
             did: 'did:plc:mockdid',
             handle: 'mockhandle.test',
             email: 'mock@example.com',
             emailConfirmed: true,
             accessJwt: 'mock-access-jwt',
-            refreshJwt: 'mock-refresh-jwt'
-        }, writable: false });
+            refreshJwt: 'mock-refresh-jwt',
+        },
+        writable: false,
+    });
     let handlerAgent: HandlerAgent;
 
     const mockGetConvoForUserResp = {
@@ -24,12 +27,12 @@ describe('HandlerAgentDM', () => {
                 members: [
                     {
                         did: 'did:plc:test',
-                        handle: 'testhandle.handle'
+                        handle: 'testhandle.handle',
                     },
                     {
                         did: 'did:plc:other',
-                        handle: 'testhandle.other'
-                    }
+                        handle: 'testhandle.other',
+                    },
                 ],
                 lastMessage: {
                     $type: 'chat.bsky.convo.defs#messageView',
@@ -39,9 +42,9 @@ describe('HandlerAgentDM', () => {
                         did: 'did:plc:test',
                     },
                     text: 'test message',
-                }
-            }
-        }
+                },
+            },
+        },
     };
 
     beforeEach(() => {
@@ -56,210 +59,235 @@ describe('HandlerAgentDM', () => {
     });
     describe('getConvoForUser', () => {
         it('getConvoForUser gets convo for user', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(mockGetConvoForUserResp)
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(
+                // @ts-ignore
+                mockGetConvoForUserResp
+            );
             const resp = await handlerAgent.getConvoForUser('did:plc:test');
 
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(resp).toMatchObject(mockGetConvoForUserResp.data.convo)
-        })
-
-
-    })
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(resp).toMatchObject(mockGetConvoForUserResp.data.convo);
+        });
+    });
 
     describe('getConvoIdForUser', () => {
         it('getConvoIdForUser gets convo id', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(mockGetConvoForUserResp)
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(
+                // @ts-ignore
+                mockGetConvoForUserResp
+            );
             const resp = await handlerAgent.getConvoIdForUser('did:plc:test');
 
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(resp).toBe(mockGetConvoForUserResp.data.convo.id)
-        })
-
-
-    })
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(resp).toBe(mockGetConvoForUserResp.data.convo.id);
+        });
+    });
 
     describe('getMessagesInConvo', () => {
         const getMessagesMockResp = {
-            data:{
+            data: {
                 cursor: '1243',
-                messages: []
-            }
-        }
+                messages: [],
+            },
+        };
         it('getMessagesInConvo gets messages', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getMessages.mockResolvedValue(getMessagesMockResp)
+            mockAtpAgent.chat.bsky.convo.getMessages.mockResolvedValue(
+                // @ts-ignore
+                getMessagesMockResp
+            );
             const resp = await handlerAgent.getMessagesInConvo('123');
 
-            expect(mockAtpAgent.chat.bsky.convo.getMessages).toHaveBeenCalledWith({
+            expect(
+                mockAtpAgent.chat.bsky.convo.getMessages
+            ).toHaveBeenCalledWith({
                 convoId: '123',
                 cursor: undefined,
-                limit: 100
-            })
-            expect(resp).toBe(getMessagesMockResp.data)
-        })
-
-
-    })
+                limit: 100,
+            });
+            expect(resp).toBe(getMessagesMockResp.data);
+        });
+    });
 
     describe('setMessageAsRead', () => {
         const setMessageAsReadResp = {
-            data:{
-                convo:{
-                    id: '123'
-                }
+            data: {
+                convo: {
+                    id: '123',
+                },
             },
             success: true,
-        }
+        };
 
         it('setMessageAsRead sets a message as read', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setMessageAsReadResp)
+            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(
+                // @ts-ignore
+                setMessageAsReadResp
+            );
             const resp = await handlerAgent.setMessageAsRead('123', '456');
 
-            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
+            expect(
+                mockAtpAgent.chat.bsky.convo.updateRead
+            ).toHaveBeenCalledWith({
                 convoId: '123',
-                messageId: '456'
-            })
-            expect(resp).toBe(setMessageAsReadResp.data)
-        })
-    })
+                messageId: '456',
+            });
+            expect(resp).toBe(setMessageAsReadResp.data);
+        });
+    });
 
     describe('setConvoAsRead', () => {
         const setConvoAsReadResp = {
-            data:{
-                convo:{
-                    id: '123'
-                }
+            data: {
+                convo: {
+                    id: '123',
+                },
             },
             success: true,
-        }
+        };
         it('setConvoAsRead sets a convo as read', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(setConvoAsReadResp)
+            mockAtpAgent.chat.bsky.convo.updateRead.mockResolvedValue(
+                // @ts-ignore
+                setConvoAsReadResp
+            );
             const resp = await handlerAgent.setConvoAsRead('123');
 
-            expect(mockAtpAgent.chat.bsky.convo.updateRead).toHaveBeenCalledWith({
-                convoId: '123'
-            })
-            expect(resp).toBe(setConvoAsReadResp.data)
-        })
-
-    })
+            expect(
+                mockAtpAgent.chat.bsky.convo.updateRead
+            ).toHaveBeenCalledWith({
+                convoId: '123',
+            });
+            expect(resp).toBe(setConvoAsReadResp.data);
+        });
+    });
 
     describe('reactToMessage', () => {
         const reactToMessageResp = {
-            data:{
+            data: {
                 message: {
-                    id: '5678'
-                }
+                    id: '5678',
+                },
             },
             success: true,
-        }
+        };
         it('reactToMessage sets a reaction on a message', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.addReaction.mockResolvedValue(reactToMessageResp)
+            mockAtpAgent.chat.bsky.convo.addReaction.mockResolvedValue(
+                // @ts-ignore
+                reactToMessageResp
+            );
             const resp = await handlerAgent.reactToMessage('123', '456', '❤️');
 
-            expect(mockAtpAgent.chat.bsky.convo.addReaction).toHaveBeenCalledWith({
+            expect(
+                mockAtpAgent.chat.bsky.convo.addReaction
+            ).toHaveBeenCalledWith({
                 convoId: '123',
                 messageId: '456',
-                value: '❤️'
-            })
-            expect(resp).toBe(reactToMessageResp.data)
-        })
-    })
+                value: '❤️',
+            });
+            expect(resp).toBe(reactToMessageResp.data);
+        });
+    });
 
     describe('getCanDmUser', () => {
         const getCanDmUserResp = {
-            data:{
+            data: {
                 canChat: true,
                 convo: {
-                    id: '123'
-                }
+                    id: '123',
+                },
             },
             success: true,
-        }
+        };
         it('getCanDmUser sets a reaction on a message', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoAvailability.mockResolvedValue(getCanDmUserResp)
+            mockAtpAgent.chat.bsky.convo.getConvoAvailability.mockResolvedValue(
+                // @ts-ignore
+                getCanDmUserResp
+            );
             const resp = await handlerAgent.getCanDmUser('did:plc:example');
 
-            expect(mockAtpAgent.chat.bsky.convo.getConvoAvailability).toHaveBeenCalledWith({
-                members: ['did:plc:example']
-            })
-            expect(resp).toBe(getCanDmUserResp.data.canChat)
-        })
-    })
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoAvailability
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:example'],
+            });
+            expect(resp).toBe(getCanDmUserResp.data.canChat);
+        });
+    });
 
     describe('sendMessageToUser', () => {
-
         it('sendMessageToUser gets convo id and sends message', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(mockGetConvoForUserResp)
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(
+                // @ts-ignore
+                mockGetConvoForUserResp
+            );
 
-            const messageText = 'hello world'
+            const messageText = 'hello world';
             await handlerAgent.sendMessageToUser('did:plc:test', messageText);
 
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.sendMessage).toHaveBeenCalledWith({
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.sendMessage
+            ).toHaveBeenCalledWith({
                 convoId: mockGetConvoForUserResp.data.convo.id,
                 message: {
-                    text: messageText
-                }
-            })
-        })
+                    text: messageText,
+                },
+            });
+        });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(mockGetConvoForUserResp)
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockResolvedValue(
+                // @ts-ignore
+                mockGetConvoForUserResp
+            );
 
-            const messageText = 'hello world'
+            const messageText = 'hello world';
             const embedSubject: JetstreamSubject = {
                 cid: 'examplecid',
                 uri: 'at//did:plc:example/app.bsky.feed.post/rkey',
-            }
-            await handlerAgent.sendMessageToUser('did:plc:test', messageText, embedSubject);
+            };
+            await handlerAgent.sendMessageToUser(
+                'did:plc:test',
+                messageText,
+                embedSubject
+            );
 
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.sendMessage).toHaveBeenCalledWith({
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.sendMessage
+            ).toHaveBeenCalledWith({
                 convoId: mockGetConvoForUserResp.data.convo.id,
                 message: {
                     text: messageText,
                     embed: {
                         $type: 'app.bsky.embed.record',
                         record: embedSubject,
-                    }
-                }
-            })
-        })
-
-
-    })
+                    },
+                },
+            });
+        });
+    });
 
     describe('sendMessageToMultipleUsers', () => {
-
         it('sendMessageToMultipleUsers gets convo ids and sends message', async () => {
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation((params, opts) => {
-
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation(
+                // @ts-ignore
+                (params, opts) => {
                     return Promise.resolve({
                         success: true,
                         headers: {},
@@ -267,82 +295,92 @@ describe('HandlerAgentDM', () => {
                             convo: {
                                 id: `convoid-${params!.members[0]}`,
                                 rev: '1234',
-                            }
-                        }
-                    } as unknown as Response)
+                            },
+                        },
+                    } as unknown as Response);
+                }
+            );
 
-            })
+            const messageText = 'hello world';
+            await handlerAgent.sendMessageToMultipleUsers(
+                ['did:plc:test', 'did:plc:other'],
+                messageText
+            );
 
-            const messageText = 'hello world'
-            await handlerAgent.sendMessageToMultipleUsers(['did:plc:test', 'did:plc:other'], messageText);
-
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:other'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.sendMessageBatch).toHaveBeenCalledWith({
-                items:[
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:other'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.sendMessageBatch
+            ).toHaveBeenCalledWith({
+                items: [
                     {
                         convoId: `convoid-did:plc:test`,
                         message: {
-                            text: messageText
-                        }
+                            text: messageText,
+                        },
                     },
                     {
                         convoId: `convoid-did:plc:other`,
                         message: {
-                            text: messageText
-                        }
-                    }
-                ]
-            })
-        })
+                            text: messageText,
+                        },
+                    },
+                ],
+            });
+        });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
-            // @ts-ignore
-
             const embedSubject: JetstreamSubject = {
                 cid: 'examplecid',
                 uri: 'at//did:plc:example/app.bsky.feed.post/rkey',
-            }
+            };
 
-            // @ts-ignore
-            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation((params, opts) => {
 
-                return Promise.resolve({
-                    success: true,
-                    headers: {},
-                    data: {
-                        convo: {
-                            id: `convoid-${params!.members[0]}`,
-                            rev: '1234',
-                        }
-                    }
-                } as unknown as Response)
+            mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation(
+                // @ts-ignore
+                (params, opts) => {
+                    return Promise.resolve({
+                        success: true,
+                        headers: {},
+                        data: {
+                            convo: {
+                                id: `convoid-${params!.members[0]}`,
+                                rev: '1234',
+                            },
+                        },
+                    } as unknown as Response);
+                }
+            );
 
-            })
+            const messageText = 'hello world';
+            await handlerAgent.sendMessageToMultipleUsers(
+                ['did:plc:test', 'did:plc:other'],
+                messageText,
+                embedSubject
+            );
 
-            const messageText = 'hello world'
-            await handlerAgent.sendMessageToMultipleUsers(['did:plc:test', 'did:plc:other'], messageText, embedSubject);
-
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:test'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.getConvoForMembers).toHaveBeenCalledWith({
-                members: [
-                    'did:plc:other'
-                ]
-            })
-            expect(mockAtpAgent.chat.bsky.convo.sendMessageBatch).toHaveBeenCalledWith({
-                items:[
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:test'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.getConvoForMembers
+            ).toHaveBeenCalledWith({
+                members: ['did:plc:other'],
+            });
+            expect(
+                mockAtpAgent.chat.bsky.convo.sendMessageBatch
+            ).toHaveBeenCalledWith({
+                items: [
                     {
                         convoId: `convoid-did:plc:test`,
                         message: {
@@ -350,8 +388,8 @@ describe('HandlerAgentDM', () => {
                             embed: {
                                 $type: 'app.bsky.embed.record',
                                 record: embedSubject,
-                            }
-                        }
+                            },
+                        },
                     },
                     {
                         convoId: `convoid-did:plc:other`,
@@ -360,13 +398,11 @@ describe('HandlerAgentDM', () => {
                             embed: {
                                 $type: 'app.bsky.embed.record',
                                 record: embedSubject,
-                            }
-                        }
-                    }
-                ]
-            })
-        })
-
-
-    })
-})
+                            },
+                        },
+                    },
+                ],
+            });
+        });
+    });
+});

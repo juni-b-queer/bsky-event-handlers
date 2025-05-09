@@ -55,7 +55,7 @@ export class MessageHandler extends AbstractHandler {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): string {
-        return message.did
+        return message.did;
     }
 
     static make(

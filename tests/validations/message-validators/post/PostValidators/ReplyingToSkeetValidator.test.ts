@@ -23,7 +23,7 @@ describe('ReplyingToSkeetValidator', () => {
         });
     });
     fs.mkdirSync(sessPath, { recursive: true });
-    const skeetUri = 'at://did:plc:bot/app.bsky.feed.post/otherRkey'
+    const skeetUri = 'at://did:plc:bot/app.bsky.feed.post/otherRkey';
     const validator = ReplyingToSkeetValidator.make(skeetUri);
     const botDid = 'did:plc:bot';
 
@@ -37,7 +37,7 @@ describe('ReplyingToSkeetValidator', () => {
         return new HandlerAgent('name', 'handle', 'password', bskyAgent);
     };
 
-    const createMessage = (replyUri: string | undefined | null = null ) => {
+    const createMessage = (replyUri: string | undefined | null = null) => {
         const recordFactory = NewSkeetRecordFactory.factory();
         if (replyUri == 'default') {
             recordFactory.reply();

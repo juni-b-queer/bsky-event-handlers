@@ -1,10 +1,8 @@
-import {HandlerAgent} from "../agent/HandlerAgent";
-import {JetstreamSubject} from "../types/JetstreamTypes";
+import { HandlerAgent } from '../agent/HandlerAgent';
+import { JetstreamSubject } from '../types/JetstreamTypes';
 
 export function getStringOrFunctionReturn(
-    stringOrFunction:
-        | string
-        | ((arg0: HandlerAgent, ...args: any) => string),
+    stringOrFunction: string | ((arg0: HandlerAgent, ...args: any) => string),
     handlerAgent: HandlerAgent,
     ...args: any
 ): string {

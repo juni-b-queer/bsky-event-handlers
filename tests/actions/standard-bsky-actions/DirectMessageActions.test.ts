@@ -2,7 +2,9 @@ import {
     CreateSkeetAction,
     DeleteSkeetAction,
     JetstreamSubjectFactory,
-    ReplyFactory, SendDMAction, SendDMToMultipleUsersAction,
+    ReplyFactory,
+    SendDMAction,
+    SendDMToMultipleUsersAction,
 } from '../../../src';
 import {
     runTestSuiteDualParam,
@@ -12,33 +14,20 @@ import {
     TestCaseSingleParam,
 } from './StandardTestSuite';
 
-
 // @ts-ignore
 const testCasesTripleParam: TestCaseTripleParam[] = [
     {
         description: 'Send DM Action',
         mockHandler: 'sendMessageToUser',
         actionFactory: SendDMAction.make,
-        staticValues: [
-            'did:plc:example',
-            'Hello World',
-            undefined,
-        ],
-        staticExpectations: [
-            'did:plc:example',
-            'Hello World',
-            undefined,
-        ],
+        staticValues: ['did:plc:example', 'Hello World', undefined],
+        staticExpectations: ['did:plc:example', 'Hello World', undefined],
         dynamicGenerators: [
             jest.fn().mockReturnValue('did:plc:dynamic'),
             jest.fn().mockReturnValue('Hello Dynamic!'),
             undefined,
         ],
-        dynamicExpectations: [
-            'did:plc:dynamic',
-            'Hello Dynamic!',
-            undefined,
-        ],
+        dynamicExpectations: ['did:plc:dynamic', 'Hello Dynamic!', undefined],
     },
     {
         description: 'Send DM Action',

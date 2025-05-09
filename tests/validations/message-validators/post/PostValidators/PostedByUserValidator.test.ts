@@ -64,10 +64,17 @@ describe('Posted by user validator', () => {
     it('shouldTrigger returns true if a post by user function', async () => {
         const message = createMessage(userDid);
 
-        let funcValidator = PostedByUserValidator.make((handlerAgent: HandlerAgent, message: JetstreamEventCommit): string => {
-            return message.did
-        });
+        let funcValidator = PostedByUserValidator.make(
+            (
+                handlerAgent: HandlerAgent,
+                message: JetstreamEventCommit
+            ): string => {
+                return message.did;
+            }
+        );
 
-        expect(await funcValidator.shouldTrigger(handlerAgent, message)).toBe(true);
+        expect(await funcValidator.shouldTrigger(handlerAgent, message)).toBe(
+            true
+        );
     });
 });

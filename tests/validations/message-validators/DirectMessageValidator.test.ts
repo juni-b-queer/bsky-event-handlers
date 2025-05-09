@@ -1,14 +1,15 @@
-
 import dotenv from 'dotenv';
 import fs from 'fs';
 import {
-    CanDmUserValidator, HandlerAgent,
-    JetstreamCommitFactory, JetstreamEventCommit,
+    CanDmUserValidator,
+    HandlerAgent,
+    JetstreamCommitFactory,
+    JetstreamEventCommit,
     JetstreamEventFactory,
-    NewSkeetRecordFactory
-} from "../../../src";
-import {mockDeep} from "jest-mock-extended";
-import {AtpAgent} from "@atproto/api";
+    NewSkeetRecordFactory,
+} from '../../../src';
+import { mockDeep } from 'jest-mock-extended';
+import { AtpAgent } from '@atproto/api';
 
 const sessPath = './tests/temp/val/post/DmValidators';
 dotenv.config();
@@ -25,15 +26,23 @@ describe('Can DM User Validator', () => {
     const userDid = 'did:plc:user';
     const validator = CanDmUserValidator.make(userDid);
     const atpAgent = mockDeep<AtpAgent>();
-    Object.defineProperty(atpAgent, 'session', { value: {
+    Object.defineProperty(atpAgent, 'session', {
+        value: {
             did: 'did:plc:mockdid',
             handle: 'mockhandle.test',
             email: 'mock@example.com',
             emailConfirmed: true,
             accessJwt: 'mock-access-jwt',
-            refreshJwt: 'mock-refresh-jwt'
-        }, writable: false });
-    const handlerAgent: HandlerAgent = new HandlerAgent('name', 'handle', 'password', atpAgent);
+            refreshJwt: 'mock-refresh-jwt',
+        },
+        writable: false,
+    });
+    const handlerAgent: HandlerAgent = new HandlerAgent(
+        'name',
+        'handle',
+        'password',
+        atpAgent
+    );
 
     const message = JetstreamEventFactory.factory()
         .fromDid('did:plc:other')
@@ -49,10 +58,10 @@ describe('Can DM User Validator', () => {
     it('shouldTrigger returns true if CanDM returns true', async () => {
         // @ts-ignore
         atpAgent!.chat.bsky.convo.getConvoAvailability.mockResolvedValue({
-            data:{
-                canChat: true
+            data: {
+                canChat: true,
             },
-            success: true
+            success: true,
         });
 
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);
@@ -62,12 +71,12 @@ describe('Can DM User Validator', () => {
         // @ts-ignore
         atpAgent!.chat.bsky.convo.getConvoAvailability.mockResolvedValue({
             data: {
-                canChat: false
+                canChat: false,
             },
-            success: true
+            success: true,
         });
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
             false
         );
     });
-   });
+});

@@ -36,8 +36,11 @@ export class HandlerAgent {
             this.setDid = agent.session?.did;
             this.setSession = agent.session;
         }
-        if(this.agent?.chat?._client){
-            this.agent.chat._client.setHeader('Atproto-Proxy', 'did:web:api.bsky.chat#bsky_chat')
+        if (this.agent?.chat?._client) {
+            this.agent.chat._client.setHeader(
+                'Atproto-Proxy',
+                'did:web:api.bsky.chat#bsky_chat'
+            );
         }
     }
 
@@ -490,10 +493,12 @@ export class HandlerAgent {
         return `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
     }
 
-    generateSubjectFromMessage(message: JetstreamEventCommit): JetstreamSubject {
+    generateSubjectFromMessage(
+        message: JetstreamEventCommit
+    ): JetstreamSubject {
         return {
             uri: `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`,
-            cid: message.commit.cid
+            cid: message.commit.cid,
         };
     }
 
@@ -596,62 +601,76 @@ export class HandlerAgent {
 
     //region Chat interactions
 
-    async getConvoForUser(userDID: string){
-        const getConvoResponse = await this.agent!.chat.bsky.convo.getConvoForMembers({
-            members: [userDID]
-        })
+    async getConvoForUser(userDID: string) {
+        const getConvoResponse =
+            await this.agent!.chat.bsky.convo.getConvoForMembers({
+                members: [userDID],
+            });
         return getConvoResponse.data.convo;
     }
 
-    async getConvoIdForUser(userDID: string){
+    async getConvoIdForUser(userDID: string) {
         const convo = await this.getConvoForUser(userDID);
         return convo.id;
     }
 
-    async getMessagesInConvo(convoId: string, limit: number = 100, cursor: string | undefined = undefined){
-        const getMessagesResponse = await this.agent!.chat.bsky.convo.getMessages({
-            convoId: convoId,
-            limit: limit,
-            cursor: cursor,
-        })
+    async getMessagesInConvo(
+        convoId: string,
+        limit: number = 100,
+        cursor: string | undefined = undefined
+    ) {
+        const getMessagesResponse =
+            await this.agent!.chat.bsky.convo.getMessages({
+                convoId: convoId,
+                limit: limit,
+                cursor: cursor,
+            });
         return getMessagesResponse.data;
     }
 
-    async setMessageAsRead(convoId: string, messageId: string){
-        const setMessageAsReadResponse = await this.agent!.chat.bsky.convo.updateRead({
-            convoId: convoId,
-            messageId: messageId,
-        })
+    async setMessageAsRead(convoId: string, messageId: string) {
+        const setMessageAsReadResponse =
+            await this.agent!.chat.bsky.convo.updateRead({
+                convoId: convoId,
+                messageId: messageId,
+            });
         return setMessageAsReadResponse.data;
     }
 
-    async setConvoAsRead(convoId: string){
-        const setConvoAsReadResponse = await this.agent!.chat.bsky.convo.updateRead({
-            convoId: convoId,
-        })
+    async setConvoAsRead(convoId: string) {
+        const setConvoAsReadResponse =
+            await this.agent!.chat.bsky.convo.updateRead({
+                convoId: convoId,
+            });
         return setConvoAsReadResponse.data;
     }
 
-    async reactToMessage(convoId: string, messageId: string, reaction: string){
-        const reactToMessageResponse = await this.agent!.chat.bsky.convo.addReaction({
-            convoId: convoId,
-            messageId: messageId,
-            value: reaction,
-        })
+    async reactToMessage(convoId: string, messageId: string, reaction: string) {
+        const reactToMessageResponse =
+            await this.agent!.chat.bsky.convo.addReaction({
+                convoId: convoId,
+                messageId: messageId,
+                value: reaction,
+            });
         return reactToMessageResponse.data;
     }
 
-    async getCanDmUser(userDID: string): Promise<boolean>{
-        const getCanDmUserResponse = await this.agent!.chat.bsky.convo.getConvoAvailability({
-            members: [userDID]
-        })
-        return getCanDmUserResponse.data.canChat
+    async getCanDmUser(userDID: string): Promise<boolean> {
+        const getCanDmUserResponse =
+            await this.agent!.chat.bsky.convo.getConvoAvailability({
+                members: [userDID],
+            });
+        return getCanDmUserResponse.data.canChat;
     }
 
-    async sendMessageToUser(userDID: string, message: string, embed: JetstreamSubject | undefined = undefined) {
-        const convoId = await this.getConvoIdForUser(userDID)
+    async sendMessageToUser(
+        userDID: string,
+        message: string,
+        embed: JetstreamSubject | undefined = undefined
+    ) {
+        const convoId = await this.getConvoIdForUser(userDID);
         const richText = new RichText({
-            text: message
+            text: message,
         });
         await richText.detectFacets(this.getAgent!);
         const messageBody = {
@@ -659,49 +678,52 @@ export class HandlerAgent {
             message: {
                 text: richText.text,
                 facets: richText.facets,
-                embed: undefined
-            }
-        }
-        if(embed !== undefined){
+                embed: undefined,
+            },
+        };
+        if (embed !== undefined) {
             // @ts-ignore
             messageBody.message.embed = {
                 $type: 'app.bsky.embed.record',
-                record: embed
-            }
+                record: embed,
+            };
         }
 
-
-        await this.agent!.chat.bsky.convo.sendMessage(messageBody)
+        await this.agent!.chat.bsky.convo.sendMessage(messageBody);
     }
 
-    async sendMessageToMultipleUsers(userDIDs: string[], message: string, embed: JetstreamSubject | undefined = undefined) {
+    async sendMessageToMultipleUsers(
+        userDIDs: string[],
+        message: string,
+        embed: JetstreamSubject | undefined = undefined
+    ) {
         const richText = new RichText({
-            text: message
+            text: message,
         });
         await richText.detectFacets(this.getAgent!);
 
         const items = [];
-        for(const userDID of userDIDs){
-            const convoId = await this.getConvoIdForUser(userDID)
+        for (const userDID of userDIDs) {
+            const convoId = await this.getConvoIdForUser(userDID);
             const messageBody = {
                 convoId: convoId,
                 message: {
                     text: richText.text,
                     facets: richText.facets,
-                    embed: undefined
-                }
-            }
-            if(embed !== undefined){
+                    embed: undefined,
+                },
+            };
+            if (embed !== undefined) {
                 // @ts-ignore
                 messageBody.message.embed = {
                     $type: 'app.bsky.embed.record',
-                    record: embed
-                }
+                    record: embed,
+                };
             }
             items.push(messageBody);
         }
 
-        await this.agent!.chat.bsky.convo.sendMessageBatch({items: items})
+        await this.agent!.chat.bsky.convo.sendMessageBatch({ items: items });
     }
 
     //endregion

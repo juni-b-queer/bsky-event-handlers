@@ -1,19 +1,21 @@
 import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
-import {getStringOrFunctionReturn} from "../../utils/type-or-function";
+import { getStringOrFunctionReturn } from '../../utils/type-or-function';
 
 // TODO Tests and documentation
 export class CanDmUserValidator extends AbstractMessageValidator {
     constructor(
         protected userDID:
-                    | string
-                    | ((arg0: HandlerAgent, ...args: any) => string)
+            | string
+            | ((arg0: HandlerAgent, ...args: any) => string)
     ) {
         super();
     }
 
-    static make(userDID: string | ((arg0: HandlerAgent, ...args: any) => string),): CanDmUserValidator {
+    static make(
+        userDID: string | ((arg0: HandlerAgent, ...args: any) => string)
+    ): CanDmUserValidator {
         return new CanDmUserValidator(userDID);
     }
 
@@ -26,6 +28,6 @@ export class CanDmUserValidator extends AbstractMessageValidator {
             handlerAgent,
             message
         );
-        return await handlerAgent.getCanDmUser(did)
+        return await handlerAgent.getCanDmUser(did);
     }
 }

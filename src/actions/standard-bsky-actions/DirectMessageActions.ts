@@ -4,8 +4,8 @@ import { JetstreamSubject } from '../../types/JetstreamTypes';
 import {
     getJetstreamSubjectOrFunctionReturn,
     getStringArrayOrFunctionReturn,
-    getStringOrFunctionReturn
-} from "../../utils/type-or-function";
+    getStringOrFunctionReturn,
+} from '../../utils/type-or-function';
 
 export class SendDMAction extends AbstractAction {
     constructor(
@@ -48,7 +48,11 @@ export class SendDMAction extends AbstractAction {
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            embed = getJetstreamSubjectOrFunctionReturn(this.embeddedPost, handlerAgent, ...args);
+            embed = getJetstreamSubjectOrFunctionReturn(
+                this.embeddedPost,
+                handlerAgent,
+                ...args
+            );
         }
 
         await handlerAgent.sendMessageToUser(did, text, embed);
@@ -79,7 +83,11 @@ export class SendDMToMultipleUsersAction extends AbstractAction {
             | ((arg0: HandlerAgent, ...args: any) => JetstreamSubject)
             | undefined = undefined
     ): SendDMToMultipleUsersAction {
-        return new SendDMToMultipleUsersAction(userDIDs, messageText, embeddedPost);
+        return new SendDMToMultipleUsersAction(
+            userDIDs,
+            messageText,
+            embeddedPost
+        );
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -96,7 +104,11 @@ export class SendDMToMultipleUsersAction extends AbstractAction {
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            embed = getJetstreamSubjectOrFunctionReturn(this.embeddedPost, handlerAgent, ...args);
+            embed = getJetstreamSubjectOrFunctionReturn(
+                this.embeddedPost,
+                handlerAgent,
+                ...args
+            );
         }
 
         await handlerAgent.sendMessageToMultipleUsers(dids, text, embed);
