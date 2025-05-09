@@ -25,7 +25,6 @@ These are standardized actions that make them easy to use from any subscriber or
 ### CreateSkeetAction
 
 Create a skeet. Accepts a string or function that returns a string to be used as the post text.
-
 An optional second argument can be passed in to make it a reply. A helper function `MessageHandler.generateReplyFromMessage` can be used to automatically generate the reply for a given message.
 
 ```
