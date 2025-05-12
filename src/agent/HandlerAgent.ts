@@ -366,6 +366,34 @@ export class HandlerAgent {
         return response.data.threadgate ?? undefined
     }
 
+    async getAgentCanReply(uri: string){
+        const response = await this.agent!.getPostThread({
+            uri: uri
+        })
+        // @ts-ignore
+        const replyDisabled = response.data.thread?.post?.viewer?.replyDisabled
+
+        if(replyDisabled){
+            return false
+        }
+
+        return true
+    }
+
+    async getAgentCanQuote(uri: string){
+        const response = await this.agent!.getPostThread({
+            uri: uri
+        })
+        // @ts-ignore
+        const embeddingDisabled = response.data.thread?.post?.viewer?.embeddingDisabled
+
+        if(embeddingDisabled){
+            return false
+        }
+
+        return true
+    }
+
 
     /**
      * Finds a record that is similar to a given skeet URI.
