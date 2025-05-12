@@ -39,8 +39,11 @@ Validators are used to determine whether an action should be triggered. We provi
         -   [RepostByUser](#repostbyuser)
         -   [RepostOfUser](#repostofuser)
         -   [RepostOfPost](#repostofpost)
--   Direct Messages
-  -    [Direct Message Validators](#direct-message-validators)
+-   [Direct Message Validators](#direct-message-validators)
+  -    [CanDmUserValidator](#candmuservalidator)
+-   [Thread Permission Validators](#thread-permission-validators)
+  -    [CanReplyToThreadValidator](#canreplytothreadvalidator)
+  -    [CanQuoteThreadValidator](#canquotethreadvalidator)
 -   Testing
     -   [Test Validator](#test-validator)
 
@@ -354,6 +357,32 @@ CanDmUserValidator.make('userDid123');
 
 // Validate using the DID from the post
 CanDmUserValidator.make(MessageHandler.getDIDFromMessage);
+```
+
+### Thread Permission Validators
+
+#### CanReplyToThreadValidator
+
+The `CanReplyToThreadValidator` validator checks if the bot is able to reply in a specified thread
+
+```typescript
+// Validate from a static uri, ensure it is the root uri of the thread
+CanReplyToThreadValidator.make('at://did:plc:example/app.bsky.feed.post/rkey');
+
+// Validate using the root uri from the post
+CanReplyToThreadValidator.make(MessageHandler.getRootUriFromMessage);
+```
+
+#### CanQuoteThreadValidator
+
+The `CanQuoteThreadValidator` validator checks if the bot is able to quote a specific post
+
+```typescript
+// Validate from a static uri
+CanQuoteThreadValidator.make('at://did:plc:example/app.bsky.feed.post/rkey');
+
+// Validate using the uri from the post
+CanQuoteThreadValidator.make(MessageHandler.getUriFromMessage);
 ```
 
 ## Testing
