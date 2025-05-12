@@ -55,6 +55,10 @@ await myBotHandlerAgent.authenticate()
 - `getPostReplyCount(skeetURI: string)` : Returns the number of replies on a post
 - `getPostQuoteCount(skeetURI: string)` : Returns the number of quotes on a post
 - `getPostCount(skeetURI: string, countType: 'like' | 'repost' | 'reply' | 'quote')` : Returns the number of {something} on a post
+- `getPostThreadgate(uri: string)` : gets the threadgate object from the post
+- `getAgentCanReply(uri: string)` : returns a boolean to indicate if the current agent can reply to a post based on thread rules
+- `getAgentCanQuote(uri: string)` : returns a boolean to indicate if the current agent can quote a post based on thread rules
+
 
 ### Methods for DM interactions
 - `getConvoForUser(userDID: string)` : Gets the DM convo details between a user and the bot agent
