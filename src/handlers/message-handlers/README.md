@@ -24,6 +24,8 @@ Message Handler also has a number of static utility functions
 
 `getUriFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
 
+`getRootUriFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
+
 `getCidFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
 
 `generateReplyFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): JetstreamReply`

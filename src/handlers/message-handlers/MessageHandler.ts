@@ -28,6 +28,16 @@ export class MessageHandler extends AbstractHandler {
         return handlerAgent.generateURIFromCreateMessage(message);
     }
 
+    static getRootUriFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): string {
+        if(message.commit.record?.reply){
+            return message.commit.record?.reply?.root.uri
+        }
+        return handlerAgent.generateURIFromCreateMessage(message);
+    }
+
     static getCidFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
@@ -42,7 +52,6 @@ export class MessageHandler extends AbstractHandler {
         return handlerAgent.generateReplyFromMessage(message);
     }
 
-    // TODO Write tests
     static getSubjectFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
@@ -50,7 +59,6 @@ export class MessageHandler extends AbstractHandler {
         return handlerAgent.generateSubjectFromMessage(message);
     }
 
-    // TODO Write tests
     static getDIDFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
