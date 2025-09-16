@@ -7,7 +7,7 @@ import {
     JetstreamSubjectFactory,
     ReplyFactory,
 } from '../../src';
-import { BskyAgent } from '@atproto/api';
+import { AtpAgent } from '@atproto/api';
 
 dotenv.config();
 
@@ -57,7 +57,7 @@ describe('HandlerAgent', () => {
                         },
                     },
                 },
-            } as unknown as BskyAgent;
+            } as unknown as AtpAgent;
             handlerAgent = new HandlerAgent(
                 'agentName',
                 testHandle,
@@ -92,6 +92,18 @@ describe('HandlerAgent', () => {
             expect(postMock).toHaveBeenCalledWith({
                 text: 'Test post',
                 reply: reply,
+            });
+        });
+
+        it('createSkeet should call post with input text, and quote if quoteskeet is present', async () => {
+            const quotekseet: JetstreamSubject = JetstreamSubjectFactory.make();
+            await handlerAgent.createSkeet('Test post', undefined, quotekseet);
+            expect(postMock).toHaveBeenCalledWith({
+                text: 'Test post',
+                embed: {
+                    $type: 'app.bsky.embed.record',
+                    record: quotekseet,
+                },
             });
         });
     });

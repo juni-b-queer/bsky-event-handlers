@@ -1,7 +1,7 @@
 {
     "name": "bsky-event-handlers",
     "version": "0.4.59",
-    "description": "Utilities to help handle bluesky events with validation",
+    "description": "A typescript framework for building bluesky bots",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -53,7 +53,7 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
-        "@atproto/api": "^0.13.19",
+        "@atproto/api": "^0.15.6",
         "moment-timezone": "^0.5.46",
         "ws": "^8.18.0"
     },

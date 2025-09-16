@@ -1,5 +1,5 @@
 import { HandlerAgent } from '../../src';
-import { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, AtpAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -20,14 +20,14 @@ describe('HandlerAgent', () => {
     let handlerAgent: HandlerAgent;
     const testHandle: string = 'testhandle';
     const testPassword: string = 'testpassword';
-    let mockedAgent: BskyAgent;
+    let mockedAgent: AtpAgent;
     beforeEach(() => {
         if (testHandle !== undefined && testPassword !== undefined) {
             mockedAgent = {
                 session: {
                     did: 'did:plc:2bnsooklzchcu5ao7xdjosrs',
                 } as AtpSessionData,
-            } as BskyAgent;
+            } as AtpAgent;
             handlerAgent = new HandlerAgent(
                 'agentName',
                 testHandle,
@@ -43,7 +43,7 @@ describe('HandlerAgent', () => {
 
     it('#getAgent & setAgent should get correct agent value', () => {
         expect(handlerAgent.getAgent).toBe(mockedAgent);
-        const mockAgent = new BskyAgent({ service: 'www' });
+        const mockAgent = new AtpAgent({ service: 'www' });
         handlerAgent.setAgent = mockAgent;
         expect(handlerAgent.getAgent).toBe(mockAgent);
     });

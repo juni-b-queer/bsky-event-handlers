@@ -5,6 +5,7 @@ import { AbstractHandler } from '../AbstractHandler';
 import {
     JetstreamEventCommit,
     JetstreamReply,
+    JetstreamSubject,
 } from '../../types/JetstreamTypes';
 
 // @ts-ignore
@@ -27,6 +28,16 @@ export class MessageHandler extends AbstractHandler {
         return handlerAgent.generateURIFromCreateMessage(message);
     }
 
+    static getRootUriFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): string {
+        if(message.commit.record?.reply){
+            return message.commit.record?.reply?.root.uri
+        }
+        return handlerAgent.generateURIFromCreateMessage(message);
+    }
+
     static getCidFromMessage(
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
@@ -39,6 +50,20 @@ export class MessageHandler extends AbstractHandler {
         message: JetstreamEventCommit
     ): JetstreamReply {
         return handlerAgent.generateReplyFromMessage(message);
+    }
+
+    static getSubjectFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): JetstreamSubject {
+        return handlerAgent.generateSubjectFromMessage(message);
+    }
+
+    static getDIDFromMessage(
+        handlerAgent: HandlerAgent,
+        message: JetstreamEventCommit
+    ): string {
+        return message.did;
     }
 
     static make(

@@ -17,19 +17,32 @@ These are standardized actions that make them easy to use from any subscriber or
 -   [Reskeet Actions](#reskeet-actions)
     -   [CreateReskeetAction](#createreskeetaction)
     -   [DeleteReskeetAction](#deletereskeetaction)
-
+-   [Direct Message Actions](#direct-message-actions)
+    -   [SendDMAction](#senddmaction)
+    -   [SendDMToMultipleUsersAction](#senddmtomultipleusersaction)
 ## Skeet Actions
 
 ### CreateSkeetAction
 
 Create a skeet. Accepts a string or function that returns a string to be used as the post text.
-
 An optional second argument can be passed in to make it a reply. A helper function `MessageHandler.generateReplyFromMessage` can be used to automatically generate the reply for a given message.
+
 ```
 CreateSkeetAction.make((handler: HandlerAgent, event: JetstreamEventCommit): string =>{
      return "hello!";
  },
      MessageHandler.generateReplyFromMessage)
+```
+
+An optional third argument can be passed in to make it a quoteskeet.
+
+```
+CreateSkeetAction.make("Quote", MessageHandler.generateReplyFromMessage, (handler: HandlerAgent, event: JetstreamEventCommit): JetstreamSubject =>{
+    return {
+        cid: 'cid',
+        uri: 'uri'
+    }
+})
 ```
 
 ### DeleteSkeetAction
@@ -82,4 +95,28 @@ Helper functions `MessageHandler.getUriFromMessage` and `MessageHandler.getCidFr
 Unreskeets a given post. Accepts a function or string for the URI of the post to unreskeet
 
 `DeleteReskeetAction.make(MessageHandler.getUriFromMessage)`
+
+
+## Direct Message Actions
+
+### SendDMAction
+
+Sends a DM to the user with the given message text and optional embedded post. \
+`userDID` and `messageText` can be either a string, or a function that returns a string. \
+`embeddedPost` can be either a JetstreamSubject (Object with CID and URI) or a function that returns a JetstreamSubject \
+The function parameters should be `(handlerAgent: HandlerAgent, ...args: any)`
+
+`SendDMAction.make(userDID, messageText, embeddedPost?)`
+
+On simple creation events, to DM the user that took the action, getting their DID is simple thanks to a build in MessageHandler function
+`SendDMAction.make(MessageHandler.getDIDFromMessage, "This is a DM message")`
+
+### SendDMToMultipleUsersAction
+Sends a DM to multiple users (separately) with the given message text and optional embedded post. \
+`userDIDs` can be either a string array, or a function that returns a string array. \
+`messageText` can be either a string, or a function that returns a string. \
+`embeddedPost` can be either a JetstreamSubject (Object with CID and URI) or a function that returns a JetstreamSubject \
+The function parameters should be `(handlerAgent: HandlerAgent, ...args: any)`
+
+`SendDMToMultipleUsersAction.make(userDIDs, "Message Text")`
 

@@ -5,9 +5,9 @@ import {
     JetstreamEventFactory,
     NewSkeetRecordFactory,
     ReplyFactory,
-    ReplyingToBotValidator,
+    ReplyingToSkeetValidator,
 } from '../../../../../src';
-import { AtpAgent } from '@atproto/api';
+import { BskyAgent } from '@atproto/api';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -15,7 +15,7 @@ const sessPath = './tests/temp/val/post/replyToBot';
 dotenv.config();
 process.env.SESSION_DATA_PATH = sessPath;
 
-describe('ReplyingToBotValidator', () => {
+describe('ReplyingToSkeetValidator', () => {
     afterAll(() => {
         fs.rmSync(sessPath, {
             recursive: true,
@@ -23,26 +23,27 @@ describe('ReplyingToBotValidator', () => {
         });
     });
     fs.mkdirSync(sessPath, { recursive: true });
-    const validator = ReplyingToBotValidator.make();
+    const skeetUri = 'at://did:plc:bot/app.bsky.feed.post/otherRkey';
+    const validator = ReplyingToSkeetValidator.make(skeetUri);
     const botDid = 'did:plc:bot';
 
     const createHandlerAgent = (): HandlerAgent => {
-        const bskyAgent: AtpAgent = {
+        const bskyAgent: BskyAgent = {
             session: {
                 did: botDid,
             },
-        } as AtpAgent;
+        } as BskyAgent;
 
         return new HandlerAgent('name', 'handle', 'password', bskyAgent);
     };
 
-    const createMessage = (replyDid: string | undefined | null = null) => {
+    const createMessage = (replyUri: string | undefined | null = null) => {
         const recordFactory = NewSkeetRecordFactory.factory();
-        if (replyDid == 'default') {
+        if (replyUri == 'default') {
             recordFactory.reply();
-        } else if (replyDid) {
+        } else if (replyUri) {
             recordFactory.reply(
-                ReplyFactory.factory().replyTo(replyDid).create()
+                ReplyFactory.factory().replyUri(replyUri).create()
             );
         }
 
@@ -66,8 +67,8 @@ describe('ReplyingToBotValidator', () => {
         );
     });
 
-    it('shouldTrigger returns true if the did is the same as the agent', async () => {
-        const message = createMessage(botDid);
+    it('shouldTrigger returns true if the uri is the same as the skeetUri', async () => {
+        const message = createMessage(skeetUri);
         const handlerAgent = createHandlerAgent();
 
         expect(await validator.shouldTrigger(handlerAgent, message)).toBe(true);

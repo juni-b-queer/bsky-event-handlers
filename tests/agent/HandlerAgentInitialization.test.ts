@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
-import { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, AtpAgent } from '@atproto/api';
 import fs from 'fs';
 
 dotenv.config();
@@ -32,7 +32,7 @@ describe('HandlerAgent', () => {
             const mockedAgent = {
                 login: loginMock,
                 resumeSession: resumeSessionMock,
-            } as unknown as BskyAgent;
+            } as unknown as AtpAgent;
             handlerAgent = new HandlerAgent(
                 'agentName',
                 testHandle,

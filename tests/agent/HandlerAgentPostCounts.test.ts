@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { HandlerAgent } from '../../src';
-import { BskyAgent } from '@atproto/api';
+import { AtpAgent } from '@atproto/api';
 
 dotenv.config();
 
@@ -37,7 +37,7 @@ describe('HandlerAgent Post Count', () => {
 
         const mockedAgent = {
             getPostThread: getPostThreadMock,
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
 
         handlerAgent = new HandlerAgent(
             'agentName',

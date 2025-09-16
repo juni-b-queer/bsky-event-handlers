@@ -6,7 +6,7 @@ import {
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    MessageHandler,
+    MessageHandler, NewSkeetRecordFactory,
 } from '../../src';
 
 describe('MessageHandler', () => {
@@ -104,6 +104,62 @@ describe('MessageHandler', () => {
             expect(mockValidatorShouldTrigger).toHaveBeenCalled();
             expect(mockActionHandle).toHaveBeenCalled();
             expect(mockDebugError).toHaveBeenCalled();
+        });
+
+        it('getDIDFromMessage gets the did', () => {
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit()
+                    .fromDid('did:plc:example')
+                    .create() as JetstreamEventCommit;
+
+            const result = MessageHandler.getDIDFromMessage(
+                mockedHandlerAgent,
+                message
+            );
+
+            expect(result).toBe('did:plc:example');
+        });
+
+        it('getRootUriFromMessage gets the rootUri from a message with a reply', () => {
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit(
+                        JetstreamCommitFactory.factory().record(
+                            NewSkeetRecordFactory.factory().reply().create()
+                        ).create()
+                    )
+                    .fromDid('did:plc:example')
+                    .create() as JetstreamEventCommit;
+
+            const result = MessageHandler.getRootUriFromMessage(
+                mockedHandlerAgent,
+                message
+            );
+
+            expect(result).toBe(message.commit?.record?.reply?.root.uri);
+        });
+
+        it('getRootUriFromMessage gets the rootUri from a message without a reply', () => {
+            const message: JetstreamEventCommit =
+                JetstreamEventFactory.factory()
+                    .commit(
+                        JetstreamCommitFactory.factory().record(
+                            NewSkeetRecordFactory.factory().create()
+                        ).create()
+                    )
+                    .fromDid('did:plc:example')
+                    .create() as JetstreamEventCommit;
+            const expected = `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`
+            mockedHandlerAgent.generateURIFromCreateMessage = jest.fn().mockReturnValue(expected);
+
+
+            const result = MessageHandler.getRootUriFromMessage(
+                mockedHandlerAgent,
+                message
+            );
+
+            expect(result).toBe(expected);
         });
     });
 });

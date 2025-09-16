@@ -10,7 +10,7 @@ export class TestValidator extends AbstractValidator {
         return new TestValidator(shouldPass);
     }
 
-    async handle(handlerAgent: HandlerAgent): Promise<boolean> {
+    async handle(handlerAgent: HandlerAgent, ...args: any): Promise<boolean> {
         return this.shouldPass;
     }
 }

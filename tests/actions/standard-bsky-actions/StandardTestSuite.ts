@@ -91,3 +91,47 @@ export const runTestSuiteDualParam = (testCases: TestCaseDualParam[]) => {
         });
     });
 };
+
+export interface TestCaseTripleParam {
+    description: string;
+    mockHandler: string;
+    actionFactory: any;
+    staticValues: [any, any, any];
+    staticExpectations: [any, any, any];
+    dynamicGenerators: [any, any, any];
+    dynamicExpectations: [any, any, any];
+}
+
+export const runTestSuiteTripleParam = (testCases: TestCaseDualParam[]) => {
+    describe.each(testCases)('$description', (testCase: TestCaseDualParam) => {
+        let action;
+        let handlerAgent: HandlerAgent;
+        const mockHandler = jest.fn();
+
+        beforeEach(() => {
+            handlerAgent = {
+                [testCase.mockHandler]: mockHandler,
+            } as unknown as HandlerAgent;
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('Should call with static values', async () => {
+            action = testCase.actionFactory(...testCase.staticValues);
+            await action.handle(handlerAgent);
+            expect(mockHandler).toHaveBeenCalledWith(
+                ...testCase.staticExpectations
+            );
+        });
+
+        it('Should call with values from generators', async () => {
+            action = testCase.actionFactory(...testCase.dynamicGenerators);
+            await action.handle(handlerAgent);
+            expect(mockHandler).toHaveBeenCalledWith(
+                ...testCase.dynamicExpectations
+            );
+        });
+    });
+};

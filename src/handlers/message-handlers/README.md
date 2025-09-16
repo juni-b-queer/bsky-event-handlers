@@ -19,6 +19,25 @@ Message handler is the basic one, it uses `JetstreamMessage` for validating and 
 MessageHandler.make([Validators], [Actions], handlerAgent);
 ```
 
+### Utility functions
+Message Handler also has a number of static utility functions
+
+`getUriFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
+
+`getRootUriFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
+
+`getCidFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
+
+`generateReplyFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): JetstreamReply`
+
+`getSubjectFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): JetstreamSubject`
+
+`getDIDFromMessage(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string`
+
+These can be used in Actions and Handlers like
+
+`CreateSkeetAction.make('This is a reply', MessageHandler.generateReplyFromMessage)` - This will generate the necessary reply object
+
 ## CreateSkeetHandler
 
 The `CreateSkeetHandler` extends the `AbstractMessageHandler` but is intended for use with only post creation messages, hence why when running validators and actions, it will cast the `JetstreamMessage` to a `CreateSkeetMessage` which has more well defined properties and attributes for post creation messages
