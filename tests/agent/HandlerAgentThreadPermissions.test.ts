@@ -2,7 +2,7 @@ import {AtpAgent} from '@atproto/api';
 import {mockDeep} from 'jest-mock-extended';
 import {HandlerAgent} from '../../src';
 
-describe('HandlerAgentDM', () => {
+describe('HandlerAgentThreadPermissions', () => {
     const mockAtpAgent = mockDeep<AtpAgent>();
     const sessData = {
         did: 'did:plc:mockdid',
@@ -107,22 +107,6 @@ describe('HandlerAgentDM', () => {
             'testPassword',
             mockAtpAgent
         );
-    });
-    describe('getPostThreadgate', () => {
-        it('getPostThreadgate gets threadgate for a post', async () => {
-            mockAtpAgent.getPostThread.mockResolvedValue(
-                // @ts-ignore
-                mockGetPostThreadResp
-            );
-            const resp = await handlerAgent.getPostThreadgate(postUri);
-
-            expect(
-                mockAtpAgent.getPostThread
-            ).toHaveBeenCalledWith({
-                uri: postUri,
-            });
-            expect(resp).toMatchObject(mockGetPostThreadResp.data.threadgate);
-        });
     });
 
     describe('getAgentCanReply', () => {
