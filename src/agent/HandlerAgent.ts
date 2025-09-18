@@ -357,21 +357,36 @@ export class HandlerAgent {
     //endregion
 
     //region Post Helpers
+    async getAuthorFeed(did?: string) {
+        const response = await this.agent!.getAuthorFeed({
+            actor: did ?? this.getDid,
+        });
+        return response.data;
+    }
+
+    async getPostThread(uri: string) {
+        const response = await this.agent!.getPostThread({
+            uri: uri,
+        });
+        return response.data;
+    }
+
+    async getPostReplies(uri: string) {
+        const threadData = await this.getPostThread(uri)
+        // @ts-ignore
+        return threadData.thread?.replies
+    }
 
     async getPostThreadgate(uri: string){
-        const response = await this.agent!.getPostThread({
-            uri: uri
-        })
+        const thread = await this.getPostThread(uri)
 
-        return response.data.threadgate ?? undefined
+        return thread.threadgate ?? undefined
     }
 
     async getAgentCanReply(uri: string){
-        const response = await this.agent!.getPostThread({
-            uri: uri
-        })
+        const threadObject = await this.getPostThread(uri)
         // @ts-ignore
-        const replyDisabled = response.data.thread?.post?.viewer?.replyDisabled
+        const replyDisabled = threadObject.thread?.post?.viewer?.replyDisabled
 
         if(replyDisabled){
             return false
@@ -381,11 +396,9 @@ export class HandlerAgent {
     }
 
     async getAgentCanQuote(uri: string){
-        const response = await this.agent!.getPostThread({
-            uri: uri
-        })
+        const threadObject = await this.getPostThread(uri)
         // @ts-ignore
-        const embeddingDisabled = response.data.thread?.post?.viewer?.embeddingDisabled
+        const embeddingDisabled = threadObject.thread?.post?.viewer?.embeddingDisabled
 
         if(embeddingDisabled){
             return false
