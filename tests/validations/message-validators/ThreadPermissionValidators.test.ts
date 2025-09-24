@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
 import {
-    CanQuoteThreadValidator, CanReplyToThreadValidator,
+    CanQuoteThreadValidator,
+    CanReplyToThreadValidator,
     HandlerAgent,
     JetstreamCommitFactory,
     JetstreamEventCommit,
@@ -59,17 +60,15 @@ describe('Can Reply to Thread Validator', () => {
         // @ts-ignore
         atpAgent!.getPostThread.mockResolvedValue({
             data: {
-                thread:{
+                thread: {
                     // @ts-ignore
                     post: {
                         viewer: {
-                            replyDisabled: false
-                        }
-                    }
+                            replyDisabled: false,
+                        },
+                    },
                 },
-                threadgate: {
-
-                }
+                threadgate: {},
             },
             success: true,
         });
@@ -81,22 +80,22 @@ describe('Can Reply to Thread Validator', () => {
         // @ts-ignore
         atpAgent!.getPostThread.mockResolvedValue({
             data: {
-                thread:{
+                thread: {
                     // @ts-ignore
                     post: {
                         viewer: {
-                            replyDisabled: true
-                        }
-                    }
+                            replyDisabled: true,
+                        },
+                    },
                 },
-                threadgate: {
-
-                }
+                threadgate: {},
             },
             success: true,
         });
 
-        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(false);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
+            false
+        );
     });
 });
 
@@ -144,17 +143,15 @@ describe('Can Quote Thread Validator', () => {
         // @ts-ignore
         atpAgent!.getPostThread.mockResolvedValue({
             data: {
-                thread:{
+                thread: {
                     // @ts-ignore
                     post: {
                         viewer: {
-                            embeddingDisabled: false
-                        }
-                    }
+                            embeddingDisabled: false,
+                        },
+                    },
                 },
-                threadgate: {
-
-                }
+                threadgate: {},
             },
             success: true,
         });
@@ -166,21 +163,21 @@ describe('Can Quote Thread Validator', () => {
         // @ts-ignore
         atpAgent!.getPostThread.mockResolvedValue({
             data: {
-                thread:{
+                thread: {
                     // @ts-ignore
                     post: {
                         viewer: {
-                            embeddingDisabled: true
-                        }
-                    }
+                            embeddingDisabled: true,
+                        },
+                    },
                 },
-                threadgate: {
-
-                }
+                threadgate: {},
             },
             success: true,
         });
 
-        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(false);
+        expect(await validator.shouldTrigger(handlerAgent, message)).toBe(
+            false
+        );
     });
 });

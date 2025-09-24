@@ -11,7 +11,7 @@ describe('HandlerAgentDM', () => {
         emailConfirmed: true,
         accessJwt: 'mock-access-jwt',
         refreshJwt: 'mock-refresh-jwt',
-    }
+    };
     Object.defineProperty(mockAtpAgent, 'session', {
         value: sessData,
         writable: false,
@@ -68,9 +68,12 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toMatchObject(mockGetConvoForUserResp.data.convo);
         });
     });
@@ -85,9 +88,12 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(mockGetConvoForUserResp.data.convo.id);
         });
     });
@@ -108,11 +114,14 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getMessages
-            ).toHaveBeenCalledWith({
-                convoId: '123',
-                cursor: undefined,
-                limit: 100,
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: '123',
+                    cursor: undefined,
+                    limit: 100,
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(getMessagesMockResp.data);
         });
     });
@@ -136,10 +145,13 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.updateRead
-            ).toHaveBeenCalledWith({
-                convoId: '123',
-                messageId: '456',
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: '123',
+                    messageId: '456',
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(setMessageAsReadResp.data);
         });
     });
@@ -162,9 +174,12 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.updateRead
-            ).toHaveBeenCalledWith({
-                convoId: '123',
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: '123',
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(setConvoAsReadResp.data);
         });
     });
@@ -187,11 +202,14 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.addReaction
-            ).toHaveBeenCalledWith({
-                convoId: '123',
-                messageId: '456',
-                value: '❤️',
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: '123',
+                    messageId: '456',
+                    value: '❤️',
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(reactToMessageResp.data);
         });
     });
@@ -215,9 +233,12 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoAvailability
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:example', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:example', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(resp).toBe(getCanDmUserResp.data.canChat);
         });
     });
@@ -234,17 +255,23 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
-            ).toHaveBeenCalledWith({
-                convoId: mockGetConvoForUserResp.data.convo.id,
-                message: {
-                    text: messageText,
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: mockGetConvoForUserResp.data.convo.id,
+                    message: {
+                        text: messageText,
+                    },
                 },
-            }, {headers: handlerAgent.chatHeaders});
+                { headers: handlerAgent.chatHeaders }
+            );
         });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
@@ -266,21 +293,27 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessage
-            ).toHaveBeenCalledWith({
-                convoId: mockGetConvoForUserResp.data.convo.id,
-                message: {
-                    text: messageText,
-                    embed: {
-                        $type: 'app.bsky.embed.record',
-                        record: embedSubject,
+            ).toHaveBeenCalledWith(
+                {
+                    convoId: mockGetConvoForUserResp.data.convo.id,
+                    message: {
+                        text: messageText,
+                        embed: {
+                            $type: 'app.bsky.embed.record',
+                            record: embedSubject,
+                        },
                     },
                 },
-            }, {headers: handlerAgent.chatHeaders});
+                { headers: handlerAgent.chatHeaders }
+            );
         });
     });
 
@@ -310,32 +343,41 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:other', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:other', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch
-            ).toHaveBeenCalledWith({
-                items: [
-                    {
-                        convoId: `convoid-did:plc:test`,
-                        message: {
-                            text: messageText,
+            ).toHaveBeenCalledWith(
+                {
+                    items: [
+                        {
+                            convoId: `convoid-did:plc:test`,
+                            message: {
+                                text: messageText,
+                            },
                         },
-                    },
-                    {
-                        convoId: `convoid-did:plc:other`,
-                        message: {
-                            text: messageText,
+                        {
+                            convoId: `convoid-did:plc:other`,
+                            message: {
+                                text: messageText,
+                            },
                         },
-                    },
-                ],
-            }, {headers: handlerAgent.chatHeaders});
+                    ],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
         });
 
         it('sendMessageToUser gets convo id and sends message with embed', async () => {
@@ -343,7 +385,6 @@ describe('HandlerAgentDM', () => {
                 cid: 'examplecid',
                 uri: 'at//did:plc:example/app.bsky.feed.post/rkey',
             };
-
 
             mockAtpAgent.chat.bsky.convo.getConvoForMembers.mockImplementation(
                 // @ts-ignore
@@ -370,40 +411,49 @@ describe('HandlerAgentDM', () => {
 
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:test', sessData.did],
-            }, {headers: handlerAgent.chatHeaders} );
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:test', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.getConvoForMembers
-            ).toHaveBeenCalledWith({
-                members: ['did:plc:other', sessData.did],
-            }, {headers: handlerAgent.chatHeaders});
+            ).toHaveBeenCalledWith(
+                {
+                    members: ['did:plc:other', sessData.did],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
             expect(
                 mockAtpAgent.chat.bsky.convo.sendMessageBatch
-            ).toHaveBeenCalledWith({
-                items: [
-                    {
-                        convoId: `convoid-did:plc:test`,
-                        message: {
-                            text: messageText,
-                            embed: {
-                                $type: 'app.bsky.embed.record',
-                                record: embedSubject,
+            ).toHaveBeenCalledWith(
+                {
+                    items: [
+                        {
+                            convoId: `convoid-did:plc:test`,
+                            message: {
+                                text: messageText,
+                                embed: {
+                                    $type: 'app.bsky.embed.record',
+                                    record: embedSubject,
+                                },
                             },
                         },
-                    },
-                    {
-                        convoId: `convoid-did:plc:other`,
-                        message: {
-                            text: messageText,
-                            embed: {
-                                $type: 'app.bsky.embed.record',
-                                record: embedSubject,
+                        {
+                            convoId: `convoid-did:plc:other`,
+                            message: {
+                                text: messageText,
+                                embed: {
+                                    $type: 'app.bsky.embed.record',
+                                    record: embedSubject,
+                                },
                             },
                         },
-                    },
-                ],
-            }, {headers: handlerAgent.chatHeaders});
+                    ],
+                },
+                { headers: handlerAgent.chatHeaders }
+            );
         });
     });
 });

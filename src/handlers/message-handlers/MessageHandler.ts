@@ -32,8 +32,8 @@ export class MessageHandler extends AbstractHandler {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): string {
-        if(message.commit.record?.reply){
-            return message.commit.record?.reply?.root.uri
+        if (message.commit.record?.reply) {
+            return message.commit.record?.reply?.root.uri;
         }
         return handlerAgent.generateURIFromCreateMessage(message);
     }
