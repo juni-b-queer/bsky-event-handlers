@@ -1,5 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 export class CreateReskeetAction extends AbstractAction {
     constructor(
@@ -22,12 +23,12 @@ export class CreateReskeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const uri: string = AbstractAction.getStringOrFunctionReturn(
+        const uri: string = getValueOrFunctionReturn(
             this.skeetUri,
             handlerAgent,
             ...args
         );
-        const cid: string = AbstractAction.getStringOrFunctionReturn(
+        const cid: string = getValueOrFunctionReturn(
             this.skeetCid,
             handlerAgent,
             ...args
@@ -54,7 +55,7 @@ export class DeleteReskeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const uri: string = AbstractAction.getStringOrFunctionReturn(
+        const uri: string = getValueOrFunctionReturn(
             this.skeetUri,
             handlerAgent,
             ...args

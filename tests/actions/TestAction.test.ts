@@ -1,4 +1,5 @@
 import {
+    AbstractAction,
     HandlerAgent,
     JetstreamEventCommit,
     JetstreamEventFactory,
@@ -39,5 +40,25 @@ describe('TestAction', () => {
         expect(TestAction.make).toThrow(
             'Method not implemented! Use constructor!'
         );
+    });
+
+    it('AbstractAction getStringOrFunctionReturn test to appease coverage', () => {
+        const rawExpected: string = 'Raw expected';
+        const generated: string = 'generated';
+
+        let input: string | ((arg0: HandlerAgent, ...args: any) => string) =
+            rawExpected;
+
+        expect(
+            AbstractAction.getStringOrFunctionReturn(input, handlerAgent)
+        ).toBe(rawExpected);
+
+        input = (handlerAgent: HandlerAgent, ...args: any): string => {
+            return generated;
+        };
+
+        expect(
+            AbstractAction.getStringOrFunctionReturn(input, handlerAgent)
+        ).toBe(generated);
     });
 });

@@ -1,7 +1,7 @@
 import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
-import { getStringOrFunctionReturn } from '../../utils/type-or-function';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 export class CanReplyToThreadValidator extends AbstractMessageValidator {
     constructor(
@@ -22,7 +22,7 @@ export class CanReplyToThreadValidator extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        const uri: string = getStringOrFunctionReturn(
+        const uri: string = getValueOrFunctionReturn(
             this.rootUri,
             handlerAgent,
             message
@@ -51,7 +51,7 @@ export class CanQuoteThreadValidator extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        const uri: string = getStringOrFunctionReturn(
+        const uri: string = getValueOrFunctionReturn(
             this.rootUri,
             handlerAgent,
             message

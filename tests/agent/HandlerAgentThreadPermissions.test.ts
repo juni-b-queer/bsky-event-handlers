@@ -1,6 +1,6 @@
-import {AtpAgent} from '@atproto/api';
-import {mockDeep} from 'jest-mock-extended';
-import {HandlerAgent} from '../../src';
+import { AtpAgent } from '@atproto/api';
+import { mockDeep } from 'jest-mock-extended';
+import { HandlerAgent } from '../../src';
 
 describe('HandlerAgentThreadPermissions', () => {
     const mockAtpAgent = mockDeep<AtpAgent>();
@@ -11,48 +11,50 @@ describe('HandlerAgentThreadPermissions', () => {
         emailConfirmed: true,
         accessJwt: 'mock-access-jwt',
         refreshJwt: 'mock-refresh-jwt',
-    }
+    };
     Object.defineProperty(mockAtpAgent, 'session', {
         value: sessData,
         writable: false,
     });
     let handlerAgent: HandlerAgent;
 
-    const postUri = "at://did:plc:other/app.bsky.feed.post/example";
+    const postUri = 'at://did:plc:other/app.bsky.feed.post/example';
     const mockGetPostThreadResp = {
         success: true,
         headers: {},
         data: {
             thread: {
-                $type: "app.bsky.feed.defs#threadViewPost",
+                $type: 'app.bsky.feed.defs#threadViewPost',
                 post: {
-                    uri: "at://did:plc:other/app.bsky.feed.post/example",
-                    cid: "blahblahblah",
+                    uri: 'at://did:plc:other/app.bsky.feed.post/example',
+                    cid: 'blahblahblah',
                     author: {
-                        did: "did:plc:other",
-                        handle: "testing.com",
-                        displayName: "(Dev)",
-                        avatar: "https://blah.blah.com",
+                        did: 'did:plc:other',
+                        handle: 'testing.com',
+                        displayName: '(Dev)',
+                        avatar: 'https://blah.blah.com',
                         viewer: {
                             muted: false,
                             blockedBy: false,
-                            following: "at://did:plc:other/app.bsky.graph.follow/blah",
-                            followedBy: "at://did:plc:example/app.bsky.graph.follow/blah",
+                            following:
+                                'at://did:plc:other/app.bsky.graph.follow/blah',
+                            followedBy:
+                                'at://did:plc:example/app.bsky.graph.follow/blah',
                         },
                         labels: [],
-                        createdAt: "2023-09-19T17:34:00.094Z",
+                        createdAt: '2023-09-19T17:34:00.094Z',
                     },
                     record: {
-                        $type: "app.bsky.feed.post",
-                        createdAt: "2025-05-09T16:45:35.345Z",
-                        langs: ["en"],
-                        text: "Test (Users I follow)",
+                        $type: 'app.bsky.feed.post',
+                        createdAt: '2025-05-09T16:45:35.345Z',
+                        langs: ['en'],
+                        text: 'Test (Users I follow)',
                     },
                     replyCount: 0,
                     repostCount: 0,
                     likeCount: 0,
                     quoteCount: 0,
-                    indexedAt: "2025-05-09T16:45:34.612Z",
+                    indexedAt: '2025-05-09T16:45:34.612Z',
                     viewer: {
                         threadMuted: false,
                         replyDisabled: false,
@@ -60,18 +62,18 @@ describe('HandlerAgentThreadPermissions', () => {
                     },
                     labels: [],
                     threadgate: {
-                        uri: "at://did:plc:other/app.bsky.feed.threadgate/blahhh",
-                        cid: "blahhhh",
+                        uri: 'at://did:plc:other/app.bsky.feed.threadgate/blahhh',
+                        cid: 'blahhhh',
                         record: {
-                            $type: "app.bsky.feed.threadgate",
+                            $type: 'app.bsky.feed.threadgate',
                             allow: [
                                 {
-                                    $type: "app.bsky.feed.threadgate#followingRule"
-                                }
+                                    $type: 'app.bsky.feed.threadgate#followingRule',
+                                },
                             ],
-                            createdAt: "2025-05-09T16:45:35.346Z",
+                            createdAt: '2025-05-09T16:45:35.346Z',
                             hiddenReplies: [],
-                            post: "at://did:plc:other/app.bsky.feed.post/example",
+                            post: 'at://did:plc:other/app.bsky.feed.post/example',
                         },
                         lists: [],
                     },
@@ -80,21 +82,21 @@ describe('HandlerAgentThreadPermissions', () => {
                 threadContext: {},
             },
             threadgate: {
-                uri: "at://did:plc:other/app.bsky.feed.threadgate/blahhh",
-                cid: "blahhhh",
+                uri: 'at://did:plc:other/app.bsky.feed.threadgate/blahhh',
+                cid: 'blahhhh',
                 record: {
-                    $type: "app.bsky.feed.threadgate",
+                    $type: 'app.bsky.feed.threadgate',
                     allow: [
                         {
-                            $type: "app.bsky.feed.threadgate#followingRule"
-                        }
+                            $type: 'app.bsky.feed.threadgate#followingRule',
+                        },
                     ],
-                    createdAt: "2025-05-09T16:45:35.346Z",
+                    createdAt: '2025-05-09T16:45:35.346Z',
                     hiddenReplies: [],
-                    post: "at://did:plc:other/app.bsky.feed.post/example",
+                    post: 'at://did:plc:other/app.bsky.feed.post/example',
                 },
                 lists: [],
-            }
+            },
         },
     };
 
@@ -118,9 +120,7 @@ describe('HandlerAgentThreadPermissions', () => {
             );
             const resp = await handlerAgent.getAgentCanReply(postUri);
 
-            expect(
-                mockAtpAgent.getPostThread
-            ).toHaveBeenCalledWith({
+            expect(mockAtpAgent.getPostThread).toHaveBeenCalledWith({
                 uri: postUri,
             });
             expect(resp).toBe(true);
@@ -134,9 +134,7 @@ describe('HandlerAgentThreadPermissions', () => {
             );
             const resp = await handlerAgent.getAgentCanReply(postUri);
 
-            expect(
-                mockAtpAgent.getPostThread
-            ).toHaveBeenCalledWith({
+            expect(mockAtpAgent.getPostThread).toHaveBeenCalledWith({
                 uri: postUri,
             });
             expect(resp).toBe(false);
@@ -145,32 +143,30 @@ describe('HandlerAgentThreadPermissions', () => {
 
     describe('getAgentCanQuote', () => {
         it('getAgentCanQuote returns true when embeddingDisabled is false', async () => {
-            mockGetPostThreadResp.data.thread.post.viewer.embeddingDisabled = false;
+            mockGetPostThreadResp.data.thread.post.viewer.embeddingDisabled =
+                false;
             mockAtpAgent.getPostThread.mockResolvedValue(
                 // @ts-ignore
                 mockGetPostThreadResp
             );
             const resp = await handlerAgent.getAgentCanQuote(postUri);
 
-            expect(
-                mockAtpAgent.getPostThread
-            ).toHaveBeenCalledWith({
+            expect(mockAtpAgent.getPostThread).toHaveBeenCalledWith({
                 uri: postUri,
             });
             expect(resp).toBe(true);
         });
 
         it('getAgentCanQuote returns false when embeddingDisabled is true', async () => {
-            mockGetPostThreadResp.data.thread.post.viewer.embeddingDisabled = true;
+            mockGetPostThreadResp.data.thread.post.viewer.embeddingDisabled =
+                true;
             mockAtpAgent.getPostThread.mockResolvedValue(
                 // @ts-ignore
                 mockGetPostThreadResp
             );
             const resp = await handlerAgent.getAgentCanQuote(postUri);
 
-            expect(
-                mockAtpAgent.getPostThread
-            ).toHaveBeenCalledWith({
+            expect(mockAtpAgent.getPostThread).toHaveBeenCalledWith({
                 uri: postUri,
             });
             expect(resp).toBe(false);

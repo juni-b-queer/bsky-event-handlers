@@ -1,11 +1,7 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
 import { JetstreamSubject } from '../../types/JetstreamTypes';
-import {
-    getJetstreamSubjectOrFunctionReturn,
-    getStringArrayOrFunctionReturn,
-    getStringOrFunctionReturn,
-} from '../../utils/type-or-function';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 export class SendDMAction extends AbstractAction {
     constructor(
@@ -36,19 +32,19 @@ export class SendDMAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const did: string = getStringOrFunctionReturn(
+        const did: string = getValueOrFunctionReturn(
             this.userDID,
             handlerAgent,
             ...args
         );
-        const text: string = getStringOrFunctionReturn(
+        const text: string = getValueOrFunctionReturn(
             this.messageText,
             handlerAgent,
             ...args
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            embed = getJetstreamSubjectOrFunctionReturn(
+            embed = getValueOrFunctionReturn(
                 this.embeddedPost,
                 handlerAgent,
                 ...args
@@ -92,19 +88,19 @@ export class SendDMToMultipleUsersAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const dids: string[] = getStringArrayOrFunctionReturn(
+        const dids: string[] = getValueOrFunctionReturn(
             this.userDIDs,
             handlerAgent,
             ...args
         );
-        const text: string = getStringOrFunctionReturn(
+        const text: string = getValueOrFunctionReturn(
             this.messageText,
             handlerAgent,
             ...args
         );
         let embed: JetstreamSubject | undefined = undefined;
         if (this.embeddedPost !== undefined) {
-            embed = getJetstreamSubjectOrFunctionReturn(
+            embed = getValueOrFunctionReturn(
                 this.embeddedPost,
                 handlerAgent,
                 ...args
