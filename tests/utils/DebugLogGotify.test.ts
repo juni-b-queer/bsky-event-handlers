@@ -68,7 +68,7 @@ describe('DebugLog gotify function test', () => {
 
         expect(getClientSpy).toHaveBeenCalled()
         expect(setClientSpy).toHaveBeenCalled();
-        expect(mockSendMessage).toHaveBeenCalledWith(action, message);
+        expect(mockSendMessage).toHaveBeenCalledWith(`info: ${action}`, message);
         DebugLog.setGotifyClient(mockGotifyClient);
 
         expect(setClientSpy).toHaveBeenCalledTimes(2);
@@ -95,7 +95,7 @@ describe('DebugLog gotify function test', () => {
 
         expect(getClientSpy).toHaveBeenCalled()
         expect(setClientSpy).toHaveBeenCalledTimes(1);
-        expect(mockSendMessage).toHaveBeenCalledWith(action, message);
+        expect(mockSendMessage).toHaveBeenCalledWith(`info: ${action}`, message);
     });
 
 });

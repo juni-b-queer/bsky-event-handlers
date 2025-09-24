@@ -11,9 +11,6 @@ export class DebugLog {
     static generateDefaultGotifyClient(): GotifyClient{
         const apiKey = process.env.GOTIFY_API_TOKEN
         const baseUrl = process.env.GOTIFY_SERVER_URL
-        console.log(apiKey, baseUrl)
-        console.log(apiKey)
-        console.log(!baseUrl)
         if(!apiKey || !baseUrl){
             throw new Error('Gotify API Token and Base URL are required to enable Gotify Debug Logging')
         }
@@ -63,7 +60,7 @@ export class DebugLog {
                 DebugLog.setGotifyClient()
             }
             if(debugLevels[gotifyDebugLevel].includes(level)){
-                DebugLog.getGotifyClient()?.sendMessage(action, message)
+                DebugLog.getGotifyClient()?.sendMessage(`${level}: ${action}`, message)
             }
         }
 
