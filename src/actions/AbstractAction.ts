@@ -1,5 +1,6 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
 import { DebugLog } from '../utils/DebugLog';
+import { getValueOrFunctionReturn } from '../utils/type-or-function';
 
 export abstract class AbstractAction {
     constructor() {}
@@ -8,7 +9,7 @@ export abstract class AbstractAction {
         throw new Error('Method not implemented! Use constructor!');
     }
 
-    // Deprecated - Use function from utils/type-or-function.ts
+    // Deprecated - Use function getValueOrFunctionReturn from utils/type-or-function.ts
     static getStringOrFunctionReturn(
         stringOrFunction:
             | string
@@ -16,11 +17,11 @@ export abstract class AbstractAction {
         handlerAgent: HandlerAgent,
         ...args: any
     ): string {
-        if (typeof stringOrFunction == 'function') {
-            return stringOrFunction(handlerAgent, ...args);
-        } else {
-            return stringOrFunction;
-        }
+        return getValueOrFunctionReturn(
+            stringOrFunction,
+            handlerAgent,
+            ...args
+        );
     }
 
     // @ts-ignore

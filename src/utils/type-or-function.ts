@@ -1,6 +1,23 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
 import { JetstreamSubject } from '../types/JetstreamTypes';
 
+export function getValueOrFunctionReturn<T>(
+    valueOrFunction: T | ((arg0: HandlerAgent, ...args: any) => T),
+    handlerAgent: HandlerAgent,
+    ...args: any
+): T {
+    if (typeof valueOrFunction === 'function') {
+        // @ts-ignore
+        return (valueOrFunction as (arg0: HandlerAgent, ...args: any[]) => T)(
+            handlerAgent,
+            ...args
+        );
+    } else {
+        return valueOrFunction;
+    }
+}
+
+/** Deprecating in 3.0.0, use getValueOrFunctionReturn instead */
 export function getStringOrFunctionReturn(
     stringOrFunction: string | ((arg0: HandlerAgent, ...args: any) => string),
     handlerAgent: HandlerAgent,
@@ -13,6 +30,7 @@ export function getStringOrFunctionReturn(
     }
 }
 
+/** Deprecating in 3.0.0, use getValueOrFunctionReturn instead */
 export function getStringArrayOrFunctionReturn(
     stringArrayOrFunction:
         | string[]
@@ -27,6 +45,7 @@ export function getStringArrayOrFunctionReturn(
     }
 }
 
+/** Deprecating in 3.0.0, use getValueOrFunctionReturn instead */
 export function getJetstreamSubjectOrFunctionReturn(
     subjectOrFunction:
         | JetstreamSubject
