@@ -1,4 +1,4 @@
-import { debugLog, nowDateTime } from '../../src';
+import {DebugLog, debugLog, GotifyClient, nowDateTime} from '../../src';
 import mocked = jest.mocked;
 
 jest.mock('console', () => ({
@@ -92,3 +92,5 @@ describe('debugLog function test', () => {
         );
     });
 });
+
+

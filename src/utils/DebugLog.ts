@@ -1,6 +1,25 @@
 import { nowDateTime } from './time-utils';
+import {GotifyClient} from "../integrations/gotify";
 
 export class DebugLog {
+    protected static gotifyClient: GotifyClient | undefined = undefined;
+
+    static setGotifyClient(gotifyClient: GotifyClient | undefined = undefined) {
+        DebugLog.gotifyClient = gotifyClient ?? DebugLog.generateDefaultGotifyClient();
+    }
+
+    static generateDefaultGotifyClient(): GotifyClient{
+        const apiKey = process.env.GOTIFY_API_TOKEN
+        const baseUrl = process.env.GOTIFY_SERVER_URL
+        if(!apiKey || !baseUrl){
+            throw new Error('Gotify API Token and Base URL are required to enable Gotify Debug Logging')
+        }
+        return new GotifyClient(apiKey, baseUrl)
+    }
+
+    static getGotifyClient(): GotifyClient | undefined {
+        return DebugLog.gotifyClient;
+    }
     static debug(action: string, message: string) {
         DebugLog.log(action, message, 'debug');
     }
@@ -32,5 +51,18 @@ export class DebugLog {
                 `${nowDateTime()} | ${action} | ${level.toUpperCase()} | ${message}`
             );
         }
+
+        const gotifyDebug: boolean = process.env.GOTIFY_DEBUG_LOG_ACTIVE === 'true';
+        const gotifyDebugLevel: string = process.env.GOTIFY_DEBUG_LOG_LEVEL ?? 'error';
+
+        if(gotifyDebug){
+            if(!DebugLog.getGotifyClient()){
+                DebugLog.setGotifyClient()
+            }
+            if(debugLevels[gotifyDebugLevel].includes(level)){
+                DebugLog.getGotifyClient()?.sendMessage(`${level}: ${action}`, message)
+            }
+        }
+
     }
 }
