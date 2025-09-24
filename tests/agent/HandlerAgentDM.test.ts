@@ -1,5 +1,5 @@
 import { AtpAgent } from '@atproto/api';
-import { mockDeep, notUndefined } from 'jest-mock-extended';
+import { mockDeep } from 'jest-mock-extended';
 import { HandlerAgent, JetstreamSubject } from '../../src';
 
 describe('HandlerAgentDM', () => {

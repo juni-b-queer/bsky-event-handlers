@@ -1,8 +1,6 @@
 // Mock debug log
 import {
-    DebugLog,
-    OpenshockClient,
-    OpenshockControlSchema,
+    DebugLog
 } from '../../../src';
 import { GotifyClient } from '../../../src/integrations/gotify/GotifyClient';
 
