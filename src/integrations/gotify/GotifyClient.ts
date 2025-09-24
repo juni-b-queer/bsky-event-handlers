@@ -1,19 +1,22 @@
 import { DebugLog } from '../../utils/DebugLog';
 
-
 export class GotifyClient {
     constructor(
         private apiToken: string,
         private baseUrl: string
     ) {}
 
-    public async sendMessage(title: string, message: string, priority: number = 1): Promise<boolean> {
+    public async sendMessage(
+        title: string,
+        message: string,
+        priority: number = 1
+    ): Promise<boolean> {
         const response = await fetch(`${this.baseUrl}/message`, {
             method: 'POST',
             body: JSON.stringify({
                 title: title,
                 message: message,
-                priority: priority
+                priority: priority,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -29,5 +32,4 @@ export class GotifyClient {
         }
         return response.status === 200;
     }
-
 }

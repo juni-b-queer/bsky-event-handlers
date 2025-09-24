@@ -4,7 +4,7 @@ import {
     OpenshockClient,
     OpenshockControlSchema,
 } from '../../../src';
-import {GotifyClient} from "../../../src/integrations/gotify/GotifyClient";
+import { GotifyClient } from '../../../src/integrations/gotify/GotifyClient';
 
 DebugLog.warn = jest.fn();
 
@@ -34,21 +34,18 @@ describe('GotifyClient', () => {
         const result = await client.sendMessage(title, message);
 
         expect(result).toBe(true);
-        expect(fetch).toHaveBeenCalledWith(
-            `${baseUrl}/message`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiToken}`,
-                },
-                body: JSON.stringify({
-                    title: title,
-                    message: message,
-                    priority: 1,
-                }),
-            }
-        );
+        expect(fetch).toHaveBeenCalledWith(`${baseUrl}/message`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apiToken}`,
+            },
+            body: JSON.stringify({
+                title: title,
+                message: message,
+                priority: 1,
+            }),
+        });
     });
 
     test('should send message with non-default priority return true on success', async () => {
@@ -63,21 +60,18 @@ describe('GotifyClient', () => {
         const result = await client.sendMessage(title, message, priority);
 
         expect(result).toBe(true);
-        expect(fetch).toHaveBeenCalledWith(
-            `${baseUrl}/message`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiToken}`,
-                },
-                body: JSON.stringify({
-                    title: title,
-                    message: message,
-                    priority: priority,
-                }),
-            }
-        );
+        expect(fetch).toHaveBeenCalledWith(`${baseUrl}/message`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apiToken}`,
+            },
+            body: JSON.stringify({
+                title: title,
+                message: message,
+                priority: priority,
+            }),
+        });
     });
 
     test('should return false and log warning on message request failure', async () => {
