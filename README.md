@@ -17,9 +17,6 @@ Scaffold a new project with this package using: \
 
 # Table of contents
 
-**There is a lot of work left to be done for likes, reskeets, and follows, but is mostly complete for handling new
-skeets**
-
 -   [Quickstart](#quickstart)
 -   [Overview](#overview)
 -   [Agent](./src/agent/README.md)
@@ -28,13 +25,17 @@ skeets**
 -   [Handlers](src/handlers/message-handlers/README.md)
     -   [JetstreamRecord Handlers](src/handlers/message-handlers/README.md)
     -   [Pre-made Handlers](src/handlers/message-handlers/premade-handlers/README.md)
--   [Jetsteam Firehose Subscription](src/subscriptions/firehose/README.md)
--   [Interval Subscription](src/subscriptions/README.md)
--   [Utility Functions](./src/utils/README.md)
--   [Jetstream Types](./src/types/README.md)
--   [Credits](#credits)
+- [Subscriptions](./src/subscriptions/README.md)
+  - [Jetsteam Firehose Subscription](src/subscriptions/firehose/README.md)
+  - [Interval Subscription](src/subscriptions/README.md)
+- [Utility Functions](./src/utils/README.md)
+- [Jetstream Types](./src/types/README.md)
+- Integrations
+  - [Gotify](./src/integrations/gotify/README.md)
+  - [Openshock](./src/integrations/openshock/README.md)
+- [Credits](#credits)
 
-[npm Package](https://www.npmjs.com/package/bsky-event-handlers)
+View the [NPM Package](https://www.npmjs.com/package/bsky-event-handlers)
 
 # Quickstart
 
