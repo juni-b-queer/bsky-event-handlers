@@ -20,7 +20,17 @@ will output
 
 more docs coming soon?
 
-### TypeOrFunction Utilities
+### DebugLog with Gotify
+If you have a Gotify server, you can enable Debug messages to be sent to your Gotify server with the following environment variables
+```dotenv
+GOTIFY_DEBUG_LOG_ACTIVE=true
+GOTIFY_DEBUG_LOG_LEVEL= { error | warn | info | debug }
+GOTIFY_SERVER_URL=https://examplegotify.com
+GOTIFY_API_TOKEN=gotifyAppToken
+```
+
+
+## TypeOrFunction Utilities
 Sometimes in the program, we want to either pass in a defined value with a specific type, or use a function during runtime to get the value of a specific type. These functions are helpers to make that easier \
 Theses util functions take the same structure of parameters
 `(valueOrFunction: Type | function, handlerAgent: HandlerAgent, ...args: any)`
