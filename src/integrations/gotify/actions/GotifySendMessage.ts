@@ -24,7 +24,7 @@ export class GotifySendMessage extends AbstractAction {
         client: GotifyClient,
         title: string | ((arg0: HandlerAgent, ...args: any) => string),
         message: string | ((arg0: HandlerAgent, ...args: any) => string),
-        priority: number | ((arg0: HandlerAgent, ...args: any) => number) | undefined
+        priority: number | ((arg0: HandlerAgent, ...args: any) => number) | undefined = undefined
     ): GotifySendMessage {
         return new GotifySendMessage(client, title, message, priority);
     }
