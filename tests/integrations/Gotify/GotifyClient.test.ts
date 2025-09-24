@@ -1,7 +1,5 @@
 // Mock debug log
-import {
-    DebugLog
-} from '../../../src';
+import { DebugLog } from '../../../src';
 import { GotifyClient } from '../../../src/integrations/gotify/GotifyClient';
 
 DebugLog.warn = jest.fn();
