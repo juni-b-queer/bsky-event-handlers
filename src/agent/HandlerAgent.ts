@@ -146,16 +146,56 @@ export class HandlerAgent {
     }
     //endregion
 
-    //region Follower Interactions
+    // region Profile Helpers
 
     /**
      * getProfile
      */
-
-    async getProfile(did: string) {
-        const response = await this.agent?.getProfile({ actor: did });
+    async getProfile(did?: string) {
+        const response = await this.agent?.getProfile({ actor: did ?? this.getDid });
         return response?.data;
     }
+
+    // endregion
+
+    // region Account Labels
+
+    // Get labels
+    async getAccountLabels(did?: string) {
+        const profile = await this.getProfile(did);
+        return profile?.labels ?? [];
+    }
+
+    // // Get labels by name
+    // async getAccountLabelByName(name: string, did?: string) {
+    //     const labels = await this.getAccountLabels(did);
+    //     // TODO Fill in this logic
+    //     return labels.filter((label) => true);
+    // }
+    //
+    // // Get labels by labeler
+    // async getAccountLabelByLabeler(labelerDid: string, did?: string) {
+    //     const labels = await this.getAccountLabels(did);
+    //     // TODO Fill in this logic
+    //     return labels.filter((label) => true);
+    // }
+    //
+    // // Get labels by name and labeler
+    // async getAccountLabelByNameAndLabeler(
+    //     name: string,
+    //     labelerDid: string,
+    //     did?: string
+    // ) {
+    //     const labels = await this.getAccountLabels(did);
+    //     // TODO Fill in this logic
+    //     return labels.filter((label) => true);
+    // }
+
+    // endregion
+
+    //region Follower Interactions
+
+
 
     /**
      *
