@@ -53,7 +53,7 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
-        "@atproto/api": "^0.16.10",
+        "@atproto/api": "^0.16.9",
         "moment-timezone": "^0.5.46",
         "ws": "^8.18.0"
     },
