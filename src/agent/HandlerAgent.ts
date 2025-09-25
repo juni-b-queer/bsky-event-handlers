@@ -27,7 +27,9 @@ export class HandlerAgent {
         private agentName: string,
         private handle: string,
         private password: string,
-        agent: AtpAgent | undefined = undefined
+        agent: AtpAgent | undefined = undefined,
+        private serviceUrl: string = "https://bsky.social/"
+
     ) {
         if (!agent) {
             this.agent = this.initializeBskyAgent();
@@ -45,7 +47,7 @@ export class HandlerAgent {
      */
     initializeBskyAgent(): AtpAgent {
         return new AtpAgent({
-            service: 'https://bsky.social/',
+            service: this.serviceUrl,
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
                 this.setSession = sess;
