@@ -1,6 +1,7 @@
 import { HandlerAgent } from '../agent/HandlerAgent';
 import { DebugLog } from '../utils/DebugLog';
 import { AbstractAction } from './AbstractAction';
+import { getValueOrFunctionReturn } from '../utils/type-or-function';
 
 export class LogInputTextAction extends AbstractAction {
     constructor(
@@ -16,7 +17,7 @@ export class LogInputTextAction extends AbstractAction {
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,  @typescript-eslint/no-explicit-any
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const text: string = AbstractAction.getStringOrFunctionReturn(
+        const text: string = getValueOrFunctionReturn(
             this.logText,
             handlerAgent,
             ...args
@@ -47,16 +48,8 @@ export class DebugLogAction extends AbstractAction {
 
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
         DebugLog.log(
-            AbstractAction.getStringOrFunctionReturn(
-                this.action,
-                handlerAgent,
-                ...args
-            ),
-            AbstractAction.getStringOrFunctionReturn(
-                this.message,
-                handlerAgent,
-                ...args
-            ),
+            getValueOrFunctionReturn(this.action, handlerAgent, ...args),
+            getValueOrFunctionReturn(this.message, handlerAgent, ...args),
             this.level
         );
     }

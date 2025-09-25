@@ -27,7 +27,9 @@ export class HandlerAgent {
         private agentName: string,
         private handle: string,
         private password: string,
-        agent: AtpAgent | undefined = undefined
+        agent: AtpAgent | undefined = undefined,
+        private serviceUrl: string = "https://bsky.social/"
+
     ) {
         if (!agent) {
             this.agent = this.initializeBskyAgent();
@@ -45,7 +47,7 @@ export class HandlerAgent {
      */
     initializeBskyAgent(): AtpAgent {
         return new AtpAgent({
-            service: 'https://bsky.social/',
+            service: this.serviceUrl,
             persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
                 this.setDid = sess?.did;
                 this.setSession = sess;
@@ -357,43 +359,56 @@ export class HandlerAgent {
     //endregion
 
     //region Post Helpers
-
-    async getPostThreadgate(uri: string){
-        const response = await this.agent!.getPostThread({
-            uri: uri
-        })
-
-        return response.data.threadgate ?? undefined
+    async getAuthorFeed(did?: string) {
+        const response = await this.agent!.getAuthorFeed({
+            actor: did ?? this.getDid,
+        });
+        return response.data;
     }
 
-    async getAgentCanReply(uri: string){
+    async getPostThread(uri: string) {
         const response = await this.agent!.getPostThread({
-            uri: uri
-        })
-        // @ts-ignore
-        const replyDisabled = response.data.thread?.post?.viewer?.replyDisabled
+            uri: uri,
+        });
+        return response.data;
+    }
 
-        if(replyDisabled){
-            return false
+    async getPostReplies(uri: string) {
+        const threadData = await this.getPostThread(uri);
+        // @ts-ignore
+        return threadData.thread?.replies;
+    }
+
+    async getPostThreadgate(uri: string) {
+        const thread = await this.getPostThread(uri);
+
+        return thread.threadgate ?? undefined;
+    }
+
+    async getAgentCanReply(uri: string) {
+        const threadObject = await this.getPostThread(uri);
+        // @ts-ignore
+        const replyDisabled = threadObject.thread?.post?.viewer?.replyDisabled;
+
+        if (replyDisabled) {
+            return false;
         }
 
-        return true
+        return true;
     }
 
-    async getAgentCanQuote(uri: string){
-        const response = await this.agent!.getPostThread({
-            uri: uri
-        })
-        // @ts-ignore
-        const embeddingDisabled = response.data.thread?.post?.viewer?.embeddingDisabled
+    async getAgentCanQuote(uri: string) {
+        const threadObject = await this.getPostThread(uri);
+        const embeddingDisabled =
+            // @ts-ignore
+            threadObject.thread?.post?.viewer?.embeddingDisabled;
 
-        if(embeddingDisabled){
-            return false
+        if (embeddingDisabled) {
+            return false;
         }
 
-        return true
+        return true;
     }
-
 
     /**
      * Finds a record that is similar to a given skeet URI.
@@ -632,20 +647,22 @@ export class HandlerAgent {
 
     //region Chat interactions
 
-    public get chatHeaders(){
+    public get chatHeaders() {
         return {
-                'Atproto-Proxy': 'did:web:api.bsky.chat#bsky_chat'
-            }
-
+            'Atproto-Proxy': 'did:web:api.bsky.chat#bsky_chat',
+        };
     }
 
     async getConvoForUser(userDID: string) {
         const getConvoResponse =
-            await this.agent!.chat.bsky.convo.getConvoForMembers({
-                members: [userDID, this.did!],
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.getConvoForMembers(
+                {
+                    members: [userDID, this.did!],
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return getConvoResponse.data.convo;
     }
 
@@ -660,56 +677,71 @@ export class HandlerAgent {
         cursor: string | undefined = undefined
     ) {
         const getMessagesResponse =
-            await this.agent!.chat.bsky.convo.getMessages({
-                convoId: convoId,
-                limit: limit,
-                cursor: cursor,
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.getMessages(
+                {
+                    convoId: convoId,
+                    limit: limit,
+                    cursor: cursor,
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return getMessagesResponse.data;
     }
 
     async setMessageAsRead(convoId: string, messageId: string) {
         const setMessageAsReadResponse =
-            await this.agent!.chat.bsky.convo.updateRead({
-                convoId: convoId,
-                messageId: messageId,
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.updateRead(
+                {
+                    convoId: convoId,
+                    messageId: messageId,
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return setMessageAsReadResponse.data;
     }
 
     async setConvoAsRead(convoId: string) {
         const setConvoAsReadResponse =
-            await this.agent!.chat.bsky.convo.updateRead({
-                convoId: convoId,
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.updateRead(
+                {
+                    convoId: convoId,
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return setConvoAsReadResponse.data;
     }
 
     async reactToMessage(convoId: string, messageId: string, reaction: string) {
         const reactToMessageResponse =
-            await this.agent!.chat.bsky.convo.addReaction({
-                convoId: convoId,
-                messageId: messageId,
-                value: reaction,
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.addReaction(
+                {
+                    convoId: convoId,
+                    messageId: messageId,
+                    value: reaction,
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return reactToMessageResponse.data;
     }
 
     async getCanDmUser(userDID: string): Promise<boolean> {
         const getCanDmUserResponse =
-            await this.agent!.chat.bsky.convo.getConvoAvailability({
-                members: [userDID, this.did!],
-            }, {
-                headers: this.chatHeaders
-            });
+            await this.agent!.chat.bsky.convo.getConvoAvailability(
+                {
+                    members: [userDID, this.did!],
+                },
+                {
+                    headers: this.chatHeaders,
+                }
+            );
         return getCanDmUserResponse.data.canChat;
     }
 
@@ -739,7 +771,7 @@ export class HandlerAgent {
             };
         }
         await this.agent!.chat.bsky.convo.sendMessage(messageBody, {
-            headers: this.chatHeaders
+            headers: this.chatHeaders,
         });
     }
 
@@ -773,9 +805,12 @@ export class HandlerAgent {
             }
             items.push(messageBody);
         }
-        await this.agent!.chat.bsky.convo.sendMessageBatch({ items: items }, {
-            headers: this.chatHeaders
-        });
+        await this.agent!.chat.bsky.convo.sendMessageBatch(
+            { items: items },
+            {
+                headers: this.chatHeaders,
+            }
+        );
     }
 
     //endregion

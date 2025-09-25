@@ -1,5 +1,6 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 export class CreateFollowAction extends AbstractAction {
     constructor(
@@ -18,7 +19,7 @@ export class CreateFollowAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const did: string = AbstractAction.getStringOrFunctionReturn(
+        const did: string = getValueOrFunctionReturn(
             this.userDid,
             handlerAgent,
             ...args
@@ -45,7 +46,7 @@ export class DeleteFollowAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const did: string = AbstractAction.getStringOrFunctionReturn(
+        const did: string = getValueOrFunctionReturn(
             this.userDid,
             handlerAgent,
             ...args

@@ -1,7 +1,7 @@
 import { JetstreamEventCommit } from '../../types/JetstreamTypes';
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractMessageValidator } from './AbstractMessageValidator';
-import { getStringOrFunctionReturn } from '../../utils/type-or-function';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 // TODO Tests and documentation
 export class CanDmUserValidator extends AbstractMessageValidator {
@@ -23,7 +23,7 @@ export class CanDmUserValidator extends AbstractMessageValidator {
         handlerAgent: HandlerAgent,
         message: JetstreamEventCommit
     ): Promise<boolean> {
-        const did: string = getStringOrFunctionReturn(
+        const did: string = getValueOrFunctionReturn(
             this.userDID,
             handlerAgent,
             message

@@ -1,6 +1,7 @@
 import { HandlerAgent } from '../../agent/HandlerAgent';
 import { AbstractAction } from '../AbstractAction';
 import { JetstreamReply, JetstreamSubject } from '../../types/JetstreamTypes';
+import { getValueOrFunctionReturn } from '../../utils/type-or-function';
 
 export class CreateSkeetAction extends AbstractAction {
     constructor(
@@ -35,7 +36,7 @@ export class CreateSkeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const text: string = AbstractAction.getStringOrFunctionReturn(
+        const text: string = getValueOrFunctionReturn(
             this.skeetText,
             handlerAgent,
             ...args
@@ -79,7 +80,7 @@ export class DeleteSkeetAction extends AbstractAction {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(handlerAgent: HandlerAgent, ...args: any): Promise<any> {
-        const uri: string = AbstractAction.getStringOrFunctionReturn(
+        const uri: string = getValueOrFunctionReturn(
             this.skeetUri,
             handlerAgent,
             ...args

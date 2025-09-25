@@ -83,3 +83,4 @@ export * from './utils/type-or-function';
  * Integrations
  */
 export * from './integrations/openshock/index';
+export * from './integrations/gotify/index';

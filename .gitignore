@@ -15,3 +15,4 @@ tests/temp
 docs
 
 exampleMessages.json
+*-session.json

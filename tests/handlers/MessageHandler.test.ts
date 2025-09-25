@@ -6,7 +6,8 @@ import {
     JetstreamCommitFactory,
     JetstreamEventCommit,
     JetstreamEventFactory,
-    MessageHandler, NewSkeetRecordFactory,
+    MessageHandler,
+    NewSkeetRecordFactory,
 } from '../../src';
 
 describe('MessageHandler', () => {
@@ -125,9 +126,11 @@ describe('MessageHandler', () => {
             const message: JetstreamEventCommit =
                 JetstreamEventFactory.factory()
                     .commit(
-                        JetstreamCommitFactory.factory().record(
-                            NewSkeetRecordFactory.factory().reply().create()
-                        ).create()
+                        JetstreamCommitFactory.factory()
+                            .record(
+                                NewSkeetRecordFactory.factory().reply().create()
+                            )
+                            .create()
                     )
                     .fromDid('did:plc:example')
                     .create() as JetstreamEventCommit;
@@ -144,15 +147,16 @@ describe('MessageHandler', () => {
             const message: JetstreamEventCommit =
                 JetstreamEventFactory.factory()
                     .commit(
-                        JetstreamCommitFactory.factory().record(
-                            NewSkeetRecordFactory.factory().create()
-                        ).create()
+                        JetstreamCommitFactory.factory()
+                            .record(NewSkeetRecordFactory.factory().create())
+                            .create()
                     )
                     .fromDid('did:plc:example')
                     .create() as JetstreamEventCommit;
-            const expected = `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`
-            mockedHandlerAgent.generateURIFromCreateMessage = jest.fn().mockReturnValue(expected);
-
+            const expected = `at://${message.did}/app.bsky.feed.post/${message.commit.rkey}`;
+            mockedHandlerAgent.generateURIFromCreateMessage = jest
+                .fn()
+                .mockReturnValue(expected);
 
             const result = MessageHandler.getRootUriFromMessage(
                 mockedHandlerAgent,
