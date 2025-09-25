@@ -1,20 +1,23 @@
 import { nowDateTime } from './time-utils';
-import {GotifyClient} from "../integrations/gotify";
+import { GotifyClient } from '../integrations/gotify';
 
 export class DebugLog {
     protected static gotifyClient: GotifyClient | undefined = undefined;
 
     static setGotifyClient(gotifyClient: GotifyClient | undefined = undefined) {
-        DebugLog.gotifyClient = gotifyClient ?? DebugLog.generateDefaultGotifyClient();
+        DebugLog.gotifyClient =
+            gotifyClient ?? DebugLog.generateDefaultGotifyClient();
     }
 
-    static generateDefaultGotifyClient(): GotifyClient{
-        const apiKey = process.env.GOTIFY_API_TOKEN
-        const baseUrl = process.env.GOTIFY_SERVER_URL
-        if(!apiKey || !baseUrl){
-            throw new Error('Gotify API Token and Base URL are required to enable Gotify Debug Logging')
+    static generateDefaultGotifyClient(): GotifyClient {
+        const apiKey = process.env.GOTIFY_API_TOKEN;
+        const baseUrl = process.env.GOTIFY_SERVER_URL;
+        if (!apiKey || !baseUrl) {
+            throw new Error(
+                'Gotify API Token and Base URL are required to enable Gotify Debug Logging'
+            );
         }
-        return new GotifyClient(apiKey, baseUrl)
+        return new GotifyClient(apiKey, baseUrl);
     }
 
     static getGotifyClient(): GotifyClient | undefined {
@@ -52,17 +55,21 @@ export class DebugLog {
             );
         }
 
-        const gotifyDebug: boolean = process.env.GOTIFY_DEBUG_LOG_ACTIVE === 'true';
-        const gotifyDebugLevel: string = process.env.GOTIFY_DEBUG_LOG_LEVEL ?? 'error';
+        const gotifyDebug: boolean =
+            process.env.GOTIFY_DEBUG_LOG_ACTIVE === 'true';
+        const gotifyDebugLevel: string =
+            process.env.GOTIFY_DEBUG_LOG_LEVEL ?? 'error';
 
-        if(gotifyDebug){
-            if(!DebugLog.getGotifyClient()){
-                DebugLog.setGotifyClient()
+        if (gotifyDebug) {
+            if (!DebugLog.getGotifyClient()) {
+                DebugLog.setGotifyClient();
             }
-            if(debugLevels[gotifyDebugLevel].includes(level)){
-                DebugLog.getGotifyClient()?.sendMessage(`${level}: ${action}`, message)
+            if (debugLevels[gotifyDebugLevel].includes(level)) {
+                DebugLog.getGotifyClient()?.sendMessage(
+                    `${level}: ${action}`,
+                    message
+                );
             }
         }
-
     }
 }
