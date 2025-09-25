@@ -24,8 +24,12 @@ describe('HandlerAgentAccountLabels', () => {
         data: {
             did: 'did:plc:mockdid',
             labels: [
-                {$type: 'app.bsky.profile.defs#label', uri: 'at://did:plc:mockdid/app.bsky.profile.label/label1', cid: 'botCid'},
-            ]
+                {
+                    $type: 'app.bsky.profile.defs#label',
+                    uri: 'at://did:plc:mockdid/app.bsky.profile.label/label1',
+                    cid: 'botCid',
+                },
+            ],
         },
     };
 
@@ -35,9 +39,12 @@ describe('HandlerAgentAccountLabels', () => {
         data: {
             did: 'did:plc:otherdid',
             labels: [
-                {$type: 'app.bsky.profile.defs#label', uri: 'at://did:plc:mockdid/app.bsky.profile.label/label2', cid: 'otherCid'},
-
-            ]
+                {
+                    $type: 'app.bsky.profile.defs#label',
+                    uri: 'at://did:plc:mockdid/app.bsky.profile.label/label2',
+                    cid: 'otherCid',
+                },
+            ],
         },
     };
 
@@ -58,7 +65,9 @@ describe('HandlerAgentAccountLabels', () => {
                 // @ts-ignore
                 mockOtherGetProfileResponse
             );
-            const resp = await handlerAgent.getProfile(mockOtherGetProfileResponse.data.did);
+            const resp = await handlerAgent.getProfile(
+                mockOtherGetProfileResponse.data.did
+            );
 
             expect(mockAtpAgent.getProfile).toHaveBeenCalledWith({
                 actor: mockOtherGetProfileResponse.data.did,
@@ -86,7 +95,9 @@ describe('HandlerAgentAccountLabels', () => {
                 // @ts-ignore
                 mockOtherGetProfileResponse
             );
-            const resp = await handlerAgent.getAccountLabels(mockOtherGetProfileResponse.data.did);
+            const resp = await handlerAgent.getAccountLabels(
+                mockOtherGetProfileResponse.data.did
+            );
 
             expect(mockAtpAgent.getProfile).toHaveBeenCalledWith({
                 actor: mockOtherGetProfileResponse.data.did,

@@ -28,8 +28,7 @@ export class HandlerAgent {
         private handle: string,
         private password: string,
         agent: AtpAgent | undefined = undefined,
-        private serviceUrl: string = "https://bsky.social/"
-
+        private serviceUrl: string = 'https://bsky.social/'
     ) {
         if (!agent) {
             this.agent = this.initializeBskyAgent();
@@ -152,7 +151,9 @@ export class HandlerAgent {
      * getProfile
      */
     async getProfile(did?: string) {
-        const response = await this.agent?.getProfile({ actor: did ?? this.getDid });
+        const response = await this.agent?.getProfile({
+            actor: did ?? this.getDid,
+        });
         return response?.data;
     }
 
@@ -194,8 +195,6 @@ export class HandlerAgent {
     // endregion
 
     //region Follower Interactions
-
-
 
     /**
      *
